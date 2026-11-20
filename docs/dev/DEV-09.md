@@ -1,6 +1,6 @@
 # DEV-09: CI cost settings
 
-**Status:** To do
+**Status:** Done (2026-11-20, commit `f8bee3a` on `feat/v0-engine`; hook proven both ways, 68 tests pass)
 
 **Goal:** Spend as few GitHub Actions minutes as possible on a free GitHub account, without letting a broken change through.
 
@@ -33,6 +33,8 @@
 - No new npm dependencies (no husky, no lint-staged).
 - No GitHub remote yet, so CI cannot run for real; check trigger behaviour by reading the docs-backed rules, and test the hook locally.
 - Work on `feat/v0-engine` (not merged yet; DEV-07 merge approval is pending). Commit only the task files. No push, no merge.
+
+**Note for later:** if branch protection ever requires the `ci` check, doc-only PRs will show it as pending (path filters skip the run). Handle that when the remote and protection rules exist.
 
 **Definition of Done:**
 - Hook proven both ways: a deliberate type error makes `git push --dry-run` (or running `.githooks/pre-push` directly) fail, and a clean tree passes. Revert the deliberate error.
