@@ -4,6 +4,7 @@ name: ci
 # Doc-only changes skip CI; docs/eval/** still runs because scripts/eval-lab.test.ts reads it.
 # `paths` filters are ordered, the last match wins. To skip one commit, put [skip ci] in its message.
 on:
+  workflow_dispatch:   # "Run workflow" button on the Actions page
   push:
     branches: [main]
     paths:
