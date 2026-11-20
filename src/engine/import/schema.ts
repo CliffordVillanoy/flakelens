@@ -20,7 +20,7 @@ export const suiteSchema = z
 
 export const specSchema = z
   .object({
-    title: z.unknown(),
+    title: z.unknown().optional(),
     file: z.string().optional(),
     tests: z.array(z.unknown()).optional(),
   })
@@ -33,14 +33,7 @@ export const testSchema = z
   })
   .loose();
 
-const errorSchema = z.object({ message: z.string().optional(), stack: z.string().optional() }).loose();
-
+// Only the status decides whether a result is usable; other fields are read leniently.
 export const resultSchema = z
-  .object({
-    status: z.enum(['passed', 'failed', 'timedOut', 'skipped', 'interrupted']),
-    retry: z.number().int().nonnegative().optional(),
-    duration: z.unknown(),
-    error: errorSchema.optional(),
-    errors: z.array(errorSchema).optional(),
-  })
+  .object({ status: z.enum(['passed', 'failed', 'timedOut', 'skipped', 'interrupted']) })
   .loose();

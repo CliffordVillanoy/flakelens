@@ -1,0 +1,80 @@
+{
+  "config": {
+    "rootDir": "/repo/tests",
+    "version": "1.65.1",
+    "workers": 1,
+    "projects": [
+      {
+        "name": "chromium"
+      }
+    ]
+  },
+  "suites": [
+    {
+      "title": "checkout.spec.ts",
+      "file": "checkout.spec.ts",
+      "line": 0,
+      "column": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "cart",
+          "file": "checkout.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "adds item",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 120,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-20T10:00:01.000Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "id-adds-item",
+              "file": "checkout.spec.ts",
+              "line": 4,
+              "column": 3
+            },
+            {
+              "title": "applies coupon",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "failed",
+                      "duration": 5000,
+                      "errors": [
+                        {
+                          "message": "Timeout 5000ms exceeded",
+                          "stack": "Error: Timeout 5000ms exceeded\n    at checkout.spec.ts:12:5"
+                        }
+                      ],
+                      "s

@@ -1,0 +1,568 @@
+{
+  "config": {
+    "rootDir": "/repo/tests",
+    "version": "1.65.1",
+    "workers": 1,
+    "projects": [
+      {
+        "name": "chromium"
+      }
+    ]
+  },
+  "suites": [
+    {
+      "title": "checkout.spec.ts",
+      "file": "checkout.spec.ts",
+      "line": 0,
+      "column": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "level 0",
+          "file": "checkout.spec.ts",
+          "specs": [],
+          "suites": [
+            {
+              "title": "level 1",
+              "file": "checkout.spec.ts",
+              "specs": [],
+              "suites": [
+                {
+                  "title": "level 2",
+                  "file": "checkout.spec.ts",
+                  "specs": [],
+                  "suites": [
+                    {
+                      "title": "level 3",
+                      "file": "checkout.spec.ts",
+                      "specs": [],
+                      "suites": [
+                        {
+                          "title": "level 4",
+                          "file": "checkout.spec.ts",
+                          "specs": [],
+                          "suites": [
+                            {
+                              "title": "level 5",
+                              "file": "checkout.spec.ts",
+                              "specs": [],
+                              "suites": [
+                                {
+                                  "title": "level 6",
+                                  "file": "checkout.spec.ts",
+                                  "specs": [],
+                                  "suites": [
+                                    {
+                                      "title": "level 7",
+                                      "file": "checkout.spec.ts",
+                                      "specs": [],
+                                      "suites": [
+                                        {
+                                          "title": "level 8",
+                                          "file": "checkout.spec.ts",
+                                          "specs": [],
+                                          "suites": [
+                                            {
+                                              "title": "level 9",
+                                              "file": "checkout.spec.ts",
+                                              "specs": [],
+                                              "suites": [
+                                                {
+                                                  "title": "level 10",
+                                                  "file": "checkout.spec.ts",
+                                                  "specs": [],
+                                                  "suites": [
+                                                    {
+                                                      "title": "level 11",
+                                                      "file": "checkout.spec.ts",
+                                                      "specs": [],
+                                                      "suites": [
+                                                        {
+                                                          "title": "level 12",
+                                                          "file": "checkout.spec.ts",
+                                                          "specs": [],
+                                                          "suites": [
+                                                            {
+                                                              "title": "level 13",
+                                                              "file": "checkout.spec.ts",
+                                                              "specs": [],
+                                                              "suites": [
+                                                                {
+                                                                  "title": "level 14",
+                                                                  "file": "checkout.spec.ts",
+                                                                  "specs": [],
+                                                                  "suites": [
+                                                                    {
+                                                                      "title": "level 15",
+                                                                      "file": "checkout.spec.ts",
+                                                                      "specs": [],
+                                                                      "suites": [
+                                                                        {
+                                                                          "title": "level 16",
+                                                                          "file": "checkout.spec.ts",
+                                                                          "specs": [],
+                                                                          "suites": [
+                                                                            {
+                                                                              "title": "level 17",
+                                                                              "file": "checkout.spec.ts",
+                                                                              "specs": [],
+                                                                              "suites": [
+                                                                                {
+                                                                                  "title": "level 18",
+                                                                                  "file": "checkout.spec.ts",
+                                                                                  "specs": [],
+                                                                                  "suites": [
+                                                                                    {
+                                                                                      "title": "level 19",
+                                                                                      "file": "checkout.spec.ts",
+                                                                                      "specs": [],
+                                                                                      "suites": [
+                                                                                        {
+                                                                                          "title": "level 20",
+                                                                                          "file": "checkout.spec.ts",
+                                                                                          "specs": [],
+                                                                                          "suites": [
+                                                                                            {
+                                                                                              "title": "level 21",
+                                                                                              "file": "checkout.spec.ts",
+                                                                                              "specs": [],
+                                                                                              "suites": [
+                                                                                                {
+                                                                                                  "title": "level 22",
+                                                                                                  "file": "checkout.spec.ts",
+                                                                                                  "specs": [],
+                                                                                                  "suites": [
+                                                                                                    {
+                                                                                                      "title": "level 23",
+                                                                                                      "file": "checkout.spec.ts",
+                                                                                                      "specs": [],
+                                                                                                      "suites": [
+                                                                                                        {
+                                                                                                          "title": "level 24",
+                                                                                                          "file": "checkout.spec.ts",
+                                                                                                          "specs": [],
+                                                                                                          "suites": [
+                                                                                                            {
+                                                                                                              "title": "level 25",
+                                                                                                              "file": "checkout.spec.ts",
+                                                                                                              "specs": [],
+                                                                                                              "suites": [
+                                                                                                                {
+                                                                                                                  "title": "level 26",
+                                                                                                                  "file": "checkout.spec.ts",
+                                                                                                                  "specs": [],
+                                                                                                                  "suites": [
+                                                                                                                    {
+                                                                                                                      "title": "level 27",
+                                                                                                                      "file": "checkout.spec.ts",
+                                                                                                                      "specs": [],
+                                                                                                                      "suites": [
+                                                                                                                        {
+                                                                                                                          "title": "level 28",
+                                                                                                                          "file": "checkout.spec.ts",
+                                                                                                                          "specs": [],
+                                                                                                                          "suites": [
+                                                                                                                            {
+                                                                                                                              "title": "level 29",
+                                                                                                                              "file": "checkout.spec.ts",
+                                                                                                                              "specs": [],
+                                                                                                                              "suites": [
+                                                                                                                                {
+                                                                                                                                  "title": "level 30",
+                                                                                                                                  "file": "checkout.spec.ts",
+                                                                                                                                  "specs": [],
+                                                                                                                                  "suites": [
+                                                                                                                                    {
+                                                                                                                                      "title": "level 31",
+                                                                                                                                      "file": "checkout.spec.ts",
+                                                                                                                                      "specs": [],
+                                                                                                                                      "suites": [
+                                                                                                                                        {
+                                                                                                                                          "title": "level 32",
+                                                                                                                                          "file": "checkout.spec.ts",
+                                                                                                                                          "specs": [],
+                                                                                                                                          "suites": [
+                                                                                                                                            {
+                                                                                                                                              "title": "level 33",
+                                                                                                                                              "file": "checkout.spec.ts",
+                                                                                                                                              "specs": [],
+                                                                                                                                              "suites": [
+                                                                                                                                                {
+                                                                                                                                                  "title": "level 34",
+                                                                                                                                                  "file": "checkout.spec.ts",
+                                                                                                                                                  "specs": [],
+                                                                                                                                                  "suites": [
+                                                                                                                                                    {
+                                                                                                                                                      "title": "level 35",
+                                                                                                                                                      "file": "checkout.spec.ts",
+                                                                                                                                                      "specs": [],
+                                                                                                                                                      "suites": [
+                                                                                                                                                        {
+                                                                                                                                                          "title": "level 36",
+                                                                                                                                                          "file": "checkout.spec.ts",
+                                                                                                                                                          "specs": [],
+                                                                                                                                                          "suites": [
+                                                                                                                                                            {
+                                                                                                                                                              "title": "level 37",
+                                                                                                                                                              "file": "checkout.spec.ts",
+                                                                                                                                                              "specs": [],
+                                                                                                                                                              "suites": [
+                                                                                                                                                                {
+                                                                                                                                                                  "title": "level 38",
+                                                                                                                                                                  "file": "checkout.spec.ts",
+                                                                                                                                                                  "specs": [],
+                                                                                                                                                                  "suites": [
+                                                                                                                                                                    {
+                                                                                                                                                                      "title": "level 39",
+                                                                                                                                                                      "file": "checkout.spec.ts",
+                                                                                                                                                                      "specs": [],
+                                                                                                                                                                      "suites": [
+                                                                                                                                                                        {
+                                                                                                                                                                          "title": "level 40",
+                                                                                                                                                                          "file": "checkout.spec.ts",
+                                                                                                                                                                          "specs": [],
+                                                                                                                                                                          "suites": [
+                                                                                                                                                                            {
+                                                                                                                                                                              "title": "level 41",
+                                                                                                                                                                              "file": "checkout.spec.ts",
+                                                                                                                                                                              "specs": [],
+                                                                                                                                                                              "suites": [
+                                                                                                                                                                                {
+                                                                                                                                                                                  "title": "level 42",
+                                                                                                                                                                                  "file": "checkout.spec.ts",
+                                                                                                                                                                                  "specs": [],
+                                                                                                                                                                                  "suites": [
+                                                                                                                                                                                    {
+                                                                                                                                                                                      "title": "level 43",
+                                                                                                                                                                                      "file": "checkout.spec.ts",
+                                                                                                                                                                                      "specs": [],
+                                                                                                                                                                                      "suites": [
+                                                                                                                                                                                        {
+                                                                                                                                                                                          "title": "level 44",
+                                                                                                                                                                                          "file": "checkout.spec.ts",
+                                                                                                                                                                                          "specs": [],
+                                                                                                                                                                                          "suites": [
+                                                                                                                                                                                            {
+                                                                                                                                                                                              "title": "level 45",
+                                                                                                                                                                                              "file": "checkout.spec.ts",
+                                                                                                                                                                                              "specs": [],
+                                                                                                                                                                                              "suites": [
+                                                                                                                                                                                                {
+                                                                                                                                                                                                  "title": "level 46",
+                                                                                                                                                                                                  "file": "checkout.spec.ts",
+                                                                                                                                                                                                  "specs": [],
+                                                                                                                                                                                                  "suites": [
+                                                                                                                                                                                                    {
+                                                                                                                                                                                                      "title": "level 47",
+                                                                                                                                                                                                      "file": "checkout.spec.ts",
+                                                                                                                                                                                                      "specs": [],
+                                                                                                                                                                                                      "suites": [
+                                                                                                                                                                                                        {
+                                                                                                                                                                                                          "title": "level 48",
+                                                                                                                                                                                                          "file": "checkout.spec.ts",
+                                                                                                                                                                                                          "specs": [],
+                                                                                                                                                                                                          "suites": [
+                                                                                                                                                                                                            {
+                                                                                                                                                                                                              "title": "level 49",
+                                                                                                                                                                                                              "file": "checkout.spec.ts",
+                                                                                                                                                                                                              "specs": [],
+                                                                                                                                                                                                              "suites": [
+                                                                                                                                                                                                                {
+                                                                                                                                                                                                                  "title": "level 50",
+                                                                                                                                                                                                                  "file": "checkout.spec.ts",
+                                                                                                                                                                                                                  "specs": [],
+                                                                                                                                                                                                                  "suites": [
+                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                      "title": "level 51",
+                                                                                                                                                                                                                      "file": "checkout.spec.ts",
+                                                                                                                                                                                                                      "specs": [],
+                                                                                                                                                                                                                      "suites": [
+                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                          "title": "level 52",
+                                                                                                                                                                                                                          "file": "checkout.spec.ts",
+                                                                                                                                                                                                                          "specs": [],
+                                                                                                                                                                                                                          "suites": [
+                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                              "title": "level 53",
+                                                                                                                                                                                                                              "file": "checkout.spec.ts",
+                                                                                                                                                                                                                              "specs": [],
+                                                                                                                                                                                                                              "suites": [
+                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                  "title": "level 54",
+                                                                                                                                                                                                                                  "file": "checkout.spec.ts",
+                                                                                                                                                                                                                                  "specs": [],
+                                                                                                                                                                                                                                  "suites": [
+                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                      "title": "level 55",
+                                                                                                                                                                                                                                      "file": "checkout.spec.ts",
+                                                                                                                                                                                                                                      "specs": [],
+                                                                                                                                                                                                                                      "suites": [
+                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                          "title": "level 56",
+                                                                                                                                                                                                                                          "file": "checkout.spec.ts",
+                                                                                                                                                                                                                                          "specs": [],
+                                                                                                                                                                                                                                          "suites": [
+                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                              "title": "level 57",
+                                                                                                                                                                                                                                              "file": "checkout.spec.ts",
+                                                                                                                                                                                                                                              "specs": [],
+                                                                                                                                                                                                                                              "suites": [
+                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                  "title": "level 58",
+                                                                                                                                                                                                                                                  "file": "checkout.spec.ts",
+                                                                                                                                                                                                                                                  "specs": [],
+                                                                                                                                                                                                                                                  "suites": [
+                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                      "title": "level 59",
+                                                                                                                                                                                                                                                      "file": "checkout.spec.ts",
+                                                                                                                                                                                                                                                      "specs": [
+                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                          "title": "adds item",
+                                                                                                                                                                                                                                                          "ok": true,
+                                                                                                                                                                                                                                                          "tags": [],
+                                                                                                                                                                                                                                                          "tests": [
+                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                              "timeout": 30000,
+                                                                                                                                                                                                                                                              "annotations": [],
+                                                                                                                                                                                                                                                              "expectedStatus": "passed",
+                                                                                                                                                                                                                                                              "projectId": "chromium",
+                                                                                                                                                                                                                                                              "projectName": "chromium",
+                                                                                                                                                                                                                                                              "results": [
+                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                  "workerIndex": 0,
+                                                                                                                                                                                                                                                                  "status": "passed",
+                                                                                                                                                                                                                                                                  "duration": 120,
+                                                                                                                                                                                                                                                                  "errors": [],
+                                                                                                                                                                                                                                                                  "stdout": [],
+                                                                                                                                                                                                                                                                  "stderr": [],
+                                                                                                                                                                                                                                                                  "retry": 0,
+                                                                                                                                                                                                                                                                  "startTime": "2026-11-20T10:00:01.000Z",
+                                                                                                                                                                                                                                                                  "attachments": []
+                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                              ],
+                                                                                                                                                                                                                                                              "status": "expected"
+                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                          ],
+                                                                                                                                                                                                                                                          "id": "id-adds-item",
+                                                                                                                                                                                                                                                          "file": "checkout.spec.ts",
+                                                                                                                                                                                                                                                          "line": 4,
+                                                                                                                                                                                                                                                          "column": 3
+                                                                                                                                                                                                                                                        },
+                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                          "title": "applies coupon",
+                                                                                                                                                                                                                                                          "ok": true,
+                                                                                                                                                                                                                                                          "tags": [],
+                                                                                                                                                                                                                                                          "tests": [
+                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                              "timeout": 30000,
+                                                                                                                                                                                                                                                              "annotations": [],
+                                                                                                                                                                                                                                                              "expectedStatus": "passed",
+                                                                                                                                                                                                                                                              "projectId": "chromium",
+                                                                                                                                                                                                                                                              "projectName": "chromium",
+                                                                                                                                                                                                                                                              "results": [
+                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                  "workerIndex": 0,
+                                                                                                                                                                                                                                                                  "status": "failed",
+                                                                                                                                                                                                                                                                  "duration": 5000,
+                                                                                                                                                                                                                                                                  "errors": [
+                                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                                      "message": "Timeout 5000ms exceeded",
+                                                                                                                                                                                                                                                                      "stack": "Error: Timeout 5000ms exceeded\n    at checkout.spec.ts:12:5"
+                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                  ],
+                                                                                                                                                                                                                                                                  "stdout": [],
+                                                                                                                                                                                                                                                                  "stderr": [],
+                                                                                                                                                                                                                                                                  "retry": 0,
+                                                                                                                                                                                                                                                                  "startTime": "2026-11-20T10:00:01.000Z",
+                                                                                                                                                                                                                                                                  "attachments": [],
+                                                                                                                                                                                                                                                                  "error": {
+                                                                                                                                                                                                                                                                    "message": "Timeout 5000ms exceeded",
+                                                                                                                                                                                                                                                                    "stack": "Error: Timeout 5000ms exceeded\n    at checkout.spec.ts:12:5"
+                                                                                                                                                                                                                                                                  }
+                                                                                                                                                                                                                                                                },
+                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                  "workerIndex": 0,
+                                                                                                                                                                                                                                                                  "status": "passed",
+                                                                                                                                                                                                                                                                  "duration": 120,
+                                                                                                                                                                                                                                                                  "errors": [],
+                                                                                                                                                                                                                                                                  "stdout": [],
+                                                                                                                                                                                                                                                                  "stderr": [],
+                                                                                                                                                                                                                                                                  "retry": 1,
+                                                                                                                                                                                                                                                                  "startTime": "2026-11-20T10:00:01.000Z",
+                                                                                                                                                                                                                                                                  "attachments": []
+                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                              ],
+                                                                                                                                                                                                                                                              "status": "flaky"
+                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                          ],
+                                                                                                                                                                                                                                                          "id": "id-applies-coupon",
+                                                                                                                                                                                                                                                          "file": "checkout.spec.ts",
+                                                                                                                                                                                                                                                          "line": 10,
+                                                                                                                                                                                                                                                          "column": 3
+                                                                                                                                                                                                                                                        },
+                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                          "title": "shows total",
+                                                                                                                                                                                                                                                          "ok": true,
+                                                                                                                                                                                                                                                          "tags": [],
+                                                                                                                                                                                                                                                          "tests": [
+                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                              "timeout": 30000,
+                                                                                                                                                                                                                                                              "annotations": [],
+                                                                                                                                                                                                                                                              "expectedStatus": "passed",
+                                                                                                                                                                                                                                                              "projectId": "chromium",
+                                                                                                                                                                                                                                                              "projectName": "chromium",
+                                                                                                                                                                                                                                                              "results": [
+                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                  "workerIndex": 0,
+                                                                                                                                                                                                                                                                  "status": "skipped",
+                                                                                                                                                                                                                                                                  "duration": 0,
+                                                                                                                                                                                                                                                                  "errors": [],
+                                                                                                                                                                                                                                                                  "stdout": [],
+                                                                                                                                                                                                                                                                  "stderr": [],
+                                                                                                                                                                                                                                                                  "retry": 0,
+                                                                                                                                                                                                                                                                  "startTime": "2026-11-20T10:00:01.000Z",
+                                                                                                                                                                                                                                                                  "attachments": []
+                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                              ],
+                                                                                                                                                                                                                                                              "status": "skipped"
+                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                          ],
+                                                                                                                                                                                                                                                          "id": "id-shows-total",
+                                                                                                                                                                                                                                                          "file": "checkout.spec.ts",
+                                                                                                                                                                                                                                                          "line": 16,
+                                                                                                                                                                                                                                                          "column": 3
+                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                      ],
+                                                                                                                                                                                                                                                      "suites": []
+                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                  ]
+                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                              ]
+                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                          ]
+                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                      ]
+                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                  ]
+                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                              ]
+                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                          ]
+                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                      ]
+                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                  ]
+                                                                                                                                                                                                                }
+                                                                                                                                                                                                              ]
+                                                                                                                                                                                                            }
+                                                                                                                                                                                                          ]
+                                                                                                                                                                                                        }
+                                                                                                                                                                                                      ]
+                                                                                                                                                                                                    }
+                                                                                                                                                                                                  ]
+                                                                                                                                                                                                }
+                                                                                                                                                                                              ]
+                                                                                                                                                                                            }
+                                                                                                                                                                                          ]
+                                                                                                                                                                                        }
+                                                                                                                                                                                      ]
+                                                                                                                                                                                    }
+                                                                                                                                                                                  ]
+                                                                                                                                                                                }
+                                                                                                                                                                              ]
+                                                                                                                                                                            }
+                                                                                                                                                                          ]
+                                                                                                                                                                        }
+                                                                                                                                                                      ]
+                                                                                                                                                                    }
+                                                                                                                                                                  ]
+                                                                                                                                                                }
+                                                                                                                                                              ]
+                                                                                                                                                            }
+                                                                                                                                                          ]
+                                                                                                                                                        }
+                                                                                                                                                      ]
+                                                                                                                                                    }
+                                                                                                                                                  ]
+                                                                                                                                                }
+                                                                                                                                              ]
+                                                                                                                                            }
+                                                                                                                                          ]
+                                                                                                                                        }
+                                                                                                                                      ]
+                                                                                                                                    }
+                                                                                                                                  ]
+                                                                                                                                }
+                                                                                                                              ]
+                                                                                                                            }
+                                                                                                                          ]
+                                                                                                                        }
+                                                                                                                      ]
+                                                                                                                    }
+                                                                                                                  ]
+                                                                                                                }
+                                                                                                              ]
+                                                                                                            }
+                                                                                                          ]
+                                                                                                        }
+                                                                                                      ]
+                                                                                                    }
+                                                                                                  ]
+                                                                                                }
+                                                                                              ]
+                                                                                            }
+                                                                                          ]
+                                                                                        }
+                                                                                      ]
+                                                                                    }
+                                                                                  ]
+                                                                                }
+                                                                              ]
+                                                                            }
+                                                                          ]
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              ]
+                                                            }
+                                                          ]
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-20T10:00:00.000Z",
+    "duration": 6000,
+    "expected": 1,
+    "skipped": 1,
+    "unexpected": 0,
+    "flaky": 1
+  }
+}
