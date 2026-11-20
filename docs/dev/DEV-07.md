@@ -1,6 +1,6 @@
 # DEV-07: v0 engine review and merge
 
-**Status:** To do (after DEV-02 to DEV-06 and DEV-08)
+**Status:** Review done, fixes in `8ecb0db` (68 tests pass). Waiting for the user's merge approval.
 
 **Goal:** An independent review of the whole engine branch, fixes for anything serious, then merge into `main`.
 

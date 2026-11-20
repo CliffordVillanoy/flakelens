@@ -196,8 +196,10 @@ The importer never throws to the user. Every import returns a result that is eit
 | --- | --- | --- |
 | Valid file | Success | Imported N tests from M runs. |
 | A few tests have a missing status, name or duration | Partial | Imported N tests. X not imported: reason. Download the not-imported list. |
-| Unreadable duration or date on some results | Partial, field left empty | Y results had an unreadable duration and were kept without it. |
-| Duplicate test IDs in one run (for example parameterized tests with the same title) | Partial or success | IDs made unique using the project name and an index. Shown as a notice. |
+| Unreadable duration on some results | Partial, field left empty | Y results had an unreadable duration and were kept without it. |
+| Unreadable run start date | Success, field left empty (v0) | No notice yet. Runs without a readable date keep import order. A notice and copy key (for example `import.partial.badDate`) are planned for the v0 UI. |
+| Repeated copies of one test in one run (`--repeat-each`, several entries for one project in one spec) | Success | Kept as one test; each copy is a separate attempt with its own repeat index, so a fail and a pass in one run count as flaky. |
+| Duplicate test IDs in one run (two specs with the same file, suite path and title) | Partial | IDs made unique with an index. Shown as a notice. |
 | Same run imported twice | Success, de-duplicated | This run was already loaded and was not counted twice. |
 | Missing run metadata (commit, branch, browser) | Success, fields empty | No commit info found. Cross-commit evidence will be limited. |
 | File is the wrong format | Failed | This does not look like a Playwright JSON report. |
@@ -291,7 +293,7 @@ Wasted minutes = total duration of failed attempts on commits where the same tes
 
 **Default sort (by group, then priority):** Confirmed flaky first (by priority), then Unproven (by score), then Consistently failing, then Stable, then Not enough data. Unprovens have no confirmed wasted minutes by definition, so they show "possible wasted time" (the duration of their failed attempts), labeled as an estimate. Attempts with no duration count as 0 minutes and the row says the duration is unknown.
 
-**Edge cases to test:** a single run (no history, so only retry-based evidence), tests that skip on some browsers, parameterized tests with the same title, retries disabled, and runs from different branches mixed together.
+**Edge cases to test:** a single run (no history, so only retry-based evidence), tests that skip on some browsers, `--repeat-each` copies in one run, duplicate titles in one file, retries disabled, a mix of runs with and without start dates, and runs from different branches mixed together.
 
 ## 11.1 Three detectors: flaky, falsely passing, falsely failing
 
