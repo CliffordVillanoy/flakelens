@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>FlakeLens: category standard</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+<style>
+*{box-sizing:border-box}
+body{margin:0;width:1440px;height:900px;overflow:hidden;background:#0D1117;color:#E6EDF3;font:14px/1.45 Inter,sans-serif;display:flex}
+nav{width:232px;background:#010409;border-right:1px solid #30363D;padding:16px 12px;display:flex;flex-direction:column;gap:4px}
+nav b{font-size:16px;padding:6px 10px 14px}
+nav a{padding:8px 10px;border-radius:6px;color:#C9D1D9;text-decoration:none}nav a.on{background:#1F242C;color:#fff}
+main{flex:1;padding:24px 32px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+h1{margin:0;font-size:20px;font-weight:600}
+.btn{height:32px;padding:0 14px;border-radius:6px;border:1px solid #30363D;background:#21262D;color:#E6EDF3;font:inherit}
+.btn.p{background:#1F6FEB;border-color:#1F6FEB}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+.k{background:#161B22;border:1px solid #30363D;border-radius:8px;padding:16px}
+.k span{color:#8B949E;font-size:12px}.k b{display:block;font-size:28px;font-weight:600;margin-top:4px}
+table{width:100%;border-collapse:collapse;background:#161B22;border:1px solid #30363D;border-radius:8px}
+th,td{text-align:left;padding:12px 16px;border-bottom:1px solid #21262D}th{color:#8B949E;font-weight:500;font-size:12px}
+.pill{padding:2px 10px;border-radius:999px;font-size:12px;font-weight:500}
+.fl{background:#3B2E0A;color:#E3B341}.su{background:#2A1F4A;color:#BC8CFF}.fa{background:#3D1517;color:#FF7B72}
+td small{display:block;color:#8B949E;font-size:12px}
+</style></head><body>
+<nav><b>FlakeLens</b><a class="on" href="#">Tests</a><a href="#">Failure groups</a><a href="#">Loaded data</a><a href="#">Settings</a></nav>
+<main><div class="top"><h1>Tests</h1><span><button class="btn">Leave sample</button> <button class="btn p">Add files</button></span></div>
+<div class="kpis"><div class="k"><span>Flaky</span><b>3</b></div><div class="k"><span>Suspect</span><b>2</b></div><div class="k"><span>Failing</span><b>2</b></div><div class="k"><span>Wasted CI time</span><b>29 min</b></div></div>
+<table><tr><th>#</th><th>Test</th><th>Status</th><th>Why</th><th>Wasted</th></tr>
+<tr><td>1</td><td>checkout › applies coupon code<small>tests/checkout.spec.ts</small></td><td><span class="pill fl">Flaky</span></td><td>4 of 9 commits had both a pass and a fail</td><td>14 min</td></tr>
+<tr><td>2</td><td>search › shows results after typing<small>tests/search.spec.ts</small></td><td><span class="pill fl">Flaky</span></td><td>3 of 9 commits had both a pass and a fail</td><td>9 min</td></tr>
+<tr><td>3</td><td>profile › uploads avatar<small>tests/profile.spec.ts</small></td><td><span class="pill fl">Flaky</span></td><td>Passed on retry in 3 of 12 runs</td><td>6 min</td></tr>
+<tr><td></td><td>cart › updates item quantity<small>tests/cart.spec.ts</small></td><td><span class="pill su">Suspect</span></td><td>Switched between pass and fail 5 times in 12 runs</td><td>~4 min (est.)</td></tr>
+<tr><td></td><td>reports › exports a PDF<small>tests/reports.spec.ts</small></td><td><span class="pill fa">Failing</span></td><td>Failed 12 of 12 runs</td><td>—</td></tr>
+</table></main>
+</body></html>

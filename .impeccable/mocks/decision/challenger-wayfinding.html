@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>FlakeLens: Terminal Wayfinding</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&family=JetBrains+Mono&display=swap">
+<style>
+*{box-sizing:border-box}
+body{margin:0;width:1440px;height:900px;overflow:hidden;background:#141414;color:#F2F2F2;font:15px/1.4 Mukta,sans-serif}
+header{height:52px;display:flex;align-items:center;gap:14px;padding:0 28px;background:#1E1E1E;border-bottom:1px solid #333}
+.logo{font-weight:800;font-size:19px}.chip{height:26px;display:inline-flex;align-items:center;padding:0 10px;border:1px solid #444;border-radius:4px;font-size:12px}
+.sp{flex:1}.btn{height:32px;padding:0 12px;border-radius:4px;border:1px solid #444;background:#262626;color:#F2F2F2;font:inherit;font-size:13px}
+.band{display:flex;align-items:center;gap:28px;height:120px;padding:0 28px;background:#FFCC00;color:#111}
+.gate{font:800 88px/1 Mukta;font-variant-numeric:tabular-nums}
+.msg b{display:block;font:700 30px/1.1 Mukta}.msg span{font-size:16px}
+.pic{width:56px;height:56px;background:#111;border-radius:4px;display:grid;place-items:center}
+.go{margin-left:auto;height:52px;padding:0 22px;background:#111;color:#FFCC00;border:0;border-radius:4px;font:700 18px Mukta}
+.wrap{padding:20px 28px}
+.next{display:flex;gap:16px;margin-bottom:18px}
+.n{flex:1;background:#1E1E1E;border:1px solid #333;border-radius:4px;padding:12px 16px}
+.n b{font:800 34px/1 Mukta;margin-right:8px}.n span{color:#C8C8C8;font-size:14px}
+.row{display:grid;grid-template-columns:56px 1fr 130px 380px 120px;align-items:center;min-height:46px;border-top:1px solid #2C2C2C;padding:0 12px}
+.h{color:#B5B5B5;font-size:12px;min-height:32px}
+.r{font:800 22px Mukta}.t span{display:block;font:12px 'JetBrains Mono';color:#A8A8A8}
+.s{font-weight:700}.fl{color:#F5A524}.su{color:#C2AEFF}.fa{color:#FF7A70}
+.g{padding:6px 12px;background:#1E1E1E;font-size:13px;color:#C8C8C8;border-top:1px solid #2C2C2C}
+.w{text-align:right;font-weight:700}
+</style></head><body>
+<header><span class="logo">FlakeLens</span><span class="chip">Sample data</span><span class="chip">3 files · 12 runs · 3 not imported</span><span class="chip">Nothing leaves this browser</span><span class="sp"></span><button class="btn">Add your files</button><button class="btn">Leave sample</button><button class="btn">Light</button><button class="btn">?</button></header>
+<div class="band"><span class="gate">1</span><div class="pic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFCC00" stroke-width="2.4"><path d="M3 14l4-6 4 8 4-8 4 6"/></svg></div><div class="msg"><b>Fix next: checkout › applies coupon code</b><span>Flaky · 4 of 9 commits had both a pass and a fail · 14 min wasted</span></div><button class="go">Open evidence →</button></div>
+<div class="wrap">
+<div class="next"><div class="n"><b>2</b><span>search › shows results after typing · 9 min</span></div><div class="n"><b>3</b><span>profile › uploads avatar · 6 min</span></div><div class="n"><b>29 min</b><span>wasted CI time across 3 Flaky tests</span></div></div>
+<div class="row h"><span>#</span><span>Test</span><span>Status</span><span>Why</span><span class="w">Wasted</span></div>
+<div class="g">Flaky · 3 · Different results on the same commit</div>
+<div class="row"><span class="r">1</span><span class="t">checkout › applies coupon code<span>tests/checkout.spec.ts</span></span><span class="s fl">Flaky</span><span>4 of 9 commits had both a pass and a fail</span><span class="w">14 min</span></div>
+<div class="row"><span class="r">2</span><span class="t">search › shows results after typing<span>tests/search.spec.ts</span></span><span class="s fl">Flaky</span><span>3 of 9 commits had both a pass and a fail</span><span class="w">9 min</span></div>
+<div class="row"><span class="r">3</span><span class="t">profile › uploads avatar<span>tests/profile.spec.ts</span></span><span class="s fl">Flaky</span><span>Passed on retry in 3 of 12 runs</span><span class="w">6 min</span></div>
+<div class="g">Suspect · 2 · Mixed results, never on the same commit</div>
+<div class="row"><span></span><span class="t">cart › updates item quantity<span>tests/cart.spec.ts</span></span><span class="s su">Suspect</span><span>Switched between pass and fail 5 times in 12 runs</span><span class="w">~4 min (est.)</span></div>
+<div class="g">Failing · 2 · Fails almost every run</div>
+<div class="row"><span></span><span class="t">reports › exports a PDF<span>tests/reports.spec.ts</span></span><span class="s fa">Failing</span><span>Failed 12 of 12 runs</span><span class="w">—</span></div>
+</div>
+</body></html>

@@ -1,0 +1,741 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-19T14:47:53+00:00",
+  "title": "Design System: FlakeLens",
+  "extensions": {
+    "colorMeta": {
+      "canvas": {
+        "role": "neutral",
+        "displayName": "Canvas",
+        "canonical": "#0D1117",
+        "tonalRamp": [
+          "#0A0B0D",
+          "#242527",
+          "#3F4246",
+          "#5D6168",
+          "#7D838B",
+          "#A1A5AC",
+          "#C6C9CE",
+          "#EDEEF1"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Box Surface",
+        "canonical": "#161B22",
+        "tonalRamp": [
+          "#0A0B0D",
+          "#232528",
+          "#3F4247",
+          "#5D6268",
+          "#7D838C",
+          "#A0A5AD",
+          "#C6C9CF",
+          "#ECEFF2"
+        ]
+      },
+      "neutral-muted": {
+        "role": "neutral",
+        "displayName": "Muted Fill",
+        "canonical": "#21262D",
+        "tonalRamp": [
+          "#0A0B0D",
+          "#232527",
+          "#3F4246",
+          "#5D6268",
+          "#7D838B",
+          "#A1A5AC",
+          "#C6C9CE",
+          "#ECEFF1"
+        ]
+      },
+      "border-default": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#30363D",
+        "tonalRamp": [
+          "#0A0B0D",
+          "#232527",
+          "#3F4246",
+          "#5D6268",
+          "#7C838B",
+          "#A0A6AC",
+          "#C6C9CE",
+          "#ECEFF1"
+        ]
+      },
+      "border-muted": {
+        "role": "neutral",
+        "displayName": "Row Divider",
+        "canonical": "#21262D",
+        "tonalRamp": [
+          "#0A0B0D",
+          "#232527",
+          "#3F4246",
+          "#5D6268",
+          "#7D838B",
+          "#A1A5AC",
+          "#C6C9CE",
+          "#ECEFF1"
+        ]
+      },
+      "border-emphasis": {
+        "role": "neutral",
+        "displayName": "Control Edge",
+        "canonical": "#6E7681",
+        "tonalRamp": [
+          "#0A0B0D",
+          "#232528",
+          "#3E4248",
+          "#5C626A",
+          "#7B838E",
+          "#9FA6AE",
+          "#C5C9D0",
+          "#ECEFF2"
+        ]
+      },
+      "fg-default": {
+        "role": "neutral",
+        "displayName": "Text",
+        "canonical": "#E6EDF3",
+        "tonalRamp": [
+          "#0A0B0C",
+          "#242527",
+          "#3F4245",
+          "#5D6266",
+          "#7D8388",
+          "#A1A6AA",
+          "#C6CACD",
+          "#EDEFF0"
+        ]
+      },
+      "fg-secondary": {
+        "role": "neutral",
+        "displayName": "Secondary Text",
+        "canonical": "#C9D1D9",
+        "tonalRamp": [
+          "#0A0B0D",
+          "#232527",
+          "#3F4246",
+          "#5C6267",
+          "#7C838A",
+          "#A0A6AC",
+          "#C5CACE",
+          "#ECEFF1"
+        ]
+      },
+      "fg-muted": {
+        "role": "neutral",
+        "displayName": "Muted Text",
+        "canonical": "#9198A1",
+        "tonalRamp": [
+          "#0A0B0D",
+          "#232528",
+          "#3F4247",
+          "#5D6268",
+          "#7C838C",
+          "#A0A6AC",
+          "#C6C9CE",
+          "#ECEFF2"
+        ]
+      },
+      "fg-on-emphasis": {
+        "role": "neutral",
+        "displayName": "On-Emphasis White",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#A5A5A5",
+          "#C9C9C9",
+          "#EEEEEE"
+        ]
+      },
+      "accent-fg": {
+        "role": "primary",
+        "displayName": "Review Blue",
+        "canonical": "#4493F8",
+        "tonalRamp": [
+          "#010B1C",
+          "#122540",
+          "#1C4273",
+          "#2661AB",
+          "#3381E3",
+          "#6DA7F4",
+          "#A3CCFF",
+          "#D9F1FF"
+        ]
+      },
+      "accent-fg-hover": {
+        "role": "primary",
+        "displayName": "Review Blue Hover",
+        "canonical": "#79C0FF",
+        "tonalRamp": [
+          "#030C17",
+          "#152736",
+          "#234562",
+          "#316592",
+          "#4288C2",
+          "#77ABD9",
+          "#AACEEF",
+          "#DDF1FF"
+        ]
+      },
+      "accent-subtle": {
+        "role": "primary",
+        "displayName": "Selection Navy",
+        "canonical": "#121D2F",
+        "tonalRamp": [
+          "#090B0F",
+          "#21252B",
+          "#3B424E",
+          "#576273",
+          "#75839A",
+          "#9BA6B8",
+          "#C2CAD7",
+          "#EAEFF6"
+        ]
+      },
+      "success-emphasis": {
+        "role": "primary",
+        "displayName": "Merge Green",
+        "canonical": "#238636",
+        "tonalRamp": [
+          "#020F03",
+          "#142B16",
+          "#204D26",
+          "#2C7236",
+          "#3C9949",
+          "#75B87A",
+          "#A9D7AB",
+          "#DCF7DD"
+        ]
+      },
+      "success-fg": {
+        "role": "secondary",
+        "displayName": "Stable Green",
+        "canonical": "#3FB950",
+        "tonalRamp": [
+          "#001002",
+          "#0F2C12",
+          "#144F1D",
+          "#157527",
+          "#1A9D35",
+          "#68BC6E",
+          "#A1DAA4",
+          "#D8F9D9"
+        ]
+      },
+      "success-subtle": {
+        "role": "secondary",
+        "displayName": "Stable Green Subtle",
+        "canonical": "#12261E",
+        "tonalRamp": [
+          "#080C0A",
+          "#212724",
+          "#3A4540",
+          "#55665E",
+          "#72887E",
+          "#98AAA2",
+          "#C0CDC7",
+          "#E9F0ED"
+        ]
+      },
+      "success-gutter": {
+        "role": "secondary",
+        "displayName": "Added Gutter Green",
+        "canonical": "#1B3A26",
+        "tonalRamp": [
+          "#070D09",
+          "#1F2821",
+          "#36473B",
+          "#4F6857",
+          "#6B8C74",
+          "#93AD9A",
+          "#BCCFC1",
+          "#E7F2EA"
+        ]
+      },
+      "attention-fg": {
+        "role": "secondary",
+        "displayName": "Flaky Amber",
+        "canonical": "#D29922",
+        "tonalRamp": [
+          "#130900",
+          "#312207",
+          "#573C01",
+          "#825800",
+          "#AD7700",
+          "#C89D52",
+          "#E3C492",
+          "#FEECD0"
+        ]
+      },
+      "attention-text": {
+        "role": "secondary",
+        "displayName": "Flaky Amber Text",
+        "canonical": "#E3B341",
+        "tonalRamp": [
+          "#120A00",
+          "#2F2307",
+          "#553E01",
+          "#7D5B00",
+          "#A77A00",
+          "#C3A052",
+          "#DFC692",
+          "#FBEDD0"
+        ]
+      },
+      "attention-subtle": {
+        "role": "secondary",
+        "displayName": "Flaky Amber Subtle",
+        "canonical": "#2E2410",
+        "tonalRamp": [
+          "#0D0B07",
+          "#28251F",
+          "#474136",
+          "#69604F",
+          "#8D816B",
+          "#ADA492",
+          "#CFC8BC",
+          "#F2EEE7"
+        ]
+      },
+      "done-fg": {
+        "role": "secondary",
+        "displayName": "Suspect Violet",
+        "canonical": "#AB7DF8",
+        "tonalRamp": [
+          "#0E061B",
+          "#291E3D",
+          "#4A346F",
+          "#6D4BA4",
+          "#9264DB",
+          "#B191ED",
+          "#D1BCFF",
+          "#F3E7FF"
+        ]
+      },
+      "done-text": {
+        "role": "secondary",
+        "displayName": "Suspect Violet Text",
+        "canonical": "#C297FF",
+        "tonalRamp": [
+          "#0E0718",
+          "#2A1F39",
+          "#4A3667",
+          "#6E4E99",
+          "#9369CB",
+          "#B293E1",
+          "#D2BDF5",
+          "#F4E8FF"
+        ]
+      },
+      "done-subtle": {
+        "role": "secondary",
+        "displayName": "Suspect Violet Subtle",
+        "canonical": "#2A2140",
+        "tonalRamp": [
+          "#0C0A11",
+          "#26232D",
+          "#433F51",
+          "#635C78",
+          "#857CA1",
+          "#A7A0BE",
+          "#CAC6DB",
+          "#EFECF9"
+        ]
+      },
+      "danger-emphasis": {
+        "role": "secondary",
+        "displayName": "Destructive Red",
+        "canonical": "#B62324",
+        "tonalRamp": [
+          "#1B0303",
+          "#3D1815",
+          "#6E2723",
+          "#A33732",
+          "#D94A44",
+          "#EF8076",
+          "#FFB1A8",
+          "#FFE1DB"
+        ]
+      },
+      "danger-fg": {
+        "role": "secondary",
+        "displayName": "Failing Red",
+        "canonical": "#F85149",
+        "tonalRamp": [
+          "#1C0202",
+          "#401512",
+          "#73221E",
+          "#AA2E2A",
+          "#E23E39",
+          "#F77A6F",
+          "#FFAEA3",
+          "#FFE0D9"
+        ]
+      },
+      "danger-text": {
+        "role": "secondary",
+        "displayName": "Failing Red Text",
+        "canonical": "#FF7B72",
+        "tonalRamp": [
+          "#190404",
+          "#3B1A17",
+          "#6A2B28",
+          "#9D3E39",
+          "#D1544D",
+          "#E8857C",
+          "#FCB4AC",
+          "#FFE3DE"
+        ]
+      },
+      "danger-subtle": {
+        "role": "secondary",
+        "displayName": "Failing Red Subtle",
+        "canonical": "#3A1B1F",
+        "tonalRamp": [
+          "#10090A",
+          "#2C2223",
+          "#4F3C3E",
+          "#75585B",
+          "#9D777A",
+          "#BB9C9E",
+          "#D9C3C4",
+          "#F8EBEC"
+        ]
+      },
+      "danger-line": {
+        "role": "secondary",
+        "displayName": "Removed Line Red",
+        "canonical": "#25171C",
+        "tonalRamp": [
+          "#0D0A0B",
+          "#282325",
+          "#483F42",
+          "#6B5D61",
+          "#8F7D83",
+          "#AFA1A5",
+          "#D1C6C9",
+          "#F3ECEE"
+        ]
+      },
+      "new-fg": {
+        "role": "secondary",
+        "displayName": "New Teal (planned)",
+        "canonical": "#39C5CF",
+        "tonalRamp": [
+          "#000F10",
+          "#092A2D",
+          "#004C51",
+          "#007077",
+          "#00969F",
+          "#5AB5BD",
+          "#9AD6DA",
+          "#D5F6F8"
+        ],
+        "status": "planned"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Start-screen page title only."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Secondary page titles."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Test name in the detail panel."
+      },
+      "title-sm": {
+        "displayName": "Title Small",
+        "purpose": "Dialog titles and the drop-zone call."
+      },
+      "heading": {
+        "displayName": "Heading",
+        "purpose": "Section heads and empty-state titles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Default reading and row text."
+      },
+      "body-sm": {
+        "displayName": "Body Small",
+        "purpose": "Controls, group headers and captions."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Status labels, chips, column headers and the diffstat."
+      },
+      "count": {
+        "displayName": "Count",
+        "purpose": "Large tabular numbers in filter tiles and wasted time."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "Diff lines, paths and kbd keys."
+      },
+      "mono-sm": {
+        "displayName": "Mono Small",
+        "purpose": "Commit SHAs under run columns."
+      }
+    },
+    "shadows": [],
+    "focus": {
+      "value": "outline: 2px solid #4493F8; outline-offset: 2px",
+      "purpose": "Global visible focus ring."
+    },
+    "borders": [
+      {
+        "name": "hairline",
+        "value": "1px solid #30363D"
+      },
+      {
+        "name": "row-divider",
+        "value": "1px solid #21262D"
+      },
+      {
+        "name": "control-edge",
+        "value": "1px solid #6E7681"
+      },
+      {
+        "name": "drop-zone",
+        "value": "2px dashed #6E7681"
+      },
+      {
+        "name": "pressed-filter",
+        "value": "2px solid #4493F8"
+      },
+      {
+        "name": "mixed-commit",
+        "value": "1.5px solid #D29922"
+      }
+    ],
+    "motion": [],
+    "breakpoints": [],
+    "runMarks": {
+      "shape": "filled rounded square, rx 3 in a 16-unit viewBox, no inner mark",
+      "fills": {
+        "passed": "success-fg",
+        "failed": "danger-fg",
+        "passedOnRetry": "attention-fg",
+        "skipped": "fg-muted"
+      },
+      "sizes": {
+        "listStrip": "12px, 3px gap",
+        "runHistory": "16px",
+        "legend": "14px"
+      },
+      "accessibility": "Known trade-off chosen by the user on 2026-11-19: colour alone in the strip, carried by the legend and aria-labels. Status labels keep icon plus word."
+    },
+    "lightTheme": {
+      "status": "built on boards 2026-11-19 (*Light.dc.html), detector: no contrast failures",
+      "tokens": {
+        "canvas": "#F6F8FA",
+        "surface": "#FFFFFF",
+        "surface-hover": "#E6EAEF",
+        "neutral-muted": "#F6F8FA",
+        "border-muted": "#D8DEE4",
+        "border-default": "#D1D9E0",
+        "border-emphasis": "#818B98",
+        "fg-default": "#1F2328",
+        "fg-secondary": "#393F46",
+        "fg-muted": "#59636E",
+        "accent-fg": "#0969DA",
+        "accent-fg-hover": "#0550AE",
+        "accent-subtle": "#DDF4FF",
+        "success-emphasis": "#1A7F37",
+        "danger-emphasis": "#B62324",
+        "success-fg": "#1A7F37",
+        "success-text": "#116329",
+        "success-subtle": "#ACEEBB",
+        "attention-fg": "#BF8700",
+        "attention-text": "#7D4E00",
+        "attention-subtle": "#FFE58F",
+        "done-fg": "#8250DF",
+        "done-text": "#6639BA",
+        "done-subtle": "#E8D9FF",
+        "danger-fg": "#CF222E",
+        "danger-text": "#A40E26",
+        "danger-subtle": "#FFEBE9",
+        "danger-line": "#FFEBE9",
+        "danger-gutter": "#FFCECB",
+        "success-line": "#E6FFEC",
+        "success-gutter": "#CCFFD8",
+        "run-skipped": "#59636E",
+        "danger-badge-fill": "#FFCECB",
+        "secondary-fill": "#EFF2F5",
+        "secondary-border": "#C3CCD5",
+        "neutral-badge": "#D8DEE4",
+        "accent-muted": "#B6E3FF",
+        "accent-border": "#54AEFF"
+      }
+    },
+    "darkBadgeFills": {
+      "attention-subtle": "#4A3A12",
+      "done-subtle": "#3C2A63",
+      "danger-badge": "#5A1E22",
+      "success-badge": "#1A3D26",
+      "neutral-badge": "#30363D",
+      "accent-muted": "#1B3358",
+      "accent-border": "#1F6FEB",
+      "surface-hover": "#262C36",
+      "border-control": "#3D444D"
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Merge Green fill for the one primary action per region.",
+      "html": "<button class=\"ds-btn-primary\">Add your files</button>",
+      "css": ".ds-btn-primary{font-family:'Mona Sans',system-ui,sans-serif;height:32px;padding:0 12px;border:0;border-radius:6px;background:#238636;color:#FFFFFF;font-size:13px;font-weight:600;cursor:pointer}.ds-btn-primary:focus-visible{outline:2px solid #4493F8;outline-offset:2px;}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Muted fill with a hairline border for every non-primary action.",
+      "html": "<button class=\"ds-btn\">Copy summary</button>",
+      "css": ".ds-btn{font-family:'Mona Sans',system-ui,sans-serif;height:32px;padding:0 12px;border:1px solid #30363D;border-radius:6px;background:#21262D;color:#E6EDF3;font-size:13px;cursor:pointer}.ds-btn:focus-visible{outline:2px solid #4493F8;outline-offset:2px;}"
+    },
+    {
+      "name": "Danger Button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Filled red for every destructive action, in page and in the confirm dialog. Focus starts on the safe choice.",
+      "html": "<button class=\"ds-btn-danger\">Clear all data</button>",
+      "css": ".ds-btn-danger{font-family:'Mona Sans',system-ui,sans-serif;height:36px;padding:0 16px;border:1px solid #B62324;border-radius:6px;background:#B62324;color:#FFFFFF;font-size:14px;font-weight:600;cursor:pointer}.ds-btn-danger:focus-visible{outline:2px solid #4493F8;outline-offset:2px;}"
+    },
+    {
+      "name": "Search Input",
+      "kind": "input",
+      "refersTo": "input-search",
+      "description": "Control-edge field with a search icon and a trailing key hint.",
+      "html": "<label class=\"ds-search\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#9198A1\" stroke-width=\"2\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"M21 21l-5-5\"/></svg><input type=\"search\" placeholder=\"Search tests and files\" aria-label=\"Search tests and files\"><kbd>/</kbd></label>",
+      "css": ".ds-search{display:flex;align-items:center;gap:8px;height:36px;padding:0 12px;background:#161B22;border:1px solid #6E7681;border-radius:6px;max-width:360px}.ds-search:focus-within{outline:2px solid #4493F8;outline-offset:2px;}.ds-search input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:#E6EDF3;font-family:'Mona Sans',system-ui,sans-serif;font-size:14px}.ds-search kbd{font-family:'JetBrains Mono',monospace;font-size:12px;padding:1px 6px;border:1px solid #30363D;border-radius:4px;background:#161B22;color:#C9D1D9}"
+    },
+    {
+      "name": "Status Labels",
+      "kind": "chip",
+      "refersTo": "label-flaky",
+      "description": "Icon plus word on the status subtle fill. Never colour alone.",
+      "html": "<span class=\"ds-lbl ds-lbl-flaky\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" aria-hidden=\"true\"><path d=\"M3 14l4-6 4 8 4-8 4 6\"/></svg>Flaky</span> <span class=\"ds-lbl ds-lbl-suspect\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M9.5 9.5a2.5 2.5 0 015 0c0 1.7-2.5 2-2.5 4\"/><path d=\"M12 17h.01\"/></svg>Suspect</span> <span class=\"ds-lbl ds-lbl-failing\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M15 9l-6 6M9 9l6 6\"/></svg>Failing</span> <span class=\"ds-lbl ds-lbl-none\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" aria-hidden=\"true\"><path d=\"M6 12h12\"/></svg>Not enough data</span>",
+      "css": ".ds-lbl{font-family:'Mona Sans',system-ui,sans-serif;display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 8px;border-radius:9999px;font-size:12px;font-weight:600}.ds-lbl-flaky{background:#2E2410;color:#E3B341}.ds-lbl-suspect{background:#2A2140;color:#C297FF}.ds-lbl-failing{background:#3A1B1F;color:#FF7B72}.ds-lbl-none{background:#21262D;color:#C9D1D9}"
+    },
+    {
+      "name": "App Header",
+      "kind": "nav",
+      "refersTo": "app-header",
+      "description": "Surface bar with the logo mark, data-source chip and the primary action.",
+      "html": "<header class=\"ds-hdr\"><div class=\"ds-brand\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#4493F8\" stroke-width=\"2\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"M21 21l-5-5\"/><path d=\"M7 12l2-3 2 4 2-3\"/></svg>FlakeLens<span class=\"ds-chip\">Sample data</span></div><button class=\"ds-hbtn\">Add your files</button></header>",
+      "css": ".ds-hdr{font-family:'Mona Sans',system-ui,sans-serif;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 24px;background:#161B22;border-bottom:1px solid #30363D;color:#E6EDF3}.ds-brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:16px}.ds-chip{display:inline-flex;align-items:center;height:24px;padding:0 12px;border-radius:9999px;background:#121D2F;color:#79C0FF;font-size:12px;font-weight:600;margin-left:4px}.ds-hbtn{font-family:'Mona Sans',system-ui,sans-serif;height:32px;padding:0 12px;border:0;border-radius:6px;background:#238636;color:#FFFFFF;font-size:13px;font-weight:600}.ds-hbtn:focus-visible{outline:2px solid #4493F8;outline-offset:2px;}"
+    },
+    {
+      "name": "Box List Row with Run Strip",
+      "kind": "card",
+      "refersTo": "box-row",
+      "description": "Bordered box, 40px rows, status label and the 12-run strip of filled rounded squares.",
+      "html": "<div class=\"ds-box\"><div class=\"ds-grp\"><strong>Flaky · 3</strong><span>Different results on the same commit</span></div><a href=\"#\" class=\"ds-row\"><span class=\"ds-rk\">1</span><span class=\"ds-nm\">checkout › applies coupon code</span><span class=\"ds-lbl2\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" aria-hidden=\"true\"><path d=\"M3 14l4-6 4 8 4-8 4 6\"/></svg>Flaky</span><span class=\"ds-strip\" role=\"img\" aria-label=\"Last 12 runs, oldest first: passed, passed on retry, passed, passed, failed, skipped, passed, passed, passed on retry, passed, passed, passed on retry\"><svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><rect x=\"0.5\" y=\"0.5\" width=\"15\" height=\"15\" rx=\"3\" fill=\"#3FB950\"/></svg><svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><rect x=\"0.5\" y=\"0.5\" width=\"15\" height=\"15\" rx=\"3\" fill=\"#D29922\"/></svg><svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><rect x=\"0.5\" y=\"0.5\" width=\"15\" height=\"15\" rx=\"3\" fill=\"#3FB950\"/></svg><svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><rect x=\"0.5\" y=\"0.5\" width=\"15\" height=\"15\" rx=\"3\" fill=\"#3FB950\"/></svg><svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><rect x=\"0.5\" y=\"0.5\" width=\"15\" height=\"15\" rx=\"3\" fill=\"#F85149\"/></svg><svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><rect x=\"0.5\" y=\"0.5\" width=\"15\" height=\"15\" rx=\"3\" fill=\"#9198A1\"/></svg><svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><rect x=\"0.5\" y=\"0.5\" width=\"15\" height=\"15\" rx=\"3\" fill=\"#3FB950\"/></svg><svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><rect x=\"0.5\" y=\"0.5\" width=\"15\" height=\"15\" rx=\"3\" fill=\"#3FB950\"/></svg><svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><rect x=\"0.5\" y=\"0.5\" width=\"15\" height=\"15\" rx=\"3\" fill=\"#D29922\"/></svg><svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><rect x=\"0.5\" y=\"0.5\" width=\"15\" height=\"15\" rx=\"3\" fill=\"#3FB950\"/></svg><svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><rect x=\"0.5\" y=\"0.5\" width=\"15\" height=\"15\" rx=\"3\" fill=\"#3FB950\"/></svg><svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><rect x=\"0.5\" y=\"0.5\" width=\"15\" height=\"15\" rx=\"3\" fill=\"#D29922\"/></svg></span></a></div>",
+      "css": ".ds-box{font-family:'Mona Sans',system-ui,sans-serif;background:#161B22;border:1px solid #30363D;border-radius:8px;color:#E6EDF3;font-size:14px;overflow:hidden}.ds-grp{display:flex;align-items:baseline;gap:8px;min-height:36px;padding:8px 12px;box-sizing:border-box;font-size:13px}.ds-grp span{color:#9198A1;font-size:12px}.ds-row{display:flex;align-items:center;gap:12px;min-height:40px;padding:0 12px;border-top:1px solid #21262D;color:#E6EDF3;text-decoration:none}.ds-row:focus-visible{outline:2px solid #4493F8;outline-offset:2px;}.ds-rk{width:20px;color:#9198A1;font-variant-numeric:tabular-nums}.ds-nm{flex:1;font-weight:500}.ds-lbl2{display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 8px;border-radius:9999px;background:#2E2410;color:#E3B341;font-size:12px;font-weight:600}.ds-strip{display:flex;gap:3px;align-items:center}"
+    },
+    {
+      "name": "Run Legend",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "The words that carry the run-square meaning visually. Shown with run history in the detail panel. The ranked list has no legend.",
+      "html": "<div class=\"ds-legend\"><span><svg width=\"14\" height=\"14\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><rect x=\"0.5\" y=\"0.5\" width=\"15\" height=\"15\" rx=\"3\" fill=\"#3FB950\"/></svg>Passed</span><span><svg width=\"14\" height=\"14\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><rect x=\"0.5\" y=\"0.5\" width=\"15\" height=\"15\" rx=\"3\" fill=\"#F85149\"/></svg>Failed</span><span><svg width=\"14\" height=\"14\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><rect x=\"0.5\" y=\"0.5\" width=\"15\" height=\"15\" rx=\"3\" fill=\"#D29922\"/></svg>Passed on retry</span><span><svg width=\"14\" height=\"14\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><rect x=\"0.5\" y=\"0.5\" width=\"15\" height=\"15\" rx=\"3\" fill=\"#9198A1\"/></svg>Skipped</span></div>",
+      "css": ".ds-legend{font-family:'Mona Sans',system-ui,sans-serif;display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:#C9D1D9}.ds-legend span{display:inline-flex;gap:4px;align-items:center}"
+    },
+    {
+      "name": "File-Header Bar with Diffstat",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Test path in mono with a +/− diffstat of attempts.",
+      "html": "<div class=\"ds-fh\"><span class=\"ds-path\">tests/checkout.spec.ts · project chromium</span><span class=\"ds-ds\"><b class=\"ds-add\">+10</b><b class=\"ds-del\">−5</b><span role=\"img\" aria-label=\"10 passed and 5 failed attempts\" class=\"ds-sq\"><i class=\"a\"></i><i class=\"a\"></i><i class=\"a\"></i><i class=\"d\"></i><i class=\"d\"></i></span><span class=\"ds-mut\">attempts</span></span></div>",
+      "css": ".ds-fh{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:8px 12px;background:#161B22;border:1px solid #30363D;border-radius:6px}.ds-path{flex:1;min-width:0;font-family:'JetBrains Mono',monospace;font-size:12px;color:#C9D1D9}.ds-ds{font-family:'Mona Sans',system-ui,sans-serif;display:inline-flex;align-items:center;gap:8px;font-size:12px;font-variant-numeric:tabular-nums}.ds-add{color:#3FB950}.ds-del{color:#F85149}.ds-sq{display:inline-flex;gap:2px}.ds-sq i{width:8px;height:8px;border-radius:2px}.ds-sq .a{background:#3FB950}.ds-sq .d{background:#F85149}.ds-mut{color:#9198A1}"
+    },
+    {
+      "name": "Diff Hunk (Latest Failure)",
+      "kind": "custom",
+      "refersTo": "diff-hunk-header",
+      "description": "Failed attempt as removed lines, the passing retry as an added line.",
+      "html": "<div class=\"ds-diff\" role=\"group\" aria-label=\"Latest failure as a diff\"><div class=\"ds-hh\">@@ run 12 · attempt 1 → 2 · same commit @@</div><div class=\"ds-ln ds-del\"><span class=\"g\">1</span><span class=\"m\">−</span><span>TimeoutError: locator.click: Timeout 5000ms exceeded.</span></div><div class=\"ds-ln ds-del\"><span class=\"g\">2</span><span class=\"m\">−</span><span>  at tests/checkout.spec.ts:42:31</span></div><div class=\"ds-ln ds-add\"><span class=\"g\">1</span><span class=\"m\">+</span><span>attempt 2 passed in 3.1 s</span></div></div>",
+      "css": ".ds-diff{border:1px solid #30363D;border-radius:6px;overflow:hidden;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:20px;color:#E6EDF3}.ds-hh{padding:4px 12px;background:#121D2F;color:#9198A1}.ds-ln{display:grid;grid-template-columns:36px 20px 1fr}.ds-ln span:last-child{white-space:pre-wrap;overflow-wrap:anywhere;padding-right:8px}.ds-ln .g{text-align:right;padding:0 8px 0 4px;color:#C9D1D9}.ds-ln .m{text-align:center}.ds-del{background:#25171C}.ds-del .g{background:#3A1B1F}.ds-del .m{color:#F85149}.ds-add{background:#12261E}.ds-add .g{background:#1B3A26}.ds-add .m{color:#3FB950}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Review Thread",
+    "overview": "FlakeLens borrows the visual language of a hosted code-review screen: a dark canvas, bordered boxes with header bars, CI check marks against commits, file headers with a diffstat, and diff hunks with red and green lines. It does not look like a monitoring dashboard. The SDET reads test evidence the same way they read a pull request. The interface feels familiar on first contact because it follows a convention the user already trusts. It does not try to invent a new one.\n\nThe density is a working tool's density. Rows are compact (40px), controls are 28 to 40px tall, and type sits mostly at 12 to 14px. Hierarchy comes from weight, tone and borders, not from size jumps or decoration. Surfaces are flat. The near-black canvas (#0D1117) and the raised box surface (#161B22) are separated by 1px borders, never by shadow. Colour is reserved for meaning. Blue is for links, focus and selection. Green is the single primary action and a passing result. Amber, violet and red are test statuses, and each always comes with an icon and a word.\n\nThe inspiration is described here only. No product UI may carry a third-party name, logo or icon artwork. The look is built from open parts: Primer-style colour roles, Mona Sans (OFL) and JetBrains Mono, all self-hosted.",
+    "keyCharacteristics": [
+      "Dark by default. A light theme is planned with Primer-style light roles and is not built yet.",
+      "Bordered boxes with header bars and row dividers. Flat, with no shadows or gradients.",
+      "Evidence uses code-review devices: a run strip per test, a file-header bar with a diffstat, and the latest failure as a diff hunk.",
+      "Each status has three tones: an icon tone, a text tone and a subtle fill. A status label is always shown as an icon plus a word. The run strip is the one recorded exception (see Components).",
+      "Machine text such as paths, SHAs, errors and keys is set in JetBrains Mono. Everything else is set in Mona Sans."
+    ],
+    "rules": [
+      {
+        "name": "The Status Has Three Tones Rule",
+        "body": "Every status uses a strong tone for its icon, a lighter text tone for its word, and a dark subtle fill behind both. Never use the icon tone as label text or as a label fill. The run squares are the only shapes filled with an icon tone.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Green Button Rule",
+        "body": "Merge Green fills at most one button per view region, and that button is the primary action. Passing results use the green icon tone (success-fg), never the button fill.",
+        "section": "colors"
+      },
+      {
+        "name": "The Controls Inherit Rule",
+        "body": "This is a foundation rule on every surface. The root sets `color-scheme: dark`. Buttons, inputs, selects, textareas and summaries set `color: inherit`. Placeholders use Muted Text (fg-muted) at full opacity. Without these, native controls render black text on the dark ground. In the light theme the scheme switches to `light`.",
+        "section": "colors"
+      },
+      {
+        "name": "The Blue Is For Interaction Rule",
+        "body": "Review Blue means link, focus or selection. It never marks a status.",
+        "section": "colors"
+      },
+      {
+        "name": "The Machine Text Is Mono Rule",
+        "body": "File paths, commit SHAs, error output, commands and keyboard keys are set in JetBrains Mono. Human sentences never are.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Numbers Rule",
+        "body": "Ranks, counts, durations and diffstats use tabular figures so columns line up.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Box Rule",
+        "body": "A container is a surface fill plus a 1px hairline border. If something needs to stand out, change its fill tone or its border, never add a shadow.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** pair every status label with its icon and its word. The word is never optional. The run strip is the only recorded exception.",
+      "**Do** show evidence with code-review devices: the run strip, the file-header diffstat and the diff hunk.",
+      "**Do** set paths, SHAs, error text, commands and keys in JetBrains Mono at 11 to 13px.",
+      "**Do** keep containers flat: a Box Surface fill, a 1px Hairline border and an 8px radius.",
+      "**Do** keep to one Merge Green button per region and use secondary buttons for everything else.",
+      "**Do** use tabular figures for every rank, count, duration and diffstat.",
+      "**Do** ship the base control rule on every surface: `color-scheme: dark` on the root, `color: inherit` on native controls and summaries, and fg-muted placeholders at full opacity.",
+      "**Do** self-host Mona Sans and JetBrains Mono. The app makes no network calls by default."
+    ],
+    "donts": [
+      "**Don't** add box shadows or gradients to any surface, including dialogs and popovers.",
+      "**Don't** use Review Blue to mean a status, or a status hue to mean \"interactive\".",
+      "**Don't** use any third-party product name, logo or icon artwork in the UI. The inspiration stays in documentation.",
+      "**Don't** turn the list into a generic KPI-tile dashboard. Evidence is shown as runs, checks and diffs.",
+      "**Don't** draw run results as Unicode text glyphs. Use the filled rounded-square SVG marks so size and colour stay consistent across fonts.",
+      "**Don't** extend colour-only encoding beyond the run strip."
+    ]
+  }
+}

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Board preview</title>
+<style>body{margin:0}</style>
+</head>
+<body>
+<div id="mount"></div>
+<script>
+// Local preview of the canvas .dc.html boards: expands {{holes}}, <sc-for>, <sc-if> from renderVals().
+// Usage: _preview.html?board=Tests.dc.html[&squint=1]
+// shortcut: no events, state or <dc-import>; enough for static review screenshots.
+class DCLogic { constructor(props) { this.props = props || {}; this.state = {}; } setState(s) { Object.assign(this.state, s); } }
+const q = new URLSearchParams(location.search);
+const board = q.get("board") || "Tests.dc.html";
+
+function lookup(expr, scope) {
+  expr = expr.trim();
+  if (expr === "true") return true;
+  if (expr === "false") return false;
+  if (/^-?\d+(\.\d+)?$/.test(expr)) return Number(expr);
+  return expr.split(".").reduce((o, k) => (o == null ? undefined : o[k]), scope);
+}
+function fill(str, scope) {
+  return str.replace(/\{\{([^}]+)\}\}/g, (_, e) => { const v = lookup(e, scope); return v == null ? "" : String(v); });
+}
+function proc(node, scope) {
+  for (const child of [...node.childNodes]) {
+    if (child.nodeType === 3) { if (child.nodeValue.includes("{{")) child.nodeValue = fill(child.nodeValue, scope); continue; }
+    if (child.nodeType !== 1) continue;
+    const tag = child.tagName.toLowerCase();
+    if (tag === "sc-for") {
+      const list = lookup(child.getAttribute("list").replace(/^\{\{|\}\}$/g, ""), scope) || [];
+      const as = child.getAttribute("as") || "item";
+      const frag = document.createDocumentFragment();
+      list.forEach((item, i) => {
+        const holder = document.createElement("div");
+        holder.innerHTML = child.innerHTML;
+        proc(holder, Object.assign({}, scope, { [as]: item, $index: i }));
+        while (holder.firstChild) frag.appendChild(holder.firstChild);
+      });
+      child.replaceWith(frag);
+      continue;
+    }
+    if (tag === "sc-if") {
+      const v = lookup(child.getAttribute("value").replace(/^\{\{|\}\}$/g, ""), scope);
+      if (v) { proc(child, scope); child.replaceWith(...child.childNodes); } else child.remove();
+      continue;
+    }
+    for (const a of [...child.attributes]) {
+      if (/^on[A-Z]/.test(a.name)) { child.removeAttribute(a.name); continue; }
+      if (a.value.includes("{{")) child.setAttribute(a.name, fill(a.value, scope));
+    }
+    // links between boards stay inside the preview, so the boards work as a click-through prototype
+    if (tag === "a" && /\.dc\.html$/.test(child.getAttribute("href") || "")) {
+      child.setAttribute("href", "_preview.html?board=" + child.getAttribute("href") + (q.get("squint") ? "&squint=" + q.get("squint") : ""));
+    }
+    proc(child, scope);
+  }
+}
+fetch(board).then(r => r.text()).then(src => {
+  const doc = new DOMParser().parseFromString(src, "text/html");
+  document.title = (doc.title || board) + " (preview)";
+  const theme = doc.documentElement.getAttribute("data-theme");
+  if (theme) document.documentElement.setAttribute("data-theme", theme);
+  const script = doc.querySelector("script[data-dc-script]");
+  const Component = new Function("DCLogic", script.textContent + "\n;return Component;")(DCLogic);
+  const scope = new Component({}).renderVals();
+  const xdc = doc.querySelector("x-dc");
+  const helmet = xdc.querySelector("helmet");
+  if (helmet) { for (const n of [...helmet.children]) document.head.appendChild(document.importNode(n, true)); helmet.remove(); }
+  const mount = document.getElementById("mount");
+  mount.innerHTML = xdc.innerHTML;
+  proc(mount, scope);
+  // prototype-only hops for buttons that would act in the real app (usability sessions)
+  const light = /Light\.dc\.html$/.test(board) ? "Light" : "";
+  const hops = { "Try sample data": "Tests", "Browse files": "ImportStates", "Add your files": "ImportStates", "Clear all data": "EdgeStates" };
+  for (const b of mount.querySelectorAll("button")) {
+    const target = hops[b.textContent.trim()];
+    if (target) b.addEventListener("click", () => { location.search = "?board=" + target + light + ".dc.html"; });
+  }
+  if (q.get("squint")) mount.style.filter = "blur(" + (q.get("squint") === "1" ? 6 : q.get("squint")) + "px)";
+});
+</script>
+</body>
+</html>

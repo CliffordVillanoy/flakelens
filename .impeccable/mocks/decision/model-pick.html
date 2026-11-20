@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>FlakeLens: Departures Board</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;600&family=JetBrains+Mono&display=swap">
+<style>
+*{box-sizing:border-box}
+body{margin:0;width:1440px;height:900px;overflow:hidden;background:#0F1113;color:#ECECEC;font:14px/1.4 Barlow,sans-serif}
+header{height:56px;display:flex;align-items:center;gap:14px;padding:0 28px;background:#1B1E22;border-bottom:2px solid #FFB000}
+.logo{font:700 22px 'Barlow Condensed';letter-spacing:.06em;text-transform:uppercase;color:#FFB000}
+.chip{height:26px;display:inline-flex;align-items:center;padding:0 10px;border:1px solid #3A3F46;border-radius:4px;font-size:12px}
+.sp{flex:1}.btn{height:32px;padding:0 12px;border-radius:4px;border:1px solid #3A3F46;background:#24282D;color:#ECECEC;font:inherit;font-size:13px}
+.btn.p{background:#FFB000;color:#111;border-color:#FFB000;font-weight:600}
+.board{margin:20px 28px;background:#141619;border:1px solid #2A2E33;border-radius:6px}
+.title{display:flex;align-items:baseline;gap:24px;padding:16px 20px;border-bottom:1px solid #2A2E33}
+.title h1{margin:0;font:700 28px 'Barlow Condensed';letter-spacing:.06em;text-transform:uppercase}
+.tot{font:600 22px 'Barlow Condensed';color:#FFB000;font-variant-numeric:tabular-nums}
+.tot span{font:400 13px Barlow;color:#B7BCC4;margin-left:4px}
+.row{display:grid;grid-template-columns:60px 1fr 140px 230px 340px 120px;align-items:center;min-height:48px;padding:0 20px;border-top:1px solid #23272C}
+.head{font:600 12px 'Barlow Condensed';letter-spacing:.12em;text-transform:uppercase;color:#B7BCC4;min-height:36px}
+.r{font:700 22px 'Barlow Condensed';color:#FFB000;font-variant-numeric:tabular-nums}
+.t b{font:600 17px 'Barlow Condensed';letter-spacing:.02em}.t span{display:block;font:12px 'JetBrains Mono';color:#9BA1AA}
+.st{font:700 16px 'Barlow Condensed';letter-spacing:.08em;text-transform:uppercase}
+.fl{color:#FFB000}.su{color:#C2AEFF}.fa{color:#FF7A70}
+.runs{display:flex;gap:4px}.runs i{width:12px;height:16px;display:block;border-radius:2px}
+.P{background:#36C27A}.F{background:#FF5A4E}.R{background:#FFB000}.S{border:1.5px solid #9BA1AA}
+.why{color:#C9CDD3}.d{text-align:right;font:600 18px 'Barlow Condensed';font-variant-numeric:tabular-nums}
+.grp{padding:8px 20px;background:#1B1E22;font:600 13px 'Barlow Condensed';letter-spacing:.1em;text-transform:uppercase;color:#B7BCC4;border-top:1px solid #23272C}
+.foot{padding:12px 20px;color:#9BA1AA;font-size:12px;border-top:1px solid #23272C}
+</style></head><body>
+<header><span class="logo">FlakeLens</span><span class="chip">Sample data</span><span class="chip">3 files · 12 runs · 3 not imported</span><span class="chip">Nothing leaves this browser</span><span class="sp"></span><button class="btn p">Add your files</button><button class="btn">Leave sample</button><button class="btn">Light</button><button class="btn">?</button></header>
+<section class="board">
+<div class="title"><h1>Tests needing action</h1><span class="tot">3<span>Flaky</span></span><span class="tot">2<span>Suspect</span></span><span class="tot">2<span>Failing</span></span><span class="tot">29 min<span>wasted CI time</span></span></div>
+<div class="row head"><span>#</span><span>Test</span><span>Status</span><span>Last 12 runs</span><span>Why</span><span style="text-align:right">Wasted</span></div>
+<div class="grp">Flaky · different results on the same commit</div>
+<div class="row"><span class="r">1</span><span class="t"><b>checkout › applies coupon code</b><span>tests/checkout.spec.ts</span></span><span class="st fl">Flaky</span><span class="runs"><i class="P"></i><i class="R"></i><i class="P"></i><i class="P"></i><i class="F"></i><i class="S"></i><i class="P"></i><i class="P"></i><i class="R"></i><i class="P"></i><i class="P"></i><i class="R"></i></span><span class="why">4 of 9 commits had both a pass and a fail</span><span class="d">14 min</span></div>
+<div class="row"><span class="r">2</span><span class="t"><b>search › shows results after typing</b><span>tests/search.spec.ts</span></span><span class="st fl">Flaky</span><span class="runs"><i class="P"></i><i class="P"></i><i class="R"></i><i class="P"></i><i class="F"></i><i class="P"></i><i class="P"></i><i class="R"></i><i class="P"></i><i class="P"></i><i class="R"></i><i class="P"></i></span><span class="why">3 of 9 commits had both a pass and a fail</span><span class="d">9 min</span></div>
+<div class="row"><span class="r">3</span><span class="t"><b>profile › uploads avatar</b><span>tests/profile.spec.ts</span></span><span class="st fl">Flaky</span><span class="runs"><i class="P"></i><i class="R"></i><i class="P"></i><i class="P"></i><i class="R"></i><i class="P"></i><i class="P"></i><i class="P"></i><i class="R"></i><i class="P"></i><i class="P"></i><i class="P"></i></span><span class="why">Passed on retry in 3 of 12 runs</span><span class="d">6 min</span></div>
+<div class="grp">Suspect · mixed results, never on the same commit</div>
+<div class="row"><span class="r"></span><span class="t"><b>cart › updates item quantity</b><span>tests/cart.spec.ts</span></span><span class="st su">Suspect</span><span class="runs"><i class="P"></i><i class="P"></i><i class="F"></i><i class="F"></i><i class="P"></i><i class="P"></i><i class="F"></i><i class="P"></i><i class="F"></i><i class="P"></i><i class="P"></i><i class="F"></i></span><span class="why">Switched between pass and fail 5 times in 12 runs</span><span class="d">~4 min</span></div>
+<div class="row"><span class="r"></span><span class="t"><b>login › remembers the session</b><span>tests/login.spec.ts</span></span><span class="st su">Suspect</span><span class="runs"><i class="P"></i><i class="F"></i><i class="P"></i><i class="P"></i><i class="P"></i><i class="F"></i><i class="P"></i><i class="P"></i><i class="P"></i><i class="F"></i><i class="P"></i><i class="P"></i></span><span class="why">Switched between pass and fail 3 times in 12 runs</span><span class="d">~3 min</span></div>
+<div class="grp">Failing · fails almost every run</div>
+<div class="row"><span class="r"></span><span class="t"><b>reports › exports a PDF</b><span>tests/reports.spec.ts</span></span><span class="st fa">Failing</span><span class="runs"><i class="F"></i><i class="F"></i><i class="F"></i><i class="F"></i><i class="F"></i><i class="F"></i><i class="F"></i><i class="F"></i><i class="F"></i><i class="F"></i><i class="F"></i><i class="F"></i></span><span class="why">Failed 12 of 12 runs</span><span class="d">—</span></div>
+<div class="foot">Stable · 201 and Not enough data · 3 collapsed · j k move · Enter open</div>
+</section>
+</body></html>

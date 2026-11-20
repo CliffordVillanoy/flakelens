@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>FlakeLens: Neutral Product Grade</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono&display=swap">
+<style>
+*{box-sizing:border-box}
+body{margin:0;width:1440px;height:900px;overflow:hidden;background:#0B0C0E;color:#E6E7EA;font:14px/1.45 Geist,sans-serif}
+header{height:48px;display:flex;align-items:center;gap:12px;padding:0 24px;border-bottom:1px solid #1F2226}
+.logo{font-weight:600}.chip{height:24px;display:inline-flex;align-items:center;padding:0 8px;border:1px solid #2A2D33;border-radius:6px;font-size:12px;color:#B4B8C0}
+.sp{flex:1}.btn{height:30px;padding:0 12px;border-radius:6px;border:1px solid #2A2D33;background:transparent;color:#E6E7EA;font:inherit;font-size:13px}
+.btn.p{background:#2F6FE0;border-color:#2F6FE0;color:#fff}
+.wrap{max-width:1240px;margin:0 auto;padding:28px 24px}
+h1{margin:0 0 4px;font-weight:600;font-size:22px;letter-spacing:-.01em}
+.sub{color:#9AA0AA;margin-bottom:22px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid #1F2226;border-radius:8px;margin-bottom:22px}
+.st{padding:14px 18px;border-right:1px solid #1F2226}.st:last-child{border:0}
+.st b{display:block;font-size:26px;font-weight:600;font-variant-numeric:tabular-nums}.st span{color:#9AA0AA;font-size:12px}
+.row{display:grid;grid-template-columns:40px 1.3fr 110px 1.6fr 110px;gap:12px;align-items:center;min-height:52px;border-top:1px solid #17191D;padding:0 8px}
+.h{min-height:34px;color:#8A8F98;font-size:12px}
+.t span{display:block;font:12px 'Geist Mono';color:#8A8F98}
+.b{font-size:12px;font-weight:500;display:inline-flex;gap:6px;align-items:center}
+.b i{width:7px;height:7px;border-radius:50%;display:block}
+.why{color:#C4C8CF}.why em{font-style:normal;color:#E6E7EA;font-weight:500}
+.w{text-align:right;font-variant-numeric:tabular-nums}
+.g{padding:10px 8px 6px;color:#8A8F98;font-size:12px;border-top:1px solid #17191D}
+</style></head><body>
+<header><span class="logo">FlakeLens</span><span class="chip">Sample data</span><span class="chip">3 files · 12 runs · 3 not imported</span><span class="sp"></span><span class="chip">Nothing leaves this browser</span><button class="btn p">Add your files</button><button class="btn">Leave sample</button><button class="btn">?</button></header>
+<div class="wrap">
+<h1>Tests ranked by fix priority</h1><div class="sub">211 tests from 12 runs on 9 commits. Start with the top 3 Flaky tests.</div>
+<div class="stats"><div class="st"><b>3</b><span>Flaky</span></div><div class="st"><b>2</b><span>Suspect</span></div><div class="st"><b>2</b><span>Failing</span></div><div class="st"><b>29 min</b><span>Wasted CI time · + ~7 min possible</span></div></div>
+<div class="row h"><span>#</span><span>Test</span><span>Status</span><span>Why</span><span class="w">Wasted</span></div>
+<div class="g">Flaky · Different results on the same commit</div>
+<div class="row"><span>1</span><span class="t">checkout › applies coupon code<span>tests/checkout.spec.ts</span></span><span class="b"><i style="background:#F2B33D"></i>Flaky</span><span class="why"><em>4 of 9 commits</em> had both a pass and a fail</span><span class="w">14 min</span></div>
+<div class="row"><span>2</span><span class="t">search › shows results after typing<span>tests/search.spec.ts</span></span><span class="b"><i style="background:#F2B33D"></i>Flaky</span><span class="why"><em>3 of 9 commits</em> had both a pass and a fail</span><span class="w">9 min</span></div>
+<div class="row"><span>3</span><span class="t">profile › uploads avatar<span>tests/profile.spec.ts</span></span><span class="b"><i style="background:#F2B33D"></i>Flaky</span><span class="why"><em>Passed on retry</em> in 3 of 12 runs</span><span class="w">6 min</span></div>
+<div class="g">Suspect · Mixed results, never on the same commit</div>
+<div class="row"><span></span><span class="t">cart › updates item quantity<span>tests/cart.spec.ts</span></span><span class="b"><i style="background:#B28CFF"></i>Suspect</span><span class="why">Switched between pass and fail <em>5 times</em> in 12 runs</span><span class="w">~4 min (est.)</span></div>
+<div class="row"><span></span><span class="t">login › remembers the session<span>tests/login.spec.ts</span></span><span class="b"><i style="background:#B28CFF"></i>Suspect</span><span class="why">Switched between pass and fail <em>3 times</em> in 12 runs</span><span class="w">~3 min (est.)</span></div>
+<div class="g">Failing · Fails almost every run</div>
+<div class="row"><span></span><span class="t">reports › exports a PDF<span>tests/reports.spec.ts</span></span><span class="b"><i style="background:#F0645A"></i>Failing</span><span class="why">Failed <em>12 of 12</em> runs</span><span class="w">—</span></div>
+</div>
+</body></html>

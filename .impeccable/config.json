@@ -1,0 +1,320 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/canon.html"
+        ],
+        "createdAt": "2026-11-19T14:34:22.822Z",
+        "reason": "Claude: canon card is a decision-round comparison sketch of the category standard, never shipped"
+      },
+      {
+        "rule": "overused-font",
+        "value": "mona sans",
+        "createdAt": "2026-11-19T14:39:23.428Z",
+        "reason": "Claude: user pinned the GitHub/GitLab code-review visual language (2026-11-19); Mona Sans is that world's open-licensed face"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-11-19T14:43:59.682Z",
+        "reason": "Claude: spent decision-round sketch of a declined direction, never shipped"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-11-19T14:43:59.882Z",
+        "reason": "Claude: spent decision-round sketch of a declined direction, never shipped"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-11-19T14:44:00.097Z",
+        "reason": "Claude: spent decision-round sketch of a declined direction, never shipped"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-11-19T14:44:00.304Z",
+        "reason": "Claude: spent decision-round sketch of a declined direction, never shipped"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-11-19T14:44:00.509Z",
+        "reason": "Claude: spent decision-round sketch of a declined direction, never shipped"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-11-19T14:44:00.709Z",
+        "reason": "Claude: spent decision-round sketch of a declined direction, never shipped"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-wayfinding.html"
+        ],
+        "createdAt": "2026-11-19T14:44:00.904Z",
+        "reason": "Claude: spent decision-round sketch of a declined direction, never shipped"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-wayfinding.html"
+        ],
+        "createdAt": "2026-11-19T14:44:01.115Z",
+        "reason": "Claude: spent decision-round sketch of a declined direction, never shipped"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-wayfinding.html"
+        ],
+        "createdAt": "2026-11-19T14:44:01.314Z",
+        "reason": "Claude: spent decision-round sketch of a declined direction, never shipped"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-monochrome.html"
+        ],
+        "createdAt": "2026-11-19T14:44:01.515Z",
+        "reason": "Claude: spent decision-round sketch of a declined direction, never shipped"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-monochrome.html"
+        ],
+        "createdAt": "2026-11-19T14:44:01.712Z",
+        "reason": "Claude: spent decision-round sketch of a declined direction, never shipped"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-monochrome.html"
+        ],
+        "createdAt": "2026-11-19T14:44:01.909Z",
+        "reason": "Claude: spent decision-round sketch of a declined direction, never shipped"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/canon.html"
+        ],
+        "createdAt": "2026-11-19T14:44:02.108Z",
+        "reason": "Claude: spent decision-round sketch of a declined direction, never shipped"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/canon.html"
+        ],
+        "createdAt": "2026-11-19T14:44:02.316Z",
+        "reason": "Claude: spent decision-round sketch of a declined direction, never shipped"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/canon.html"
+        ],
+        "createdAt": "2026-11-19T14:44:02.514Z",
+        "reason": "Claude: spent decision-round sketch of a declined direction, never shipped"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/TestDetail.dc.html"
+        ],
+        "createdAt": "2026-11-19T14:54:13.150Z",
+        "reason": "Claude: values are on-scale (4px/6px); detector reads the closing quote of inline style as part of the value"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/TestDetailLight.dc.html"
+        ],
+        "createdAt": "2026-11-19T14:54:13.372Z",
+        "reason": "Claude: values are on-scale (4px/6px); detector reads the closing quote of inline style as part of the value"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/ImportStates.dc.html"
+        ],
+        "createdAt": "2026-11-19T14:54:13.571Z",
+        "reason": "Claude: values are on-scale (4px/6px); detector reads the closing quote of inline style as part of the value"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/ImportStatesLight.dc.html"
+        ],
+        "createdAt": "2026-11-19T14:54:13.773Z",
+        "reason": "Claude: values are on-scale (4px/6px); detector reads the closing quote of inline style as part of the value"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/TestDetail.dc.html"
+        ],
+        "createdAt": "2026-11-19T14:54:13.986Z",
+        "reason": "Claude: padding sits on child rows; diff lines are edge-to-edge code rows by design (DESIGN.md)"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/TestDetailLight.dc.html"
+        ],
+        "createdAt": "2026-11-19T14:54:14.192Z",
+        "reason": "Claude: padding sits on child rows; diff lines are edge-to-edge code rows by design (DESIGN.md)"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/LoadedData.dc.html"
+        ],
+        "createdAt": "2026-11-19T14:54:14.387Z",
+        "reason": "Claude: padding sits on child rows; diff lines are edge-to-edge code rows by design (DESIGN.md)"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/LoadedDataLight.dc.html"
+        ],
+        "createdAt": "2026-11-19T14:54:14.586Z",
+        "reason": "Claude: padding sits on child rows; diff lines are edge-to-edge code rows by design (DESIGN.md)"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/Tests.dc.html"
+        ],
+        "createdAt": "2026-11-19T14:54:14.787Z",
+        "reason": "Claude: padding sits on child rows; diff lines are edge-to-edge code rows by design (DESIGN.md)"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/TestsLight.dc.html"
+        ],
+        "createdAt": "2026-11-19T14:54:14.984Z",
+        "reason": "Claude: padding sits on child rows; diff lines are edge-to-edge code rows by design (DESIGN.md)"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/Tests.dc.html"
+        ],
+        "createdAt": "2026-11-19T16:05:01.021Z",
+        "reason": "Claude: value is on-scale 6px; detector reads the closing quote of inline style as part of the value"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/TestsLight.dc.html"
+        ],
+        "createdAt": "2026-11-19T16:05:01.230Z",
+        "reason": "Claude: value is on-scale 6px; detector reads the closing quote of inline style as part of the value"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/StateMatrix.dc.html"
+        ],
+        "createdAt": "2026-11-19T16:18:52.164Z",
+        "reason": "Claude: values on-scale; detector reads trailing quote/next property into the value"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/StateMatrix.dc.html"
+        ],
+        "createdAt": "2026-11-19T16:18:52.412Z",
+        "reason": "Claude: padding sits on child cells of the matrix table"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/StateMatrixLight.dc.html"
+        ],
+        "createdAt": "2026-11-19T16:18:52.641Z",
+        "reason": "Claude: values on-scale; detector reads trailing quote/next property into the value"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/StateMatrixLight.dc.html"
+        ],
+        "createdAt": "2026-11-19T16:18:52.880Z",
+        "reason": "Claude: padding sits on child cells of the matrix table"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/TableControls.dc.html"
+        ],
+        "createdAt": "2026-11-19T16:21:00.451Z",
+        "reason": "Claude: fixed-height table rows center text vertically; cells carry horizontal padding"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/TableControlsLight.dc.html"
+        ],
+        "createdAt": "2026-11-19T16:21:00.681Z",
+        "reason": "Claude: fixed-height table rows center text vertically; cells carry horizontal padding"
+      }
+    ]
+  }
+}

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<title>Light: Edge states</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400&amp;display=swap">
+<style>
+body{margin:0;font-family:'Mona Sans',system-ui,sans-serif;color:#1F2328;background:#F6F8FA;color-scheme:light}
+button,input,select,textarea,summary{color:inherit}
+::placeholder{color:#59636E;opacity:1}
+a{color:#0969DA;text-underline-offset:2px}a:hover{color:#0550AE}
+:focus-visible{outline:2px solid #0969DA;outline-offset:2px}
+kbd{font-family:'JetBrains Mono',monospace;font-size:12px;padding:1px 6px;border:1px solid #D1D9E0;border-radius:4px;background:#FFFFFF;color:#393F46}
+@media (max-width:640px){header{padding-left:16px!important;padding-right:16px!important}.pg{padding-left:16px!important;padding-right:16px!important}}
+</style>
+</helmet>
+<div style="min-height: 800px; box-sizing: border-box; padding: 32px 24px; background: #F6F8FA">
+  <h1 style="max-width: 1200px; margin: 0 auto 20px; font-size: 24px; font-weight: 700">Edge states</h1>
+  <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 24px">
+
+    <section style="display: flex; flex-direction: column; gap: 10px">
+      <p style="margin: 0; font-size: 13px; font-weight: 600; color: #59636E">A. Filter gives no rows</p>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 28px 20px; background: #FFFFFF; border: 1px solid #D1D9E0; border-radius: 8px; text-align: center">
+        <div style="font-size: 15px; font-weight: 600">No Flaky tests in these 12 runs</div>
+        <div style="font-size: 14px; color: #59636E">Good news. More runs make this more certain.</div>
+        <button type="button" style="height: 36px; padding: 0 14px; border: 1px solid #C3CCD5; border-radius: 6px; background: #EFF2F5; font: inherit; font-size: 14px">Show all tests</button>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 10px">
+      <p style="margin: 0; font-size: 13px; font-weight: 600; color: #59636E">B. Search finds nothing</p>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 28px 20px; background: #FFFFFF; border: 1px solid #D1D9E0; border-radius: 8px; text-align: center">
+        <div style="font-size: 15px; font-weight: 600">No test matches "logn"</div>
+        <div style="font-size: 14px; color: #59636E">Search covers test names and file names.</div>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px"><button type="button" style="height: 36px; padding: 0 14px; border: 1px solid #C3CCD5; border-radius: 6px; background: #EFF2F5; font: inherit; font-size: 14px">Search for "login" instead</button><button type="button" style="height: 36px; padding: 0 14px; border: 1px solid #C3CCD5; border-radius: 6px; background: #EFF2F5; font: inherit; font-size: 14px">Clear search</button></div>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 10px">
+      <p style="margin: 0; font-size: 13px; font-weight: 600; color: #59636E">C. Old link, test not loaded</p>
+      <div style="display: flex; flex-direction: column; gap: 10px; padding: 20px; background: #FFFFFF; border: 1px solid #D1D9E0; border-radius: 8px">
+        <div style="font-size: 15px; font-weight: 600">This test isn't in the loaded data</div>
+        <div style="font-size: 14px; color: #59636E">It may have been renamed, or its files were cleared.</div>
+        <a href="TestsLight.dc.html" style="font-size: 14px">Back to tests</a>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 10px">
+      <p style="margin: 0; font-size: 13px; font-weight: 600; color: #59636E">D. Detail panel, not enough data</p>
+      <div style="display: flex; flex-direction: column; gap: 10px; padding: 20px; background: #FFFFFF; border: 1px solid #D1D9E0; border-radius: 8px">
+        <div style="font-size: 17px; font-weight: 600">invoices › sends reminder email</div>
+        <div style="display: flex; align-items: center; gap: 10px">
+          <span style="display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; min-width: 76px; height: 22px; padding: 0 8px; border-radius: 9999px; font-size: 12px; font-weight: 600; line-height: 1; white-space: nowrap; background: #D8DEE4; color: #393F46">Not enough data</span>
+          <span style="font-size: 14px">Only 1 attempt loaded.</span>
+        </div>
+        <div style="padding: 12px 14px; background: #F6F8FA; border-radius: 8px; font-size: 14px; display: flex; flex-direction: column; gap: 6px">
+          <div>There is too little history to judge this test.</div>
+          <div style="font-weight: 600">What to do next</div>
+          <ul style="margin: 0; padding-left: 18px; color: #393F46"><li>Load more runs, ideally several on the same commit.</li><li>Or turn on retries in CI.</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 10px">
+      <p style="margin: 0; font-size: 13px; font-weight: 600; color: #59636E">E. Clear all data (focus starts on Keep my data)</p>
+      <div role="dialog" aria-modal="true" aria-labelledby="clear-title" aria-describedby="clear-desc" style="display: flex; flex-direction: column; gap: 14px; padding: 20px; background: #FFFFFF; border: 1px solid #D1D9E0; border-radius: 8px">
+        <h2 id="clear-title" style="margin: 0; font-size: 20px; font-weight: 600">Clear all data?</h2>
+        <p id="clear-desc" style="margin: 0; font-size: 14px; color: #393F46">This deletes 3 files, 12 runs and all results from this browser. You can't undo this.</p>
+        <div style="display: flex; justify-content: flex-end; gap: 8px">
+          <button type="button" data-autofocus="" style="height: 36px; padding: 0 14px; border: 1px solid #C3CCD5; border-radius: 6px; background: #EFF2F5; font: inherit; font-size: 14px">Keep my data</button>
+          <button type="button" style="height: 36px; padding: 0 14px; border: 0; border-radius: 6px; background: #B62324; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 14px">Clear all data</button>
+        </div>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 10px">
+      <p style="margin: 0; font-size: 13px; font-weight: 600; color: #59636E">F. Shortcuts sheet (?)</p>
+      <div role="dialog" aria-modal="true" aria-labelledby="keys-title" style="display: flex; flex-direction: column; gap: 12px; padding: 20px; background: #FFFFFF; border: 1px solid #D1D9E0; border-radius: 8px">
+        <h2 id="keys-title" style="margin: 0; font-size: 20px; font-weight: 600">Keyboard shortcuts</h2>
+        <label style="display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 14px">Single-key shortcuts
+          <input type="checkbox" checked="" style="width: 16px; height: 16px; margin: 0">
+        </label>
+        <div style="font-size: 12px; color: #59636E">They never fire while you type in a text field.</div>
+        <div style="display: grid; grid-template-columns: 70px 1fr; gap: 6px 12px; font-size: 14px">
+          <kbd>j / k</kbd><span>Next / previous test</span>
+          <kbd>Enter</kbd><span>Open details</span>
+          <kbd>Esc</kbd><span>Close details</span>
+          <kbd>/</kbd><span>Search</span>
+          <kbd>?</kbd><span>This sheet</span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

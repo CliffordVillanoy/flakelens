@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>FlakeLens: Forecast Desk</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Barlow+Semi+Condensed:wght@500;600;700&family=JetBrains+Mono&display=swap">
+<style>
+*{box-sizing:border-box}
+body{margin:0;width:1440px;height:900px;overflow:hidden;background:#0E1A2B;color:#E7EEF6;font:14px/1.4 'Atkinson Hyperlegible',sans-serif}
+.num{font-family:'Barlow Semi Condensed',sans-serif;font-variant-numeric:tabular-nums}
+.mono{font-family:'JetBrains Mono',monospace;font-size:12px;color:#9FB0C3}
+header{height:52px;display:flex;align-items:center;gap:14px;padding:0 24px;border-bottom:1px solid #22344C;background:#0B1624}
+.logo{font:700 18px 'Barlow Semi Condensed';letter-spacing:.02em}
+.chip{height:26px;display:inline-flex;align-items:center;padding:0 10px;border:1px solid #2C4462;border-radius:6px;font-size:12px;color:#C8D4E2}
+.sp{flex:1}.btn{height:32px;padding:0 12px;border-radius:6px;border:1px solid #2C4462;background:#16263A;color:#E7EEF6;font:inherit;font-size:13px}
+.btn.p{background:#5FD3E6;border-color:#5FD3E6;color:#06222A;font-weight:700}
+main{display:flex;height:848px}
+.list{flex:1;padding:18px 24px;display:flex;flex-direction:column;gap:14px}
+.forecast{display:flex;gap:28px;align-items:flex-end;padding-bottom:14px;border-bottom:1px solid #22344C}
+.f{display:flex;flex-direction:column}.f b{font:600 40px/1 'Barlow Semi Condensed'}.f span{font-size:12px;color:#9FB0C3;text-transform:none}
+.scale{margin-left:auto;display:flex;gap:2px;align-items:center;font-size:11px;color:#9FB0C3}
+.scale i{width:28px;height:8px;display:block}
+table{width:100%;border-collapse:collapse}
+th{font-size:12px;color:#9FB0C3;font-weight:400;text-align:left;padding:6px 10px;border-bottom:1px solid #22344C}
+td{padding:7px 10px;border-bottom:1px solid #1A2B42;vertical-align:middle}
+tr.g td{background:#12223A;font-size:12px;color:#C8D4E2;padding:5px 10px}
+tr.dim td{color:#B9C6D5}tr.dim .strip{filter:saturate(.6)}tr.sel td{background:#183150}
+.b{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px;border-radius:4px;font:600 12px 'Atkinson Hyperlegible'}
+.fl{background:#3A2C0F;color:#F2B33D}.su{background:#2C2346;color:#C7AEFF}.fa{background:#3D1C1E;color:#FF8B82}
+.strip{display:flex;gap:3px;align-items:center;height:16px}
+.strip i{width:9px;height:9px;display:block}
+.P{background:#3FB68B}.F{background:#F0645A;clip-path:polygon(50% 0,100% 100%,0 100%)}.R{background:#F2B33D;transform:rotate(45deg) scale(.8)}.S{border:1.5px solid #9FB0C3;border-radius:50%}
+.w{text-align:right}
+aside{width:520px;background:#122136;border-left:1px solid #22344C;padding:20px 24px;display:flex;flex-direction:column;gap:16px}
+h2{margin:0;font:600 24px/1.15 'Barlow Semi Condensed'}
+.meteo{display:flex;gap:6px;padding:16px 0;border-top:1px solid #22344C;border-bottom:1px solid #22344C}
+.c{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 0;border-radius:4px}
+.c.m{outline:1.5px solid #F2B33D;outline-offset:-1px;background:#1E2C3A}
+.c i{width:14px;height:14px;display:block}
+.c small{font:10.5px 'JetBrains Mono';color:#9FB0C3}
+.note{background:#0E1A2B;border-radius:8px;padding:14px 16px;font-size:14px;color:#C8D4E2}
+.note b{color:#E7EEF6}
+pre{margin:0;background:#0A1320;border-radius:6px;padding:12px;font:12px/1.5 'JetBrains Mono';color:#C8D4E2;white-space:pre-wrap}
+</style></head><body>
+<header><span class="logo">FlakeLens</span><span class="chip">Sample data</span><span class="chip">3 files · 12 runs · 3 not imported</span><span class="chip" style="color:#7FE0B9">Nothing leaves this browser</span><span class="sp"></span><button class="btn p">Add your files</button><button class="btn">Leave sample</button><button class="btn">Light</button><button class="btn">?</button></header>
+<main><section class="list">
+<div class="forecast">
+<div class="f"><b class="num" style="color:#F2B33D">3</b><span>Flaky</span></div>
+<div class="f"><b class="num" style="color:#C7AEFF">2</b><span>Suspect</span></div>
+<div class="f"><b class="num" style="color:#FF8B82">2</b><span>Failing</span></div>
+<div class="f"><b class="num">29 min</b><span>Wasted CI time · + ~7 min possible</span></div>
+<div class="scale"><span>Stable</span><i class="P"></i><i style="background:#F2B33D"></i><i style="background:#B28CFF"></i><i style="background:#F0645A"></i><span>Failing</span></div>
+</div>
+<table><thead><tr><th>#</th><th>Test</th><th>Status</th><th>Last 12 runs</th><th>Why</th><th class="w">Wasted</th></tr></thead><tbody>
+<tr class="g"><td colspan="6"><b>Flaky · 3</b> · Different results on the same commit</td></tr>
+<tr class="sel"><td class="num">1</td><td>checkout › applies coupon code<br><span class="mono">tests/checkout.spec.ts</span></td><td><span class="b fl">∿ Flaky</span></td><td><div class="strip"><i class="P"></i><i class="R"></i><i class="P"></i><i class="P"></i><i class="F"></i><i class="S"></i><i class="P"></i><i class="P"></i><i class="R"></i><i class="P"></i><i class="P"></i><i class="R"></i></div></td><td>4 of 9 commits had both a pass and a fail</td><td class="w num">14 min</td></tr>
+<tr class="dim"><td class="num">2</td><td>search › shows results after typing<br><span class="mono">tests/search.spec.ts</span></td><td><span class="b fl">∿ Flaky</span></td><td><div class="strip"><i class="P"></i><i class="P"></i><i class="R"></i><i class="P"></i><i class="F"></i><i class="P"></i><i class="P"></i><i class="R"></i><i class="P"></i><i class="P"></i><i class="R"></i><i class="P"></i></div></td><td>3 of 9 commits had both a pass and a fail</td><td class="w num">9 min</td></tr>
+<tr class="dim"><td class="num">3</td><td>profile › uploads avatar<br><span class="mono">tests/profile.spec.ts</span></td><td><span class="b fl">∿ Flaky</span></td><td><div class="strip"><i class="P"></i><i class="R"></i><i class="P"></i><i class="P"></i><i class="R"></i><i class="P"></i><i class="P"></i><i class="P"></i><i class="R"></i><i class="P"></i><i class="P"></i><i class="P"></i></div></td><td>Passed on retry in 3 of 12 runs</td><td class="w num">6 min</td></tr>
+<tr class="g"><td colspan="6"><b>Suspect · 2</b> · Mixed results, never on the same commit. Could be a real bug</td></tr>
+<tr class="dim"><td></td><td>cart › updates item quantity<br><span class="mono">tests/cart.spec.ts</span></td><td><span class="b su">? Suspect</span></td><td><div class="strip"><i class="P"></i><i class="P"></i><i class="F"></i><i class="F"></i><i class="P"></i><i class="P"></i><i class="F"></i><i class="P"></i><i class="F"></i><i class="P"></i><i class="P"></i><i class="F"></i></div></td><td>Switched between pass and fail 5 times in 12 runs</td><td class="w num">~4 min (est.)</td></tr>
+<tr class="g"><td colspan="6"><b>Failing · 2</b> · Fails almost every run. Likely a real bug</td></tr>
+<tr class="dim"><td></td><td>reports › exports a PDF<br><span class="mono">tests/reports.spec.ts</span></td><td><span class="b fa">✕ Failing</span></td><td><div class="strip"><i class="F"></i><i class="F"></i><i class="F"></i><i class="F"></i><i class="F"></i><i class="F"></i><i class="F"></i><i class="F"></i><i class="F"></i><i class="F"></i><i class="F"></i><i class="F"></i></div></td><td>Failed 12 of 12 runs</td><td class="w num">—</td></tr>
+</tbody></table></section>
+<aside><div style="display:flex;justify-content:space-between"><span class="mono">1 of 7 shown</span><span><button class="btn">Copy summary</button> <button class="btn">✕</button></span></div>
+<h2>checkout › applies coupon code</h2>
+<div style="display:flex;gap:12px;align-items:center"><span class="b fl">∿ Flaky</span><span><b class="num" style="font-size:18px">4 of 9</b> commits had both a pass and a fail · <b class="num" style="font-size:18px">14 min</b> wasted</span></div>
+<div class="meteo">
+<div class="c"><i class="P"></i><small>3f9a1b2</small></div><div class="c m"><i class="F"></i><i class="R"></i><small>8d04c7e</small></div><div class="c"><i class="P"></i><small>b12e9f0</small></div><div class="c m"><i class="P"></i><i class="F"></i><small>e7a3301</small></div><div class="c"><i class="S"></i><i class="P"></i><small>51c0d8a</small></div><div class="c"><i class="P"></i><small>9b6e2f4</small></div><div class="c m"><i class="F"></i><i class="R"></i><small>a41f2c9</small></div><div class="c"><i class="P"></i><i class="P"></i><small>c88d013</small></div><div class="c m"><i class="F"></i><i class="R"></i><small>7c2e01d</small></div>
+</div>
+<div class="note"><b>What this means.</b> This test gave different results on the same code. The likely cause is in the test or its environment.<br><b>Check next:</b> waits and timing · shared state · test order · slow services.</div>
+<div><div class="mono" style="margin-bottom:6px">Latest failure · run 12 · 7c2e01d · attempt 1 of 2</div>
+<pre>TimeoutError: locator.click: Timeout 5000ms exceeded.
+waiting for getByRole('button', { name: 'Apply' })</pre></div>
+</aside></main>
+</body></html>

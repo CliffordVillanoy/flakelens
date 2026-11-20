@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<title>Light: FlakeLens start</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400&amp;display=swap">
+<style>
+body{margin:0;font-family:'Mona Sans',system-ui,sans-serif;color:#1F2328;background:#F6F8FA;color-scheme:light}
+button,input,select,textarea,summary{color:inherit}
+::placeholder{color:#59636E;opacity:1}
+a{color:#0969DA;text-underline-offset:2px}a:hover{color:#0550AE}
+:focus-visible{outline:2px solid #0969DA;outline-offset:2px}
+kbd{font-family:'JetBrains Mono',monospace;font-size:12px;padding:1px 6px;border:1px solid #D1D9E0;border-radius:4px;background:#FFFFFF;color:#393F46}
+code{font-family:'JetBrains Mono',monospace;font-size:13px}
+@media (max-width:640px){header{padding-left:16px!important;padding-right:16px!important}.pg{padding-left:16px!important;padding-right:16px!important}}
+</style>
+</helmet>
+<div style="min-height: 760px; display: flex; flex-direction: column; background: #F6F8FA">
+  <header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 24px; background: #FFFFFF; border-bottom: 1px solid #D1D9E0">
+    <div style="display: flex; align-items: center"><svg height="28" style="display: block; width: auto" viewBox="-8 -8 1067 243" role="img" aria-label="FlakeLens"><g fill="none" stroke="#0969DA" stroke-width="28" stroke-linecap="round"><path d="M 129 15 A 100 100 0 1 0 205 155"/></g><g fill="#0969DA"><circle cx="173" cy="31" r="15"/><circle cx="202" cy="61" r="15"/><circle cx="214" cy="108" r="15"/></g><path fill="#1F2328" d="M283,170.115 L283,55 L362.025,55 L362.025,74.474 L306.275,74.474 L306.275,101.721 L354.398,101.721 L354.398,121.195 L306.275,121.195 L306.275,170.115 Z M381.054,170.115 L381.054,55 L403.15,55 L403.15,170.115 Z M442.309,112.165 L422.257,108.553 C424.512,100.491 428.391,94.523 433.895,90.65 C439.399,86.776 447.577,84.839 458.428,84.839 C468.283,84.839 475.622,86.004 480.445,88.333 C485.268,90.663 488.662,93.62 490.628,97.206 C492.594,100.792 493.577,107.375 493.577,116.955 L493.341,142.711 C493.341,150.04 493.695,155.445 494.402,158.926 C495.11,162.407 496.434,166.137 498.373,170.115 L476.514,170.115 C475.937,168.65 475.229,166.477 474.391,163.598 C474.024,162.289 473.762,161.425 473.604,161.007 C469.83,164.671 465.793,167.419 461.495,169.252 C457.196,171.084 452.609,172 447.734,172 C439.137,172 432.362,169.67 427.408,165.011 C422.454,160.352 419.977,154.463 419.977,147.344 C419.977,142.632 421.104,138.431 423.358,134.741 C425.612,131.05 428.771,128.223 432.834,126.26 C436.896,124.297 442.754,122.583 450.408,121.117 C460.735,119.18 467.89,117.374 471.874,115.699 L471.874,113.5 C471.874,109.26 470.826,106.237 468.729,104.431 C466.632,102.624 462.674,101.721 456.856,101.721 C452.924,101.721 449.857,102.494 447.656,104.038 C445.454,105.582 443.672,108.291 442.309,112.165 Z M471.874,130.068 C469.044,131.011 464.562,132.136 458.428,133.445 C452.295,134.754 448.285,136.036 446.398,137.293 C443.514,139.334 442.073,141.926 442.073,145.066 C442.073,148.155 443.226,150.825 445.533,153.076 C447.839,155.327 450.775,156.452 454.339,156.452 C458.323,156.452 462.124,155.144 465.741,152.526 C468.415,150.537 470.171,148.103 471.009,145.223 C471.586,143.339 471.874,139.753 471.874,134.466 Z M514.572,170.115 L514.572,55 L536.667,55 L536.667,116.091 L562.537,86.723 L589.744,86.723 L561.2,117.191 L591.788,170.115 L567.963,170.115 L546.968,132.66 L536.667,143.417 L536.667,170.115 Z M653.279,143.574 L675.296,147.265 C672.465,155.327 667.996,161.465 661.889,165.679 C655.782,169.893 648.141,172 638.968,172 C624.447,172 613.701,167.262 606.728,157.787 C601.224,150.197 598.472,140.617 598.472,129.048 C598.472,115.228 602.089,104.404 609.323,96.578 C616.557,88.752 625.705,84.839 636.766,84.839 C649.19,84.839 658.993,88.935 666.174,97.128 C673.356,105.32 676.79,117.871 676.475,134.78 L621.118,134.78 C621.275,141.323 623.058,146.414 626.465,150.053 C629.873,153.691 634.119,155.51 639.204,155.51 C642.663,155.51 645.573,154.568 647.932,152.683 C650.291,150.799 652.073,147.762 653.279,143.574 Z M654.537,121.274 C654.38,114.887 652.728,110.032 649.583,106.708 C646.438,103.384 642.611,101.721 638.103,101.721 C633.28,101.721 629.296,103.475 626.151,106.983 C623.005,110.49 621.459,115.254 621.511,121.274 Z"/><path fill="#0969DA" d="M695.268,170.115 L695.268,55.942 L718.543,55.942 L718.543,150.72 L776.417,150.72 L776.417,170.115 Z M841.209,143.574 L863.226,147.265 C860.396,155.327 855.927,161.465 849.82,165.679 C843.713,169.893 836.072,172 826.898,172 C812.378,172 801.631,167.262 794.659,157.787 C789.155,150.197 786.403,140.617 786.403,129.048 C786.403,115.228 790.02,104.404 797.254,96.578 C804.488,88.752 813.636,84.839 824.697,84.839 C837.121,84.839 846.923,88.935 854.105,97.128 C861.287,105.32 864.72,117.871 864.406,134.78 L809.049,134.78 C809.206,141.323 810.989,146.414 814.396,150.053 C817.803,153.691 822.049,155.51 827.134,155.51 C830.594,155.51 833.504,154.568 835.862,152.683 C838.221,150.799 840.004,147.762 841.209,143.574 Z M842.468,121.274 C842.31,114.887 840.659,110.032 837.514,106.708 C834.368,103.384 830.542,101.721 826.033,101.721 C821.211,101.721 817.227,103.475 814.081,106.983 C810.936,110.49 809.39,115.254 809.442,121.274 Z M958.371,170.115 L936.276,170.115 L936.276,127.556 C936.276,118.552 935.804,112.728 934.86,110.084 C933.917,107.441 932.383,105.386 930.26,103.92 C928.137,102.454 925.582,101.721 922.594,101.721 C918.767,101.721 915.333,102.768 912.293,104.862 C909.252,106.956 907.169,109.731 906.042,113.186 C904.915,116.641 904.351,123.028 904.351,132.346 L904.351,170.115 L882.255,170.115 L882.255,86.723 L902.778,86.723 L902.778,98.973 C910.065,89.55 919.239,84.839 930.3,84.839 C935.175,84.839 939.631,85.716 943.667,87.469 C947.704,89.223 950.757,91.461 952.828,94.183 C954.898,96.905 956.34,99.994 957.153,103.449 C957.965,106.904 958.371,111.851 958.371,118.29 Z M972.997,146.323 L995.171,142.946 C996.115,147.239 998.028,150.498 1000.911,152.722 C1003.794,154.947 1007.831,156.06 1013.021,156.06 C1018.735,156.06 1023.033,155.013 1025.916,152.919 C1027.856,151.453 1028.826,149.49 1028.826,147.03 C1028.826,145.354 1028.301,143.967 1027.253,142.868 C1026.152,141.821 1023.688,140.852 1019.862,139.962 C1002.038,136.036 990.742,132.45 985.971,129.205 C979.366,124.703 976.064,118.447 976.064,110.438 C976.064,103.213 978.921,97.141 984.634,92.22 C990.348,87.299 999.208,84.839 1011.212,84.839 C1022.64,84.839 1031.132,86.697 1036.689,90.414 C1042.246,94.131 1046.072,99.628 1048.169,106.904 L1027.332,110.752 C1026.441,107.506 1024.75,105.019 1022.26,103.292 C1019.77,101.564 1016.218,100.701 1011.605,100.701 C1005.787,100.701 1001.619,101.512 999.103,103.135 C997.425,104.287 996.587,105.779 996.587,107.611 C996.587,109.181 997.32,110.516 998.788,111.615 C1000.78,113.081 1007.661,115.149 1019.429,117.819 C1031.198,120.489 1039.415,123.76 1044.08,127.634 C1048.693,131.56 1051,137.031 1051,144.046 C1051,151.689 1047.802,158.258 1041.407,163.755 C1035.011,169.252 1025.549,172 1013.021,172 C1001.645,172 992.642,169.697 986.011,165.09 C979.379,160.483 975.041,154.228 972.997,146.323 Z"/></svg></div>
+    <div style="display: flex; gap: 8px">
+      <button type="button" aria-label="Switch to dark theme" title="Switch to dark theme" style="display: inline-flex; align-items: center; justify-content: center; height: 32px; width: 32px; border: 1px solid #C3CCD5; border-radius: 6px; background: #EFF2F5"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></button>
+      <button type="button" aria-label="Keyboard shortcuts and help" style="height: 32px; width: 32px; border: 1px solid #C3CCD5; border-radius: 6px; background: #EFF2F5; font: inherit; font-size: 13px; font-weight: 600">?</button>
+    </div>
+  </header>
+
+  <main style="flex: 1; display: flex; justify-content: center; padding: 56px 16px">
+    <div style="width: 100%; max-width: 720px; display: flex; flex-direction: column; gap: 20px">
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <h1 style="margin: 0; font-size: 28px; font-weight: 700">Find your flaky tests</h1>
+        <p style="margin: 0; font-size: 15px; color: #59636E">A flaky test passes and fails on the same code. Drop test reports from a few CI runs. You get a ranked list of flaky tests and why each one was flagged.</p>
+      </div>
+
+      <section aria-label="Import reports" style="display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 40px 24px; background: #FFFFFF; border: 2px dashed #0969DA; border-radius: 8px; text-align: center">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#0969DA" stroke-width="1.5" aria-hidden="true"><path d="M12 16V4"></path><path d="M7 9l5-5 5 5"></path><path d="M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3"></path></svg>
+        <div style="font-size: 17px; font-weight: 600">Drop Playwright JSON reports here</div>
+        <div style="font-size: 14px; color: #59636E">Each file can hold one or more CI runs. More runs give better results.</div>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 6px">
+          <button type="button" style="height: 40px; padding: 0 18px; border: 1px solid #C3CCD5; border-radius: 6px; background: #EFF2F5; color: #1F2328; font: inherit; font-weight: 600; font-size: 14px">Browse files</button>
+          <button type="button" style="height: 40px; padding: 0 18px; border: 1px solid #C3CCD5; border-radius: 6px; background: #EFF2F5; color: #1F2328; font: inherit; font-weight: 600; font-size: 14px">Try sample data</button>
+        </div>
+      </section>
+
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #1A7F37">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 018 0v3"></path></svg>
+        Your files stay in this browser. Nothing is uploaded.
+      </div>
+
+      <details style="padding: 4px 0" open="">
+        <summary style="font-size: 14px; font-weight: 600; cursor: pointer">How do I get a Playwright JSON report?</summary>
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 12px; font-size: 14px; color: #393F46">
+          <div>In CI, run your tests with the JSON reporter and save the file as an artifact:</div>
+          <div style="background: #F6F8FA; border: 1px solid #D1D9E0; border-radius: 6px; padding: 10px 12px"><code>npx playwright test --reporter=json &gt; results.json</code></div>
+          <div>Then download that file from your last 5 to 10 CI runs and drop them all here at once.</div>
+          <div>Only one run? Turn on retries, or add <code>--repeat-each=5</code> once, so a single run already shows flakiness.</div>
+        </div>
+      </details>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":760}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
