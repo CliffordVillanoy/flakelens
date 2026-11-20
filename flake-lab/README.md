@@ -1,6 +1,6 @@
 # Flake lab
 
-A tiny static app (`app/index.html`) and 8 Playwright tests (`tests/lab.spec.ts`) with known answers. Running it produces real Playwright JSON reports for the engine's tests and for the "Try sample data" button. Ground truth is in `labels.json` (internal labels).
+A tiny static app (`app/index.html`) and 9 Playwright tests (`tests/lab.spec.ts`) with known answers. Running it produces real Playwright JSON reports for the engine's tests and for the "Try sample data" button. Ground truth is in `labels.json` (internal labels).
 
 ## Injected causes
 
@@ -9,6 +9,7 @@ A tiny static app (`app/index.html`) and 8 Playwright tests (`tests/lab.spec.ts`
 | `stable: shows heading`, `stable: adds item`, `stable: shows footer` | None; always pass. | stable |
 | `flaky: timing` | The Checkout button appears after a seeded delay; the test waits a fixed 200 ms and checks visibility without auto-wait. | flaky |
 | `flaky: random data` | The test types a seeded username; 4 of the 10 possible names are already taken in the app. | flaky |
+| `flaky: cross-run only` | Flaky across runs, never within a run (what retries cannot see): fails both attempts on even runs, passes on odd runs, so each commit has one failing and one passing run. | flaky |
 | `failing: wrong heading` | The test expects a heading the app never shows. | failing |
 | `unproven: regression` | The app shows a wrong total on odd commits (c1, c3, c5); deterministic, so the retry fails too. | suspect |
 | `new: added last run` | Defined only in run 11; one pass is too little history. | insufficient |
@@ -18,7 +19,7 @@ A tiny static app (`app/index.html`) and 8 Playwright tests (`tests/lab.spec.ts`
 - Timing delay: seeded in 0–150 ms (passes) or 250–400 ms (fails), 50/50. The 150–250 ms band is left out so real timer jitter around the 200 ms wait cannot change an outcome between reruns.
 - Taken names: 4 of 10 (40%).
 
-With these values both flaky tests show a mixed commit (a pass and a fail on the same commit) in the committed fixtures.
+With these values both seeded flaky tests (timing, random data) show a mixed commit (a pass and a fail on the same commit) in the committed fixtures.
 
 ## Run it
 

@@ -12,7 +12,8 @@ it('labels every lab test as its ground truth says', () => {
   const ds = loadLab(manifest, 'fixtures/lab');
   const byTitle = new Map(ds.tests.map((t) => [t.testId, t.title]));
   const scores = scoreTests(ds);
-  expect(scores).toHaveLength(Object.keys(labels).length);
+  expect(Object.keys(labels)).toHaveLength(9);
+  expect(scores).toHaveLength(9);
   for (const s of scores) {
     const title = byTitle.get(s.testId)!;
     expect([title, s.label]).toEqual([title, labels[title]]);
@@ -38,8 +39,27 @@ it('evaluates engine and Playwright baseline at 4, 8 and 12 runs', () => {
     ['engine', 4], ['engine', 8], ['engine', 12],
     ['baseline', 4], ['baseline', 8], ['baseline', 12],
   ]);
-  // Full history: the engine finds both flaky lab tests and nothing else.
-  expect(rows[2]).toMatchObject({ precision: 1, recall: 1, f1: 1 });
+  // The engine finds all 3 flaky lab tests; Playwright's retry flag misses the cross-run one.
+  for (const r of rows.filter((r) => r.method === 'engine')) expect(r).toMatchObject({ tp: 3, fp: 0, fn: 0, recall: 1 });
+  for (const r of rows.filter((r) => r.method === 'baseline')) expect(r).toMatchObject({ tp: 2, fp: 0, fn: 1, precision: 1 });
+  for (const r of rows.filter((r) => r.method === 'baseline')) expect(r.recall).toBeCloseTo(2 / 3);
+});
+
+it('Playwright never marks the cross-run test flaky', () => {
+  for (const { file } of manifest) {
+    const raw = readFileSync(`fixtures/lab/${file}`, 'utf8');
+    const run = Number(file.slice(4, 6));
+    const walk = (s: { suites?: unknown[]; specs?: Array<{ title: string; tests: Array<{ status: string }> }> }): string[] => [
+      ...(s.specs ?? []).filter((x) => x.title === 'flaky: cross-run only').flatMap((x) => x.tests.map((t) => t.status)),
+      ...(s.suites ?? []).flatMap((c) => walk(c as never)),
+    ];
+    const statuses = (JSON.parse(raw).suites as never[]).flatMap((s) => walk(s));
+    expect(statuses).toEqual([run % 2 === 0 ? 'unexpected' : 'expected']);
+  }
+});
+
+it('the committed report shows no tie note', () => {
+  expect(readFileSync('docs/eval/lab-detection.md', 'utf8')).not.toContain('score the same');
 });
 
 it('the report has the table, the baseline and a Limits paragraph', () => {
@@ -48,7 +68,7 @@ it('the report has the table, the baseline and a Limits paragraph', () => {
   expect(md.match(/^\| Engine/gm)).toHaveLength(3);
   expect(md.match(/^\| Playwright baseline/gm)).toHaveLength(3);
   expect(md).toContain('Playwright marked the test flaky in any loaded run');
-  expect(md).toMatch(/## Limits[\s\S]*synthetic[\s\S]*8 tests[\s\S]*one browser[\s\S]*not a real-world benchmark/);
+  expect(md).toMatch(/## Limits[\s\S]*synthetic[\s\S]*9 tests[\s\S]*one browser[\s\S]*not a real-world benchmark/);
 });
 
 it('the report says when engine and baseline tie', () => {

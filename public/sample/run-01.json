@@ -123,7 +123,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-20T13:02:38.034Z",
+                  "startTime": "2026-11-20T13:09:08.935Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -152,12 +152,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 87,
+                  "duration": 89,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-20T13:02:38.170Z",
+                  "startTime": "2026-11-20T13:09:09.072Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -186,12 +186,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 54,
+                  "duration": 56,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-20T13:02:38.263Z",
+                  "startTime": "2026-11-20T13:09:09.167Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -220,7 +220,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 264,
+                  "duration": 270,
                   "error": {
                     "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
                     "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at /repo\\flake-lab\\tests\\lab.spec.ts:32:52",
@@ -244,7 +244,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-20T13:02:38.322Z",
+                  "startTime": "2026-11-20T13:09:09.229Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -263,7 +263,7 @@
                   "workerIndex": 1,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 293,
+                  "duration": 296,
                   "error": {
                     "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
                     "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at /repo\\flake-lab\\tests\\lab.spec.ts:32:52",
@@ -287,7 +287,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 1,
-                  "startTime": "2026-11-20T13:02:38.856Z",
+                  "startTime": "2026-11-20T13:09:10.050Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -327,7 +327,7 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 1125,
+                  "duration": 1119,
                   "error": {
                     "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#name-result')\nExpected: \u001b[32m\"available\"\u001b[39m\nReceived: \u001b[31m\"taken\"\u001b[39m\nTimeout:  1000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" locator('#name-result') with timeout 1000ms\u001b[22m\n\u001b[2m  - waiting for locator('#name-result')\u001b[22m\n\u001b[2m    11 × locator resolved to <p id=\"name-result\">taken</p>\u001b[22m\n\u001b[2m       - unexpected value \"taken\"\u001b[22m\n",
                     "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#name-result')\nExpected: \u001b[32m\"available\"\u001b[39m\nReceived: \u001b[31m\"taken\"\u001b[39m\nTimeout:  1000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" locator('#name-result') with timeout 1000ms\u001b[22m\n\u001b[2m  - waiting for locator('#name-result')\u001b[22m\n\u001b[2m    11 × locator resolved to <p id=\"name-result\">taken</p>\u001b[22m\n\u001b[2m       - unexpected value \"taken\"\u001b[22m\n\n    at /repo\\flake-lab\\tests\\lab.spec.ts:40:46",
@@ -351,7 +351,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-20T13:02:39.486Z",
+                  "startTime": "2026-11-20T13:09:10.691Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -370,7 +370,7 @@
                   "workerIndex": 3,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 1133,
+                  "duration": 1110,
                   "error": {
                     "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#name-result')\nExpected: \u001b[32m\"available\"\u001b[39m\nReceived: \u001b[31m\"taken\"\u001b[39m\nTimeout:  1000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" locator('#name-result') with timeout 1000ms\u001b[22m\n\u001b[2m  - waiting for locator('#name-result')\u001b[22m\n\u001b[2m    11 × locator resolved to <p id=\"name-result\">taken</p>\u001b[22m\n\u001b[2m       - unexpected value \"taken\"\u001b[22m\n",
                     "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#name-result')\nExpected: \u001b[32m\"available\"\u001b[39m\nReceived: \u001b[31m\"taken\"\u001b[39m\nTimeout:  1000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" locator('#name-result') with timeout 1000ms\u001b[22m\n\u001b[2m  - waiting for locator('#name-result')\u001b[22m\n\u001b[2m    11 × locator resolved to <p id=\"name-result\">taken</p>\u001b[22m\n\u001b[2m       - unexpected value \"taken\"\u001b[22m\n\n    at /repo\\flake-lab\\tests\\lab.spec.ts:40:46",
@@ -394,7 +394,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 1,
-                  "startTime": "2026-11-20T13:02:40.950Z",
+                  "startTime": "2026-11-20T13:09:12.149Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -434,7 +434,7 @@
                   "workerIndex": 4,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 1073,
+                  "duration": 1067,
                   "error": {
                     "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { level: 1 })\nExpected: \u001b[32m\"\u001b[7mWelcome to \u001b[27mFlake Lab\"\u001b[39m\nReceived: \u001b[31m\"Flake Lab\u001b[7m Shop\u001b[27m\"\u001b[39m\nTimeout:  1000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" getByRole('heading', { level: 1 }) with timeout 1000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\u001b[2m    11 × locator resolved to <h1>Flake Lab Shop</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Flake Lab Shop\"\u001b[22m\n",
                     "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { level: 1 })\nExpected: \u001b[32m\"\u001b[7mWelcome to \u001b[27mFlake Lab\"\u001b[39m\nReceived: \u001b[31m\"Flake Lab\u001b[7m Shop\u001b[27m\"\u001b[39m\nTimeout:  1000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" getByRole('heading', { level: 1 }) with timeout 1000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\u001b[2m    11 × locator resolved to <h1>Flake Lab Shop</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Flake Lab Shop\"\u001b[22m\n\n    at /repo\\flake-lab\\tests\\lab.spec.ts:45:57",
@@ -458,7 +458,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-20T13:02:42.415Z",
+                  "startTime": "2026-11-20T13:09:13.595Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -477,7 +477,7 @@
                   "workerIndex": 5,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 1072,
+                  "duration": 1077,
                   "error": {
                     "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { level: 1 })\nExpected: \u001b[32m\"\u001b[7mWelcome to \u001b[27mFlake Lab\"\u001b[39m\nReceived: \u001b[31m\"Flake Lab\u001b[7m Shop\u001b[27m\"\u001b[39m\nTimeout:  1000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" getByRole('heading', { level: 1 }) with timeout 1000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\u001b[2m    11 × locator resolved to <h1>Flake Lab Shop</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Flake Lab Shop\"\u001b[22m\n",
                     "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { level: 1 })\nExpected: \u001b[32m\"\u001b[7mWelcome to \u001b[27mFlake Lab\"\u001b[39m\nReceived: \u001b[31m\"Flake Lab\u001b[7m Shop\u001b[27m\"\u001b[39m\nTimeout:  1000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" getByRole('heading', { level: 1 }) with timeout 1000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\u001b[2m    11 × locator resolved to <h1>Flake Lab Shop</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Flake Lab Shop\"\u001b[22m\n\n    at /repo\\flake-lab\\tests\\lab.spec.ts:45:57",
@@ -501,7 +501,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 1,
-                  "startTime": "2026-11-20T13:02:43.825Z",
+                  "startTime": "2026-11-20T13:09:14.998Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -541,12 +541,12 @@
                   "workerIndex": 6,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 74,
+                  "duration": 75,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-20T13:02:45.231Z",
+                  "startTime": "2026-11-20T13:09:17.102Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -558,15 +558,49 @@
           "file": "lab.spec.ts",
           "line": 48,
           "column": 1
+        },
+        {
+          "title": "flaky: cross-run only",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 40,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-20T13:09:17.237Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d60a0d352cedb73bd581-2423505e9792320ec3b9",
+          "file": "lab.spec.ts",
+          "line": 53,
+          "column": 1
         }
       ]
     }
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-11-20T13:02:37.771Z",
-    "duration": 7623.891,
-    "expected": 4,
+    "startTime": "2026-11-20T13:09:08.681Z",
+    "duration": 8631.341,
+    "expected": 5,
     "skipped": 0,
     "unexpected": 3,
     "flaky": 0

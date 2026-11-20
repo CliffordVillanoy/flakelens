@@ -50,6 +50,12 @@ test('unproven: regression', async ({ page }) => {
   await expect(page.locator('#total')).toHaveText('Total: 10', { timeout: 1000 });
 });
 
+test('flaky: cross-run only', async ({ page }) => {
+  await page.goto(appUrl);
+  // Fails both attempts on even runs and passes on odd runs: each commit (2 runs) mixes, but no run passes on retry.
+  expect(run % 2, 'injected cross-run failure').toBe(1);
+});
+
 if (run === 11) {
   test('new: added last run', async ({ page }) => {
     await page.goto(appUrl);

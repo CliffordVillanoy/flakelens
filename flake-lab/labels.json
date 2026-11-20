@@ -6,5 +6,6 @@
   "flaky: random data": "flaky",
   "failing: wrong heading": "failing",
   "unproven: regression": "suspect",
-  "new: added last run": "insufficient"
+  "new: added last run": "insufficient",
+  "flaky: cross-run only": "flaky"
 }

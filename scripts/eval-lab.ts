@@ -99,7 +99,7 @@ export function buildReport(rows: Row[]): string {
     '',
     '## Method',
     '',
-    '- Positive class: tests whose ground-truth label is `flaky` (2 of the 8 lab tests).',
+    '- Positive class: tests whose ground-truth label is `flaky` (3 of the 9 lab tests).',
     '- History length N: the first N runs in `fixtures/lab/manifest.json` order (2 runs per commit). Only tests present in those runs count.',
     '- Engine: the test gets the `flaky` label from `scoreTests` (a commit with both a pass and a fail).',
     '- Baseline: Playwright marked the test flaky in any loaded run (`tests[*].status === "flaky"` in the raw JSON, that is, it failed and then passed on retry).',
@@ -119,7 +119,7 @@ export function buildReport(rows: Row[]): string {
       : []),
     '## Limits',
     '',
-    'This is a synthetic lab with 8 tests, one browser (Chromium) and 12 runs over 6 commits, with causes we injected ourselves. It shows the engine gives the known answers; it is not a real-world benchmark. The check against public real-world data (spec section 11.1, item 5) is a v1 item, because that dataset needs the JUnit importer.',
+    'This is a synthetic lab with 9 tests, one browser (Chromium) and 12 runs over 6 commits, with causes we injected ourselves. It shows the engine gives the known answers; it is not a real-world benchmark. The check against public real-world data (spec section 11.1, item 5) is a v1 item, because that dataset needs the JUnit importer.',
     '',
   ].join('\n');
 }
