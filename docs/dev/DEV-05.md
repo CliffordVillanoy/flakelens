@@ -1,6 +1,6 @@
 # DEV-05: Flake lab and generated fixtures
 
-**Status:** To do
+**Status:** Done (2026-11-20, commit `57049d7` on `feat/v0-engine`; 56 tests pass, all 8 lab labels match)
 
 **Goal:** Real Playwright run files with known answers, for the engine's tests and for the "Try sample data" button.
 

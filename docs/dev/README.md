@@ -13,7 +13,7 @@ Source of truth: `docs/SPEC.md`. Exact interfaces, test code and values: the lin
 | [DEV-02](DEV-02.md) | Dataset and run de-duplication | Backend | 5 | Done |
 | [DEV-03](DEV-03.md) | Flakiness score and labels | Backend | 6–7 | Done |
 | [DEV-04](DEV-04.md) | Default ranking | Backend | 8 | Done |
-| [DEV-05](DEV-05.md) | Flake lab and generated fixtures | Backend | 9 | To do |
+| [DEV-05](DEV-05.md) | Flake lab and generated fixtures | Backend | 9 | Done |
 | [DEV-06](DEV-06.md) | Lab acceptance and detection report | Backend | 10 | To do |
 | [DEV-07](DEV-07.md) | v0 engine review and merge | Fix or refinement | Final review | To do |
 
@@ -26,6 +26,8 @@ Order: DEV-02 → DEV-03 → DEV-04 → DEV-05 → DEV-06 → DEV-07. DEV-05 can
 - From DEV-03: score weights (0.60/0.25/0.15) are named constants in `score.ts`, not in `DEFAULT_CONFIG`. Move them into config when calibration starts.
 - From DEV-03: `buildDataset` (test helper) lives in `src/engine/score/testkit.ts`; confirm the UI bundle does not ship it.
 - From DEV-04: tie-break sorts file and title by code unit (not locale), then testId. Non-ASCII names sort by code point; revisit if users complain.
+- From DEV-05: the sample set has 13 runs (`run-bad.json` is a third run on commit c0). The UI sample banner should count runs from the data, not assume 12.
+- From DEV-05: timing delay is seeded at 0–150 or 250–400 ms around the 200 ms wait, so real timer jitter cannot change outcomes. Values in `flake-lab/README.md`.
 
 ## Next
 
