@@ -12,7 +12,7 @@ Source of truth: `docs/SPEC.md`. Exact interfaces, test code and values: the lin
 | [DEV-01](DEV-01.md) | Canonical data model and Playwright JSON importer | Backend | 2–4 | Done |
 | [DEV-02](DEV-02.md) | Dataset and run de-duplication | Backend | 5 | Done |
 | [DEV-03](DEV-03.md) | Flakiness score and labels | Backend | 6–7 | Done |
-| [DEV-04](DEV-04.md) | Default ranking | Backend | 8 | To do |
+| [DEV-04](DEV-04.md) | Default ranking | Backend | 8 | Done |
 | [DEV-05](DEV-05.md) | Flake lab and generated fixtures | Backend | 9 | To do |
 | [DEV-06](DEV-06.md) | Lab acceptance and detection report | Backend | 10 | To do |
 | [DEV-07](DEV-07.md) | v0 engine review and merge | Fix or refinement | Final review | To do |
@@ -25,6 +25,7 @@ Order: DEV-02 → DEV-03 → DEV-04 → DEV-05 → DEV-06 → DEV-07. DEV-05 can
 
 - From DEV-03: score weights (0.60/0.25/0.15) are named constants in `score.ts`, not in `DEFAULT_CONFIG`. Move them into config when calibration starts.
 - From DEV-03: `buildDataset` (test helper) lives in `src/engine/score/testkit.ts`; confirm the UI bundle does not ship it.
+- From DEV-04: tie-break sorts file and title by code unit (not locale), then testId. Non-ASCII names sort by code point; revisit if users complain.
 
 ## Next
 

@@ -1,6 +1,6 @@
 # DEV-04: Default ranking
 
-**Status:** To do
+**Status:** Done (2026-11-20, commit `dd36c7c` on `feat/v0-engine`; 52 tests pass)
 
 **Goal:** Put the tests worth fixing first at the top of the list.
 
