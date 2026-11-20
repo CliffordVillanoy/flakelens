@@ -5,3 +5,4 @@ test-results/
 playwright-report/
 flake-lab/out/
 .superpowers/
+.impeccable/hook.cache.json
