@@ -54,7 +54,7 @@ function parse(text: string, opts: ParseOptions): ImportResult {
   void config;
   let raw: unknown;
   try {
-    raw = JSON.parse(text.replace(/^﻿/, ''));
+    raw = JSON.parse(text.charCodeAt(0) === 0xfeff ? text.slice(1) : text);
   } catch {
     return failed(opts, 'import.fail.unreadable');
   }
