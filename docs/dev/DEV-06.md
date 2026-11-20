@@ -1,6 +1,6 @@
 # DEV-06: Lab acceptance and detection report
 
-**Status:** To do
+**Status:** Done (2026-11-20, commit `b3f3792` on `feat/v0-engine`; 62 tests pass. Finding: engine and Playwright baseline tie at 1.00, follow-up DEV-08)
 
 **Goal:** Prove the engine labels every flake-lab test correctly, and publish how well it finds flaky tests.
 
