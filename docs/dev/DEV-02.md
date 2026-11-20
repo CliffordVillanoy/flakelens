@@ -1,6 +1,6 @@
 # DEV-02: Dataset and run de-duplication
 
-**Status:** To do
+**Status:** Done (2026-11-20, commit `cb31a64` on `feat/v0-engine`; 27 tests pass)
 
 **Goal:** Collect many imports into one dataset without ever counting the same run twice.
 

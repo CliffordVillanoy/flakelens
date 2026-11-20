@@ -10,7 +10,7 @@ Source of truth: `docs/SPEC.md`. Exact interfaces, test code and values: the lin
 | --- | --- | --- | --- | --- |
 | [DEV-00](DEV-00.md) | Project foundation | Backend | 1 | Done |
 | [DEV-01](DEV-01.md) | Canonical data model and Playwright JSON importer | Backend | 2–4 | Done |
-| [DEV-02](DEV-02.md) | Dataset and run de-duplication | Backend | 5 | To do |
+| [DEV-02](DEV-02.md) | Dataset and run de-duplication | Backend | 5 | Done |
 | [DEV-03](DEV-03.md) | Flakiness score and labels | Backend | 6–7 | To do |
 | [DEV-04](DEV-04.md) | Default ranking | Backend | 8 | To do |
 | [DEV-05](DEV-05.md) | Flake lab and generated fixtures | Backend | 9 | To do |
@@ -18,6 +18,10 @@ Source of truth: `docs/SPEC.md`. Exact interfaces, test code and values: the lin
 | [DEV-07](DEV-07.md) | v0 engine review and merge | Fix or refinement | Final review | To do |
 
 Order: DEV-02 → DEV-03 → DEV-04 → DEV-05 → DEV-06 → DEV-07. DEV-05 can run in parallel with DEV-02 to DEV-04 (it only needs `hashString`).
+
+## Notes for later tickets
+
+- From DEV-02: `importId` hashes file name + import time + run ID. Two imports of the same file with an identical `importedAt` would share an ID. Not reachable with a real clock, but the storage ticket (v0 UI) should use a unique key or check for this.
 
 ## Next
 
