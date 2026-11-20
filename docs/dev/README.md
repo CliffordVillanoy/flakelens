@@ -17,9 +17,11 @@ Source of truth: `docs/SPEC.md`. Exact interfaces, test code and values: the lin
 | [DEV-06](DEV-06.md) | Lab acceptance and detection report | Backend | 10 | Done |
 | [DEV-08](DEV-08.md) | Flake lab, cross-run flaky test | Enhancement | (added) | Done |
 | [DEV-09](DEV-09.md) | CI cost settings | Enhancement | (added) | Done |
-| [DEV-07](DEV-07.md) | v0 engine review and merge | Fix or refinement | Final review | Awaiting merge approval |
+| [DEV-07](DEV-07.md) | v0 engine review and merge | Fix or refinement | Final review | Done (merged, pushed) |
 
 Order: DEV-02 → DEV-03 → DEV-04 → DEV-05 → DEV-06 → DEV-08 → DEV-07. DEV-08 was added after DEV-06 showed the lab could not separate the engine from Playwright's own flaky flag; it runs before the final review so the review covers it. DEV-05 can run in parallel with DEV-02 to DEV-04 (it only needs `hashString`).
+
+Merged into `main` and pushed to https://github.com/CliffordVillanoy/flakelens on 2026-11-20 (merge `9c5d84e`). History was rewritten before the push (local paths scrubbed, attribution trailers removed), so commit hashes quoted in the tickets are stale; commit subjects are unchanged.
 
 ## Notes for later tickets
 

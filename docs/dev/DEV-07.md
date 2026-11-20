@@ -1,6 +1,6 @@
 # DEV-07: v0 engine review and merge
 
-**Status:** Review done, fixes in `8ecb0db` (68 tests pass). Waiting for the user's merge approval.
+**Status:** Done. Review fixes merged into `main` (merge `9c5d84e`) and pushed to GitHub on 2026-11-20.
 
 **Goal:** An independent review of the whole engine branch, fixes for anything serious, then merge into `main`.
 
