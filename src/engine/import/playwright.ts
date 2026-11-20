@@ -62,17 +62,22 @@ function parse(text: string, opts: ParseOptions): ImportResult {
   if (text.length > config.maxFileChars) {
     return failed(opts, 'import.fail.tooLarge', { limit: `${Math.round(config.maxFileChars / 1_000_000)} MB` });
   }
+  // Strip a UTF-8 BOM before parsing and hashing, so a BOM copy of a report gets the same run ID.
+  const body = text.charCodeAt(0) === 0xfeff ? text.slice(1) : text;
   let raw: unknown;
   try {
-    raw = JSON.parse(text.charCodeAt(0) === 0xfeff ? text.slice(1) : text);
+    raw = JSON.parse(body);
   } catch {
     return failed(opts, 'import.fail.unreadable');
   }
   const report = reportSchema.safeParse(raw);
   if (!report.success) return failed(opts, 'import.fail.format');
 
-  const startedAt = report.data.stats?.startTime ?? null;
-  const runId = hashString((startedAt ?? '') + SEP + text);
+  // An unreadable start time leaves the field empty (spec 9.1); readable ones are normalized to UTC ISO.
+  const rawStart = report.data.stats?.startTime;
+  const startMs = typeof rawStart === 'string' ? Date.parse(rawStart) : NaN;
+  const startedAt = Number.isNaN(startMs) ? null : new Date(startMs).toISOString();
+  const runId = hashString((startedAt ?? '') + SEP + body);
   const importId = hashString(opts.fileName + SEP + opts.importedAt + SEP + runId);
   const commit = opts.commitLabel?.trim() || null;
   const notices: Notice[] = [];
@@ -84,6 +89,7 @@ function parse(text: string, opts: ParseOptions): ImportResult {
   const attempts: Attempt[] = [];
   const failures: Failure[] = [];
   const seenIds = new Set<string>();
+  const dupeCount = new Map<string, number>();
   let found = 0;
   let badDurations = 0;
   let dupes = 0;
@@ -108,13 +114,29 @@ function parse(text: string, opts: ParseOptions): ImportResult {
         return;
       }
       const specFile = spec.data.file ?? file;
+      // Playwright rejects duplicate titles, so several tests for one project in one spec are --repeat-each repeats.
+      const repeats = new Map<string, { testId: string; count: number }>();
       for (const t of specTests) {
         const project = t.data.projectName ?? '';
-        const testKey = hashString([specFile, ...suitePath, title].join(SEP));
-        let testId = hashString([specFile, ...suitePath, title, project].join(SEP));
-        if (seenIds.has(testId)) testId = hashString(testId + '#' + ++dupes);
-        seenIds.add(testId);
-        tests.push({ testId, testKey, file: specFile, suitePath, title, project });
+        let repeat = repeats.get(project);
+        if (repeat) repeat.count++;
+        else {
+          const testKey = hashString([specFile, ...suitePath, title].join(SEP));
+          const base = hashString([specFile, ...suitePath, title, project].join(SEP));
+          let testId = base;
+          if (seenIds.has(base)) {
+            // Counter per base ID, so one new duplicate elsewhere in the file does not renumber this one.
+            const n = (dupeCount.get(base) ?? 0) + 1;
+            dupeCount.set(base, n);
+            dupes++;
+            testId = hashString(base + '#' + n);
+          }
+          seenIds.add(base);
+          tests.push({ testId, testKey, file: specFile, suitePath, title, project });
+          repeat = { testId, count: 0 };
+          repeats.set(project, repeat);
+        }
+        const { testId, count: repeatIndex } = repeat;
         let noStatus = 0;
         (t.data.results ?? []).forEach((resRaw, index) => {
           found++;
@@ -129,8 +151,8 @@ function parse(text: string, opts: ParseOptions): ImportResult {
           const d = r.duration;
           const durationMs = typeof d === 'number' && Number.isFinite(d) && d >= 0 ? d : null;
           if (durationMs === null) badDurations++;
-          const attemptId = hashString(runId + testId + retryIndex);
-          attempts.push({ attemptId, runId, testId, retryIndex, status, durationMs });
+          const attemptId = hashString([runId, testId, repeatIndex, retryIndex].join(SEP));
+          attempts.push({ attemptId, runId, testId, repeatIndex, retryIndex, status, durationMs });
           if (status === 'fail') failures.push({ attemptId, ...errorOf(r) });
         });
         if (noStatus > 0)

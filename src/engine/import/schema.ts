@@ -5,7 +5,7 @@ export const reportSchema = z
   .object({
     config: z.object({}).loose(),
     suites: z.array(z.unknown()),
-    stats: z.object({ startTime: z.string().optional() }).loose().optional(),
+    stats: z.object({ startTime: z.unknown().optional() }).loose().optional(),
   })
   .loose();
 

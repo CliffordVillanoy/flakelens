@@ -8,14 +8,19 @@ const W_EVIDENCE = 0.6;
 const W_FLIPS = 0.25;
 const W_RECENCY = 0.15;
 
-// Chronological: start time where both runs have one, otherwise import order.
-function compareRuns(a: Run, b: Run): number {
-  if (a.startedAt !== null && b.startedAt !== null && a.startedAt !== b.startedAt) return a.startedAt < b.startedAt ? -1 : 1;
-  return a.order - b.order;
+// Chronological order as a strict total order (spec 11): an untimed run takes the start time of the timed run
+// before it in import order ('' if none), so it stays next to the run it followed; ties break by import order.
+function chronological(runs: Run[]): Run[] {
+  let last = '';
+  const keyed = [...runs]
+    .sort((a, b) => a.order - b.order || cmp(a.runId, b.runId))
+    .map((run) => ({ run, time: (last = run.startedAt ?? last) }));
+  return keyed.sort((a, b) => cmp(a.time, b.time) || a.run.order - b.run.order || cmp(a.run.runId, b.run.runId)).map((k) => k.run);
 }
+const cmp = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
 
 export function scoreTests(ds: Dataset, config: EngineConfig = DEFAULT_CONFIG): TestScore[] {
-  const runs = [...ds.runs].sort(compareRuns);
+  const runs = chronological(ds.runs);
   const rank = new Map(runs.map((r, i) => [r.runId, i]));
   const runById = new Map(runs.map((r) => [r.runId, r]));
   const firstRunId = runs[0]?.runId;
@@ -29,7 +34,7 @@ export function scoreTests(ds: Dataset, config: EngineConfig = DEFAULT_CONFIG): 
 
   return ds.tests.map((test) => {
     const all = (byTest.get(test.testId) ?? []).sort(
-      (a, b) => rank.get(a.runId)! - rank.get(b.runId)! || a.retryIndex - b.retryIndex,
+      (a, b) => rank.get(a.runId)! - rank.get(b.runId)! || a.repeatIndex - b.repeatIndex || a.retryIndex - b.retryIndex,
     );
     const counted = all.filter((a) => a.status !== 'skip');
     const fails = counted.map((a) => a.status === 'fail');

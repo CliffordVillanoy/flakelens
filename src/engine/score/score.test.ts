@@ -127,3 +127,19 @@ it('input order of runs with timestamps does not change results', () => {
     }),
   );
 });
+
+it('review I2: mixed timed and untimed runs give one order, whatever the array order', () => {
+  // A (order 0, t=2), B (untimed, order 1), C (order 2, t=1): B follows A on import, C is earliest by time.
+  const ds = buildDataset([{ tests: { t: ['fail'] } }, { tests: { t: ['fail'] } }, { tests: { t: ['pass'] } }]);
+  ds.runs[0]!.startedAt = '2026-01-01T00:02:00.000Z';
+  ds.runs[2]!.startedAt = '2026-01-01T00:01:00.000Z';
+  const perms = [[0, 1, 2], [0, 2, 1], [1, 0, 2], [1, 2, 0], [2, 0, 1], [2, 1, 0]];
+  const results = perms.map((p) => {
+    const s = scoreTests({ ...ds, runs: p.map((i) => ds.runs[i]!) })[0]!;
+    return [s.score, s.flipRate, s.firstSeenRunId, s.lastFailedRunId];
+  });
+  for (const r of results) expect(r).toEqual(results[0]);
+  // C first (earliest time), then A, then B (inherits A's time, after A on import): P F F
+  expect(results[0]![2]).toBe('run2');
+  expect(results[0]![3]).toBe('run1');
+});

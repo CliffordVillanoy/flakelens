@@ -16,7 +16,7 @@ export function buildDataset(
         ds.tests.push({ testId, testKey: testId, file: 'x.spec.ts', suitePath: [], title: testId, project: '' });
       }
       statuses.forEach((status, retryIndex) =>
-        ds.attempts.push({ attemptId: `${runId}:${testId}:${retryIndex}`, runId, testId, retryIndex, status, durationMs }),
+        ds.attempts.push({ attemptId: `${runId}:${testId}:${retryIndex}`, runId, testId, repeatIndex: 0, retryIndex, status, durationMs }),
       );
     }
   });

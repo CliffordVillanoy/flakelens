@@ -54,6 +54,7 @@ export interface Attempt {
   attemptId: string;
   runId: string;
   testId: string;
+  repeatIndex: number; // --repeat-each copy within the run, 0 when not repeated
   retryIndex: number;
   status: AttemptStatus;
   durationMs: number | null;
