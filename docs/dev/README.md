@@ -11,7 +11,7 @@ Source of truth: `docs/SPEC.md`. Exact interfaces, test code and values: the lin
 | [DEV-00](DEV-00.md) | Project foundation | Backend | 1 | Done |
 | [DEV-01](DEV-01.md) | Canonical data model and Playwright JSON importer | Backend | 2–4 | Done |
 | [DEV-02](DEV-02.md) | Dataset and run de-duplication | Backend | 5 | Done |
-| [DEV-03](DEV-03.md) | Flakiness score and labels | Backend | 6–7 | To do |
+| [DEV-03](DEV-03.md) | Flakiness score and labels | Backend | 6–7 | Done |
 | [DEV-04](DEV-04.md) | Default ranking | Backend | 8 | To do |
 | [DEV-05](DEV-05.md) | Flake lab and generated fixtures | Backend | 9 | To do |
 | [DEV-06](DEV-06.md) | Lab acceptance and detection report | Backend | 10 | To do |
@@ -22,6 +22,9 @@ Order: DEV-02 → DEV-03 → DEV-04 → DEV-05 → DEV-06 → DEV-07. DEV-05 can
 ## Notes for later tickets
 
 - From DEV-02: `importId` hashes file name + import time + run ID. Two imports of the same file with an identical `importedAt` would share an ID. Not reachable with a real clock, but the storage ticket (v0 UI) should use a unique key or check for this.
+
+- From DEV-03: score weights (0.60/0.25/0.15) are named constants in `score.ts`, not in `DEFAULT_CONFIG`. Move them into config when calibration starts.
+- From DEV-03: `buildDataset` (test helper) lives in `src/engine/score/testkit.ts`; confirm the UI bundle does not ship it.
 
 ## Next
 

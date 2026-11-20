@@ -13,10 +13,11 @@
 
 **Acceptance Criteria:**
 1. Review covers all 5 Review Focus items in the plan: BOM files, re-imports under a new label, all-skipped tests, missing start times, multi-project tests.
-2. Every Critical and Important finding is fixed and has a regression test, or is recorded as a ruling with its cost if wrong.
-3. Minor findings are listed as deferred, not fixed.
-4. Full suite, typecheck and lint green after the fixes.
-5. The user sees every ruling and deferred minor before merging.
+2. Review also checks the DEV-03 run-order ruling: `compareRuns` compares `startedAt` only when both runs have one, so a mix of timed and untimed runs is not a strict total order. Decide whether results can change with input order in that mix, and fix with a test if so.
+3. Every Critical and Important finding is fixed and has a regression test, or is recorded as a ruling with its cost if wrong.
+4. Minor findings are listed as deferred, not fixed.
+5. Full suite, typecheck and lint green after the fixes.
+6. The user sees every ruling and deferred minor before merging.
 
 **Details:**
 - Plan: `docs/superpowers/plans/2026-11-20-v0-engine.md`, "Final Review" in superpowers:executing-plans.

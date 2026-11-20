@@ -1,6 +1,6 @@
 # DEV-03: Flakiness score and labels
 
-**Status:** To do
+**Status:** Done (2026-11-20, commits `d3a1eee`, `ff062e5` on `feat/v0-engine`; 47 tests pass)
 
 **Goal:** Give every test a 0 to 100 flakiness score and one label: Flaky, Unproven, Failing, Stable or Not enough data.
 
