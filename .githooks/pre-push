@@ -1,0 +1,4 @@
+#!/bin/sh
+# Runs the CI checks locally before a push, so failures never reach (and bill) GitHub Actions.
+# Switched on by `npm install` (prepare script). Skip once with `git push --no-verify`.
+npm run typecheck && npm run lint && npm test

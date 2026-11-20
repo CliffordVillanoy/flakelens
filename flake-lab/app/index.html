@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Flake Lab Shop</title>
+  </head>
+  <body>
+    <h1>Flake Lab Shop</h1>
+    <ul id="cart"></ul>
+    <button id="add">Add item</button>
+    <p id="total"></p>
+    <button id="ready" hidden>Checkout</button>
+    <label>Username <input id="username" /></label>
+    <button id="check">Check name</button>
+    <p id="name-result"></p>
+    <footer>Flake Lab footer</footer>
+    <script>
+      const q = new URLSearchParams(location.search);
+      // Injected cause (timing): the button appears after a delay the test does not wait for.
+      setTimeout(() => (document.getElementById('ready').hidden = false), Number(q.get('delay') ?? 0));
+      // Injected cause (regression): odd commits ship a wrong total.
+      const commit = Number(q.get('commit') ?? 0);
+      document.getElementById('total').textContent = commit % 2 === 1 ? 'Total: 11' : 'Total: 10';
+      // Injected cause (random data): these names are already taken (4 of the 10 the test can pick).
+      const taken = ['ana', 'ben', 'cleo', 'dev'];
+      document.getElementById('check').onclick = () => {
+        const name = document.getElementById('username').value;
+        document.getElementById('name-result').textContent = taken.includes(name) ? 'taken' : 'available';
+      };
+      document.getElementById('add').onclick = () => {
+        const li = document.createElement('li');
+        li.textContent = 'item';
+        document.getElementById('cart').append(li);
+      };
+    </script>
+  </body>
+</html>

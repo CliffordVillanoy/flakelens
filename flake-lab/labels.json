@@ -1,0 +1,11 @@
+{
+  "stable: shows heading": "stable",
+  "stable: adds item": "stable",
+  "stable: shows footer": "stable",
+  "flaky: timing": "flaky",
+  "flaky: random data": "flaky",
+  "failing: wrong heading": "failing",
+  "unproven: regression": "suspect",
+  "new: added last run": "insufficient",
+  "flaky: cross-run only": "flaky"
+}
