@@ -1,6 +1,6 @@
 # DEV-08: Flake lab, cross-run flaky test
 
-**Status:** To do (runs before DEV-07)
+**Status:** Done (2026-11-20, commit `5addbbb` on `feat/v0-engine`; 64 tests pass; engine recall 1.00 vs Playwright baseline 0.67)
 
 **Goal:** Show, with the lab, the case FlakeLens exists for: a test that is flaky across runs of the same commit, which Playwright's own retry flag cannot see.
 

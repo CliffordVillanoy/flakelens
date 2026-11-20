@@ -15,7 +15,7 @@ Source of truth: `docs/SPEC.md`. Exact interfaces, test code and values: the lin
 | [DEV-04](DEV-04.md) | Default ranking | Backend | 8 | Done |
 | [DEV-05](DEV-05.md) | Flake lab and generated fixtures | Backend | 9 | Done |
 | [DEV-06](DEV-06.md) | Lab acceptance and detection report | Backend | 10 | Done |
-| [DEV-08](DEV-08.md) | Flake lab, cross-run flaky test | Enhancement | (added) | To do |
+| [DEV-08](DEV-08.md) | Flake lab, cross-run flaky test | Enhancement | (added) | Done |
 | [DEV-07](DEV-07.md) | v0 engine review and merge | Fix or refinement | Final review | To do |
 
 Order: DEV-02 → DEV-03 → DEV-04 → DEV-05 → DEV-06 → DEV-08 → DEV-07. DEV-08 was added after DEV-06 showed the lab could not separate the engine from Playwright's own flaky flag; it runs before the final review so the review covers it. DEV-05 can run in parallel with DEV-02 to DEV-04 (it only needs `hashString`).
