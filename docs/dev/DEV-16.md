@@ -1,6 +1,6 @@
 # DEV-16: Test detail panel and keyboard navigation
 
-**Status:** To do
+**Status:** Done (2026-11-21, commit `2e00f94` on `feat/v0-ui`; 194 tests pass)
 
 **Goal:** Show the evidence behind a label and let users move through tests by keyboard.
 

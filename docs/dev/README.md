@@ -32,7 +32,7 @@ Merged into `main` and pushed to https://github.com/CliffordVillanoy/flakelens o
 | [DEV-13](DEV-13.md) | Start screen and import states | Frontend | 3 | Done |
 | [DEV-14](DEV-14.md) | Tests screen: health box, tabs, ranked table | Frontend | 4 | Done |
 | [DEV-15](DEV-15.md) | Table controls and export | Frontend | 5 | Done |
-| [DEV-16](DEV-16.md) | Test detail panel and keyboard navigation | Frontend | 6 | To do |
+| [DEV-16](DEV-16.md) | Test detail panel and keyboard navigation | Frontend | 6 | Done |
 | [DEV-17](DEV-17.md) | Loaded data, clear data, edge states, shortcuts sheet | Frontend | 7 | To do |
 | [DEV-18](DEV-18.md) | End-to-end, accessibility, privacy and deploy | Both (tests, CI, hosting) | 8 | To do |
 
@@ -59,3 +59,6 @@ Order: DEV-11 → DEV-12 → DEV-13 → DEV-14 → DEV-15 → DEV-16 → DEV-17 
 - From DEV-14: sample lab durations are tiny, so wasted time shows 0.1 to 0.3 min in the demo. Honest numbers, weak demo; decide before launch whether the sample needs longer lab durations.
 - For the UI/UX chat (from DEV-15): interim keys `tests.columns/.title/.locked/.reset/.saved`, `tests.col.score/.mixed/.flip/.lastFailed/.project`, `cell.fraction`, `tests.density/.compact/.comfortable`, `tests.filters/.status/.search/.remove/.clear`, `tests.why`, `tip.export`, `tests.banner.sample.seeWhy`, `sort.rank/.wasted/.test`; board 8 compact shows the path inline but DESIGN.md says hover only (followed DESIGN.md); clipboard-failure copy needed (interim `toast.copyFailed` set by planning in DEV-16).
 - Decision (planning, DEV-15): sample banner "(see why)" links to Loaded data (#/data), as board 3 does; the dev chat was right and the earlier ask was wrong.
+- For the UI/UX chat (from DEV-16): interim keys `panel.fileBar`, `panel.history.list/.show/.legend.mixed`, `panel.failure.diff/.metaNoDate`, `run.attempt.pass/.fail/.retry/.skip`, `summary.title/.status/.wasted/.failure/.footer`, `toast.copyFailed` ("Couldn't copy. Your browser blocked the clipboard."), `panel.wasted.label`, `panel.close.hint`; panel headings use 600 weight (DESIGN.md) vs the board's 700; panel is 600px wide on desktop vs the board's 520px.
+- For DEV-18 (from DEV-16): check a click on "Try sample data" that once did not navigate (possible dev-reload race); check that the virtualised table recovers after its container was hidden during a live resize; the page gutter at exactly 640px is 24px (Tailwind max-sm stops at 639px); banners are hidden on phone while a panel is open.
+- For DEV-17 (from the DEV-15 security review): CSV and JSON downloads must reuse the control-character cleanup from `escapeMd` plus formula-safe CSV cells; test with a name containing a newline and a leading `=`.
