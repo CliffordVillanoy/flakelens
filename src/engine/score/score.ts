@@ -1,5 +1,6 @@
 import { DEFAULT_CONFIG, type EngineConfig } from '../config';
-import type { Attempt, Dataset, Label, Run, TestScore } from '../types';
+import type { Attempt, Dataset, Label, TestScore } from '../types';
+import { orderRuns } from '../view';
 import { countFlips } from './flips';
 import { ema, wilsonLower } from './stats';
 
@@ -8,19 +9,8 @@ const W_EVIDENCE = 0.6;
 const W_FLIPS = 0.25;
 const W_RECENCY = 0.15;
 
-// Chronological order as a strict total order (spec 11): an untimed run takes the start time of the timed run
-// before it in import order ('' if none), so it stays next to the run it followed; ties break by import order.
-function chronological(runs: Run[]): Run[] {
-  let last = '';
-  const keyed = [...runs]
-    .sort((a, b) => a.order - b.order || cmp(a.runId, b.runId))
-    .map((run) => ({ run, time: (last = run.startedAt ?? last) }));
-  return keyed.sort((a, b) => cmp(a.time, b.time) || a.run.order - b.run.order || cmp(a.run.runId, b.run.runId)).map((k) => k.run);
-}
-const cmp = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
-
 export function scoreTests(ds: Dataset, config: EngineConfig = DEFAULT_CONFIG): TestScore[] {
-  const runs = chronological(ds.runs);
+  const runs = orderRuns(ds.runs);
   const rank = new Map(runs.map((r, i) => [r.runId, i]));
   const runById = new Map(runs.map((r) => [r.runId, r]));
   const firstRunId = runs[0]?.runId;

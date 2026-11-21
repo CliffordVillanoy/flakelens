@@ -55,6 +55,7 @@ export const catalog = {
   'import.partial.noStatus': '{count, plural, one {# result had} other {# results had}} no status: "{test}" (run {run})',
   'import.partial.noName': '{count, plural, one {# test had} other {# tests had}} no name (run {run}, position {pos})',
   'import.partial.badDuration': '{count} results had an unreadable duration. They were kept without it.',
+  'import.partial.badDate': "{file}: the run start time couldn't be read, so this run keeps its import order.",
   'import.dupeIds': '{count} tests shared a name. They were told apart by project name and position.',
   'import.dupeRun': "This run was already loaded, so it wasn't counted twice.",
   'import.noCommit': 'No commit info found in {file}. Evidence across commits will be limited.',

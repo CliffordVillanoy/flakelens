@@ -82,6 +82,9 @@ function parse(text: string, opts: ParseOptions): ImportResult {
   const commit = opts.commitLabel?.trim() || null;
   const notices: Notice[] = [];
   if (commit === null) notices.push({ code: 'import.noCommit', severity: 'info', params: { file: opts.fileName } });
+  // Present but unreadable: the run keeps its import order; info only, so the import stays a success.
+  if (rawStart !== undefined && rawStart !== null && startedAt === null)
+    notices.push({ code: 'import.partial.badDate', severity: 'info', params: { file: opts.fileName } });
   const warn = (code: NoticeCode, params: Record<string, string | number>, location?: Notice['location']) =>
     notices.push({ code, severity: 'warning', params, ...(location ? { location } : {}) });
 
