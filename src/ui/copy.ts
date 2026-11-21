@@ -255,14 +255,20 @@ export const catalog = {
   'data.back': 'Back to tests',
   'data.title': 'Loaded data',
   'data.lead': 'Rankings use only these files. Everything stays in this browser.',
+  'data.summary': '{files, plural, one {# file} other {# files}} · {runs, plural, one {# run} other {# runs}} · last added {date}.',
   'data.files': 'Files · {count}',
-  'data.file.meta': 'Added {date} · {runs} runs, {tests} tests',
-  'data.file.meta.notImported': 'Added {date} · {runs} runs, {tests} tests, {n} not imported',
+  'data.file.meta': 'Added {date} · {runs, plural, one {# run} other {# runs}}, {tests, plural, one {# test} other {# tests}}',
+  'data.file.meta.notImported':
+    'Added {date} · {runs, plural, one {# run} other {# runs}}, {tests, plural, one {# test} other {# tests}}, {n} not imported',
   'data.file.ok': 'Imported',
   'data.file.partial': 'Partly imported',
+  // Interim copy (DEV-17): a file that could not be imported at all still has a row.
+  'data.file.failed': "Couldn't import",
   'data.notices': 'Notices · {count}',
-  'data.download': 'Download not-imported list: CSV / JSON',
+  'data.download.csv': 'CSV',
+  'data.download.json': 'JSON',
   'data.runs': 'Runs · {count}',
+  'data.runs.label': 'Runs',
   'data.runs.col.run': 'Run',
   'data.runs.col.commit': 'Commit',
   'data.runs.col.branch': 'Branch',
@@ -275,7 +281,7 @@ export const catalog = {
   'data.remove.action': 'Clear all data',
 
   // Empty and edge states
-  'empty.filter.title': 'No {status} tests in these {runs} runs',
+  'empty.filter.title': 'No {status} tests in {runs, plural, one {this # run} other {these # runs}}',
   'empty.filter.body': 'Good news. More runs make this more certain.',
   'empty.filter.action': 'Show all tests',
   'empty.search.title': 'No test matches "{query}"',
@@ -287,17 +293,20 @@ export const catalog = {
   'missing.test.action': 'Back to tests',
   'storage.fail':
     "Your saved data couldn't be read. Reload the page to try again. If it keeps happening, clear all data and import your files again.",
+  'storage.reload': 'Reload page',
   'storage.off': "This browser won't keep your data after you close the tab. Results are still shown for now.",
 
   // Clear all data dialog
   'clear.title': 'Clear all data?',
-  'clear.body': "This deletes {files} files, {runs} runs and all results from this browser. You can't undo this.",
+  'clear.body':
+    "This deletes {files, plural, one {# file} other {# files}}, {runs, plural, one {# run} other {# runs}} and all results from this browser. You can't undo this.",
   'clear.keep': 'Keep my data',
   'clear.confirm': 'Clear all data',
   'clear.done': 'All local data cleared',
 
   // Shortcuts sheet
   'keys.title': 'Keyboard shortcuts',
+  'keys.close': 'Close',
   'keys.toggle': 'Single-key shortcuts',
   'keys.toggle.hint': 'They never fire while you type in a text field.',
   'keys.list': 'j / k: Next / previous test · Enter: Open details · Esc: Close details · /: Search · ?: This sheet',

@@ -88,7 +88,8 @@ it('missing status, name and duration: counts first, then the examples, View all
   expect(b).toHaveTextContent('1 results had an unreadable duration. They were kept without it.');
   expect(within(b).getAllByRole('listitem')).toHaveLength(3); // up to 3 examples
   expect(within(b).getByRole('link', { name: 'View all notices' })).toHaveAttribute('href', '#/data');
-  expect(within(b).getByRole('button', { name: 'Download not-imported list' })).toBeInTheDocument();
+  expect(within(b).getByRole('button', { name: 'Download not-imported list: CSV' })).toBeInTheDocument();
+  expect(within(b).getByRole('button', { name: 'Download not-imported list: JSON' })).toBeInTheDocument();
 });
 
 it('same run twice and missing commit info show their notices', async () => {

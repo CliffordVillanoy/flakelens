@@ -303,3 +303,11 @@
     max-height: none !important;
   }
 }
+
+/* Phone width (<= 640px, as the boards): page gutters drop to 16px. Tailwind's max-sm stops at 639px. */
+@media (max-width: 640px) {
+  .pg {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}

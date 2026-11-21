@@ -1,20 +1,10 @@
 import { CircleAlert, CircleCheck, X } from 'lucide-react';
-import type { ImportRecord, NoticeCode } from '@/engine/types';
+import type { NoticeCode } from '@/engine/types';
 import { t, type CopyKey } from '../copy';
 import type { LastImport } from '../data/store';
-import { secondaryButton } from './buttons';
+import { DownloadList } from './DownloadList';
 
 const MAX_EXAMPLES = 3; // spec 9.1: counts first, then up to three example problems
-
-function downloadNotImported(records: ImportRecord[]) {
-  const rows = records.flatMap((r) =>
-    r.notices.filter((n) => n.severity === 'warning').map((n) => ({ file: r.fileName, code: n.code, ...n.params })),
-  );
-  const url = URL.createObjectURL(new Blob([JSON.stringify(rows, null, 2)], { type: 'application/json' }));
-  const a = Object.assign(document.createElement('a'), { href: url, download: 'not-imported.json' });
-  a.click();
-  URL.revokeObjectURL(url);
-}
 
 // Board 2, state B: one banner per drop for the files that imported. Failed files show at the drop zone instead.
 export function ImportBanner({
@@ -68,11 +58,7 @@ export function ImportBanner({
         {(warned || notImported > 0) && (
           <div className="flex flex-wrap items-center gap-3">
             <a href="#/data">{t('import.viewNotices')}</a>
-            {notImported > 0 && (
-              <button type="button" className={`${secondaryButton} h-7 text-[13px]`} onClick={() => downloadNotImported(records)}>
-                {t('import.downloadList')}
-              </button>
-            )}
+            <DownloadList records={records} />
           </div>
         )}
       </div>

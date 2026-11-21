@@ -2,12 +2,14 @@ import { useEffect, useRef, useState, type DragEvent } from 'react';
 import { Header, type DataMode } from './components/Header';
 import { filesFrom } from './components/DropZone';
 import { LeaveSampleDialog } from './components/LeaveSampleDialog';
-import { t } from './copy';
 import { useStore } from './data/store';
 import { navigate, useRoute } from './lib/router';
-import { shortcutsSheet } from './lib/shortcuts';
+import { shortcutsSheet, useShortcuts } from './lib/shortcuts';
 import { Start } from './screens/Start';
+import { LoadedData } from './screens/LoadedData';
 import { Tests } from './screens/Tests';
+import { ShortcutsSheet } from './components/ShortcutsSheet';
+import { StorageBanner } from './components/StorageBanner';
 import { Toasts } from './components/Toasts';
 
 const HEADER_MODE = { empty: 'none', sample: 'sample', user: 'own' } as const satisfies Record<string, DataMode>;
@@ -52,10 +54,14 @@ export function App() {
     },
   };
 
+  // "?" opens the shortcuts sheet on every screen; Tests registers it too and the first handler wins.
+  useShortcuts({ '?': () => shortcutsSheet.open() });
+
   if (!ready) return null;
   return (
     <div className="flex min-h-screen flex-col" {...dropAnywhere}>
       <Header mode={HEADER_MODE[s.mode]} onAddFiles={openPicker} onHelp={() => shortcutsSheet.open()} />
+      <StorageBanner />
       <input
         ref={picker}
         type="file"
@@ -72,13 +78,13 @@ export function App() {
         {s.mode === 'empty' ? (
           <Start onFiles={onFiles} onBrowse={openPicker} />
         ) : route.name === 'data' ? (
-          // Loaded data arrives in DEV-17.
-          <h1 className="sr-only">{t('data.title')}</h1>
+          <LoadedData onExitSample={exitSample} />
         ) : (
           <Tests onFiles={onFiles} onBrowse={openPicker} onExitSample={exitSample} />
         )}
       </main>
       <Toasts />
+      <ShortcutsSheet />
       <LeaveSampleDialog
         count={pending?.length ?? null}
         onStay={() => setPending(null)}

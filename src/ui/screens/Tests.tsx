@@ -2,12 +2,16 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Search } from 'lucide-react';
 import { t } from '../copy';
 import { useStore } from '../data/store';
+import type { Label } from '@/engine/types';
 import { countLine, datasetSummary, filterRows, groupRows, health, isLabel, RANK_SORT, sortRows, tableRows, topFlakyMarkdown, type Sort } from '../data/selectors';
 import { DropZone } from '../components/DropZone';
 import { ImportBanner } from '../components/ImportBanner';
 import { ImportProgress } from '../components/ImportProgress';
 import { COLUMNS, DEFAULT_COLUMNS, RankedTable, type ColumnKey } from '../components/RankedTable';
+import { EmptyState } from '../components/EmptyState';
 import { RunLegend } from '../components/RunStrip';
+import { secondaryButton } from '../components/buttons';
+import { suggestSearch } from '../data/loaded';
 import { SampleBanner } from '../components/SampleBanner';
 import { StatusTabs } from '../components/StatusTabs';
 import { TestHealth } from '../components/TestHealth';
@@ -114,7 +118,7 @@ export function Tests({
   });
 
   return (
-    <div className="mx-auto flex w-full max-w-[1232px] flex-col gap-3.5 px-6 py-4 max-sm:px-4">
+    <div className="pg mx-auto flex w-full max-w-[1232px] flex-col gap-3.5 px-6 py-4">
       <h1 className="sr-only">{t('tests.h1')}</h1>
       <div className="listpane flex flex-col gap-3.5" data-panel={panelOpen}>
       {s.mode === 'sample' && !sampleHidden && (
@@ -207,6 +211,16 @@ export function Tests({
 
       <div className="flex flex-wrap items-start gap-6">
         <div className="listpane min-w-0 flex-[1_1_420px]" data-panel={panelOpen}>
+          {shown.length === 0 && rows.length > 0 ? (
+            <NoRows
+              q={q.trim()}
+              status={isLabel(status) ? status : null}
+              runs={s.dataset.runs.length}
+              suggestion={q.trim() ? suggestSearch(rows, q) : null}
+              onSearch={(next) => navigate(listHash(isLabel(status) ? status : 'all', next))}
+              onShowAll={() => navigate(listHash('all', q))}
+            />
+          ) : (
           <RankedTable
             rows={shown}
             selectedId={route.testId}
@@ -218,6 +232,7 @@ export function Tests({
             onSort={setSort}
             query={listQuery}
           />
+          )}
         </div>
         {panelOpen &&
           (openRow ? (
@@ -249,3 +264,45 @@ export function Tests({
   );
 }
 
+
+// Board 6 states A and B: no row matches the search, or the status filter has no tests.
+function NoRows({
+  q,
+  status,
+  runs,
+  suggestion,
+  onSearch,
+  onShowAll,
+}: {
+  q: string;
+  status: Label | null;
+  runs: number;
+  suggestion: string | null;
+  onSearch: (q: string) => void;
+  onShowAll: () => void;
+}) {
+  const button = `${secondaryButton} h-9 px-3.5 text-sm`;
+  if (q)
+    return (
+      <EmptyState title={t('empty.search.title', { query: q })} body={t('empty.search.body')}>
+        {suggestion && (
+          <button type="button" className={button} onClick={() => onSearch(suggestion)}>
+            {t('empty.search.suggest', { suggestion })}
+          </button>
+        )}
+        <button type="button" className={button} onClick={() => onSearch('')}>
+          {t('empty.search.clear')}
+        </button>
+      </EmptyState>
+    );
+  return (
+    <EmptyState
+      title={t('empty.filter.title', { status: status ? t(`status.${status}`) : '', runs })}
+      body={status === 'flaky' ? t('empty.filter.body') : undefined}
+    >
+      <button type="button" className={button} onClick={onShowAll}>
+        {t('empty.filter.action')}
+      </button>
+    </EmptyState>
+  );
+}

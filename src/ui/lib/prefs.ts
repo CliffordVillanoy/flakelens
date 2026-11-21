@@ -18,3 +18,18 @@ export function setPref(key: string, value: unknown): void {
     // Not saved; the app keeps working for this session.
   }
 }
+
+// Settings the user chose on purpose. "Clear all data" keeps them: they are not data, and the shortcuts switch
+// is an accessibility setting that must not flip back on by surprise.
+const KEPT_ON_CLEAR = ['theme', 'density', 'shortcuts'];
+
+/** Removes every FlakeLens preference except the kept settings (column choice, dismissed tips, ...). */
+export function clearPrefs(keep: string[] = KEPT_ON_CLEAR): void {
+  try {
+    const storage = window.localStorage;
+    const mine = Array.from({ length: storage.length }, (_, i) => storage.key(i)).filter((k): k is string => !!k && k.startsWith(PREFIX));
+    for (const k of mine) if (!keep.includes(k.slice(PREFIX.length))) storage.removeItem(k);
+  } catch {
+    // Nothing to clear, or storage is blocked.
+  }
+}

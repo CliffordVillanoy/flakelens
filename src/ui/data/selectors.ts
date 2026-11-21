@@ -2,6 +2,7 @@
 import type { Attempt, AttemptStatus, Dataset, Label, Test, TestScore } from '@/engine/types';
 import { orderRuns, runHistories, type RunCell } from '@/engine/view';
 import { t, type CopyKey } from '../copy';
+import { escapeMd } from '../lib/safeText';
 
 export const GROUP_ORDER: Label[] = ['flaky', 'suspect', 'failing', 'stable', 'insufficient'];
 const STRIP_RUNS = 12;
@@ -151,17 +152,8 @@ export function sortRows(rows: Row[], sort: Sort): Row[] {
   return [...rows].sort((a, b) => sign * by(a, b));
 }
 
-// Markdown export: escape what would change the meaning in Markdown, and a leading = + - @ that a
-// spreadsheet would run as a formula if the list is pasted there.
-// Control characters (newlines, tabs, line separators) become spaces first, so no field can start a new
-// list line, a spreadsheet cell or row, and the leading-character escape sees the real first character.
-export const escapeMd = (s: string) =>
-  s
-    // eslint-disable-next-line no-control-regex -- matching control characters is the point here
-    .replace(/[\u0000-\u001F\u007F\u2028\u2029]+/g, ' ')
-    .trim()
-    .replace(/[\\`|*_[\]<>]/g, '\\$&')
-    .replace(/^[=+\-@]/, '\\$&');
+// Markdown export escaping lives in lib/safeText (shared with the CSV and JSON downloads).
+export { escapeMd };
 
 const TOP_FLAKY = 10;
 /** "1. name — evidence — wasted" for the top Flaky tests, in fix-priority order. */

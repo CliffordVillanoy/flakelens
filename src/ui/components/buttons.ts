@@ -4,3 +4,5 @@ export const primaryButton =
 export const secondaryButton =
   'inline-flex items-center justify-center gap-2 rounded-md border border-control bg-secondary px-3 hover:bg-surface-hover disabled:cursor-not-allowed disabled:text-disabled';
 export const linkButton = 'cursor-pointer rounded-md border-0 bg-transparent p-0 text-link underline-offset-2 hover:text-link-hover hover:underline';
+export const dangerButton =
+  'inline-flex items-center justify-center gap-2 rounded-md border border-destructive bg-destructive px-3.5 font-semibold text-destructive-foreground hover:bg-destructive-hover active:bg-destructive-pressed disabled:cursor-not-allowed disabled:text-disabled';

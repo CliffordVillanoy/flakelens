@@ -5,6 +5,7 @@ import { scoreTests } from '@/engine/score/score';
 import type { Dataset, TestScore } from '@/engine/types';
 import * as db from './db';
 import { ImportTimeout, runImport, type ImportSummary } from './importer';
+import { clearPrefs } from '../lib/prefs';
 import { loadSample } from './sample';
 
 export type Mode = 'empty' | 'user' | 'sample';
@@ -113,7 +114,15 @@ export const useStore = create<State>()((set, get) => ({
   },
 
   async clearAll() {
-    if (get().storage !== 'off') await db.clearAll();
-    set({ ...empty(), lastImport: null });
+    let storage = get().storage;
+    if (storage !== 'off') {
+      try {
+        await db.clearAll();
+      } catch {
+        storage = 'failed'; // memory is still cleared; the page says storage trouble
+      }
+    }
+    clearPrefs(); // column choice and dismissed tips; theme, density and the shortcuts switch stay
+    set({ ...empty(), storage, lastImport: null, importError: null });
   },
 }));
