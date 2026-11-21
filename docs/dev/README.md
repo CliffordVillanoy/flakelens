@@ -23,6 +23,21 @@ Order: DEV-02 → DEV-03 → DEV-04 → DEV-05 → DEV-06 → DEV-08 → DEV-07.
 
 Merged into `main` and pushed to https://github.com/CliffordVillanoy/flakelens on 2026-11-20 (merge `9c5d84e`). History was rewritten before the push (local paths scrubbed, attribution trailers removed), so commit hashes quoted in the tickets are stale; commit subjects are unchanged.
 
+## v0 UI (plan: `docs/superpowers/plans/2026-11-21-v0-ui.md`, branch `feat/v0-ui`)
+
+| Ticket | Title | Scope | Plan task | Status |
+| --- | --- | --- | --- | --- |
+| [DEV-11](DEV-11.md) | UI foundation: tokens, fonts, copy, router | Frontend | 1 | To do |
+| [DEV-12](DEV-12.md) | Data layer: worker import, storage, sample, store | Both (engine helpers + frontend data) | 2 | To do |
+| [DEV-13](DEV-13.md) | Start screen and import states | Frontend | 3 | To do |
+| [DEV-14](DEV-14.md) | Tests screen: health box, tabs, ranked table | Frontend | 4 | To do |
+| [DEV-15](DEV-15.md) | Table controls and export | Frontend | 5 | To do |
+| [DEV-16](DEV-16.md) | Test detail panel and keyboard navigation | Frontend | 6 | To do |
+| [DEV-17](DEV-17.md) | Loaded data, clear data, edge states, shortcuts sheet | Frontend | 7 | To do |
+| [DEV-18](DEV-18.md) | End-to-end, accessibility, privacy and deploy | Both (tests, CI, hosting) | 8 | To do |
+
+Order: DEV-11 → DEV-12 → DEV-13 → DEV-14 → DEV-15 → DEV-16 → DEV-17 → DEV-18, then a final review and the user's merge approval.
+
 ## Notes for later tickets
 
 - From DEV-02: `importId` hashes file name + import time + run ID. Two imports of the same file with an identical `importedAt` would share an ID. Not reachable with a real clock, but the storage ticket (v0 UI) should use a unique key or check for this.
@@ -34,7 +49,3 @@ Merged into `main` and pushed to https://github.com/CliffordVillanoy/flakelens o
 - From DEV-05: timing delay is seeded at 0–150 or 250–400 ms around the 200 ms wait, so real timer jitter cannot change outcomes. Values in `flake-lab/README.md`.
 - From DEV-07: an unreadable run start date is dropped with no notice. The UI plan needs a notice code and copy (for example `import.partial.badDate`).
 - From DEV-07 deferred minors: duplicate retry values in hand-edited files; a dropped duplicate import still shows `counts.imported`; mixed path separators in lab fixtures; eval matches labels by title only.
-
-## Next
-
-v0 UI tickets (build step 4) are written after the UI plan, from `docs/ux/wireframes/`, `DESIGN.md` and `docs/ux/04-ux-copy.md`.
