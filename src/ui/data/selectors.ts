@@ -157,7 +157,8 @@ export function sortRows(rows: Row[], sort: Sort): Row[] {
 // list line, a spreadsheet cell or row, and the leading-character escape sees the real first character.
 export const escapeMd = (s: string) =>
   s
-    .replace(/[\u0000-\u001F\u007F  ]+/g, ' ')
+    // eslint-disable-next-line no-control-regex -- matching control characters is the point here
+    .replace(/[\u0000-\u001F\u007F\u2028\u2029]+/g, ' ')
     .trim()
     .replace(/[\\`|*_[\]<>]/g, '\\$&')
     .replace(/^[=+\-@]/, '\\$&');
