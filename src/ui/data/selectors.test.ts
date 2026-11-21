@@ -4,7 +4,7 @@ import { rankTests } from '@/engine/score/rank';
 import { scoreTests } from '@/engine/score/score';
 import type { Dataset } from '@/engine/types';
 import { t } from '../copy';
-import { countLine, datasetSummary, filterRows, groupRows, health, tableRows, wastedText, type Row } from './selectors';
+import { countLine, datasetSummary, escapeMd, filterRows, groupRows, health, sortRows, tableRows, topFlakyMarkdown, wastedText, type Row } from './selectors';
 
 const rows = (ds: Dataset) => tableRows(ds, rankTests(scoreTests(ds), ds.tests));
 const one = (ds: Dataset) => rows(ds)[0]!;
@@ -116,4 +116,50 @@ it('builds rows for 5,000 tests and 50 runs quickly', () => {
   expect(r).toHaveLength(5000);
   expect(filtered.length).toBeGreaterThan(0);
   expect(ms).toBeLessThan(5000);
+});
+
+it('the count line names the sort', () => {
+  expect(countLine(3, 'all', '', { key: 'wasted', dir: 'desc' })).toBe('Showing all 3 tests, grouped by status, sorted by wasted time');
+  expect(countLine(3, 'all', '', { key: 'test', dir: 'asc' })).toBe('Showing all 3 tests, grouped by status, sorted by test name');
+});
+
+const many = () =>
+  buildDataset([
+    { commit: 'a', tests: { 'b-flaky': ['fail', 'pass'], 'a-flaky': ['fail', 'pass'], 'c-flaky': ['fail', 'pass'], z: ['fail'], y: ['fail'] } },
+    { commit: 'b', tests: { 'b-flaky': ['fail', 'pass'], 'a-flaky': ['pass'], 'c-flaky': ['fail', 'fail', 'pass'], z: ['fail'], y: ['fail'] } },
+    { commit: 'c', tests: { 'b-flaky': ['pass'], 'a-flaky': ['pass'], 'c-flaky': ['pass'], z: ['fail'], y: ['fail'] } },
+  ], 60_000);
+
+it('sorting re-orders inside each group and never changes the group order', () => {
+  const all = rows(many());
+  const label = (r: Row[]) => r.map((x) => x.score.label);
+  const byGroup = (r: Row[]) => groupRows(r).map((g) => [g.label, g.rows.map((x) => x.test.title)]);
+  const rank = byGroup(all);
+  const byName = byGroup(sortRows(all, { key: 'test', dir: 'asc' }));
+  expect(byName.map((g) => g[0])).toEqual(rank.map((g) => g[0]));
+  expect(byName[0]![1]).toEqual(['a-flaky', 'b-flaky', 'c-flaky']);
+  expect(byGroup(sortRows(all, { key: 'test', dir: 'desc' }))[0]![1]).toEqual(['c-flaky', 'b-flaky', 'a-flaky']);
+  const wasted = sortRows(all, { key: 'wasted', dir: 'desc' }).filter((r) => r.score.label === 'flaky').map((r) => r.score.wastedMs);
+  expect(wasted).toEqual([...wasted].sort((a, b) => b - a));
+  expect(label(sortRows(all, { key: 'rank', dir: 'asc' }))).toEqual(label(all));
+  expect(sortRows(all, { key: 'rank', dir: 'asc' })).toEqual(all);
+});
+
+it('Markdown export escapes pipes, backticks and leading = + - @', () => {
+  const BS = '\\';
+  expect(escapeMd('a | b `c`')).toBe(`a ${BS}| b ${BS}\`c${BS}\``);
+  for (const ch of ['=', '+', '-', '@']) expect(escapeMd(`${ch}SUM(A1)`)).toBe(`${BS}${ch}SUM(A1)`);
+  expect(escapeMd('x-y')).toBe('x-y');
+});
+
+it('Markdown export lists the top Flaky tests: rank, name, evidence, wasted minutes', () => {
+  const BS = '\\';
+  const all = rows(many());
+  const lines = topFlakyMarkdown(all).split('\n');
+  expect(lines).toHaveLength(3);
+  expect(lines[0]).toMatch(/^1\. .+ — .+ — \d+(\.\d)? min$/);
+  const evil = { ...all[0]!, test: { ...all[0]!.test, title: '=cmd|`x`' } };
+  expect(topFlakyMarkdown([evil])).toBe(
+    `1. ${BS}=cmd${BS}|${BS}\`x${BS}\` — ${t(all[0]!.evidence.key, all[0]!.evidence.params)} — ${wastedText(all[0]!.score)}`,
+  );
 });

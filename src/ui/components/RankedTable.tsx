@@ -1,21 +1,51 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState, type ReactNode } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
+import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
 import type { Label } from '@/engine/types';
-import { t } from '../copy';
-import { groupRows, wastedText, type Row } from '../data/selectors';
+import { t, type CopyKey } from '../copy';
+import { groupRows, wastedText, type Row, type Sort, type SortKey } from '../data/selectors';
 import { RunStrip } from './RunStrip';
 import { StatusPill } from './StatusPill';
 import { linkButton } from './buttons';
+import type { Density } from './TableControls';
 
 export const HEADER_PX = 40; // sticky column header
 export const BAND_PX = 44; // sticky group label under it
-const ROW_PX = 56; // Comfortable rows (DESIGN.md "Ranked table spacing")
-// Columns: rank 52, Test minmax(280, 2.2fr), Status 120, Last 12 runs 208, Evidence minmax(260, 3fr), Wasted 128.
-const GRID = 'grid grid-cols-[52px_minmax(280px,2.2fr)_120px_208px_minmax(260px,3fr)_128px] gap-x-2';
-const CELL = 'px-4 py-3';
+const ROW_PX: Record<Density, number> = { comfortable: 56, compact: 32 }; // DESIGN.md "Ranked table spacing", "Table controls"
 const COLLAPSED_BY_DEFAULT: Label[] = ['stable', 'insufficient'];
+const FIRST_RUN_WHY = 3; // spec 13.1: the top three Flaky tests get a "why?" link
 
-type Item = { kind: 'group'; label: Label; count: number; collapsed: boolean } | { kind: 'row'; row: Row; rank: number | null };
+type Item = { kind: 'group'; label: Label; count: number; collapsed: boolean } | { kind: 'row'; row: Row };
+
+export type ColumnKey = 'rank' | 'test' | 'status' | 'runs' | 'why' | 'wasted' | 'score' | 'mixed' | 'flip' | 'lastFailed' | 'project';
+interface Column {
+  key: ColumnKey;
+  header: CopyKey;
+  width: string; // grid track
+  min: number; // px, for the table's minimum width
+  locked?: boolean;
+  optional?: boolean; // hidden by default (DESIGN.md "Table controls": optional columns)
+  sort?: SortKey;
+  firstDir?: Sort['dir'];
+}
+
+// Order and widths from DESIGN.md "Ranked table spacing"; optional columns follow Wasted time.
+export const COLUMNS: Column[] = [
+  { key: 'rank', header: 'tests.col.rank.label', width: '52px', min: 52 },
+  { key: 'test', header: 'tests.col.test', width: 'minmax(280px,2.2fr)', min: 280, locked: true, sort: 'test', firstDir: 'asc' },
+  { key: 'status', header: 'tests.col.status', width: '120px', min: 120, locked: true },
+  { key: 'runs', header: 'tests.col.runs', width: '208px', min: 208 },
+  { key: 'why', header: 'tests.col.why', width: 'minmax(260px,3fr)', min: 260 },
+  { key: 'wasted', header: 'tests.col.wasted', width: '128px', min: 128, sort: 'wasted', firstDir: 'desc' },
+  { key: 'score', header: 'tests.col.score', width: '112px', min: 112, optional: true },
+  { key: 'mixed', header: 'tests.col.mixed', width: '120px', min: 120, optional: true },
+  { key: 'flip', header: 'tests.col.flip', width: '96px', min: 96, optional: true },
+  { key: 'lastFailed', header: 'tests.col.lastFailed', width: '112px', min: 112, optional: true },
+  { key: 'project', header: 'tests.col.project', width: '120px', min: 120, optional: true },
+];
+export const DEFAULT_COLUMNS = COLUMNS.filter((c) => !c.optional).map((c) => c.key);
+
+const dateFormat = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' });
 
 function GroupBand({ label, count, collapsed, onShow }: { label: Label; count: number; collapsed: boolean; onShow: () => void }) {
   const text = t(`tests.group.${label}`, { n: count });
@@ -35,15 +65,69 @@ function GroupBand({ label, count, collapsed, onShow }: { label: Label; count: n
   );
 }
 
-export function RankedTable({ rows, selectedId, expandAll }: { rows: Row[]; selectedId?: string; expandAll: boolean }) {
+function HeaderCell({ col, sort, onSort }: { col: Column; sort: Sort; onSort: (s: Sort) => void }) {
+  const align = col.key === 'test' ? '' : 'text-center';
+  if (col.key === 'rank')
+    return (
+      <div role="columnheader" className="px-4 text-center">
+        <span aria-hidden="true">{t('tests.col.rank')}</span>
+        <span className="sr-only">{t('tests.col.rank.label')}</span>
+      </div>
+    );
+  if (!col.sort)
+    return (
+      <div role="columnheader" className={`px-4 ${align}`}>
+        {t(col.header)}
+      </div>
+    );
+  // none, then the natural first direction, then the other, then back to the default rank order.
+  const active = sort.key === col.sort;
+  const next: Sort = !active
+    ? { key: col.sort, dir: col.firstDir! }
+    : sort.dir === col.firstDir
+      ? { key: col.sort, dir: col.firstDir === 'asc' ? 'desc' : 'asc' }
+      : { key: 'rank', dir: 'asc' };
+  const Icon = !active ? ArrowUpDown : sort.dir === 'asc' ? ArrowUp : ArrowDown;
+  return (
+    <div
+      role="columnheader"
+      aria-sort={active ? (sort.dir === 'asc' ? 'ascending' : 'descending') : 'none'}
+      className={`px-4 ${align}`}
+      title={col.key === 'wasted' ? t('tests.col.wasted.hint') : undefined}
+    >
+      <button
+        type="button"
+        onClick={() => onSort(next)}
+        className="inline-flex h-7 items-center gap-1 rounded-md border-0 bg-transparent p-0 font-semibold text-inherit hover:text-foreground"
+      >
+        <Icon size={12} strokeWidth={2.4} aria-hidden="true" />
+        {t(col.header)}
+      </button>
+    </div>
+  );
+}
+
+interface Props {
+  rows: Row[];
+  selectedId?: string;
+  expandAll: boolean;
+  columns: ColumnKey[];
+  density: Density;
+  sort: Sort;
+  onSort: (s: Sort) => void;
+}
+
+export function RankedTable({ rows, selectedId, expandAll, columns, density, sort, onSort }: Props) {
   const [shown, setShown] = useState<Set<Label>>(new Set());
+  const cols = COLUMNS.filter((c) => c.locked || columns.includes(c.key));
+  const grid = { gridTemplateColumns: cols.map((c) => c.width).join(' ') };
+  const minWidth = cols.reduce((n, c) => n + c.min + 8, 0);
   const items = useMemo<Item[]>(
     () =>
       groupRows(rows).flatMap(({ label, rows: rs }) => {
         const collapsed = !expandAll && COLLAPSED_BY_DEFAULT.includes(label) && !shown.has(label);
         const band: Item = { kind: 'group', label, count: rs.length, collapsed };
-        // Rank is the fix-priority position, shown for Flaky rows as on board 3.
-        return collapsed ? [band] : [band, ...rs.map((row, i): Item => ({ kind: 'row', row, rank: label === 'flaky' ? i + 1 : null }))];
+        return collapsed ? [band] : [band, ...rs.map((row): Item => ({ kind: 'row', row }))];
       }),
     [rows, expandAll, shown],
   );
@@ -52,7 +136,7 @@ export function RankedTable({ rows, selectedId, expandAll }: { rows: Row[]; sele
   const v = useVirtualizer({
     count: items.length,
     getScrollElement: () => scroller.current,
-    estimateSize: (i) => (items[i]!.kind === 'group' ? BAND_PX : ROW_PX),
+    estimateSize: (i) => (items[i]!.kind === 'group' ? BAND_PX : ROW_PX[density]),
     getItemKey: (i) => {
       const it = items[i]!;
       return it.kind === 'group' ? `g:${it.label}` : it.row.score.testId;
@@ -83,31 +167,23 @@ export function RankedTable({ rows, selectedId, expandAll }: { rows: Row[]; sele
         style={{ scrollPaddingTop: `${HEADER_PX + BAND_PX}px` }}
         className="max-h-[calc(100vh-120px)] overflow-auto rounded-lg border border-border bg-card"
       >
-        <div role="table" aria-label={t('tests.h1')} aria-rowcount={items.length + 1} className="ranked-table min-w-[1160px] text-sm">
+        <div
+          role="table"
+          aria-label={t('tests.h1')}
+          aria-rowcount={items.length + 1}
+          data-density={density}
+          style={{ minWidth }}
+          className={`ranked-table ${density === 'compact' ? 'text-[13px]' : 'text-sm'}`}
+        >
           <div
             role="row"
             aria-rowindex={1}
-            className={`ranked-head sticky top-0 z-20 h-10 items-center border-b border-border bg-card text-xs font-semibold text-fg-secondary ${GRID}`}
+            style={grid}
+            className="ranked-head sticky top-0 z-20 grid h-10 items-center gap-x-2 border-b border-border bg-card text-xs font-semibold text-fg-secondary"
           >
-            <div role="columnheader" className="px-4 text-center">
-              <span aria-hidden="true">{t('tests.col.rank')}</span>
-              <span className="sr-only">{t('tests.col.rank.label')}</span>
-            </div>
-            <div role="columnheader" className="px-4">
-              {t('tests.col.test')}
-            </div>
-            <div role="columnheader" className="px-4 text-center">
-              {t('tests.col.status')}
-            </div>
-            <div role="columnheader" className="px-4 text-center">
-              {t('tests.col.runs')}
-            </div>
-            <div role="columnheader" className="px-4 text-center">
-              {t('tests.col.why')}
-            </div>
-            <div role="columnheader" className="px-4 text-center" title={t('tests.col.wasted.hint')}>
-              {t('tests.col.wasted')}
-            </div>
+            {cols.map((c) => (
+              <HeaderCell key={c.key} col={c} sort={sort} onSort={onSort} />
+            ))}
           </div>
           {current && (
             <div aria-hidden="true" className="ranked-sticky sticky z-10 h-0" style={{ top: HEADER_PX }}>
@@ -135,7 +211,13 @@ export function RankedTable({ rows, selectedId, expandAll }: { rows: Row[]; sele
                       onShow={() => setShown((s) => new Set(s).add(it.label))}
                     />
                   ) : (
-                    <TestRow row={it.row} rank={it.rank} selected={it.row.score.testId === selectedId} />
+                    <TestRow
+                      row={it.row}
+                      cols={cols}
+                      grid={grid}
+                      density={density}
+                      selected={it.row.score.testId === selectedId}
+                    />
                   )}
                 </div>
               );
@@ -152,47 +234,92 @@ export function RankedTable({ rows, selectedId, expandAll }: { rows: Row[]; sele
   );
 }
 
-function TestRow({ row, rank, selected }: { row: Row; rank: number | null; selected: boolean }) {
-  const { score, test, cells, evidence } = row;
-  const name = test.title;
+function TestRow({
+  row,
+  cols,
+  grid,
+  density,
+  selected,
+}: {
+  row: Row;
+  cols: Column[];
+  grid: { gridTemplateColumns: string };
+  density: Density;
+  selected: boolean;
+}) {
+  const { score, test, cells, evidence, flakyRank } = row;
+  // Rank is the fix-priority position, shown for Flaky rows as on board 3; the top three get "why?".
+  const why = flakyRank !== null && flakyRank <= FIRST_RUN_WHY;
+  const href = `#/tests/${encodeURIComponent(score.testId)}`;
+  const compact = density === 'compact';
+  const pad = compact ? 'px-3 py-1' : 'px-4 py-3';
+  const cell: Record<ColumnKey, () => ReactNode> = {
+    rank: () => flakyRank ?? '',
+    test: () => (
+      <>
+        <a
+          href={href}
+          // Compact hides the file path; it stays available on hover.
+          title={compact ? `${test.title}\n${test.file}` : test.title}
+          aria-current={selected ? 'true' : undefined}
+          className="truncate font-medium text-foreground no-underline after:absolute after:inset-0 after:content-[''] hover:text-foreground"
+        >
+          {test.title}
+        </a>
+        {!compact && (
+          <span title={test.file} className="truncate font-mono text-xs text-muted-foreground">
+            {test.file}
+          </span>
+        )}
+      </>
+    ),
+    status: () => <StatusPill label={score.label} />,
+    runs: () => <RunStrip cells={cells} />,
+    why: () => (
+      <>
+        {t(evidence.key, evidence.params)}
+        {why && (
+          <>
+            {' '}
+            <a href={href} className="relative z-10 font-semibold">
+              {t('tests.why')}
+              <span className="sr-only"> {test.title}</span>
+            </a>
+          </>
+        )}
+      </>
+    ),
+    wasted: () => wastedText(score),
+    score: () => Math.round(score.score),
+    mixed: () => t('cell.fraction', { a: score.mixedCommits, b: row.commits }),
+    flip: () => score.flipRate.toFixed(2),
+    lastFailed: () => (row.lastFailedAt ? dateFormat.format(new Date(row.lastFailedAt)) : t('wasted.none')),
+    project: () => test.project || t('wasted.none'),
+  };
+  const cls: Partial<Record<ColumnKey, string>> = {
+    rank: 'text-center text-muted-foreground tabular-nums',
+    test: 'flex min-w-0 flex-col gap-0.5',
+    status: 'text-center',
+    why: `text-center leading-[1.45] text-fg-secondary ${compact ? 'truncate' : ''}`,
+    wasted: 'text-center tabular-nums',
+  };
   return (
     <div
       // Bring the whole row, not just its link, clear of the sticky header and group label.
       onFocus={(e) => e.currentTarget.scrollIntoView?.({ block: 'nearest' })}
-      className={`ranked-row relative min-h-14 items-center border-t border-border-muted ${GRID} ${selected ? 'bg-selection font-semibold' : 'hover:bg-surface-hover'}`}
+      style={grid}
+      className={`ranked-row relative grid items-center gap-x-2 border-t border-border-muted ${compact ? 'min-h-8' : 'min-h-14'} ${selected ? 'bg-selection font-semibold' : 'hover:bg-surface-hover'}`}
     >
-      <div role="cell" className={`c-rank ${CELL} text-center text-muted-foreground tabular-nums`}>
-        {rank ?? ''}
-      </div>
-      <div role="cell" className={`c-test ${CELL} flex min-w-0 flex-col gap-0.5`}>
-        <a
-          href={`#/tests/${encodeURIComponent(score.testId)}`}
-          title={name}
-          aria-current={selected ? 'true' : undefined}
-          className="truncate font-medium text-foreground no-underline after:absolute after:inset-0 after:content-[''] hover:text-foreground"
+      {cols.map((c) => (
+        <div
+          key={c.key}
+          role="cell"
+          title={c.key === 'why' && evidence.key === 'why.mixed' ? t('glossary.mixedCommit') : undefined}
+          className={`c-${c.key} ${c.optional ? 'c-opt text-center tabular-nums' : ''} ${pad} ${cls[c.key] ?? ''}`}
         >
-          {name}
-        </a>
-        <span title={test.file} className="truncate font-mono text-xs text-muted-foreground">
-          {test.file}
-        </span>
-      </div>
-      <div role="cell" className={`c-status ${CELL} text-center`}>
-        <StatusPill label={score.label} />
-      </div>
-      <div role="cell" className={`c-runs ${CELL}`}>
-        <RunStrip cells={cells} />
-      </div>
-      <div
-        role="cell"
-        title={evidence.key === 'why.mixed' ? t('glossary.mixedCommit') : undefined}
-        className={`c-why ${CELL} text-center leading-[1.45] text-fg-secondary`}
-      >
-        {t(evidence.key, evidence.params)}
-      </div>
-      <div role="cell" className={`c-wasted ${CELL} text-center tabular-nums`}>
-        {wastedText(score)}
-      </div>
+          {cell[c.key]()}
+        </div>
+      ))}
     </div>
   );
 }

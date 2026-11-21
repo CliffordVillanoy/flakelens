@@ -19,11 +19,11 @@ it('never says "1 runs" or "1 tests" (copy rule 3)', () => {
 });
 
 it('composes the live result count', () => {
-  expect(t('tests.count.all', { count: 211 })).toBe('Showing all 211 tests, grouped by status, most urgent first');
-  expect(t('tests.count.all', { count: 1 })).toBe('Showing all 1 test, grouped by status, most urgent first');
-  expect(t('tests.count.status', { count: 1, status: 'Flaky' })).toBe('Showing 1 Flaky test, grouped by status, most urgent first');
-  expect(t('tests.count.search', { count: 2, query: 'coupon' })).toBe('Showing 2 tests matching "coupon", grouped by status, most urgent first');
-  expect(t('tests.count.statusSearch', { count: 1, status: 'Flaky', query: 'coupon' })).toBe(
+  expect(t('tests.count.all', { count: 211, sort: 'most urgent first' })).toBe('Showing all 211 tests, grouped by status, most urgent first');
+  expect(t('tests.count.all', { count: 1, sort: 'most urgent first' })).toBe('Showing all 1 test, grouped by status, most urgent first');
+  expect(t('tests.count.status', { count: 1, status: 'Flaky', sort: 'most urgent first' })).toBe('Showing 1 Flaky test, grouped by status, most urgent first');
+  expect(t('tests.count.search', { count: 2, query: 'coupon', sort: 'most urgent first' })).toBe('Showing 2 tests matching "coupon", grouped by status, most urgent first');
+  expect(t('tests.count.statusSearch', { count: 1, status: 'Flaky', query: 'coupon', sort: 'most urgent first' })).toBe(
     'Showing 1 Flaky test matching "coupon", grouped by status, most urgent first',
   );
 });

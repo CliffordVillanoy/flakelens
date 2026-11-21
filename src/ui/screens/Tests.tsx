@@ -2,16 +2,18 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Search } from 'lucide-react';
 import { t } from '../copy';
 import { useStore } from '../data/store';
-import { countLine, datasetSummary, filterRows, health, isLabel, tableRows } from '../data/selectors';
+import { countLine, datasetSummary, filterRows, health, isLabel, RANK_SORT, sortRows, tableRows, topFlakyMarkdown, type Sort } from '../data/selectors';
 import { DropZone } from '../components/DropZone';
 import { ImportBanner } from '../components/ImportBanner';
 import { ImportProgress } from '../components/ImportProgress';
-import { RankedTable } from '../components/RankedTable';
+import { COLUMNS, DEFAULT_COLUMNS, RankedTable, type ColumnKey } from '../components/RankedTable';
 import { RunLegend } from '../components/RunStrip';
 import { SampleBanner } from '../components/SampleBanner';
 import { StatusTabs } from '../components/StatusTabs';
 import { TestHealth } from '../components/TestHealth';
-import { getPref } from '../lib/prefs';
+import { ColumnsMenu, DensityToggle, ExportMenu, ExportTip, FilterChips, type Density } from '../components/TableControls';
+import { toast } from '../components/Toasts';
+import { getPref, setPref } from '../lib/prefs';
 import { navigate, useRoute } from '../lib/router';
 
 export { HEADER_PX, BAND_PX } from '../components/RankedTable';
@@ -42,6 +44,18 @@ export function Tests({
   const status = route.query.get('status') ?? 'all';
   const [q, setQ] = useState(route.query.get('q') ?? '');
   const [sampleHidden, setSampleHidden] = useState(false);
+  // Per-browser preferences (DESIGN.md "Table controls"); sorting is per visit.
+  const [columns, setColumns] = useState<ColumnKey[]>(() => {
+    const saved = getPref<unknown>('columns', DEFAULT_COLUMNS);
+    return Array.isArray(saved) ? saved.filter((k): k is ColumnKey => COLUMNS.some((c) => c.key === k)) : DEFAULT_COLUMNS;
+  });
+  const [density, setDensity] = useState<Density>(() => (getPref<string>('density', 'comfortable') === 'compact' ? 'compact' : 'comfortable'));
+  const [tipHidden, setTipHidden] = useState(() => getPref<unknown>('exportTipDismissed', false) === true);
+  const [sort, setSort] = useState<Sort>(RANK_SORT);
+  const saveColumns = (next: ColumnKey[]) => {
+    setColumns(next);
+    setPref('columns', next);
+  };
   const search = useRef<HTMLInputElement>(null);
 
   useEffect(() => setQ(route.query.get('q') ?? ''), [route.query]);
@@ -60,7 +74,7 @@ export function Tests({
   const summary = useMemo(() => datasetSummary(s.dataset), [s.dataset]);
   const h = useMemo(() => health(rows), [rows]);
   const searched = useMemo(() => filterRows(rows, { status: 'all', q }), [rows, q]);
-  const shown = useMemo(() => filterRows(searched, { status, q: '' }), [searched, status]);
+  const shown = useMemo(() => sortRows(filterRows(searched, { status, q: '' }), sort), [searched, status, sort]);
   const tabCounts = useMemo(() => {
     const c = health(searched).counts;
     return { all: searched.length, ...c };
@@ -114,14 +128,62 @@ export function Tests({
           />
           <kbd aria-hidden="true">/</kbd>
         </label>
+        <ColumnsMenu
+          options={COLUMNS.map((c) => ({ key: c.key, label: t(c.header), locked: c.locked }))}
+          visible={new Set(columns)}
+          onToggle={(k) => saveColumns(columns.includes(k as ColumnKey) ? columns.filter((c) => c !== k) : [...columns, k as ColumnKey])}
+          onReset={() => saveColumns(DEFAULT_COLUMNS)}
+        />
+        <DensityToggle
+          value={density}
+          onChange={(d) => {
+            setDensity(d);
+            setPref('density', d);
+          }}
+        />
+        <ExportMenu
+          onCopyTop={async () => {
+            await navigator.clipboard.writeText(topFlakyMarkdown(rows));
+            toast(t('panel.copySummary.done'));
+          }}
+        />
         <div role="status" aria-live="polite" className="text-[13px] text-muted-foreground">
-          {countLine(shown.length, isLabel(status) ? status : 'all', q)}
+          {countLine(shown.length, isLabel(status) ? status : 'all', q, sort)}
         </div>
       </div>
 
+      <FilterChips
+        chips={[
+          ...(isLabel(status)
+            ? [{ label: t('tests.filters.status', { status: t(`status.${status}`) }), onRemove: () => navigate(hashFor('all', q)) }]
+            : []),
+          ...(q.trim()
+            ? [{ label: t('tests.filters.search', { query: q.trim() }), onRemove: () => navigate(hashFor(isLabel(status) ? status : 'all', '')) }]
+            : []),
+        ]}
+        onClear={() => navigate(hashFor('all', ''))}
+      />
+
+      {!tipHidden && h.counts.flaky > 0 && (
+        <ExportTip
+          onDismiss={() => {
+            setTipHidden(true);
+            setPref('exportTipDismissed', true);
+          }}
+        />
+      )}
+
       <RunLegend />
 
-      <RankedTable rows={shown} selectedId={route.testId} expandAll={isLabel(status) || q.trim() !== ''} />
+      <RankedTable
+        rows={shown}
+        selectedId={route.testId}
+        expandAll={isLabel(status) || q.trim() !== ''}
+        columns={columns}
+        density={density}
+        sort={sort}
+        onSort={setSort}
+      />
 
       <div className="text-xs text-muted-foreground">{t('tests.keys')}</div>
     </div>

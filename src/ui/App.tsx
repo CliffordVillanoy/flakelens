@@ -7,6 +7,7 @@ import { useStore } from './data/store';
 import { navigate, useRoute } from './lib/router';
 import { Start } from './screens/Start';
 import { Tests } from './screens/Tests';
+import { Toasts } from './components/Toasts';
 
 const HEADER_MODE = { empty: 'none', sample: 'sample', user: 'own' } as const satisfies Record<string, DataMode>;
 
@@ -76,6 +77,7 @@ export function App() {
           <Tests onFiles={onFiles} onBrowse={openPicker} onExitSample={exitSample} />
         )}
       </main>
+      <Toasts />
       <LeaveSampleDialog
         count={pending?.length ?? null}
         onStay={() => setPending(null)}
