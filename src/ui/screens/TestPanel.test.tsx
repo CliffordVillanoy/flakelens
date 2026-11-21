@@ -1,5 +1,5 @@
 import { it, expect, beforeEach, beforeAll, afterAll, afterEach, vi, onTestFinished } from 'vitest';
-import { render, screen, waitFor, within, act } from '@testing-library/react';
+import { render, screen, waitFor, within, act, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { buildDataset } from '@/engine/score/testkit';
 import { rankTests } from '@/engine/score/rank';
@@ -7,6 +7,7 @@ import { scoreTests } from '@/engine/score/score';
 import { runHistory } from '@/engine/view';
 import type { AttemptStatus, Dataset } from '@/engine/types';
 import { useStore } from '../data/store';
+import { ShortcutsSheet } from '../components/ShortcutsSheet';
 import { Toasts } from '../components/Toasts';
 import { shortcutsSheet } from '../lib/shortcuts';
 import { setPref } from '../lib/prefs';
@@ -256,4 +257,23 @@ it('the Export copy shows the same error toast when the clipboard is blocked', a
   await userEvent.click(screen.getByRole('button', { name: 'Export' }));
   await userEvent.click(screen.getByRole('menuitem', { name: /Copy top Flaky tests/ }));
   expect(await screen.findByRole('alert')).toHaveTextContent("Couldn't copy. Your browser blocked the clipboard.");
+});
+
+it('Esc that closes the shortcuts sheet leaves the panel open', async () => {
+  render(
+    <>
+      <Tests />
+      <ShortcutsSheet />
+    </>,
+  );
+  await userEvent.click(screen.getByRole('link', { name: 'flaky' }));
+  const title = await screen.findByRole('heading', { level: 2, name: 'flaky' });
+  await waitFor(() => expect(title).toHaveFocus());
+  const before = window.location.hash;
+  act(() => shortcutsSheet.open());
+  const sheet = await screen.findByRole('dialog', { name: 'Keyboard shortcuts' });
+  fireEvent.keyDown(sheet, { key: 'Escape' }); // focus is inside the dialog in a browser, so the key starts there
+  await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Keyboard shortcuts' })).toBeNull());
+  expect(window.location.hash).toBe(before);
+  expect(screen.getByRole('heading', { level: 2, name: 'flaky' })).toBeInTheDocument();
 });

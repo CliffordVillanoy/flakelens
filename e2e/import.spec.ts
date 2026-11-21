@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { addFiles, openApp, playwrightFixture as fx, sampleFile } from './helpers';
+import { addFiles, openApp, playwrightFixture as fx, sampleFile, trySample } from './helpers';
 
 test('a valid and a partial file: banner counts, notices on Loaded data', async ({ page }) => {
   await openApp(page);
@@ -106,4 +106,37 @@ test('storage blocked: the app still works for the session and warns, never a bl
   await addFiles(page, [sampleFile('run-00.json')]);
   await expect(page.locator('.ranked-row').first()).toBeVisible();
   await expect(page.getByText("This browser won't keep your data after you close the tab.")).toBeVisible();
+});
+
+test('with own data, Loaded data and Clear all data are reachable from the header after a reload', async ({ page }) => {
+  await openApp(page);
+  await addFiles(page, [sampleFile('run-00.json')]);
+  await expect(page.locator('.ranked-row').first()).toBeVisible();
+  await page.reload();
+  await page.getByRole('link', { name: 'Loaded data' }).click();
+  await expect(page.getByRole('button', { name: 'Clear all data' })).toBeVisible();
+});
+
+test('an IndexedDB that never answers still shows Start within a few seconds, with storage off', async ({ page }) => {
+  await page.addInitScript(() => {
+    IDBFactory.prototype.open = function () {
+      return {} as IDBOpenDBRequest; // never fires success or error
+    };
+  });
+  await page.goto('./');
+  await expect(page.getByRole('heading', { level: 1, name: 'Find your flaky tests' })).toBeVisible({ timeout: 6_000 });
+});
+
+test('Esc that closes the shortcuts sheet does not also close the open test panel', async ({ page }) => {
+  await openApp(page);
+  await trySample(page);
+  await page.locator('.ranked-row a[data-test-id]').first().click();
+  await expect(page.locator('aside h2')).toBeFocused();
+  const hash = await page.evaluate(() => window.location.hash);
+  await page.keyboard.press('?');
+  await expect(page.getByRole('dialog', { name: 'Keyboard shortcuts' })).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog', { name: 'Keyboard shortcuts' })).toBeHidden();
+  expect(await page.evaluate(() => window.location.hash)).toBe(hash);
+  await expect(page.locator('aside h2')).toBeVisible();
 });

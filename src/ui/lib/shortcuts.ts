@@ -31,7 +31,8 @@ export function useShortcuts(handlers: Record<string, () => void>) {
       if (!run) return;
       // Escape always works. Other keys are ignored in text fields, when switched off, and while a dialog is
       // open (otherwise "?" would stack the sheet on top of another dialog).
-      if (e.key !== 'Escape' && (isTyping(e.target) || !shortcutsEnabled() || document.querySelector('dialog[open]'))) return;
+      if (document.querySelector('dialog[open]') || (e.target as Element | null)?.closest?.('dialog')) return; // a dialog owns the keyboard, Esc included
+      if (e.key !== 'Escape' && (isTyping(e.target) || !shortcutsEnabled())) return;
       e.preventDefault();
       run();
     };

@@ -9,14 +9,22 @@ import { clearAll as clearDb, loadDataset } from './db';
 import { parseFiles } from './worker';
 import { useStore } from './store';
 
+const gate = vi.hoisted(() => ({ wait: Promise.resolve() as Promise<void> }));
 vi.mock('./parser', () => ({
-  workerParser: () => ({ parseFiles: async (...a: Parameters<typeof parseFiles>) => parseFiles(...a), terminate: () => {} }),
+  workerParser: () => ({
+    parseFiles: async (...a: Parameters<typeof parseFiles>) => {
+      await gate.wait;
+      return parseFiles(...a);
+    },
+    terminate: () => {},
+  }),
 }));
 
 const file = (f: string) => new File([readFileSync(`fixtures/lab/${f}`, 'utf8')], f);
 const initial = useStore.getState();
 
 beforeEach(async () => {
+  gate.wait = Promise.resolve();
   await clearDb();
   useStore.setState(initial, true);
   vi.stubGlobal('fetch', async (url: string) => new Response(readFileSync(`public/${url}`, 'utf8')));
@@ -78,4 +86,40 @@ it('clearAll removes stored and in-memory data', async () => {
   await useStore.getState().clearAll();
   expect(useStore.getState()).toMatchObject({ mode: 'empty', dataset: emptyDataset(), ranked: [] });
   expect(await loadDataset()).toEqual(emptyDataset());
+});
+
+it('Clear all data while an import is running: the import is dropped, nothing comes back', async () => {
+  await useStore.getState().restore();
+  await useStore.getState().importFiles([file('run-00.json')]);
+  let release!: () => void;
+  gate.wait = new Promise<void>((r) => (release = r));
+  const running = useStore.getState().importFiles([file('run-01.json'), file('run-02.json')]);
+  await vi.waitFor(() => expect(useStore.getState().importing).not.toBeNull());
+  const clearing = useStore.getState().clearAll();
+  release();
+  await Promise.all([running, clearing]);
+  expect(useStore.getState()).toMatchObject({ mode: 'empty', importing: null });
+  expect(useStore.getState().dataset.runs).toHaveLength(0);
+  expect((await loadDataset()).runs).toHaveLength(0);
+});
+
+it('Exit sample leaves sample mode at once, before the stored data is read back', async () => {
+  await useStore.getState().restore();
+  await useStore.getState().startSample();
+  const exiting = useStore.getState().exitSample();
+  expect(useStore.getState().mode).not.toBe('sample');
+  await exiting;
+});
+
+it('an IndexedDB that never answers falls back to storage off instead of a blank page', async () => {
+  vi.useFakeTimers();
+  try {
+    vi.spyOn(Dexie.prototype, 'open').mockReturnValue(new Promise(() => {}) as never);
+    const restoring = useStore.getState().restore();
+    await vi.advanceTimersByTimeAsync(5_000);
+    await restoring;
+    expect(useStore.getState()).toMatchObject({ mode: 'empty', storage: 'off' });
+  } finally {
+    vi.useRealTimers();
+  }
 });

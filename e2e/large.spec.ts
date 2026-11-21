@@ -62,8 +62,8 @@ test('5,000 tests x 50 runs: the page stays responsive while importing and rende
 
   // Virtual rows: only what is visible is in the page, whatever the total.
   const rendered = () => page.locator('.ranked-row').count();
-  await page.evaluate(() => (window.location.hash = '#/tests?status=unproven'));
-  await expect(page.getByText(/^Showing .* 5,?000 tests|^Showing .*\d+ Stable tests/)).toBeVisible();
+  await page.evaluate(() => (window.location.hash = '#/tests?status=suspect'));
+  await expect(page.getByText(/^Showing [0-9,]+ Unproven tests/)).toBeVisible();
   expect(await rendered()).toBeGreaterThan(5);
   expect(await rendered()).toBeLessThan(150);
   const scroller = page.locator('#results');

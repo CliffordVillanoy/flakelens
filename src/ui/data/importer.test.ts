@@ -70,3 +70,15 @@ it('newFlaky counts tests that became Flaky since the last dataset', async () =>
   expect(expected).toBeGreaterThan(0); // "flaky: cross-run only" turns Flaky once c0 has a pass and a fail
   expect(second.newFlaky).toBe(expected);
 });
+
+it('an abort after parsing but before saving leaves the dataset and the database unchanged', async () => {
+  const ctrl = new AbortController();
+  const parser = (): Parser => ({
+    parseFiles: async (files, at, cb) => parseFiles(files, at, cb),
+    terminate: () => ctrl.abort(new DOMException('Import cancelled', 'AbortError')), // runs right after parsing resolves
+  });
+  await expect(
+    runImport([file('run-00.json')], { dataset: emptyDataset(), persist: true, signal: ctrl.signal, parser }),
+  ).rejects.toMatchObject({ name: 'AbortError' });
+  expect((await loadDataset()).imports).toHaveLength(0);
+});

@@ -34,7 +34,11 @@ export function Modal({ open, onClose, labelledBy, describedBy, initialFocus, cl
       aria-labelledby={labelledBy}
       aria-describedby={describedBy}
       onClose={() => open && onClose()}
-      onKeyDown={(e) => e.key === 'Escape' && open && onClose()}
+      onKeyDown={(e) => {
+        if (e.key !== 'Escape') return;
+        e.stopPropagation(); // the page's own Esc (close the panel) must not also fire
+        if (open) onClose();
+      }}
       className={`m-auto w-[calc(100%-32px)] max-w-[502px] rounded-lg border border-border bg-card p-5 text-foreground backdrop:bg-black/50 ${className}`}
     >
       {open && children}

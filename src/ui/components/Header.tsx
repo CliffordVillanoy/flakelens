@@ -31,6 +31,12 @@ export function Header({ mode, onAddFiles, onHelp }: { mode: DataMode; onAddFile
         )}
       </div>
       <div className="ml-auto flex flex-wrap gap-2">
+        {mode === 'own' && (
+          // The one always-visible way to Loaded data, where Clear all data lives (SPEC: always one click away).
+          <a href="#/data" className={`${iconButton} px-3 no-underline text-foreground`}>
+            {t('data.title')}
+          </a>
+        )}
         {mode !== 'none' && (
           <button
             type="button"

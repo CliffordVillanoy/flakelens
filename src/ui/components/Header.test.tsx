@@ -29,6 +29,16 @@ it('own data says "Add files"', () => {
   expect(screen.getByRole('button', { name: 'Add files' })).toBeInTheDocument();
 });
 
+it('own data always has a way to Loaded data, where Clear all data lives', () => {
+  render(<Header mode="own" />);
+  expect(screen.getByRole('link', { name: 'Loaded data' })).toHaveAttribute('href', '#/data');
+});
+
+it('Start and sample data have no Loaded data link', () => {
+  render(<Header mode="sample" />);
+  expect(screen.queryByRole('link', { name: 'Loaded data' })).toBeNull();
+});
+
 it('dark is the default; the theme button toggles data-theme and saves it', async () => {
   applyTheme();
   expect(document.documentElement.dataset.theme).toBe('dark');

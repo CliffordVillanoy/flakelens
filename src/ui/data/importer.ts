@@ -80,6 +80,7 @@ export async function runImport(
     clearTimeout(timer);
   }
   parser.terminate();
+  signal.throwIfAborted(); // a cancel or Clear all data that landed after parsing still wins
 
   let dataset = opts.dataset;
   let order = Math.max(-1, ...dataset.runs.map((r) => r.order)) + 1;
@@ -98,7 +99,10 @@ export async function runImport(
   // A drop where every file failed changes nothing, in memory or in storage.
   if (opts.persist && toSave.some((r) => r.record.result !== 'failed')) {
     try {
-      for (const res of toSave) await saveImport(res);
+      for (const res of toSave) {
+        signal.throwIfAborted();
+        await saveImport(res);
+      }
     } catch {
       storageFailed = true; // data stays in memory for this session
     }

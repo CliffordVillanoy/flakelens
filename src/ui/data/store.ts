@@ -41,7 +41,9 @@ const rank = (ds: Dataset) => rankTests(scoreTests(ds), ds.tests);
 const withData = (mode: Mode, dataset: Dataset) => ({ mode, dataset, ranked: rank(dataset) });
 const empty = () => withData('empty', emptyDataset());
 
+const STORAGE_OPEN_MS = 3_000;
 let controller: AbortController | null = null;
+let inflight: Promise<void> | null = null; // the running import, so Clear all data can wait for it to stop
 
 export const useStore = create<State>()((set, get) => ({
   ...empty(),
@@ -51,7 +53,12 @@ export const useStore = create<State>()((set, get) => ({
   importError: null,
 
   async restore() {
-    if (!(await db.storageAvailable())) return set({ ...empty(), storage: 'off' });
+    // An open that never answers (another tab holds it, some private modes) must not leave a blank page.
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const gaveUp = new Promise<false>((r) => (timer = setTimeout(() => r(false), STORAGE_OPEN_MS)));
+    const available = await Promise.race([db.storageAvailable(), gaveUp]);
+    clearTimeout(timer);
+    if (!available) return set({ ...empty(), storage: 'off' });
     try {
       const ds = await db.loadDataset();
       set({ ...withData(ds.runs.length > 0 ? 'user' : 'empty', ds), storage: 'ok' });
@@ -64,6 +71,8 @@ export const useStore = create<State>()((set, get) => ({
     if (get().importing || files.length === 0) return;
     const { mode, dataset, storage } = get();
     controller = new AbortController();
+    let finished!: () => void;
+    inflight = new Promise<void>((r) => (finished = r));
     const base = mode === 'sample' ? emptyDataset() : dataset; // sample data is never mixed with the user's runs
     set({ importing: { files: files.map((f) => f.name), done: 0 }, importError: null, lastImport: null });
     try {
@@ -92,6 +101,7 @@ export const useStore = create<State>()((set, get) => ({
     } finally {
       controller = null;
       set({ importing: null });
+      finished();
     }
   },
 
@@ -108,12 +118,17 @@ export const useStore = create<State>()((set, get) => ({
   },
 
   async exitSample() {
-    set({ lastImport: null, importError: null });
+    // Leave sample mode now, not after the stored data is read back: files added in between must not ask about the sample.
+    set({ ...empty(), lastImport: null, importError: null });
     if (get().storage === 'ok') await get().restore();
     else set(empty());
   },
 
   async clearAll() {
+    if (controller) {
+      controller.abort(new DOMException('Data cleared', 'AbortError')); // a running import must not bring the data back
+      await inflight;
+    }
     let storage = get().storage;
     if (storage !== 'off') {
       try {
