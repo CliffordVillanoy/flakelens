@@ -1,6 +1,6 @@
 # DEV-17: Loaded data, clear data, edge states, shortcuts sheet
 
-**Status:** To do
+**Status:** Done (2026-11-21, commit `267c052` on `feat/v0-ui`; 220 tests pass)
 
 **Goal:** Users can see exactly what is loaded, why something was not imported, and remove everything in one step.
 

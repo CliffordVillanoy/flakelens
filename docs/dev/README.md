@@ -33,7 +33,7 @@ Merged into `main` and pushed to https://github.com/CliffordVillanoy/flakelens o
 | [DEV-14](DEV-14.md) | Tests screen: health box, tabs, ranked table | Frontend | 4 | Done |
 | [DEV-15](DEV-15.md) | Table controls and export | Frontend | 5 | Done |
 | [DEV-16](DEV-16.md) | Test detail panel and keyboard navigation | Frontend | 6 | Done |
-| [DEV-17](DEV-17.md) | Loaded data, clear data, edge states, shortcuts sheet | Frontend | 7 | To do |
+| [DEV-17](DEV-17.md) | Loaded data, clear data, edge states, shortcuts sheet | Frontend | 7 | Done |
 | [DEV-18](DEV-18.md) | End-to-end, accessibility, privacy and deploy | Both (tests, CI, hosting) | 8 | To do |
 
 Order: DEV-11 → DEV-12 → DEV-13 → DEV-14 → DEV-15 → DEV-16 → DEV-17 → DEV-18, then a final review and the user's merge approval.
@@ -62,3 +62,6 @@ Order: DEV-11 → DEV-12 → DEV-13 → DEV-14 → DEV-15 → DEV-16 → DEV-17 
 - For the UI/UX chat (from DEV-16): interim keys `panel.fileBar`, `panel.history.list/.show/.legend.mixed`, `panel.failure.diff/.metaNoDate`, `run.attempt.pass/.fail/.retry/.skip`, `summary.title/.status/.wasted/.failure/.footer`, `toast.copyFailed` ("Couldn't copy. Your browser blocked the clipboard."), `panel.wasted.label`, `panel.close.hint`; panel headings use 600 weight (DESIGN.md) vs the board's 700; panel is 600px wide on desktop vs the board's 520px.
 - For DEV-18 (from DEV-16): check a click on "Try sample data" that once did not navigate (possible dev-reload race); check that the virtualised table recovers after its container was hidden during a live resize; the page gutter at exactly 640px is 24px (Tailwind max-sm stops at 639px); banners are hidden on phone while a panel is open.
 - For DEV-17 (from the DEV-15 security review): CSV and JSON downloads must reuse the control-character cleanup from `escapeMd` plus formula-safe CSV cells; test with a name containing a newline and a leading `=`.
+- For the UI/UX chat (from DEV-17): interim keys `data.summary`, `data.file.failed`, `data.download.csv/.json`, `data.runs.label`, `storage.reload`, `keys.close`; plurals added to `data.file.meta`, `clear.body`, `empty.filter.title`; no board exists for the storage off/failed banners (flat warning style used); Branch and Browser show "—" because v0 does not parse them; the not-imported download holds only noStatus and noName notices; Clear all data keeps theme, density and the shortcuts switch.
+- From DEV-17: `?` opens the shortcuts sheet even over another open dialog (harmless, unchanged); a synthetic Escape on the window does not close a native dialog (affects scripted e2e only; use a real key press).
+- Tip for editors (from DEV-17): the file tool turns escape sequences such as U+2028 into raw characters inside source files; helpers use code points instead.
