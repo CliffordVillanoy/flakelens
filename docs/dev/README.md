@@ -27,14 +27,15 @@ Merged into `main` and pushed to https://github.com/CliffordVillanoy/flakelens o
 
 | Ticket | Title | Scope | Plan task | Status |
 | --- | --- | --- | --- | --- |
-| [DEV-11](DEV-11.md) | UI foundation: tokens, fonts, copy, router | Frontend | 1 | To do |
-| [DEV-12](DEV-12.md) | Data layer: worker import, storage, sample, store | Both (engine helpers + frontend data) | 2 | To do |
-| [DEV-13](DEV-13.md) | Start screen and import states | Frontend | 3 | To do |
-| [DEV-14](DEV-14.md) | Tests screen: health box, tabs, ranked table | Frontend | 4 | To do |
-| [DEV-15](DEV-15.md) | Table controls and export | Frontend | 5 | To do |
-| [DEV-16](DEV-16.md) | Test detail panel and keyboard navigation | Frontend | 6 | To do |
-| [DEV-17](DEV-17.md) | Loaded data, clear data, edge states, shortcuts sheet | Frontend | 7 | To do |
-| [DEV-18](DEV-18.md) | End-to-end, accessibility, privacy and deploy | Both (tests, CI, hosting) | 8 | To do |
+| [DEV-11](DEV-11.md) | UI foundation: tokens, fonts, copy, router | Frontend | 1 | Done |
+| [DEV-12](DEV-12.md) | Data layer: worker import, storage, sample, store | Both (engine helpers + frontend data) | 2 | Done |
+| [DEV-13](DEV-13.md) | Start screen and import states | Frontend | 3 | Done |
+| [DEV-14](DEV-14.md) | Tests screen: health box, tabs, ranked table | Frontend | 4 | Done |
+| [DEV-15](DEV-15.md) | Table controls and export | Frontend | 5 | Done |
+| [DEV-16](DEV-16.md) | Test detail panel and keyboard navigation | Frontend | 6 | Done |
+| [DEV-17](DEV-17.md) | Loaded data, clear data, edge states, shortcuts sheet | Frontend | 7 | Done |
+| [DEV-18](DEV-18.md) | End-to-end, accessibility, privacy and deploy | Both (tests, CI, hosting) | 8 | Done |
+| [DEV-19](DEV-19.md) | v0 UI review and merge | Fix or refinement | Final review | Awaiting merge approval |
 
 Order: DEV-11 → DEV-12 → DEV-13 → DEV-14 → DEV-15 → DEV-16 → DEV-17 → DEV-18, then a final review and the user's merge approval.
 
@@ -49,3 +50,24 @@ Order: DEV-11 → DEV-12 → DEV-13 → DEV-14 → DEV-15 → DEV-16 → DEV-17 
 - From DEV-05: timing delay is seeded at 0–150 or 250–400 ms around the 200 ms wait, so real timer jitter cannot change outcomes. Values in `flake-lab/README.md`.
 - From DEV-07: an unreadable run start date is dropped with no notice. The UI plan needs a notice code and copy (for example `import.partial.badDate`).
 - From DEV-07 deferred minors: duplicate retry values in hand-edited files; a dropped duplicate import still shows `counts.imported`; mixed path separators in lab fixtures; eval matches labels by title only.
+- For the UI/UX chat (from DEV-11): a phone-width "Local only" privacy variant needs a copy key; `04-ux-copy.md` section 6 still shows an own-data `header.dataChip` that section 4 retired; some "a / b" keys were split into separate keys in `src/ui/copy.ts` (list in the DEV-11 ledger).
+- From DEV-11: CSP is injected at build only (dev server needs inline scripts for fast refresh). npm 12 skipped the esbuild install script; build works without it.
+- For the UI/UX chat (from DEV-12): new copy `import.partial.badDate` = "{file}: the run start time couldn't be read, so this run keeps its import order."; interim copy for a whole-import timeout and crash (`import.fail.timeout`, `import.fail.crash`) set by the planning chat for DEV-13, to be confirmed.
+- From DEV-12: sample files parse on the main thread, adding about 60 kB gzip (zod) to first load; move to the worker in the DEV-18 performance pass. The worker under the `/flakelens/` sub-path must be checked with a real drop (DEV-13 or DEV-18).
+- For the UI/UX chat (from DEV-13): confirm new keys `import.region`, `import.result`, `banner.dismiss`, `import.fail.timeout`, `import.fail.crash`; the progress bar has no percent (worker reports per file); no commit-label input in v0, so every own file shows the `import.noCommit` info line; sample banner placement is set in DEV-14.
+- From DEV-13: import copy lacks a plural for runs ("1 runs"); fixed in DEV-14 per the copy rule (ICU plurals, section 3).
+- For the UI/UX chat (from DEV-14): new copy keys `tests.count.all/.status/.search/.statusSearch`, `tests.col.runs`, `tests.legend.title`, `tests.rows`, `tests.health.label`, `run.pass/.retryPass/.fail/.skip`, `runs.label`, `glossary.suspect/.mixedCommit/.wasted`; "Skip to results" link needs a key; tab counts follow the search while the health box counts all tests (confirm); rank shows for Flaky rows only (as board 3).
+- From DEV-14: sample lab durations are tiny, so wasted time shows 0.1 to 0.3 min in the demo. Honest numbers, weak demo; decide before launch whether the sample needs longer lab durations.
+- For the UI/UX chat (from DEV-15): interim keys `tests.columns/.title/.locked/.reset/.saved`, `tests.col.score/.mixed/.flip/.lastFailed/.project`, `cell.fraction`, `tests.density/.compact/.comfortable`, `tests.filters/.status/.search/.remove/.clear`, `tests.why`, `tip.export`, `tests.banner.sample.seeWhy`, `sort.rank/.wasted/.test`; board 8 compact shows the path inline but DESIGN.md says hover only (followed DESIGN.md); clipboard-failure copy needed (interim `toast.copyFailed` set by planning in DEV-16).
+- Decision (planning, DEV-15): sample banner "(see why)" links to Loaded data (#/data), as board 3 does; the dev chat was right and the earlier ask was wrong.
+- For the UI/UX chat (from DEV-16): interim keys `panel.fileBar`, `panel.history.list/.show/.legend.mixed`, `panel.failure.diff/.metaNoDate`, `run.attempt.pass/.fail/.retry/.skip`, `summary.title/.status/.wasted/.failure/.footer`, `toast.copyFailed` ("Couldn't copy. Your browser blocked the clipboard."), `panel.wasted.label`, `panel.close.hint`; panel headings use 600 weight (DESIGN.md) vs the board's 700; panel is 600px wide on desktop vs the board's 520px.
+- For DEV-18 (from DEV-16): check a click on "Try sample data" that once did not navigate (possible dev-reload race); check that the virtualised table recovers after its container was hidden during a live resize; the page gutter at exactly 640px is 24px (Tailwind max-sm stops at 639px); banners are hidden on phone while a panel is open.
+- For DEV-17 (from the DEV-15 security review): CSV and JSON downloads must reuse the control-character cleanup from `escapeMd` plus formula-safe CSV cells; test with a name containing a newline and a leading `=`.
+- For the UI/UX chat (from DEV-17): interim keys `data.summary`, `data.file.failed`, `data.download.csv/.json`, `data.runs.label`, `storage.reload`, `keys.close`; plurals added to `data.file.meta`, `clear.body`, `empty.filter.title`; no board exists for the storage off/failed banners (flat warning style used); Branch and Browser show "—" because v0 does not parse them; the not-imported download holds only noStatus and noName notices; Clear all data keeps theme, density and the shortcuts switch.
+- From DEV-17: `?` opens the shortcuts sheet even over another open dialog (harmless, unchanged); a synthetic Escape on the window does not close a native dialog (affects scripted e2e only; use a real key press).
+- Tip for editors (from DEV-17): the file tool turns escape sequences such as U+2028 into raw characters inside source files; helpers use code points instead.
+- For the UI/UX chat (from DEV-18): contrast proposals, tokens NOT changed: light `--status-flaky` #bf8700 on #ffffff is 3.14 as text (app uses `--status-flaky-text` #7d4e00 for the link); light `--link` #0969da on `--surface-hover` #e6eaef is 4.29 (propose link #0860ca or a darker hover); dark `--muted-foreground` #9198a1 on `--selection` #1b3358 is 4.34 and light #59636e on #b6e3ff is 4.48 (propose muted #a4abb4 dark / #4f5a65 light, or a lighter selection). Interim key `skip.results` = "Skip to results".
+- From DEV-18: the hidden-list bug was real (virtual table cached 0px rows when hidden at phone width) and is fixed with an e2e test. Pages is not enabled or deployed; the e2e CI job has not run on GitHub yet.
+- From DEV-19: new header link "Loaded data" (key `data.title`) so Clear all data stays one click away; placement and wording for the UI/UX chat to confirm. The address bar shows `?status=suspect` while the UI says Unproven.
+- Deferred minors from DEV-19 (not fixed): (1) copy-summary fields are not cleaned, so a newline in a test name can forge lines in copied text; (2) `stripAnsi` removes colour codes only; (3) zod's JIT uses `Function()` in the worker (`z.config({jitless:true})` would remove it); (4) sample-load fetch errors are not caught; (5) `downloadFile` revokes the object URL right after the click (Safari risk); (6) the result count line `role=status` announces every keystroke in search; (7) `Tests.tsx` `useEffect` on `route.query` runs every render; (8) see the `?status=suspect` note above; (9) Loaded data shows no import progress for drops made there.
+- Not covered by v0 tests: Firefox and Safari (Chromium only); no 10-run soak of the whole e2e suite.

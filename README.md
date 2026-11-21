@@ -2,10 +2,18 @@
 
 Local-first flaky test triage for Playwright. Load several CI runs' JSON reports and FlakeLens ranks flaky tests, separating confirmed flakiness (same commit, different result) from unproven suspects. Runs in your browser: no account, no upload, $0. Work in progress.
 
+## Try it
+
+Demo: <https://cliffordvillanoy.github.io/flakelens/> (published by the Pages workflow once GitHub Pages is switched on for this repository). Press "Try sample data", or drop Playwright JSON reports from a few CI runs.
+
+## Privacy
+
+Your reports are read and analysed in your browser. They are not uploaded, and the page does not send them anywhere. Your data is kept in your browser's own storage (IndexedDB) until you press "Clear all data" on the Loaded data page; the sample data is never stored. The page's content security policy only allows requests to its own address, and an end-to-end test (`e2e/privacy.spec.ts`) checks that, in its default mode, every request goes to the app's own origin. Fonts are served by the app itself.
+
 ## Status
 
-- Done: the v0 scoring engine (Playwright JSON importer, run de-duplication, flakiness score, labels and default ranking) and the flake lab, a small Playwright suite with known answers.
-- Not built yet: the browser UI. There is nothing to open in a browser today; the engine runs in tests and scripts.
+- Done: the v0 scoring engine, the flake lab, and the v0 browser app (start screen with sample data, import of Playwright JSON reports, ranked and grouped tests, detail panel with run history, notices and not-imported downloads, clear data).
+- Not built yet: JUnit XML import, per-file removal, cause grouping and AI explanations.
 
 ## Lab result
 
@@ -25,8 +33,10 @@ Limits: this is a synthetic lab with 9 tests, one browser (Chromium) and 12 runs
 ## Quick start
 
 ```bash
-npm install          # also enables the pre-push hook (typecheck, lint, tests)
+npm install          # also enables the pre-push hook (typecheck, lint, unit tests)
+npm run dev          # the app, at http://localhost:5173
 npm test             # unit, property and lab acceptance tests
+npm run e2e          # builds, then end-to-end and accessibility tests (needs: npx playwright install chromium)
 npm run lab          # rerun the flake lab (needs: npx playwright install chromium)
 npm run eval:lab     # regenerate docs/eval/lab-detection.md
 ```

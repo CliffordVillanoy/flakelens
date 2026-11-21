@@ -8,6 +8,7 @@ export type NoticeCode =
   | 'import.partial.noStatus'
   | 'import.partial.noName'
   | 'import.partial.badDuration'
+  | 'import.partial.badDate'
   | 'import.dupeIds'
   | 'import.dupeRun'
   | 'import.noCommit'

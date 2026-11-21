@@ -1,6 +1,6 @@
 # DEV-12: Data layer: worker import, storage, sample, store
 
-**Status:** To do
+**Status:** Done (2026-11-21, commit `72bcbbf` on `feat/v0-ui`; 110 tests pass)
 
 **Goal:** Get data in and out: parse files in a worker, store the user's data in IndexedDB, load sample data in memory, and expose ranked results to the screens.
 

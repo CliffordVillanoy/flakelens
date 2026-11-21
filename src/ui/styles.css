@@ -1,0 +1,333 @@
+@import 'tailwindcss';
+
+/* Self-hosted fonts (OFL, licences in public/fonts). Vite rewrites these public paths for base './'. */
+@font-face { font-family: 'Mona Sans'; src: url('/fonts/MonaSans-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Mona Sans'; src: url('/fonts/MonaSans-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Mona Sans'; src: url('/fonts/MonaSans-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Mona Sans'; src: url('/fonts/MonaSans-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'JetBrains Mono'; src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+
+/* DESIGN.md CSS variable map. Dark is the default theme. */
+:root {
+  color-scheme: dark;
+  --background: #0d1117;
+  --foreground: #e6edf3;
+  --card: #161b22;
+  --card-foreground: #e6edf3;
+  --popover: #161b22;
+  --popover-foreground: #e6edf3;
+  --primary: #238636;
+  --primary-hover: #196c2e;
+  --primary-pressed: #145a26;
+  --primary-foreground: #ffffff;
+  --secondary: #21262d;
+  --secondary-foreground: #e6edf3;
+  --muted: #21262d;
+  --muted-foreground: #9198a1;
+  --accent: #121d2f;
+  --accent-foreground: #e6edf3;
+  --accent-border: #1f6feb;
+  --selection: #1b3358;
+  --destructive: #b62324;
+  --destructive-hover: #da3633;
+  --destructive-pressed: #8e1519;
+  --destructive-foreground: #ffffff;
+  --border: #30363d;
+  --border-muted: #21262d;
+  --border-control: #3d444d;
+  --input: #6e7681;
+  --ring: #4493f8;
+  --link: #4493f8;
+  --link-hover: #79c0ff;
+  --fg-secondary: #c9d1d9;
+  --disabled-fg: #848d97;
+  --surface-hover: #262c36;
+  --status-flaky: #d29922;
+  --status-flaky-text: #e3b341;
+  --status-flaky-subtle: #4a3a12;
+  --status-suspect: #ab7df8;
+  --status-suspect-text: #c297ff;
+  --status-suspect-subtle: #3c2a63;
+  --status-failing: #f85149;
+  --status-failing-text: #ff7b72;
+  --status-failing-subtle: #5a1e22;
+  --status-stable: #3fb950;
+  --status-stable-text: #3fb950;
+  --status-stable-subtle: #1a3d26;
+  --status-none: #c9d1d9;
+  --status-none-subtle: #30363d;
+  --status-skip: #9198a1;
+  --status-new: #39c5cf;
+  --status-new-subtle: #0f3a3d;
+  --diff-del: #25171c;
+  --danger-border: #6e2b2b;
+  --diff-del-gutter: #3a1b1f;
+  --diff-add: #12261e;
+  --diff-add-gutter: #1b3a26;
+  --radius: 8px;
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+  --background: #f6f8fa;
+  --foreground: #1f2328;
+  --card: #ffffff;
+  --card-foreground: #1f2328;
+  --popover: #ffffff;
+  --popover-foreground: #1f2328;
+  --primary: #1a7f37;
+  --primary-hover: #116329;
+  --primary-pressed: #0f5323;
+  --secondary: #eff2f5;
+  --secondary-foreground: #1f2328;
+  --muted: #eff2f5;
+  --muted-foreground: #59636e;
+  --accent: #ddf4ff;
+  --accent-foreground: #1f2328;
+  --accent-border: #54aeff;
+  --selection: #b6e3ff;
+  --destructive-hover: #a40e26;
+  --destructive-pressed: #8c0c1f;
+  --border: #d1d9e0;
+  --border-muted: #d8dee4;
+  --border-control: #c3ccd5;
+  --input: #818b98;
+  --ring: #0969da;
+  --link: #0969da;
+  --link-hover: #0550ae;
+  --fg-secondary: #393f46;
+  --disabled-fg: #656d76;
+  --surface-hover: #e6eaef;
+  --status-flaky: #bf8700;
+  --status-flaky-text: #7d4e00;
+  --status-flaky-subtle: #ffe58f;
+  --status-suspect: #8250df;
+  --status-suspect-text: #6639ba;
+  --status-suspect-subtle: #e8d9ff;
+  --status-failing: #cf222e;
+  --status-failing-text: #a40e26;
+  --status-failing-subtle: #ffcecb;
+  --status-stable: #1a7f37;
+  --status-stable-text: #116329;
+  --status-stable-subtle: #aceebb;
+  --status-none: #393f46;
+  --status-none-subtle: #d8dee4;
+  --status-skip: #59636e;
+  --status-new: #0b6b73;
+  --status-new-subtle: #d5f5f6;
+  --diff-del: #ffebe9;
+  --danger-border: #ff8182;
+  --diff-del-gutter: #ffcecb;
+  --diff-add: #e6ffec;
+  --diff-add-gutter: #ccffd8;
+}
+
+@theme inline {
+  --font-sans: 'Mona Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-pressed: var(--primary-pressed);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-border: var(--accent-border);
+  --color-selection: var(--selection);
+  --color-destructive: var(--destructive);
+  --color-destructive-hover: var(--destructive-hover);
+  --color-destructive-pressed: var(--destructive-pressed);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-border-muted: var(--border-muted);
+  --color-control: var(--border-control);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-link: var(--link);
+  --color-link-hover: var(--link-hover);
+  --color-fg-secondary: var(--fg-secondary);
+  --color-disabled: var(--disabled-fg);
+  --color-surface-hover: var(--surface-hover);
+  --color-status-flaky: var(--status-flaky);
+  --color-status-flaky-text: var(--status-flaky-text);
+  --color-status-flaky-subtle: var(--status-flaky-subtle);
+  --color-status-suspect: var(--status-suspect);
+  --color-status-suspect-text: var(--status-suspect-text);
+  --color-status-suspect-subtle: var(--status-suspect-subtle);
+  --color-status-failing: var(--status-failing);
+  --color-status-failing-text: var(--status-failing-text);
+  --color-status-failing-subtle: var(--status-failing-subtle);
+  --color-status-stable: var(--status-stable);
+  --color-status-stable-text: var(--status-stable-text);
+  --color-status-stable-subtle: var(--status-stable-subtle);
+  --color-status-none: var(--status-none);
+  --color-status-none-subtle: var(--status-none-subtle);
+  --color-status-skip: var(--status-skip);
+  --color-status-new: var(--status-new);
+  --color-status-new-subtle: var(--status-new-subtle);
+  --color-diff-del: var(--diff-del);
+  --color-danger-border: var(--danger-border);
+  --color-diff-del-gutter: var(--diff-del-gutter);
+  --color-diff-add: var(--diff-add);
+  --color-diff-add-gutter: var(--diff-add-gutter);
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: var(--radius);
+}
+
+/* The Controls Inherit Rule and the global focus ring (DESIGN.md). Flat: no shadows, no gradients. */
+@layer base {
+  body {
+    margin: 0;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: normal; /* the boards use the browser default, not Tailwind's 1.5 */
+  }
+  button,
+  input,
+  select,
+  textarea,
+  summary {
+    color: inherit;
+    font: inherit;
+  }
+  button {
+    cursor: pointer;
+  }
+  ::placeholder {
+    color: var(--muted-foreground);
+    opacity: 1;
+  }
+  a {
+    color: var(--link);
+    text-underline-offset: 2px;
+  }
+  a:hover {
+    color: var(--link-hover);
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  kbd {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 1px 6px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--card);
+    color: var(--fg-secondary);
+  }
+  code {
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+  html {
+    scroll-padding-top: 16px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Ranked table, phone width (DESIGN.md "Phone width"): rows become a 3-line card, the column header and rank hide. */
+@media (max-width: 640px) {
+  .ranked-table {
+    min-width: 0 !important;
+  }
+  .ranked-head {
+    display: none !important;
+  }
+  .ranked-sticky {
+    top: 0 !important;
+  }
+  .ranked-row {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    grid-template-areas: 'test wasted' 'status runs' 'why why';
+    padding: 6px 0;
+  }
+  .ranked-row > .c-rank {
+    display: none;
+  }
+  .ranked-row > .c-test {
+    grid-area: test;
+  }
+  .ranked-row > .c-status {
+    grid-area: status;
+    justify-self: start;
+  }
+  .ranked-row > .c-runs {
+    grid-area: runs;
+    justify-self: end;
+  }
+  .ranked-row > .c-why {
+    grid-area: why;
+    padding-top: 0 !important;
+    text-align: left !important;
+  }
+  .ranked-row > .c-wasted {
+    grid-area: wasted;
+  }
+}
+
+/* Phone width: an open detail panel takes the whole screen and the list behind it is hidden (DESIGN.md). */
+@media (max-width: 640px) {
+  .listpane[data-panel='true'] {
+    display: none;
+  }
+}
+
+/* Phone width (<= 640px, as the boards): the panel fills the screen with 16px gutters and no side border. */
+@media (max-width: 640px) {
+  .test-panel {
+    max-width: none !important;
+    border-left-width: 0 !important;
+    padding: 12px 16px 20px !important;
+    max-height: none !important;
+  }
+}
+
+/* Phone width (<= 640px, as the boards): page gutters drop to 16px. Tailwind's max-sm stops at 639px. */
+@media (max-width: 640px) {
+  .pg {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+
+/* Skip link: off screen until it has focus, then the first thing on the page (board 3). */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 8px;
+  z-index: 60;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 0;
+  background: var(--card);
+  color: var(--foreground);
+  font-weight: 600;
+}
+.skip-link:focus {
+  left: 16px;
+}
+#results:focus {
+  outline: none;
+}

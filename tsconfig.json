@@ -10,7 +10,8 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "types": ["node", "vite/client"]
+    "types": ["node", "vite/client"],
+    "paths": { "@/*": ["./src/*"] }
   },
-  "include": ["src", "scripts", "flake-lab", "vite.config.ts"]
+  "include": ["src", "scripts", "flake-lab", "e2e", "vite.config.ts", "playwright.config.ts"]
 }
