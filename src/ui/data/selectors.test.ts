@@ -152,6 +152,16 @@ it('Markdown export escapes pipes, backticks and leading = + - @', () => {
   expect(escapeMd('x-y')).toBe('x-y');
 });
 
+it('Markdown export: newlines, tabs and other control characters cannot start a new line or cell', () => {
+  const BS = '\\';
+  expect(escapeMd('ok\n=HYPERLINK("x")')).toBe(`ok =HYPERLINK("x")`);
+  expect(escapeMd('\t+cmd')).toBe(`${BS}+cmd`);
+  expect(escapeMd('a\r\n-b\u0000c d')).toBe('a -b c d');
+  const all = rows(many());
+  const evil = { ...all[0]!, test: { ...all[0]!.test, title: 'name\n2. fake line' } };
+  expect(topFlakyMarkdown([evil]).split('\n')).toHaveLength(1);
+});
+
 it('Markdown export lists the top Flaky tests: rank, name, evidence, wasted minutes', () => {
   const BS = '\\';
   const all = rows(many());

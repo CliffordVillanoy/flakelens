@@ -153,7 +153,14 @@ export function sortRows(rows: Row[], sort: Sort): Row[] {
 
 // Markdown export: escape what would change the meaning in Markdown, and a leading = + - @ that a
 // spreadsheet would run as a formula if the list is pasted there.
-export const escapeMd = (s: string) => s.replace(/[\\`|*_[\]<>]/g, '\\$&').replace(/^[=+\-@]/, '\\$&');
+// Control characters (newlines, tabs, line separators) become spaces first, so no field can start a new
+// list line, a spreadsheet cell or row, and the leading-character escape sees the real first character.
+export const escapeMd = (s: string) =>
+  s
+    .replace(/[\u0000-\u001F\u007F  ]+/g, ' ')
+    .trim()
+    .replace(/[\\`|*_[\]<>]/g, '\\$&')
+    .replace(/^[=+\-@]/, '\\$&');
 
 const TOP_FLAKY = 10;
 /** "1. name — evidence — wasted" for the top Flaky tests, in fix-priority order. */
