@@ -1,6 +1,6 @@
 # DEV-18: End-to-end, accessibility, privacy and deploy
 
-**Status:** To do
+**Status:** Done (2026-11-21, commit `e86920f` on `feat/v0-ui`; 225 unit + 28 e2e tests pass, 30 axe scans clean)
 
 **Goal:** Prove v0 works for a real user, stays private and accessible, and publish it on GitHub Pages.
 
