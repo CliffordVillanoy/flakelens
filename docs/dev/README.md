@@ -30,7 +30,7 @@ Merged into `main` and pushed to https://github.com/CliffordVillanoy/flakelens o
 | [DEV-11](DEV-11.md) | UI foundation: tokens, fonts, copy, router | Frontend | 1 | Done |
 | [DEV-12](DEV-12.md) | Data layer: worker import, storage, sample, store | Both (engine helpers + frontend data) | 2 | Done |
 | [DEV-13](DEV-13.md) | Start screen and import states | Frontend | 3 | Done |
-| [DEV-14](DEV-14.md) | Tests screen: health box, tabs, ranked table | Frontend | 4 | To do |
+| [DEV-14](DEV-14.md) | Tests screen: health box, tabs, ranked table | Frontend | 4 | Done |
 | [DEV-15](DEV-15.md) | Table controls and export | Frontend | 5 | To do |
 | [DEV-16](DEV-16.md) | Test detail panel and keyboard navigation | Frontend | 6 | To do |
 | [DEV-17](DEV-17.md) | Loaded data, clear data, edge states, shortcuts sheet | Frontend | 7 | To do |
@@ -55,3 +55,5 @@ Order: DEV-11 → DEV-12 → DEV-13 → DEV-14 → DEV-15 → DEV-16 → DEV-17 
 - From DEV-12: sample files parse on the main thread, adding about 60 kB gzip (zod) to first load; move to the worker in the DEV-18 performance pass. The worker under the `/flakelens/` sub-path must be checked with a real drop (DEV-13 or DEV-18).
 - For the UI/UX chat (from DEV-13): confirm new keys `import.region`, `import.result`, `banner.dismiss`, `import.fail.timeout`, `import.fail.crash`; the progress bar has no percent (worker reports per file); no commit-label input in v0, so every own file shows the `import.noCommit` info line; sample banner placement is set in DEV-14.
 - From DEV-13: import copy lacks a plural for runs ("1 runs"); fixed in DEV-14 per the copy rule (ICU plurals, section 3).
+- For the UI/UX chat (from DEV-14): new copy keys `tests.count.all/.status/.search/.statusSearch`, `tests.col.runs`, `tests.legend.title`, `tests.rows`, `tests.health.label`, `run.pass/.retryPass/.fail/.skip`, `runs.label`, `glossary.suspect/.mixedCommit/.wasted`; "Skip to results" link needs a key; tab counts follow the search while the health box counts all tests (confirm); rank shows for Flaky rows only (as board 3).
+- From DEV-14: sample lab durations are tiny, so wasted time shows 0.1 to 0.3 min in the demo. Honest numbers, weak demo; decide before launch whether the sample needs longer lab durations.

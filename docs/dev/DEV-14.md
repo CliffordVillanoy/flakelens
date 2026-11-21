@@ -1,6 +1,6 @@
 # DEV-14: Tests screen: health box, tabs, ranked table
 
-**Status:** To do
+**Status:** Done (2026-11-21, commit `fa14c72` on `feat/v0-ui`; 160 tests pass)
 
 **Goal:** The ranked, grouped list of tests with evidence a user can trust at a glance.
 
