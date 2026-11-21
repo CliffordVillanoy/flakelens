@@ -7,6 +7,16 @@ export default defineConfig(
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
+    // Imported text renders as text only (spec 19.1).
+    files: ['src/**'],
+    rules: {
+      'no-restricted-syntax': [
+        'error',
+        { selector: "JSXAttribute[name.name='dangerouslySetInnerHTML']", message: 'Render text, never raw HTML (spec 19.1).' },
+      ],
+    },
+  },
+  {
     // The engine is pure TypeScript: no UI, no DOM, no network (spec 19.1).
     files: ['src/engine/**'],
     rules: {
