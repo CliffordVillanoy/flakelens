@@ -29,7 +29,9 @@ export function useShortcuts(handlers: Record<string, () => void>) {
       if (e.ctrlKey || e.metaKey || e.altKey || e.defaultPrevented) return;
       const run = latest.current[e.key];
       if (!run) return;
-      if (e.key !== 'Escape' && (isTyping(e.target) || !shortcutsEnabled())) return;
+      // Escape always works. Other keys are ignored in text fields, when switched off, and while a dialog is
+      // open (otherwise "?" would stack the sheet on top of another dialog).
+      if (e.key !== 'Escape' && (isTyping(e.target) || !shortcutsEnabled() || document.querySelector('dialog[open]'))) return;
       e.preventDefault();
       run();
     };

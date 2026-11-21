@@ -279,3 +279,30 @@ it('the shortcuts switch is saved, takes effect at once and turns single-key sho
   await userEvent.keyboard('/');
   expect(search).toHaveFocus();
 });
+
+it('single-key shortcuts are ignored while a dialog is open ("?" does not stack the sheet on the clear dialog)', async () => {
+  await open('#/data');
+  await userEvent.click(await screen.findByRole('button', { name: 'Clear all data' }));
+  await screen.findByRole('dialog', { name: 'Clear all data?' });
+  (document.activeElement as HTMLElement | null)?.blur();
+  await userEvent.keyboard('?');
+  expect(screen.queryByRole('dialog', { name: 'Keyboard shortcuts' })).toBeNull();
+  expect(screen.getByRole('dialog', { name: 'Clear all data?' })).toBeInTheDocument();
+});
+
+it('Tests has a "Skip to results" control first in the tab order that moves focus to the table', async () => {
+  await open('#/tests');
+  await screen.findByRole('heading', { level: 1, name: 'Tests ranked by fix priority' });
+  (document.activeElement as HTMLElement | null)?.blur();
+  await userEvent.tab();
+  const skip = screen.getByRole('button', { name: 'Skip to results' });
+  expect(skip).toHaveFocus();
+  await userEvent.keyboard('{Enter}');
+  expect(document.getElementById('results')).toHaveFocus();
+});
+
+it('no skip control on Start or Loaded data', async () => {
+  await open('#/data');
+  await screen.findByRole('heading', { level: 1, name: 'Loaded data' });
+  expect(screen.queryByRole('button', { name: 'Skip to results' })).toBeNull();
+});

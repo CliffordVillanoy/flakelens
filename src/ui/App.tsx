@@ -6,6 +6,7 @@ import { useStore } from './data/store';
 import { navigate, useRoute } from './lib/router';
 import { shortcutsSheet, useShortcuts } from './lib/shortcuts';
 import { Start } from './screens/Start';
+import { t } from './copy';
 import { LoadedData } from './screens/LoadedData';
 import { Tests } from './screens/Tests';
 import { ShortcutsSheet } from './components/ShortcutsSheet';
@@ -60,6 +61,16 @@ export function App() {
   if (!ready) return null;
   return (
     <div className="flex min-h-screen flex-col" {...dropAnywhere}>
+      {s.mode !== 'empty' && route.name !== 'data' && (
+        // A button, not a #link: hash links would change the route.
+        <button
+          type="button"
+          className="skip-link"
+          onClick={() => document.getElementById('results')?.focus()}
+        >
+          {t('skip.results')}
+        </button>
+      )}
       <Header mode={HEADER_MODE[s.mode]} onAddFiles={openPicker} onHelp={() => shortcutsSheet.open()} />
       <StorageBanner />
       <input

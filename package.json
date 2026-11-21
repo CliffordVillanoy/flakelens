@@ -10,7 +10,8 @@
     "format": "prettier --write .",
     "lab": "node flake-lab/run-lab.mjs",
     "eval:lab": "tsx scripts/eval-lab.ts",
-    "prepare": "git config core.hooksPath .githooks"
+    "prepare": "git config core.hooksPath .githooks",
+    "e2e": "npm run build && playwright test"
   },
   "type": "module",
   "private": true,
@@ -28,6 +29,7 @@
     "zustand": "^5.1.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.65.1",
     "@testing-library/dom": "^10.4.2",

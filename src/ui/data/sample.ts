@@ -1,10 +1,13 @@
 import { addImport, emptyDataset } from '@/engine/dataset';
-import { parsePlaywrightReport } from '@/engine/import/playwright';
 import type { Dataset } from '@/engine/types';
+import type { Parser } from './importer';
+import { workerParser } from './parser';
 
 // Built-in demo runs from public/sample (DEV-05). Held in memory only; never stored, never mixed with user data.
 // URLs are relative to the page, so this works under any base path (GitHub Pages serves /flakelens/).
-export async function loadSample(): Promise<Dataset> {
+// Parsing happens in the worker, like the user's own files, so the report parser (and its schema library)
+// stays out of the main bundle.
+export async function loadSample(makeParser: () => Parser = workerParser): Promise<Dataset> {
   const res = await fetch('sample/manifest.json');
   if (!res.ok) throw new Error(`sample manifest: HTTP ${res.status}`);
   const manifest: unknown = await res.json();
@@ -14,17 +17,18 @@ export async function loadSample(): Promise<Dataset> {
   )
     throw new Error('sample manifest: unexpected shape');
   const entries = manifest as { file: string; commit: string }[];
-  const texts = await Promise.all(
-    entries.map(async ({ file }) => {
+  const inputs = await Promise.all(
+    entries.map(async ({ file, commit }) => {
       const r = await fetch(`sample/${file}`);
       if (!r.ok) throw new Error(`sample ${file}: HTTP ${r.status}`);
-      return r.text();
+      return { name: file, text: await r.text(), commitLabel: commit };
     }),
   );
-  const importedAt = new Date().toISOString();
-  return entries.reduce(
-    (ds, { file, commit }, order) =>
-      addImport(ds, parsePlaywrightReport(texts[order]!, { fileName: file, importedAt, order, commitLabel: commit })),
-    emptyDataset(),
-  );
+  const parser = makeParser();
+  try {
+    const results = await parser.parseFiles(inputs, new Date().toISOString(), () => {});
+    return results.reduce((ds, result) => addImport(ds, result), emptyDataset());
+  } finally {
+    parser.terminate();
+  }
 }

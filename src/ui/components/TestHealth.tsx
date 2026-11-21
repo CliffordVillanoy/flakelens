@@ -23,7 +23,7 @@ export function TestHealth({ summary, h }: { summary: ReturnType<typeof datasetS
           </h2>
           <span className="text-[13px] text-muted-foreground">{t('health.subtitle', summary)}</span>
           {summary.notImported > 0 && (
-            <a href="#/data" className="inline-flex items-center gap-[5px] text-[13px] text-status-flaky">
+            <a href="#/data" className="inline-flex items-center gap-[5px] text-[13px] text-status-flaky-text">
               <CircleAlert size={14} aria-hidden="true" />
               {t('health.notImported', { n: summary.notImported })}
             </a>

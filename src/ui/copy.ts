@@ -307,6 +307,8 @@ export const catalog = {
   // Shortcuts sheet
   'keys.title': 'Keyboard shortcuts',
   'keys.close': 'Close',
+  // Interim copy (DEV-18), pending UI/UX confirmation.
+  'skip.results': 'Skip to results',
   'keys.toggle': 'Single-key shortcuts',
   'keys.toggle.hint': 'They never fire while you type in a text field.',
   'keys.list': 'j / k: Next / previous test · Enter: Open details · Esc: Close details · /: Search · ?: This sheet',

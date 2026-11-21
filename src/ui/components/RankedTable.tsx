@@ -57,9 +57,11 @@ function GroupBand({ label, count, collapsed, onShow }: { label: Label; count: n
         <span className="text-xs text-muted-foreground">{text.slice(cut)}</span>
       </span>
       {collapsed && (
-        <button type="button" aria-expanded="false" className={`${linkButton} h-7 px-2 text-[13px] font-semibold`} onClick={onShow}>
-          {t('tests.group.show', { count, group: t(`status.${label}`) })}
-        </button>
+        <span role="cell">
+          <button type="button" aria-expanded="false" className={`${linkButton} h-7 px-2 text-[13px] font-semibold !text-link-hover`} onClick={onShow}>
+            {t('tests.group.show', { count, group: t(`status.${label}`) })}
+          </button>
+        </span>
       )}
     </div>
   );
@@ -134,10 +136,13 @@ export function RankedTable({ rows, selectedId, expandAll, columns, density, sor
   );
 
   const scroller = useRef<HTMLDivElement>(null);
+  const estimate = (i: number) => (items[i]?.kind === 'group' ? BAND_PX : ROW_PX[density]);
   const v = useVirtualizer({
     count: items.length,
     getScrollElement: () => scroller.current,
-    estimateSize: (i) => (items[i]!.kind === 'group' ? BAND_PX : ROW_PX[density]),
+    estimateSize: estimate,
+    // A hidden list (the phone-width panel hides it) measures 0px; keep the estimate instead of caching 0.
+    measureElement: (el) => Math.round(el.getBoundingClientRect().height) || estimate(Number((el as HTMLElement).dataset.index)),
     getItemKey: (i) => {
       const it = items[i]!;
       return it.kind === 'group' ? `g:${it.label}` : it.row.score.testId;
@@ -163,6 +168,8 @@ export function RankedTable({ rows, selectedId, expandAll, columns, density, sor
   return (
     <div className="flex flex-col gap-2">
       <div
+        id="results"
+        tabIndex={-1}
         ref={scroller}
         // Focus and scrollIntoView keep rows clear of the sticky header and group label.
         style={{ scrollPaddingTop: `${HEADER_PX + BAND_PX}px` }}
@@ -272,7 +279,7 @@ function TestRow({
           {test.title}
         </a>
         {!compact && (
-          <span title={test.file} className="truncate font-mono text-xs text-muted-foreground">
+          <span title={test.file} className={`truncate font-mono text-xs ${selected ? 'text-fg-secondary' : 'text-muted-foreground'}`}>
             {test.file}
           </span>
         )}

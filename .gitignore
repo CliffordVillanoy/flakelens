@@ -6,3 +6,5 @@ playwright-report/
 flake-lab/out/
 .superpowers/
 .impeccable/hook.cache.json
+e2e/screenshots/
+e2e/fixtures/large/
