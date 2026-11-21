@@ -1,6 +1,6 @@
 # DEV-19: v0 UI review and merge
 
-**Status:** To do (after DEV-11 to DEV-18)
+**Status:** Review done, fixes in `92b795c` (232 unit + 31 e2e tests pass). Waiting for the user's merge approval.
 
 **Goal:** An independent review of the whole `feat/v0-ui` branch, fixes for anything serious, then merge into `main` once the user approves.
 
