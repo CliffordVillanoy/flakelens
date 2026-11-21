@@ -16,8 +16,8 @@ export interface ImportSummary {
 }
 
 export class ImportTimeout extends Error {
-  constructor() {
-    super('import timed out');
+  constructor(readonly file: string) {
+    super(`${file} timed out`);
     this.name = 'ImportTimeout';
   }
 }
@@ -60,14 +60,17 @@ export async function runImport(
         parser.terminate();
         reject(e);
       };
+      let current = 0;
       const arm = () => {
         clearTimeout(timer);
-        timer = setTimeout(() => fail(new ImportTimeout()), timeoutMs);
+        const file = inputs[current]?.name ?? '';
+        timer = setTimeout(() => fail(new ImportTimeout(file)), timeoutMs);
       };
       signal.addEventListener('abort', () => fail(signal.reason), { once: true });
       arm();
       parser
         .parseFiles(inputs, new Date().toISOString(), (done) => {
+          current = done;
           arm(); // the limit is per file
           opts.onProgress?.(done, inputs.length);
         })
@@ -92,7 +95,8 @@ export async function runImport(
   }
 
   let storageFailed = false;
-  if (opts.persist) {
+  // A drop where every file failed changes nothing, in memory or in storage.
+  if (opts.persist && toSave.some((r) => r.record.result !== 'failed')) {
     try {
       for (const res of toSave) await saveImport(res);
     } catch {

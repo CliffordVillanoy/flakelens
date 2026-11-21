@@ -1,0 +1,89 @@
+import { useRef, useState } from 'react';
+import { Lock } from 'lucide-react';
+import { t } from '../copy';
+import { useStore } from '../data/store';
+import { DropZone } from '../components/DropZone';
+import { ImportProgress } from '../components/ImportProgress';
+import { WithCode } from '../components/WithCode';
+import { secondaryButton } from '../components/buttons';
+import { navigate } from '../lib/router';
+
+// Board 1 (Start, no data) and board 2 states A and C (parsing, failed files). IA flow F1 and F2.
+export function Start({ onFiles, onBrowse }: { onFiles: (files: File[]) => void; onBrowse: () => void }) {
+  const importing = useStore((s) => s.importing);
+  const lastImport = useStore((s) => s.lastImport);
+  const importError = useStore((s) => s.importError);
+  const cancelImport = useStore((s) => s.cancelImport);
+  const startSample = useStore((s) => s.startSample);
+  const [loadingSample, setLoadingSample] = useState(false);
+  const help = useRef<HTMLDetailsElement>(null);
+
+  const failed = lastImport?.records.filter((r) => r.result === 'failed') ?? [];
+  const trySample = async () => {
+    setLoadingSample(true);
+    try {
+      await startSample();
+      navigate('#/tests');
+    } finally {
+      setLoadingSample(false);
+    }
+  };
+
+  return (
+    <div className="flex justify-center px-4 py-14">
+      <div className="flex w-full max-w-[720px] flex-col gap-5">
+        <div className="flex flex-col gap-1.5">
+          <h1 className="m-0 text-[28px] font-bold">{t('start.title')}</h1>
+          <p className="m-0 text-[15px] text-muted-foreground">{t('start.lead')}</p>
+        </div>
+
+        {importing ? (
+          <ImportProgress files={importing.files} done={importing.done} onCancel={cancelImport} />
+        ) : (
+          <DropZone
+            onFiles={onFiles}
+            onBrowse={onBrowse}
+            failed={failed}
+            others={(lastImport?.records.length ?? 0) - failed.length}
+            error={importError}
+            onFormatHelp={() => {
+              help.current!.open = true;
+              help.current!.scrollIntoView?.({ block: 'nearest' });
+              help.current!.querySelector('summary')?.focus();
+            }}
+            extra={
+              <button
+                type="button"
+                className={`${secondaryButton} h-10 px-[18px] text-sm font-semibold`}
+                onClick={trySample}
+                disabled={loadingSample}
+                aria-busy={loadingSample}
+              >
+                {t('start.sample')}
+              </button>
+            }
+          />
+        )}
+
+        <div className="flex items-center gap-2 text-sm text-status-stable">
+          <Lock size={16} aria-hidden="true" />
+          {t('start.privacy')}
+        </div>
+
+        <details ref={help} open className="py-1">
+          <summary className="cursor-pointer text-sm font-semibold">{t('start.help.title')}</summary>
+          <div className="mt-3 flex flex-col gap-2.5 text-sm text-fg-secondary">
+            <div>{t('start.help.step1')}</div>
+            <div className="rounded-md border border-border bg-background px-3 py-2.5">
+              <code>{t('start.help.command')}</code>
+            </div>
+            <div>{t('start.help.step2')}</div>
+            <div>
+              <WithCode text={t('start.help.oneRun')} />
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+  );
+}

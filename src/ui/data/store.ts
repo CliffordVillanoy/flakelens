@@ -4,14 +4,19 @@ import { rankTests } from '@/engine/score/rank';
 import { scoreTests } from '@/engine/score/score';
 import type { Dataset, TestScore } from '@/engine/types';
 import * as db from './db';
-import { runImport, type ImportSummary } from './importer';
+import { ImportTimeout, runImport, type ImportSummary } from './importer';
 import { loadSample } from './sample';
 
 export type Mode = 'empty' | 'user' | 'sample';
 export type Storage = 'ok' | 'off' | 'failed';
 export interface ImportProgress {
-  total: number;
+  files: string[];
   done: number;
+}
+export type ImportError = { code: 'import.fail.timeout'; file: string } | { code: 'import.fail.crash' };
+export interface LastImport extends ImportSummary {
+  newRuns: number;
+  wasEmpty: boolean; // nothing was loaded before this import: "Imported", not "Added"
 }
 
 interface State {
@@ -20,11 +25,12 @@ interface State {
   ranked: TestScore[];
   importing: ImportProgress | null;
   storage: Storage;
-  lastImport: ImportSummary | null;
-  importError: 'timeout' | 'failed' | null;
+  lastImport: LastImport | null;
+  importError: ImportError | null;
   restore(): Promise<void>;
   importFiles(files: File[], commitLabels?: Record<string, string>): Promise<void>;
   cancelImport(): void;
+  dismissImport(): void;
   startSample(): Promise<void>;
   exitSample(): Promise<void>;
   clearAll(): Promise<void>;
@@ -47,7 +53,7 @@ export const useStore = create<State>()((set, get) => ({
     if (!(await db.storageAvailable())) return set({ ...empty(), storage: 'off' });
     try {
       const ds = await db.loadDataset();
-      set({ ...withData(ds.imports.length > 0 ? 'user' : 'empty', ds), storage: 'ok' });
+      set({ ...withData(ds.runs.length > 0 ? 'user' : 'empty', ds), storage: 'ok' });
     } catch {
       set({ ...empty(), storage: 'failed' });
     }
@@ -57,23 +63,31 @@ export const useStore = create<State>()((set, get) => ({
     if (get().importing || files.length === 0) return;
     const { mode, dataset, storage } = get();
     controller = new AbortController();
-    set({ importing: { total: files.length, done: 0 }, importError: null });
+    const base = mode === 'sample' ? emptyDataset() : dataset; // sample data is never mixed with the user's runs
+    set({ importing: { files: files.map((f) => f.name), done: 0 }, importError: null, lastImport: null });
     try {
       const r = await runImport(files, {
-        // Sample data is never mixed with the user's runs.
-        dataset: mode === 'sample' ? emptyDataset() : dataset,
+        dataset: base,
         persist: storage === 'ok',
         signal: controller.signal,
         commitLabels,
-        onProgress: (done, total) => set({ importing: { done, total } }),
+        onProgress: (done) => set((s) => ({ importing: s.importing && { ...s.importing, done } })),
       });
+      const imported = r.records.some((rec) => rec.result !== 'failed');
       set({
-        ...withData(r.dataset.imports.length > 0 ? 'user' : 'empty', r.dataset),
-        lastImport: { records: r.records, newFlaky: r.newFlaky },
+        // A drop where every file failed changes nothing: the user stays where they were.
+        ...(imported ? withData('user', r.dataset) : {}),
+        lastImport: {
+          records: r.records,
+          newFlaky: r.newFlaky,
+          newRuns: r.dataset.runs.length - base.runs.length,
+          wasEmpty: base.runs.length === 0,
+        },
         ...(r.storageFailed ? { storage: 'failed' as const } : {}),
       });
     } catch (e) {
-      if ((e as Error)?.name !== 'AbortError') set({ importError: (e as Error)?.name === 'ImportTimeout' ? 'timeout' : 'failed' });
+      if (e instanceof ImportTimeout) set({ importError: { code: 'import.fail.timeout', file: e.file } });
+      else if ((e as Error)?.name !== 'AbortError') set({ importError: { code: 'import.fail.crash' } });
     } finally {
       controller = null;
       set({ importing: null });
@@ -84,11 +98,16 @@ export const useStore = create<State>()((set, get) => ({
     controller?.abort(new DOMException('Import cancelled', 'AbortError'));
   },
 
+  dismissImport() {
+    set({ lastImport: null, importError: null });
+  },
+
   async startSample() {
-    set(withData('sample', await loadSample()));
+    set({ ...withData('sample', await loadSample()), lastImport: null, importError: null });
   },
 
   async exitSample() {
+    set({ lastImport: null, importError: null });
     if (get().storage === 'ok') await get().restore();
     else set(empty());
   },

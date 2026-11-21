@@ -39,7 +39,8 @@ export const catalog = {
   'start.help.step1': 'In CI, run your tests with the JSON reporter and save the file as an artifact:',
   'start.help.command': 'npx playwright test --reporter=json > results.json',
   'start.help.step2': 'Then download that file from your last 5 to 10 CI runs and drop them all here at once.',
-  'start.help.oneRun': 'Only one run? Turn on retries, or add --repeat-each=5 once, so a single run already shows flakiness.',
+  // Backticks mark inline code; rendered by <WithCode>.
+  'start.help.oneRun': 'Only one run? Turn on retries, or add `--repeat-each=5` once, so a single run already shows flakiness.',
 
   // Import progress and results (spec 9.1)
   'import.reading': 'Reading {count, plural, one {# file} other {# files}}…',
@@ -64,8 +65,14 @@ export const catalog = {
   'import.fail.unreadable': "{file} couldn't be read. It may be cut off. Try downloading it again.",
   'import.fail.tooBad': "{file} wasn't imported. Too much of it was unclear to rank tests reliably.",
   'import.fail.tooLarge': '{file} is larger than the {limit} limit. Try a file with fewer runs.',
+  // Interim copy from the planning chat (DEV-13), pending UI/UX confirmation.
+  'import.fail.timeout': "{file} took too long to read and wasn't imported. Try a smaller file or fewer runs.",
+  'import.fail.crash': 'Something went wrong while reading your files. Nothing was changed. Try again.',
   'import.others': '{count, plural, one {# other file} other {# other files}} imported. You can drop another file here.',
   'import.viewNotices': 'View all notices',
+  'import.region': 'Import reports',
+  'import.result': 'Import result',
+  'banner.dismiss': 'Dismiss',
   'import.downloadList': 'Download not-imported list',
   'import.formatHelp': 'Which format do I need?',
 

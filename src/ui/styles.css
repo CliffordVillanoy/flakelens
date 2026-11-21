@@ -60,6 +60,7 @@
   --status-new: #39c5cf;
   --status-new-subtle: #0f3a3d;
   --diff-del: #25171c;
+  --danger-border: #6e2b2b;
   --diff-del-gutter: #3a1b1f;
   --diff-add: #12261e;
   --diff-add-gutter: #1b3a26;
@@ -115,6 +116,7 @@
   --status-new: #0b6b73;
   --status-new-subtle: #d5f5f6;
   --diff-del: #ffebe9;
+  --danger-border: #ff8182;
   --diff-del-gutter: #ffcecb;
   --diff-add: #e6ffec;
   --diff-add-gutter: #ccffd8;
@@ -173,6 +175,7 @@
   --color-status-new: var(--status-new);
   --color-status-new-subtle: var(--status-new-subtle);
   --color-diff-del: var(--diff-del);
+  --color-danger-border: var(--danger-border);
   --color-diff-del-gutter: var(--diff-del-gutter);
   --color-diff-add: var(--diff-add);
   --color-diff-add-gutter: var(--diff-add-gutter);
@@ -190,6 +193,7 @@
     color: var(--foreground);
     font-family: var(--font-sans);
     font-size: 14px;
+    line-height: normal; /* the boards use the browser default, not Tailwind's 1.5 */
   }
   button,
   input,
