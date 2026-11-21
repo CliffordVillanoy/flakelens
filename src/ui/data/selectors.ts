@@ -1,6 +1,6 @@
 // Pure view models for the Tests screen: evidence sentences, wasted time, health counts, groups, filter and search.
-import type { Dataset, Label, Test, TestScore } from '@/engine/types';
-import { runHistories, type RunCell } from '@/engine/view';
+import type { Attempt, AttemptStatus, Dataset, Label, Test, TestScore } from '@/engine/types';
+import { orderRuns, runHistories, type RunCell } from '@/engine/view';
 import { t, type CopyKey } from '../copy';
 
 export const GROUP_ORDER: Label[] = ['flaky', 'suspect', 'failing', 'stable', 'insufficient'];
@@ -171,4 +171,100 @@ export function topFlakyMarkdown(rows: Row[]): string {
     .slice(0, TOP_FLAKY)
     .map((r, i) => `${i + 1}. ${[r.test.title, t(r.evidence.key, r.evidence.params), wastedText(r.score)].map(escapeMd).join(' — ')}`)
     .join('\n');
+}
+
+// ---- Test detail panel -------------------------------------------------------------------------------------
+
+export type RunSquareKind = 'pass' | 'fail' | 'retryPass' | 'skip';
+/** One square per attempt: a pass after an earlier failed attempt in the same run is "passed on retry". */
+export function attemptKinds(statuses: AttemptStatus[]): RunSquareKind[] {
+  let failed = false;
+  return statuses.map((s) => {
+    if (s === 'fail') return ((failed = true), 'fail');
+    return s === 'skip' ? 'skip' : failed ? 'retryPass' : 'pass';
+  });
+}
+
+export const shortSha = (commit: string) => commit.slice(0, 7);
+
+export interface FailureEntry {
+  runNumber: number; // position of the run in chronological order, 1-based
+  commit: string;
+  startedAt: string | null;
+  attempt: number; // 1-based within the run
+  total: number; // attempts of this test in the run
+  message: string;
+  stack: string;
+  passedAfter: { attempt: number; durationMs: number | null } | null; // the first later attempt that passed
+}
+
+// Playwright colours its error text with ANSI escape codes; they are noise outside a terminal.
+// eslint-disable-next-line no-control-regex -- the escape character is what is being matched
+const stripAnsi = (s: string) => s.replace(/\u001b\[[0-9;]*m/g, '');
+
+/** Every failed attempt of one test, oldest first. */
+export function failuresFor(ds: Dataset, testId: string): FailureEntry[] {
+  const byRun = new Map<string, Attempt[]>();
+  for (const a of ds.attempts) {
+    if (a.testId !== testId) continue;
+    const list = byRun.get(a.runId);
+    if (list) list.push(a);
+    else byRun.set(a.runId, [a]);
+  }
+  const failures = new Map(ds.failures.map((f) => [f.attemptId, f]));
+  const out: FailureEntry[] = [];
+  orderRuns(ds.runs).forEach((run, i) => {
+    const list = byRun.get(run.runId)?.sort((a, b) => a.repeatIndex - b.repeatIndex || a.retryIndex - b.retryIndex);
+    list?.forEach((a, k) => {
+      if (a.status !== 'fail') return;
+      const later = list.findIndex((x, j) => j > k && x.status === 'pass');
+      const f = failures.get(a.attemptId);
+      out.push({
+        runNumber: i + 1,
+        commit: shortSha(run.commit ?? run.runId),
+        startedAt: run.startedAt,
+        attempt: k + 1,
+        total: list.length,
+        message: stripAnsi(f?.message ?? ''),
+        stack: stripAnsi(f?.stack ?? ''),
+        passedAfter: later === -1 ? null : { attempt: later + 1, durationMs: list[later]!.durationMs },
+      });
+    });
+  });
+  return out;
+}
+
+type Note = { key: CopyKey; params: Record<string, string | number> };
+/** "What this means" and "What to check next" for the row's label, reusing the evidence the table already built. */
+export function noteFor(row: Row): { means: Note; next: Note } {
+  const { score, evidence } = row;
+  if (score.label === 'failing' && evidence.key === 'why.failingWasFlaky') {
+    const params = { sha: evidence.params.sha as string };
+    return { means: { key: 'note.failingWasFlaky.means', params }, next: { key: 'note.failingWasFlaky.next', params } };
+  }
+  const base = score.label === 'insufficient' ? 'insufficient' : score.label;
+  const lowConfidence = score.label === 'stable' && score.runs < 5; // shown below 5 runs (04-ux-copy)
+  return {
+    means: { key: `note.${base}.means` as CopyKey, params: {} },
+    next: lowConfidence
+      ? { key: 'note.stable.nextLow', params: { n: score.runs } }
+      : { key: `note.${base}.next` as CopyKey, params: {} },
+  };
+}
+
+/** Plain-text summary for a ticket (04-ux-copy "Copy summary"). */
+export function summaryText(row: Row, latest: FailureEntry | undefined): string {
+  const { score, test, evidence } = row;
+  const lines = [
+    t('summary.title', { name: [...test.suitePath, test.title].join(' › '), file: test.file }),
+    t('summary.status', { status: t(`status.${score.label}`), evidence: t(evidence.key, evidence.params) }),
+  ];
+  if (score.label === 'flaky' && score.wastedMs > 0)
+    lines.push(t('summary.wasted', { min: formatMinutes(score.wastedMs), runs: score.runs }));
+  if (latest)
+    lines.push(
+      t('summary.failure', { n: latest.runNumber, sha: latest.commit, message: latest.message.split('\n')[0] ?? '' }),
+    );
+  lines.push(t('summary.footer'));
+  return lines.join('\n');
 }

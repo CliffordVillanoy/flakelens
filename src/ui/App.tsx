@@ -5,6 +5,7 @@ import { LeaveSampleDialog } from './components/LeaveSampleDialog';
 import { t } from './copy';
 import { useStore } from './data/store';
 import { navigate, useRoute } from './lib/router';
+import { shortcutsSheet } from './lib/shortcuts';
 import { Start } from './screens/Start';
 import { Tests } from './screens/Tests';
 import { Toasts } from './components/Toasts';
@@ -54,7 +55,7 @@ export function App() {
   if (!ready) return null;
   return (
     <div className="flex min-h-screen flex-col" {...dropAnywhere}>
-      <Header mode={HEADER_MODE[s.mode]} onAddFiles={openPicker} />
+      <Header mode={HEADER_MODE[s.mode]} onAddFiles={openPicker} onHelp={() => shortcutsSheet.open()} />
       <input
         ref={picker}
         type="file"

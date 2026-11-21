@@ -286,3 +286,20 @@
     grid-area: wasted;
   }
 }
+
+/* Phone width: an open detail panel takes the whole screen and the list behind it is hidden (DESIGN.md). */
+@media (max-width: 640px) {
+  .listpane[data-panel='true'] {
+    display: none;
+  }
+}
+
+/* Phone width (<= 640px, as the boards): the panel fills the screen with 16px gutters and no side border. */
+@media (max-width: 640px) {
+  .test-panel {
+    max-width: none !important;
+    border-left-width: 0 !important;
+    padding: 12px 16px 20px !important;
+    max-height: none !important;
+  }
+}

@@ -4,7 +4,7 @@ import { rankTests } from '@/engine/score/rank';
 import { scoreTests } from '@/engine/score/score';
 import type { Dataset } from '@/engine/types';
 import { t } from '../copy';
-import { countLine, datasetSummary, escapeMd, filterRows, groupRows, health, sortRows, tableRows, topFlakyMarkdown, wastedText, type Row } from './selectors';
+import { countLine, datasetSummary, escapeMd, failuresFor, filterRows, groupRows, health, sortRows, tableRows, topFlakyMarkdown, wastedText, type Row } from './selectors';
 
 const rows = (ds: Dataset) => tableRows(ds, rankTests(scoreTests(ds), ds.tests));
 const one = (ds: Dataset) => rows(ds)[0]!;
@@ -172,4 +172,13 @@ it('Markdown export lists the top Flaky tests: rank, name, evidence, wasted minu
   expect(topFlakyMarkdown([evil])).toBe(
     `1. ${BS}=cmd${BS}|${BS}\`x${BS}\` — ${t(all[0]!.evidence.key, all[0]!.evidence.params)} — ${wastedText(all[0]!.score)}`,
   );
+});
+
+it('failure text drops ANSI colour codes that Playwright puts in error messages', () => {
+  const ds = buildDataset([{ commit: 'a', tests: { t: ['fail'] } }]);
+  const ESC = String.fromCharCode(27);
+  ds.failures = [{ attemptId: ds.attempts[0]!.attemptId, message: `${ESC}[2mexpect(${ESC}[22m${ESC}[31mreceived${ESC}[39m)`, stack: `${ESC}[1mat x${ESC}[22m` }];
+  const [f] = failuresFor(ds, 't');
+  expect(f!.message).toBe('expect(received)');
+  expect(f!.stack).toBe('at x');
 });

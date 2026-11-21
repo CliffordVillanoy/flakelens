@@ -214,3 +214,18 @@ it('opens on Tests when stored data exists', async () => {
   render(<App />);
   await onTests();
 });
+
+it('reload on a test link after Clear all data shows Start, not a blank page', async () => {
+  window.location.hash = '#/tests/some-old-id';
+  render(<App />);
+  await screen.findByRole('heading', { level: 1, name: 'Find your flaky tests' });
+});
+
+it('an old test link with data loaded shows the missing-test state and Back to tests', async () => {
+  await useStore.getState().importFiles([lab('run-00.json')]);
+  useStore.setState({ ...initial, mode: 'user', dataset: useStore.getState().dataset, ranked: useStore.getState().ranked }, true);
+  window.location.hash = '#/tests/some-old-id';
+  render(<App />);
+  expect(await screen.findByRole('heading', { name: "This test isn't in the loaded data" })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Back to tests' })).toHaveAttribute('href', '#/tests');
+});

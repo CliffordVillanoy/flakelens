@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Search } from 'lucide-react';
 import { t } from '../copy';
 import { useStore } from '../data/store';
-import { countLine, datasetSummary, filterRows, health, isLabel, RANK_SORT, sortRows, tableRows, topFlakyMarkdown, type Sort } from '../data/selectors';
+import { countLine, datasetSummary, filterRows, groupRows, health, isLabel, RANK_SORT, sortRows, tableRows, topFlakyMarkdown, type Sort } from '../data/selectors';
 import { DropZone } from '../components/DropZone';
 import { ImportBanner } from '../components/ImportBanner';
 import { ImportProgress } from '../components/ImportProgress';
@@ -12,14 +12,13 @@ import { SampleBanner } from '../components/SampleBanner';
 import { StatusTabs } from '../components/StatusTabs';
 import { TestHealth } from '../components/TestHealth';
 import { ColumnsMenu, DensityToggle, ExportMenu, ExportTip, FilterChips, type Density } from '../components/TableControls';
-import { toast } from '../components/Toasts';
+import { copyText } from '../lib/clipboard';
+import { shortcutsSheet, useShortcuts } from '../lib/shortcuts';
+import { MissingTest, TestPanel } from './TestPanel';
 import { getPref, setPref } from '../lib/prefs';
 import { navigate, useRoute } from '../lib/router';
 
 export { HEADER_PX, BAND_PX } from '../components/RankedTable';
-
-const isTyping = (el: EventTarget | null) =>
-  el instanceof HTMLElement && (el.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(el.tagName));
 
 const hashFor = (status: string, q: string) => {
   const p = new URLSearchParams();
@@ -59,17 +58,6 @@ export function Tests({
   const search = useRef<HTMLInputElement>(null);
 
   useEffect(() => setQ(route.query.get('q') ?? ''), [route.query]);
-  // "/" focuses search; single-key shortcuts never fire while typing and can be switched off (pref).
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key !== '/' || e.ctrlKey || e.metaKey || e.altKey || isTyping(e.target) || !getPref('shortcuts', true)) return;
-      e.preventDefault();
-      search.current?.focus();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, []);
-
   const rows = useMemo(() => tableRows(s.dataset, s.ranked), [s.dataset, s.ranked]);
   const summary = useMemo(() => datasetSummary(s.dataset), [s.dataset]);
   const h = useMemo(() => health(rows), [rows]);
@@ -82,9 +70,53 @@ export function Tests({
 
   const failed = s.lastImport?.records.filter((r) => r.result === 'failed') ?? [];
 
+  // Detail panel (board 4). The list's filters travel in the links, so opening a test keeps them.
+  // Changing a filter keeps an open panel open: its URL carries the test id and the new filters.
+  const listHash = (st: string, query: string) => {
+    const h = hashFor(st, query);
+    return route.name === 'test' ? `#/tests/${encodeURIComponent(route.testId!)}${h.slice('#/tests'.length)}` : h;
+  };
+  const listQuery = hashFor(isLabel(status) ? status : 'all', q).slice('#/tests'.length);
+  const testHref = (id: string) => `#/tests/${encodeURIComponent(id)}${listQuery}`;
+  const order = useMemo(() => groupRows(shown).flatMap((g) => g.rows), [shown]); // the shown order, group by group
+  const openRow = route.testId === undefined ? undefined : rows.find((r) => r.score.testId === route.testId);
+  const at = openRow ? order.findIndex((r) => r.score.testId === openRow.score.testId) : -1;
+  const panelOpen = route.name === 'test';
+  const closeHref = `#/tests${listQuery}`;
+
+  // Closing returns focus to the row that was open.
+  const lastOpen = useRef<string | undefined>(undefined);
+  useEffect(() => {
+    if (route.name === 'tests' && lastOpen.current !== undefined) {
+      const id = lastOpen.current;
+      [...document.querySelectorAll<HTMLElement>('[data-test-id]')].find((a) => a.dataset.testId === id)?.focus();
+    }
+    lastOpen.current = route.name === 'test' ? route.testId : undefined;
+  }, [route.name, route.testId]);
+
+  // Single-key shortcuts (IA section 5): never in text fields, switchable off. "?" is a hook DEV-17 fills.
+  const move = (step: 1 | -1) => {
+    if (panelOpen) {
+      const next = order[at + step];
+      if (at !== -1 && next) navigate(testHref(next.score.testId));
+      return;
+    }
+    const links = [...document.querySelectorAll<HTMLElement>('.ranked-row a[data-test-id]')];
+    const here = links.indexOf(document.activeElement as HTMLElement);
+    links[here === -1 ? (step === 1 ? 0 : links.length - 1) : here + step]?.focus();
+  };
+  useShortcuts({
+    '/': () => search.current?.focus(),
+    j: () => move(1),
+    k: () => move(-1),
+    '?': () => shortcutsSheet.open(),
+    Escape: () => panelOpen && navigate(closeHref),
+  });
+
   return (
     <div className="mx-auto flex w-full max-w-[1232px] flex-col gap-3.5 px-6 py-4 max-sm:px-4">
       <h1 className="sr-only">{t('tests.h1')}</h1>
+      <div className="listpane flex flex-col gap-3.5" data-panel={panelOpen}>
       {s.mode === 'sample' && !sampleHidden && (
         <SampleBanner dataset={s.dataset} onExit={onExitSample} onDismiss={() => setSampleHidden(true)} />
       )}
@@ -108,7 +140,7 @@ export function Tests({
 
       <TestHealth summary={summary} h={h} />
 
-      <StatusTabs active={isLabel(status) ? status : 'all'} counts={tabCounts} onChange={(st) => navigate(hashFor(st, q))} />
+      <StatusTabs active={isLabel(status) ? status : 'all'} counts={tabCounts} onChange={(st) => navigate(listHash(st, q))} />
 
       <div className="flex flex-wrap items-center gap-2.5">
         <label className="flex h-9 flex-[1_1_280px] items-center gap-2 rounded-md border border-input bg-card px-2.5 focus-within:border-link">
@@ -122,7 +154,7 @@ export function Tests({
             aria-keyshortcuts="/"
             onChange={(e) => {
               setQ(e.target.value);
-              navigate(hashFor(isLabel(status) ? status : 'all', e.target.value), { replace: true });
+              navigate(listHash(isLabel(status) ? status : 'all', e.target.value), { replace: true });
             }}
             className="min-w-0 flex-1 border-0 bg-transparent text-sm outline-none"
           />
@@ -142,10 +174,7 @@ export function Tests({
           }}
         />
         <ExportMenu
-          onCopyTop={async () => {
-            await navigator.clipboard.writeText(topFlakyMarkdown(rows));
-            toast(t('panel.copySummary.done'));
-          }}
+          onCopyTop={() => copyText(topFlakyMarkdown(rows), t('panel.copySummary.done'))}
         />
         <div role="status" aria-live="polite" className="text-[13px] text-muted-foreground">
           {countLine(shown.length, isLabel(status) ? status : 'all', q, sort)}
@@ -155,13 +184,13 @@ export function Tests({
       <FilterChips
         chips={[
           ...(isLabel(status)
-            ? [{ label: t('tests.filters.status', { status: t(`status.${status}`) }), onRemove: () => navigate(hashFor('all', q)) }]
+            ? [{ label: t('tests.filters.status', { status: t(`status.${status}`) }), onRemove: () => navigate(listHash('all', q)) }]
             : []),
           ...(q.trim()
-            ? [{ label: t('tests.filters.search', { query: q.trim() }), onRemove: () => navigate(hashFor(isLabel(status) ? status : 'all', '')) }]
+            ? [{ label: t('tests.filters.search', { query: q.trim() }), onRemove: () => navigate(listHash(isLabel(status) ? status : 'all', '')) }]
             : []),
         ]}
-        onClear={() => navigate(hashFor('all', ''))}
+        onClear={() => navigate(listHash('all', ''))}
       />
 
       {!tipHidden && h.counts.flaky > 0 && (
@@ -174,18 +203,48 @@ export function Tests({
       )}
 
       <RunLegend />
+      </div>
 
-      <RankedTable
-        rows={shown}
-        selectedId={route.testId}
-        expandAll={isLabel(status) || q.trim() !== ''}
-        columns={columns}
-        density={density}
-        sort={sort}
-        onSort={setSort}
-      />
+      <div className="flex flex-wrap items-start gap-6">
+        <div className="listpane min-w-0 flex-[1_1_420px]" data-panel={panelOpen}>
+          <RankedTable
+            rows={shown}
+            selectedId={route.testId}
+            expandAll={isLabel(status) || q.trim() !== ''}
+            // With a panel open the list keeps just rank, test and status, as on board 4.
+            columns={panelOpen ? ['rank'] : columns}
+            density={density}
+            sort={sort}
+            onSort={setSort}
+            query={listQuery}
+          />
+        </div>
+        {panelOpen &&
+          (openRow ? (
+            <TestPanel
+              key={openRow.score.testId}
+              row={openRow}
+              ds={s.dataset}
+              position={
+                at === -1
+                  ? null
+                  : {
+                      index: at + 1,
+                      count: order.length,
+                      prev: order[at - 1] && testHref(order[at - 1]!.score.testId),
+                      next: order[at + 1] && testHref(order[at + 1]!.score.testId),
+                    }
+              }
+              closeHref={closeHref}
+            />
+          ) : (
+            <MissingTest listHref="#/tests" />
+          ))}
+      </div>
 
-      <div className="text-xs text-muted-foreground">{t('tests.keys')}</div>
+      <div className="listpane text-xs text-muted-foreground" data-panel={panelOpen}>
+        {t('tests.keys')}
+      </div>
     </div>
   );
 }

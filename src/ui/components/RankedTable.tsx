@@ -115,9 +115,10 @@ interface Props {
   density: Density;
   sort: Sort;
   onSort: (s: Sort) => void;
+  query?: string; // the list's filters ("?status=flaky&q=x"), kept in row links so the panel opens with them
 }
 
-export function RankedTable({ rows, selectedId, expandAll, columns, density, sort, onSort }: Props) {
+export function RankedTable({ rows, selectedId, expandAll, columns, density, sort, onSort, query = '' }: Props) {
   const [shown, setShown] = useState<Set<Label>>(new Set());
   const cols = COLUMNS.filter((c) => c.locked || columns.includes(c.key));
   const grid = { gridTemplateColumns: cols.map((c) => c.width).join(' ') };
@@ -216,6 +217,7 @@ export function RankedTable({ rows, selectedId, expandAll, columns, density, sor
                       cols={cols}
                       grid={grid}
                       density={density}
+                      query={query}
                       selected={it.row.score.testId === selectedId}
                     />
                   )}
@@ -240,17 +242,19 @@ function TestRow({
   grid,
   density,
   selected,
+  query,
 }: {
   row: Row;
   cols: Column[];
   grid: { gridTemplateColumns: string };
   density: Density;
   selected: boolean;
+  query: string;
 }) {
   const { score, test, cells, evidence, flakyRank } = row;
   // Rank is the fix-priority position, shown for Flaky rows as on board 3; the top three get "why?".
   const why = flakyRank !== null && flakyRank <= FIRST_RUN_WHY;
-  const href = `#/tests/${encodeURIComponent(score.testId)}`;
+  const href = `#/tests/${encodeURIComponent(score.testId)}${query}`;
   const compact = density === 'compact';
   const pad = compact ? 'px-3 py-1' : 'px-4 py-3';
   const cell: Record<ColumnKey, () => ReactNode> = {
@@ -259,6 +263,7 @@ function TestRow({
       <>
         <a
           href={href}
+          data-test-id={score.testId}
           // Compact hides the file path; it stays available on hover.
           title={compact ? `${test.title}\n${test.file}` : test.title}
           aria-current={selected ? 'true' : undefined}
