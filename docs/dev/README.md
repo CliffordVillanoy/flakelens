@@ -28,7 +28,7 @@ Merged into `main` and pushed to https://github.com/CliffordVillanoy/flakelens o
 | Ticket | Title | Scope | Plan task | Status |
 | --- | --- | --- | --- | --- |
 | [DEV-11](DEV-11.md) | UI foundation: tokens, fonts, copy, router | Frontend | 1 | Done |
-| [DEV-12](DEV-12.md) | Data layer: worker import, storage, sample, store | Both (engine helpers + frontend data) | 2 | To do |
+| [DEV-12](DEV-12.md) | Data layer: worker import, storage, sample, store | Both (engine helpers + frontend data) | 2 | Done |
 | [DEV-13](DEV-13.md) | Start screen and import states | Frontend | 3 | To do |
 | [DEV-14](DEV-14.md) | Tests screen: health box, tabs, ranked table | Frontend | 4 | To do |
 | [DEV-15](DEV-15.md) | Table controls and export | Frontend | 5 | To do |
@@ -51,3 +51,5 @@ Order: DEV-11 → DEV-12 → DEV-13 → DEV-14 → DEV-15 → DEV-16 → DEV-17 
 - From DEV-07 deferred minors: duplicate retry values in hand-edited files; a dropped duplicate import still shows `counts.imported`; mixed path separators in lab fixtures; eval matches labels by title only.
 - For the UI/UX chat (from DEV-11): a phone-width "Local only" privacy variant needs a copy key; `04-ux-copy.md` section 6 still shows an own-data `header.dataChip` that section 4 retired; some "a / b" keys were split into separate keys in `src/ui/copy.ts` (list in the DEV-11 ledger).
 - From DEV-11: CSP is injected at build only (dev server needs inline scripts for fast refresh). npm 12 skipped the esbuild install script; build works without it.
+- For the UI/UX chat (from DEV-12): new copy `import.partial.badDate` = "{file}: the run start time couldn't be read, so this run keeps its import order."; interim copy for a whole-import timeout and crash (`import.fail.timeout`, `import.fail.crash`) set by the planning chat for DEV-13, to be confirmed.
+- From DEV-12: sample files parse on the main thread, adding about 60 kB gzip (zod) to first load; move to the worker in the DEV-18 performance pass. The worker under the `/flakelens/` sub-path must be checked with a real drop (DEV-13 or DEV-18).
