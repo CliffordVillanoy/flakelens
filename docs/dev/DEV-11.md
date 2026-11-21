@@ -1,6 +1,6 @@
 # DEV-11: UI foundation: tokens, fonts, copy, router
 
-**Status:** To do
+**Status:** Done (2026-11-21, commit `162bb29` on `feat/v0-ui`; 85 tests pass)
 
 **Goal:** A styled, themed app shell with the copy catalog and hash routing, ready for the screens.
 
