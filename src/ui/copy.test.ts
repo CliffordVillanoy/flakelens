@@ -8,7 +8,23 @@ it('formats ICU plurals', () => {
     'Imported 211 tests from 12 runs. 3 results were not imported.',
   );
   expect(t('import.partial', { tests: 5, runs: 1, count: 1 })).toBe(
-    'Imported 5 tests from 1 runs. 1 result was not imported.',
+    'Imported 5 tests from 1 run. 1 result was not imported.',
+  );
+});
+
+it('never says "1 runs" or "1 tests" (copy rule 3)', () => {
+  expect(t('import.success', { tests: 1, runs: 1 })).toBe('Imported 1 test from 1 run.');
+  expect(t('import.added', { newRuns: 1, tests: 1, runs: 1 })).toBe('Added 1 run. Now 1 test from 1 run.');
+  expect(t('import.added', { newRuns: 3, tests: 211, runs: 12 })).toBe('Added 3 runs. Now 211 tests from 12 runs.');
+});
+
+it('composes the live result count', () => {
+  expect(t('tests.count.all', { count: 211 })).toBe('Showing all 211 tests, grouped by status, most urgent first');
+  expect(t('tests.count.all', { count: 1 })).toBe('Showing all 1 test, grouped by status, most urgent first');
+  expect(t('tests.count.status', { count: 1, status: 'Flaky' })).toBe('Showing 1 Flaky test, grouped by status, most urgent first');
+  expect(t('tests.count.search', { count: 2, query: 'coupon' })).toBe('Showing 2 tests matching "coupon", grouped by status, most urgent first');
+  expect(t('tests.count.statusSearch', { count: 1, status: 'Flaky', query: 'coupon' })).toBe(
+    'Showing 1 Flaky test matching "coupon", grouped by status, most urgent first',
   );
 });
 

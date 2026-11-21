@@ -25,16 +25,24 @@ export interface RunCell {
 
 const commitOf = (run: Run) => run.commit ?? run.runId;
 
-/** One cell per run the test appears in, oldest first. */
-export function runHistory(ds: Dataset, testId: string): RunCell[] {
-  const byRun = new Map<string, Attempt[]>();
+/** Every test's history in one pass over the attempts (large datasets: no scan per test). Oldest first. */
+export function runHistories(ds: Dataset): Map<string, RunCell[]> {
+  const byTest = new Map<string, Map<string, Attempt[]>>();
   for (const a of ds.attempts) {
-    if (a.testId !== testId) continue;
-    const list = byRun.get(a.runId);
+    let runs = byTest.get(a.testId);
+    if (!runs) byTest.set(a.testId, (runs = new Map()));
+    const list = runs.get(a.runId);
     if (list) list.push(a);
-    else byRun.set(a.runId, [a]);
+    else runs.set(a.runId, [a]);
   }
-  const cells = orderRuns(ds.runs)
+  const ordered = orderRuns(ds.runs);
+  const out = new Map<string, RunCell[]>();
+  for (const [testId, byRun] of byTest) out.set(testId, cellsFor(ordered, byRun));
+  return out;
+}
+
+function cellsFor(ordered: Run[], byRun: Map<string, Attempt[]>): RunCell[] {
+  const cells = ordered
     .filter((run) => byRun.has(run.runId))
     .map((run) => {
       const attempts = byRun
@@ -57,6 +65,18 @@ export function runHistory(ds: Dataset, testId: string): RunCell[] {
     c.mixedCommit = s.has('pass') && s.has('fail');
   }
   return cells;
+}
+
+/** One cell per run the test appears in, oldest first. */
+export function runHistory(ds: Dataset, testId: string): RunCell[] {
+  const byRun = new Map<string, Attempt[]>();
+  for (const a of ds.attempts) {
+    if (a.testId !== testId) continue;
+    const list = byRun.get(a.runId);
+    if (list) list.push(a);
+    else byRun.set(a.runId, [a]);
+  }
+  return cellsFor(orderRuns(ds.runs), byRun);
 }
 
 /** The newest n cells, still oldest first (the table's "Last 12 runs" strip). */

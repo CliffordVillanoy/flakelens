@@ -1,20 +1,28 @@
-import { Info } from 'lucide-react';
+import { Info, X } from 'lucide-react';
 import type { Dataset } from '@/engine/types';
 import { t } from '../copy';
 import { linkButton } from './buttons';
 
-// Sample mode is announced here, and left from here (DESIGN.md, Header actions).
-export function SampleBanner({ dataset, onExit }: { dataset: Dataset; onExit: () => void }) {
+// Board 3: sample mode is announced here, and left from here (DESIGN.md, Header actions).
+export function SampleBanner({ dataset, onExit, onDismiss }: { dataset: Dataset; onExit: () => void; onDismiss: () => void }) {
   const notImported = dataset.imports.reduce((n, i) => n + i.counts.notImported, 0);
   return (
-    <div className="flex items-start gap-2.5 rounded-lg border border-accent-border bg-accent px-4 py-3 text-sm">
-      <Info size={16} className="mt-0.5 shrink-0 text-link" aria-hidden="true" />
-      <p className="m-0">
+    <div role="status" className="flex items-center gap-3 rounded-lg border border-accent-border bg-accent px-3.5 py-2.5 text-sm">
+      <Info size={18} className="shrink-0 text-link-hover" aria-hidden="true" />
+      <p className="m-0 flex-1">
         {t('tests.banner.sample', { tests: dataset.tests.length, runs: dataset.runs.length, count: notImported })}{' '}
-        <button type="button" className={linkButton} onClick={onExit}>
+        <button type="button" className={`${linkButton} font-semibold`} onClick={onExit}>
           {t('tests.banner.exitSample')}
         </button>
       </p>
+      <button
+        type="button"
+        aria-label={t('banner.dismiss')}
+        className="inline-flex size-7 shrink-0 items-center justify-center rounded-md hover:bg-surface-hover"
+        onClick={onDismiss}
+      >
+        <X size={16} className="text-fg-secondary" aria-hidden="true" />
+      </button>
     </div>
   );
 }

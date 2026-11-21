@@ -1,14 +1,12 @@
 import { useEffect, useRef, useState, type DragEvent } from 'react';
 import { Header, type DataMode } from './components/Header';
-import { DropZone, filesFrom } from './components/DropZone';
-import { ImportBanner } from './components/ImportBanner';
-import { ImportProgress } from './components/ImportProgress';
+import { filesFrom } from './components/DropZone';
 import { LeaveSampleDialog } from './components/LeaveSampleDialog';
-import { SampleBanner } from './components/SampleBanner';
 import { t } from './copy';
 import { useStore } from './data/store';
 import { navigate, useRoute } from './lib/router';
 import { Start } from './screens/Start';
+import { Tests } from './screens/Tests';
 
 const HEADER_MODE = { empty: 'none', sample: 'sample', user: 'own' } as const satisfies Record<string, DataMode>;
 
@@ -53,8 +51,6 @@ export function App() {
   };
 
   if (!ready) return null;
-  const failed = s.lastImport?.records.filter((r) => r.result === 'failed') ?? [];
-
   return (
     <div className="flex min-h-screen flex-col" {...dropAnywhere}>
       <Header mode={HEADER_MODE[s.mode]} onAddFiles={openPicker} />
@@ -73,29 +69,11 @@ export function App() {
       <main className="flex-1">
         {s.mode === 'empty' ? (
           <Start onFiles={onFiles} onBrowse={openPicker} />
+        ) : route.name === 'data' ? (
+          // Loaded data arrives in DEV-17.
+          <h1 className="sr-only">{t('data.title')}</h1>
         ) : (
-          // Tests screen arrives in DEV-14; this ticket shows its banners and import states.
-          <div className="mx-auto flex w-full max-w-[1232px] flex-col gap-5 px-6 py-6 max-sm:px-4">
-            <h1 className="sr-only">{t(route.name === 'data' ? 'data.title' : 'tests.h1')}</h1>
-            {s.mode === 'sample' && <SampleBanner dataset={s.dataset} onExit={exitSample} />}
-            {s.importing && <ImportProgress files={s.importing.files} done={s.importing.done} onCancel={s.cancelImport} />}
-            {!s.importing && (failed.length > 0 || s.importError) && (
-              <DropZone
-                onFiles={onFiles}
-                onBrowse={openPicker}
-                failed={failed}
-                others={(s.lastImport?.records.length ?? 0) - failed.length}
-                error={s.importError}
-              />
-            )}
-            {s.lastImport && (
-              <ImportBanner
-                summary={s.lastImport}
-                totals={{ tests: s.dataset.tests.length, runs: s.dataset.runs.length }}
-                onDismiss={s.dismissImport}
-              />
-            )}
-          </div>
+          <Tests onFiles={onFiles} onBrowse={openPicker} onExitSample={exitSample} />
         )}
       </main>
       <LeaveSampleDialog

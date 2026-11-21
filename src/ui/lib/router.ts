@@ -27,8 +27,14 @@ export function parseRoute(hash: string): Route {
   return { name: 'start', query };
 }
 
-export function navigate(hash: string): void {
-  if (window.location.hash !== hash) window.location.hash = hash;
+// replace: update the URL without a new history entry (search typing), then tell useRoute.
+export function navigate(hash: string, { replace = false } = {}): void {
+  if (window.location.hash === hash) return;
+  if (!replace) window.location.hash = hash;
+  else {
+    window.history.replaceState(window.history.state, '', hash);
+    window.dispatchEvent(new HashChangeEvent('hashchange'));
+  }
 }
 
 const subscribe = (cb: () => void) => {

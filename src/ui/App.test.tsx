@@ -74,7 +74,7 @@ it('valid file: "Imported N tests from M runs."', async () => {
   await start();
   await upload(pw('valid-basic.json'));
   await onTests();
-  expect(await banner()).toHaveTextContent('Imported 3 tests from 1 runs.');
+  expect(await banner()).toHaveTextContent('Imported 3 tests from 1 run.');
 });
 
 it('missing status, name and duration: counts first, then the examples, View all and Download', async () => {
@@ -185,7 +185,7 @@ it('sample: banner, Leave-sample dialog with focus on Stay, then own files repla
   await userEvent.click(within(await screen.findByRole('dialog')).getByRole('button', { name: 'Analyse my files' }));
   await waitFor(() => expect(useStore.getState().mode).toBe('user'));
   expect(useStore.getState().dataset.runs).toHaveLength(1);
-  expect(await banner()).toHaveTextContent('Imported 3 tests from 1 runs.');
+  expect(await banner()).toHaveTextContent('Imported 3 tests from 1 run.');
 });
 
 it('Exit sample goes to Start when there is no data of your own', async () => {

@@ -234,6 +234,9 @@
     font-family: var(--font-mono);
     font-size: 13px;
   }
+  html {
+    scroll-padding-top: 16px;
+  }
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -241,5 +244,45 @@
       animation-duration: 0.01ms !important;
       transition-duration: 0.01ms !important;
     }
+  }
+}
+
+/* Ranked table, phone width (DESIGN.md "Phone width"): rows become a 3-line card, the column header and rank hide. */
+@media (max-width: 640px) {
+  .ranked-table {
+    min-width: 0 !important;
+  }
+  .ranked-head {
+    display: none !important;
+  }
+  .ranked-sticky {
+    top: 0 !important;
+  }
+  .ranked-row {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    grid-template-areas: 'test wasted' 'status runs' 'why why';
+    padding: 6px 0;
+  }
+  .ranked-row > .c-rank {
+    display: none;
+  }
+  .ranked-row > .c-test {
+    grid-area: test;
+  }
+  .ranked-row > .c-status {
+    grid-area: status;
+    justify-self: start;
+  }
+  .ranked-row > .c-runs {
+    grid-area: runs;
+    justify-self: end;
+  }
+  .ranked-row > .c-why {
+    grid-area: why;
+    padding-top: 0 !important;
+    text-align: left !important;
+  }
+  .ranked-row > .c-wasted {
+    grid-area: wasted;
   }
 }
