@@ -1,6 +1,6 @@
 # DEV-15: Table controls and export
 
-**Status:** To do
+**Status:** Done (2026-11-21, commit `4128b43` on `feat/v0-ui`; 173 tests pass)
 
 **Goal:** Let users shape the table and take a summary to their team.
 
