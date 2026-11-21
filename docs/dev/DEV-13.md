@@ -1,6 +1,6 @@
 # DEV-13: Start screen and import states
 
-**Status:** To do
+**Status:** Done (2026-11-21, commit `870a26d` on `feat/v0-ui`; 131 tests pass)
 
 **Goal:** A first-time user can load sample data or their own files and always sees what was imported and what was not.
 
