@@ -39,6 +39,35 @@ Merged into `main` and pushed to https://github.com/CliffordVillanoy/flakelens o
 
 Order: DEV-11 → DEV-12 → DEV-13 → DEV-14 → DEV-15 → DEV-16 → DEV-17 → DEV-18, then a final review and the user's merge approval.
 
+## Security hardening (report: `docs/security/review-2026-11-22.md`, branch `fix/security-hardening`)
+
+Written from the security chat's review of `1afaeb6` (0 critical, high or medium; 4 low, 3 info). Order agreed with the dev chat: B, A, C, E, then D only if asked.
+
+| Ticket | Title | Finding | Status |
+| --- | --- | --- | --- |
+| [DEV-20](DEV-20.md) | Security B: validate stored data on load | S-4 (Low) | To do |
+| [DEV-21](DEV-21.md) | Security A: import limits before reading files | S-3 (Low) | To do |
+| [DEV-22](DEV-22.md) | Security C: Dependabot and a CI audit step | S-6 (Info) | To do |
+| [DEV-23](DEV-23.md) | Security E: neutralise bare URLs in the Markdown export | S-7 (Info) | To do |
+| [DEV-24](DEV-24.md) | Security D: frame guard and referrer policy (optional) | S-1 (Low), S-8 (Info) | Optional |
+
+Accepted risks (no ticket): S-2 non-cryptographic run IDs (revisit before any sync or share feature); S-5 `style-src 'unsafe-inline'`; S-1 and S-8 while hosting stays on GitHub Pages (revisit when the hosting move is scheduled, then set the full header set on the new host).
+
+Standing rule from the owner (2026-11-22): while on GitHub Pages, add no secrets, accounts or network features.
+
+### Security acceptance lines for future tickets
+
+Every ticket below must carry these lines in its Acceptance Criteria, and the security chat re-runs its review before the ticket is marked done.
+
+| Future ticket | Security acceptance lines |
+| --- | --- |
+| JUnit XML importer | A parser with DTD and external entity processing off (a test with an XXE payload fails safely); size and depth limits as for Playwright JSON; parsing in the worker; hostile XML (entity bombs, huge attributes) fails with a notice and never hangs the page. |
+| Failure fingerprinting and rule classifier | Failure text may contain secrets: never logged or sent anywhere; patterns are linear-time or bounded (a ReDoS test with a long adversarial string finishes within a set time); output is rendered as text. |
+| Provider adapter and LLM tiers | Explicit per-provider opt-in; the app shows exactly what will be sent; stack traces and file paths stripped by default; API keys never in URLs, logs or localStorage if avoidable; `connect-src` relaxed only to the chosen provider's origin; failure text treated as untrusted input to the model and model output rendered as text, never as actions. Needs a host that can set headers or a reviewed CSP change. |
+| PWA and service worker | Cache scope and update flow reviewed so a stale or hijacked worker cannot serve altered code. |
+| Any sync or share feature | Collision-resistant IDs (S-2), validate on load (S-4, done in DEV-20), integrity checks. |
+| Flake lab | The lab app stays out of the deployed `dist` and off the shared origin, or gets the same CSP. |
+
 ## Notes for later tickets
 
 - From DEV-02: `importId` hashes file name + import time + run ID. Two imports of the same file with an identical `importedAt` would share an ID. Not reachable with a real clock, but the storage ticket (v0 UI) should use a unique key or check for this.

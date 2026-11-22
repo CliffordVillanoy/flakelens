@@ -929,6 +929,8 @@ This section lists what the tool cannot do or cannot guarantee today. It is a li
 | Process | Scoring weights and thresholds are starting values, not yet calibrated. | They need the flake lab and real data first. |
 | Process | The flake lab is small and synthetic, so results on it may look better than real-world results. | Real suites have messier failures. |
 | Security | This is a hardening plan, not a formal security audit. | Scope and budget. |
+| Security | Run, test and import IDs use a fast 53-bit non-cryptographic hash (cyrb53). A crafted report could collide with another and be dropped as a duplicate. | IDs must be synchronous and cheap; only the local user imports files today. Accepted until any sync or share feature (security review 2026-11-22, S-2). |
+| Security | The page ships its Content Security Policy as a meta tag with `style-src 'unsafe-inline'`, and GitHub Pages sets no response headers, so the page can be framed and its storage is shared with other scripted sites on the same `github.io` user site. | Static hosting limits. Accepted while the app stays on Pages for portfolio use; revisit with the full header set when hosting moves (S-1, S-5, S-8). |
 | Product | The ranking reflects only the files loaded, so it changes as more history is added. Early rankings with little history are low confidence. | No server or stored history across sessions beyond the local database. |
 | Product | The sample data is synthetic. It demonstrates the tool but is not a benchmark of real-world accuracy. | Built from a small flake lab, not from real company suites. |
 | Product | Status notes are general checklists until the cause classifier exists. They do not yet name the specific cause. | Cause-specific tips depend on the v1 classifier. |
@@ -958,6 +960,7 @@ This section pairs each limitation with a planned or possible fix. Fixes that ne
 | Free cloud tiers have daily caps | Use the local no-cap fallback (section 12.1) and request-saving tactics. Lifting caps for good needs a paid plan | Accepted: mitigated locally |
 | A report cannot prove a feature is missing | Signals only narrow where to look. No fix exists from report data alone | Accepted |
 | Not a formal security audit | Self-audit against the OWASP checklist. An external audit is paid | Accepted: out of scope |
+| Non-cryptographic IDs; meta-tag CSP and shared origin on GitHub Pages | Keep as is for now. Move to SHA-256 IDs before any sync or share feature; set the full header set (`frame-ancestors 'none'`, `nosniff`, `Referrer-Policy`, a real CSP header) when hosting moves | Accepted for the current phase |
 | Hosted and enterprise features (accounts, shared team dashboards, large cloud model quality) | Out of scope for the portfolio. A cloud provider can plug into the provider adapter if a budget appears | Accepted: needs paid service |
 
 **Open items to confirm (from step four)**
