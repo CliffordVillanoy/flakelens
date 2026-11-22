@@ -50,6 +50,7 @@ Written from the security chat's review of `1afaeb6` (0 critical, high or medium
 | [DEV-22](DEV-22.md) | Security C: Dependabot and a CI audit step | S-6 (Info) | Done |
 | [DEV-23](DEV-23.md) | Security E: neutralise bare URLs in the Markdown export | S-7 (Info) | Done |
 | [DEV-25](DEV-25.md) | Dependabot: stop major bumps the toolchain cannot take | S-6 follow-up | Done and verified |
+| [DEV-27](DEV-27.md) | README accuracy fixes on PR #2 | Documentation | To do |
 | [DEV-26](DEV-26.md) | Pages deploy: stop the artifact timing failure | Deploy reliability | Done and verified |
 | [DEV-24](DEV-24.md) | Security D: frame guard and referrer policy (optional) | S-1 (Low), S-8 (Info) | Optional |
 
