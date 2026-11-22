@@ -34,9 +34,11 @@ const ZWSP = String.fromCharCode(0x200b);
  * after a URL scheme colon (http://, ftp://, mailto:), after "www" and after the "@" of an address. The text reads
  * the same and copies back the same once the invisible characters are removed.
  */
+// The scheme length is capped (real schemes are far shorter) so the scan cannot rerun to the end of a long
+// hostile string from every word boundary, which was quadratic.
 export const breakAutolinks = (s: string) =>
   s
-    .replace(/\b([a-z][a-z0-9+.-]*:)(?=\/\/)|\b(mailto|xmpp):/gi, (m) => m + ZWSP)
+    .replace(/\b([a-z][a-z0-9+.-]{0,31}:)(?=\/\/)|\b(mailto|xmpp):/gi, (m) => m + ZWSP)
     .replace(/\bwww\./gi, () => 'www' + ZWSP + '.')
     .replace(/(?<=[^\s@])@(?=[^\s@])/g, '@' + ZWSP); // inside an address only: a leading @ is not one
 

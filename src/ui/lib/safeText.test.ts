@@ -83,3 +83,30 @@ describe('escapeMd and auto-linking (S-7)', () => {
     }
   });
 });
+
+// Hostile names can be megabytes long (the file cap is 50 MB), so escapeMd must stay linear. The limit is 500 ms,
+// far above the few ms it takes, so a slow CI machine cannot make this flaky while a quadratic scan (seconds) still fails.
+describe('escapeMd stays fast on long hostile text', () => {
+  const timed = (s: string) => {
+    const start = performance.now();
+    escapeMd(s);
+    return performance.now() - start;
+  };
+  it.each([
+    ['a. x 100000', 'a.'.repeat(100_000)],
+    ['a+ x 100000', 'a+'.repeat(100_000)],
+    ['a- x 100000', 'a-'.repeat(100_000)],
+    ['a1. x 60000', 'a1.'.repeat(60_000)],
+    ['x@ x 100000', 'x@'.repeat(100_000)],
+    ['www. x 50000', 'www.'.repeat(50_000)],
+    ['35-letter fake scheme x 5000', 'abcdefghijklmnopqrstuvwxyzabcdefghi:// x.test '.repeat(5_000)],
+  ])('%s takes under 500 ms', (label, text) => {
+    const ms = timed(text);
+    expect(ms).toBeLessThan(500);
+  });
+
+  it('a real long scheme is still broken, so it does not become a link', () => {
+    expect(marked.parse(escapeMd('git+ssh://x.test'), { gfm: true, async: false })).not.toMatch(/<a[\s>]/i);
+    expect(escapeMd('git+ssh://x.test').replaceAll(String.fromCharCode(0x200b), '')).toBe('git+ssh://x.test');
+  });
+});
