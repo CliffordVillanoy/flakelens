@@ -1,6 +1,6 @@
 # DEV-23: Security E: neutralise bare URLs in the Markdown export
 
-**Status:** Done (commit `20139d5`), then reopened by the security re-review: quadratic regex in `breakAutolinks` (scheme length unbounded); fix in progress.
+**Status:** Done (commit `20139d5`; reopened by the security re-review for a quadratic regex in `breakAutolinks`, fixed in `0a4664f` with timing tests; 278 unit tests pass)
 
 **Goal:** A test name or message from a hostile report cannot become a clickable link in a pasted triage summary.
 
