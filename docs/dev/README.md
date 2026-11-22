@@ -48,7 +48,7 @@ Written from the security chat's review of `1afaeb6` (0 critical, high or medium
 | [DEV-20](DEV-20.md) | Security B: validate stored data on load | S-4 (Low) | Done |
 | [DEV-21](DEV-21.md) | Security A: import limits before reading files | S-3 (Low) | Done |
 | [DEV-22](DEV-22.md) | Security C: Dependabot and a CI audit step | S-6 (Info) | Done |
-| [DEV-23](DEV-23.md) | Security E: neutralise bare URLs in the Markdown export | S-7 (Info) | To do |
+| [DEV-23](DEV-23.md) | Security E: neutralise bare URLs in the Markdown export | S-7 (Info) | Done |
 | [DEV-24](DEV-24.md) | Security D: frame guard and referrer policy (optional) | S-1 (Low), S-8 (Info) | Optional |
 
 Accepted risks (no ticket): S-2 non-cryptographic run IDs (revisit before any sync or share feature); S-5 `style-src 'unsafe-inline'`; S-1 and S-8 while hosting stays on GitHub Pages (revisit when the hosting move is scheduled, then set the full header set on the new host).
@@ -108,3 +108,4 @@ Every ticket below must carry these lines in its Acceptance Criteria, and the se
 - From DEV-22: the CI audit gates runtime dependencies only (`--omit=dev`); a runtime advisory turns `main` red until fixed, and a registry outage fails the check job (re-run). If branch protection ever requires `ci`, doc-only PRs stay pending (path filters). Dependabot's first PR can only be checked after the first push.
 - After the first push of the security branch (owner task, from the DEV-22 re-review): in repo Settings > Code security, confirm Dependabot version updates and security alerts are on; confirm its first PR appears and passes CI. Until then DEV-22 is not fully verified. Note: the audit runs only when CI runs, and `pages.yml` does not gate the deploy on it.
 - DEV-21 add-on done: `src/engine/import/failed.ts` now uses the `'\u0000'` escape (commit `e24f27f`), so git treats it as text.
+- From DEV-23: the Markdown copy now carries invisible zero-width spaces inside URLs and addresses (the point: they cannot auto-link). Anyone copying a URL out of a pasted export gets the joiner and must retype or strip it. Dev dependency `marked` 18.2.1 (MIT) is tests only and is not in `dist`.

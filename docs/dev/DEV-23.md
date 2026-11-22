@@ -1,6 +1,6 @@
 # DEV-23: Security E: neutralise bare URLs in the Markdown export
 
-**Status:** To do
+**Status:** Done (2026-11-22, commit `20139d5` on `fix/security-hardening`; 270 unit + 34 e2e tests pass)
 
 **Goal:** A test name or message from a hostile report cannot become a clickable link in a pasted triage summary.
 
