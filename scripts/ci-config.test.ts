@@ -37,3 +37,31 @@ it('cost rules stay: permissions, concurrency, path filters, and every action pi
   expect(ci).toMatch(/concurrency:\n {2}group: ci-/);
   expect(ci).toContain("- '!docs/**'");
 });
+
+it('grouped weekly PRs carry only minor and patch updates; majors come as single PRs', () => {
+  const d = read('.github/dependabot.yml');
+  for (const eco of ['npm', 'github-actions']) {
+    const block = d.split(/^ {2}- package-ecosystem: /m).find((b) => b.startsWith(`"${eco}"`))!;
+    expect(block, eco).toMatch(/patterns:\n\s+- "\*"\n\s+update-types:\n\s+- "minor"\n\s+- "patch"/);
+    expect(block, eco).not.toMatch(/- "major"/);
+  }
+});
+
+it('typescript major updates are ignored until typescript-eslint supports TypeScript 7, with the reason in a comment', () => {
+  const d = read('.github/dependabot.yml');
+  const npm = d.split(/^ {2}- package-ecosystem: /m).find((b) => b.startsWith('"npm"'))!;
+  expect(npm).toMatch(/ignore:\n(?:\s+#.*\n)*\s+- dependency-name: "typescript"\n\s+update-types: \["version-update:semver-major"\]/);
+  expect(d).toMatch(/#.*typescript-eslint/i);
+  const actions = d.split(/^ {2}- package-ecosystem: /m).find((b) => b.startsWith('"github-actions"'))!;
+  expect(actions).not.toMatch(/ignore:/);
+});
+
+it('only documented Dependabot v2 keys are used', () => {
+  const d = read('.github/dependabot.yml');
+  const allowed = new Set([
+    'version', 'updates', 'package-ecosystem', 'directory', 'schedule', 'interval', 'open-pull-requests-limit',
+    'commit-message', 'prefix', 'groups', 'patterns', 'update-types', 'ignore', 'dependency-name', 'npm', 'actions', // the last two are group names
+  ]);
+  const keys = [...d.matchAll(/^\s*(?:- )?([a-z-]+):/gim)].map((m) => m[1]!);
+  expect(keys.filter((k) => !allowed.has(k))).toEqual([]);
+});

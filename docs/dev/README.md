@@ -49,7 +49,7 @@ Written from the security chat's review of `1afaeb6` (0 critical, high or medium
 | [DEV-21](DEV-21.md) | Security A: import limits before reading files | S-3 (Low) | Done |
 | [DEV-22](DEV-22.md) | Security C: Dependabot and a CI audit step | S-6 (Info) | Done |
 | [DEV-23](DEV-23.md) | Security E: neutralise bare URLs in the Markdown export | S-7 (Info) | Done |
-| [DEV-25](DEV-25.md) | Dependabot: stop major bumps the toolchain cannot take | S-6 follow-up | To do |
+| [DEV-25](DEV-25.md) | Dependabot: stop major bumps the toolchain cannot take | S-6 follow-up | Done locally, awaiting push |
 | [DEV-24](DEV-24.md) | Security D: frame guard and referrer policy (optional) | S-1 (Low), S-8 (Info) | Optional |
 
 Accepted risks (no ticket): S-2 non-cryptographic run IDs (revisit before any sync or share feature); S-5 `style-src 'unsafe-inline'`; S-1 and S-8 while hosting stays on GitHub Pages (revisit when the hosting move is scheduled, then set the full header set on the new host).
@@ -112,3 +112,4 @@ Every ticket below must carry these lines in its Acceptance Criteria, and the se
 - From DEV-23: the Markdown copy now carries invisible zero-width spaces inside URLs and addresses (the point: they cannot auto-link). Anyone copying a URL out of a pasted export gets the joiner and must retype or strip it. Dev dependency `marked` 18.2.1 (MIT) is tests only and is not in `dist`.
 - From the DEV-23 security re-review: `breakAutolinks` took 0.47 s at 40,000 characters and 1.9 s at 80,000 on a string like `'a.'.repeat(n)` (quadratic). The ticket's own suggested approach lacked a bound; the fix bounds the scheme length to 31 characters and adds timing tests. Lesson for the classifier and fingerprint tickets: every regex over untrusted text needs a bounded quantifier and a timing test (already in the security acceptance lines).
 - DEV-23 timing fix done (`0a4664f`): scheme length capped at 31; `escapeMd` on 100,000-character hostile strings went from about 13 s to about 15 ms. A scheme longer than 32 characters followed by `://` is no longer broken (no real scheme is that long).
+- From DEV-25: Dependabot PR #1 (typescript 6.0.3 to 7.0.2) was closed; `typescript` majors are ignored until `typescript-eslint` supports TypeScript 7 (remove the rule then, as its own migration ticket). Grouped PRs now carry minor and patch only; majors arrive as single PRs; `open-pull-requests-limit` is 5.
