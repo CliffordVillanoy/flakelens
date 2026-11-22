@@ -45,7 +45,7 @@ Written from the security chat's review of `1afaeb6` (0 critical, high or medium
 
 | Ticket | Title | Finding | Status |
 | --- | --- | --- | --- |
-| [DEV-20](DEV-20.md) | Security B: validate stored data on load | S-4 (Low) | To do |
+| [DEV-20](DEV-20.md) | Security B: validate stored data on load | S-4 (Low) | Done |
 | [DEV-21](DEV-21.md) | Security A: import limits before reading files | S-3 (Low) | To do |
 | [DEV-22](DEV-22.md) | Security C: Dependabot and a CI audit step | S-6 (Info) | To do |
 | [DEV-23](DEV-23.md) | Security E: neutralise bare URLs in the Markdown export | S-7 (Info) | To do |
@@ -100,3 +100,5 @@ Every ticket below must carry these lines in its Acceptance Criteria, and the se
 - From DEV-19: new header link "Loaded data" (key `data.title`) so Clear all data stays one click away; placement and wording for the UI/UX chat to confirm. The address bar shows `?status=suspect` while the UI says Unproven.
 - Deferred minors from DEV-19 (not fixed): (1) copy-summary fields are not cleaned, so a newline in a test name can forge lines in copied text; (2) `stripAnsi` removes colour codes only; (3) zod's JIT uses `Function()` in the worker (`z.config({jitless:true})` would remove it); (4) sample-load fetch errors are not caught; (5) `downloadFile` revokes the object URL right after the click (Safari risk); (6) the result count line `role=status` announces every keystroke in search; (7) `Tests.tsx` `useEffect` on `route.query` runs every render; (8) see the `?status=suspect` note above; (9) Loaded data shows no import progress for drops made there.
 - Not covered by v0 tests: Firefox and Safari (Chromium only); no 10-run soak of the whole e2e suite.
+- For the UI/UX chat (from DEV-20): interim key `storage.skipped` (ICU plurals) for the "saved imports couldn't be read" banner, flat warning style like `storage.off`.
+- From DEV-20: stored rows are validated with `zod/mini` on the page (main chunk 485 kB; full zod would have been 553 kB). Validation strips unknown keys, so a future engine field must also be added to `src/ui/data/stored.ts`. Reload at 5,000 tests x 50 runs takes about 0.9 s to first row (was about 0.5 s). The `bundle.spec` assertion now checks that only the Playwright report parser stays out of the main bundle.
