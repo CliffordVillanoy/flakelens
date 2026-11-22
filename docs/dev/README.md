@@ -46,7 +46,7 @@ Written from the security chat's review of `1afaeb6` (0 critical, high or medium
 | Ticket | Title | Finding | Status |
 | --- | --- | --- | --- |
 | [DEV-20](DEV-20.md) | Security B: validate stored data on load | S-4 (Low) | Done |
-| [DEV-21](DEV-21.md) | Security A: import limits before reading files | S-3 (Low) | To do |
+| [DEV-21](DEV-21.md) | Security A: import limits before reading files | S-3 (Low) | Done |
 | [DEV-22](DEV-22.md) | Security C: Dependabot and a CI audit step | S-6 (Info) | To do |
 | [DEV-23](DEV-23.md) | Security E: neutralise bare URLs in the Markdown export | S-7 (Info) | To do |
 | [DEV-24](DEV-24.md) | Security D: frame guard and referrer policy (optional) | S-1 (Low), S-8 (Info) | Optional |
@@ -102,3 +102,5 @@ Every ticket below must carry these lines in its Acceptance Criteria, and the se
 - Not covered by v0 tests: Firefox and Safari (Chromium only); no 10-run soak of the whole e2e suite.
 - For the UI/UX chat (from DEV-20): interim key `storage.skipped` (ICU plurals) for the "saved imports couldn't be read" banner, flat warning style like `storage.off`.
 - From DEV-20: stored rows are validated with `zod/mini` on the page (main chunk 485 kB; full zod would have been 553 kB). Validation strips unknown keys, so a future engine field must also be added to `src/ui/data/stored.ts`. Reload at 5,000 tests x 50 runs takes about 0.9 s to first row (was about 0.5 s). The `bundle.spec` assertion now checks that only the Playwright report parser stays out of the main bundle.
+- For the UI/UX chat (from DEV-21): interim keys `import.fail.tooMany` and `import.fail.tooBig`.
+- From DEV-21 (deferred minor): files are read one at a time, but all texts of a drop are kept until one worker call, so peak memory is bounded by the 200 MB total cap (plus the copy sent to the worker), not by one file. Parsing one file per worker call would keep it to one file at a time.
