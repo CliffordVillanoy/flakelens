@@ -110,3 +110,15 @@ describe('escapeMd stays fast on long hostile text', () => {
     expect(escapeMd('git+ssh://x.test').replaceAll(String.fromCharCode(0x200b), '')).toBe('git+ssh://x.test');
   });
 });
+
+describe('a long word glued in front of a scheme is still not a link', () => {
+  const prefix = 'a'.repeat(40);
+  it.each(['http://x.test', 'https://x.test', 'HTTP://X.TEST', 'ftp://x.test', 'www.x.test'])('%s after 40 letters', (url) => {
+    for (const text of [prefix + url, `${prefix}_${url}`, `(${prefix}${url})`]) {
+      expect(marked.parse(escapeMd(text), { gfm: true, async: false })).not.toMatch(/<a[\s>]/i);
+    }
+  });
+  it('the control: marked does link them without the helper', () => {
+    expect(marked.parse(prefix + 'https://x.test', { gfm: true, async: false })).toMatch(/<a[\s>]/i);
+  });
+});
