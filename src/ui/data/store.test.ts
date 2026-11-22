@@ -151,3 +151,14 @@ it('when every stored row is bad the app is empty (Start) with the skipped count
   await useStore.getState().restore();
   expect(useStore.getState()).toMatchObject({ mode: 'empty', storage: 'ok', skippedRows: 1 });
 });
+
+it('a drop of more than 200 files is refused: nothing changes and the drop zone gets the message', async () => {
+  await useStore.getState().restore();
+  await useStore.getState().importFiles([file('run-00.json')]);
+  const before = useStore.getState().dataset;
+  const many = Array.from({ length: 201 }, (_, i) => new File(['{}'], `f${i}.json`));
+  await useStore.getState().importFiles(many);
+  expect(useStore.getState().dataset).toBe(before);
+  expect(useStore.getState().importError).toEqual({ code: 'import.fail.tooMany', limit: '200' });
+  expect(useStore.getState().importing).toBeNull();
+});

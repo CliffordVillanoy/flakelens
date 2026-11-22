@@ -169,3 +169,28 @@ test('a corrupt stored row never blocks Start; the warning shows and Clear all d
   await expect(page.getByRole('heading', { level: 1, name: 'Find your flaky tests' })).toBeVisible();
   await expect(page.getByText(/couldn't be read and/)).toHaveCount(0); // the corrupt row went with the rest
 });
+
+test('a file over 50 MB is refused at once, without being read, and the app stays responsive', async ({ page }) => {
+  await openApp(page);
+  const started = Date.now();
+  await page.locator('input[type=file]').setInputFiles({ name: 'huge.json', mimeType: 'application/json', buffer: Buffer.alloc(50_000_001, 32) });
+  await expect(page.getByRole('alert')).toContainText('huge.json is larger than the 50 MB limit.');
+  expect(Date.now() - started).toBeLessThan(5_000);
+  await page.getByRole('button', { name: 'Switch to light theme' }).click(); // the page still answers
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+  await expect(page).not.toHaveURL(/#[/]tests/);
+});
+
+test('in a mixed drop the oversized file fails inline, the other imports, and Loaded data lists the failure', async ({ page }) => {
+  await openApp(page);
+  await addFiles(page, [sampleFile('run-00.json')]);
+  await expect(page.locator('.ranked-row').first()).toBeVisible();
+  await page.locator('input[type=file]').setInputFiles([
+    { name: 'huge.json', mimeType: 'application/json', buffer: Buffer.alloc(50_000_001, 32) },
+    { name: 'run-01.json', mimeType: 'application/json', buffer: (await import('node:fs')).readFileSync(sampleFile('run-01.json')) },
+  ]);
+  await expect(page.getByRole('alert')).toContainText('huge.json is larger than the 50 MB limit.');
+  await page.getByRole('link', { name: 'Loaded data' }).click();
+  await expect(page.getByText('huge.json')).toBeVisible();
+  await expect(page.getByText('run-01.json')).toBeVisible();
+});

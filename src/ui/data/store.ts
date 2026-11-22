@@ -4,7 +4,7 @@ import { rankTests } from '@/engine/score/rank';
 import { scoreTests } from '@/engine/score/score';
 import type { Dataset, TestScore } from '@/engine/types';
 import * as db from './db';
-import { ImportTimeout, runImport, type ImportSummary } from './importer';
+import { ImportRefused, ImportTimeout, runImport, type ImportSummary } from './importer';
 import { clearPrefs } from '../lib/prefs';
 import { loadSample } from './sample';
 
@@ -14,7 +14,10 @@ export interface ImportProgress {
   files: string[];
   done: number;
 }
-export type ImportError = { code: 'import.fail.timeout'; file: string } | { code: 'import.fail.crash' };
+export type ImportError =
+  | { code: 'import.fail.timeout'; file: string }
+  | { code: 'import.fail.crash' }
+  | { code: 'import.fail.tooMany' | 'import.fail.tooBig'; limit: string }; // the whole drop was refused
 export interface LastImport extends ImportSummary {
   newRuns: number;
   wasEmpty: boolean; // nothing was loaded before this import: "Imported", not "Added"
@@ -99,6 +102,7 @@ export const useStore = create<State>()((set, get) => ({
       });
     } catch (e) {
       if (e instanceof ImportTimeout) set({ importError: { code: 'import.fail.timeout', file: e.file } });
+      else if (e instanceof ImportRefused) set({ importError: { code: e.code, limit: e.limit } });
       else if ((e as Error)?.name !== 'AbortError') set({ importError: { code: 'import.fail.crash' } });
     } finally {
       controller = null;

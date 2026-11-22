@@ -72,7 +72,7 @@ export function DropZone({ onFiles, onBrowse, failed = [], others = 0, error, on
               const n = r.notices.find((x) => x.severity === 'error');
               return n && <FailureCard key={r.importId} code={n.code as CopyKey} params={n.params} onFormatHelp={onFormatHelp} />;
             })}
-            {error && <FailureCard code={error.code} params={'file' in error ? { file: error.file } : {}} />}
+            {error && <FailureCard code={error.code} params={'file' in error ? { file: error.file } : 'limit' in error ? { limit: error.limit } : {}} />}
           </div>
           {others > 0 && <div className="text-sm text-fg-secondary">{t('import.others', { count: others })}</div>}
           <div>

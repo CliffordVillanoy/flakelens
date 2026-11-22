@@ -5,7 +5,8 @@ import { emptyDataset } from '@/engine/dataset';
 import { scoreTests } from '@/engine/score/score';
 import type { Dataset } from '@/engine/types';
 import { clearAll, loadDataset } from './db';
-import { ImportTimeout, runImport, type Parser } from './importer';
+import { ImportRefused, ImportTimeout, runImport, type Parser } from './importer';
+import { MAX_FILES, MAX_FILE_BYTES, MAX_TOTAL_BYTES } from './limits';
 import { parseFiles } from './worker';
 
 const file = (f: string) => new File([readFileSync(`fixtures/lab/${f}`, 'utf8')], f);
@@ -81,4 +82,77 @@ it('an abort after parsing but before saving leaves the dataset and the database
     runImport([file('run-00.json')], { dataset: emptyDataset(), persist: true, signal: ctrl.signal, parser }),
   ).rejects.toMatchObject({ name: 'AbortError' });
   expect((await loadDataset()).imports).toHaveLength(0);
+});
+
+// A File stand-in with a chosen size; text() is a spy so reads can be counted and ordered.
+const stub = (name: string, size: number, text = () => Promise.resolve('')) => {
+  const read = vi.fn(text);
+  return Object.assign({ name, size, text: read }) as unknown as File & { text: ReturnType<typeof vi.fn> };
+};
+
+it('limits: 50 MB per file, 200 files, 200 MB per drop', () => {
+  expect([MAX_FILE_BYTES, MAX_FILES, MAX_TOTAL_BYTES]).toEqual([50_000_000, 200, 200_000_000]);
+});
+
+it('an oversized file is a failed import with import.fail.tooLarge and is never read', async () => {
+  const big = stub('big.json', MAX_FILE_BYTES + 1, () => {
+    throw new Error('must not be read');
+  });
+  const r = await run([big]);
+  expect(big.text).not.toHaveBeenCalled();
+  expect(r.records[0]).toMatchObject({ fileName: 'big.json', result: 'failed' });
+  expect(r.records[0]!.notices[0]).toMatchObject({ code: 'import.fail.tooLarge', params: { file: 'big.json', limit: '50 MB' } });
+  expect(r.dataset.runs).toHaveLength(0);
+});
+
+it('in a mixed drop the oversized file fails in place and the others import', async () => {
+  const big = stub('big.json', MAX_FILE_BYTES + 1);
+  const r = await run([file('run-00.json'), big, file('run-01.json')]);
+  expect(r.records.map((x) => [x.fileName, x.result])).toEqual([
+    ['run-00.json', 'success'],
+    ['big.json', 'failed'],
+    ['run-01.json', 'success'],
+  ]);
+  expect(r.dataset.runs).toHaveLength(2);
+});
+
+it('more than 200 files refuses the whole drop before any file is read', async () => {
+  const many = Array.from({ length: MAX_FILES + 1 }, (_, i) => stub(`f${i}.json`, 10));
+  await expect(run(many)).rejects.toMatchObject({ name: 'ImportRefused', code: 'import.fail.tooMany', limit: '200' });
+  expect(many.every((f) => f.text.mock.calls.length === 0)).toBe(true);
+});
+
+it('files that add up to more than 200 MB refuse the whole drop before any file is read', async () => {
+  const five = Array.from({ length: 5 }, (_, i) => stub(`f${i}.json`, MAX_FILE_BYTES));
+  await expect(run(five)).rejects.toBeInstanceOf(ImportRefused);
+  await expect(run(five)).rejects.toMatchObject({ code: 'import.fail.tooBig', limit: '200 MB' });
+  expect(five.every((f) => f.text.mock.calls.length === 0)).toBe(true);
+});
+
+it('files are read one at a time, in order', async () => {
+  let active = 0;
+  let peak = 0;
+  const order: string[] = [];
+  const reading = (name: string) =>
+    stub(name, 10, async () => {
+      order.push(name);
+      peak = Math.max(peak, ++active);
+      await new Promise((r) => setTimeout(r, 5));
+      active--;
+      return readFileSync('fixtures/lab/run-00.json', 'utf8');
+    });
+  await run([reading('a.json'), reading('b.json'), reading('c.json')]);
+  expect(peak).toBe(1);
+  expect(order).toEqual(['a.json', 'b.json', 'c.json']);
+});
+
+it('a cancel between two reads stops before the next read', async () => {
+  const ctrl = new AbortController();
+  const first = stub('a.json', 10, async () => {
+    ctrl.abort(new DOMException('Import cancelled', 'AbortError'));
+    return '{}';
+  });
+  const second = stub('b.json', 10);
+  await expect(run([first, second], emptyDataset(), { signal: ctrl.signal })).rejects.toMatchObject({ name: 'AbortError' });
+  expect(second.text).not.toHaveBeenCalled();
 });

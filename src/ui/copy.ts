@@ -67,6 +67,9 @@ export const catalog = {
   'import.fail.tooLarge': '{file} is larger than the {limit} limit. Try a file with fewer runs.',
   // Interim copy from the planning chat (DEV-13), pending UI/UX confirmation.
   'import.fail.timeout': "{file} took too long to read and wasn't imported. Try a smaller file or fewer runs.",
+  // Interim keys (DEV-21), to be confirmed by the UI/UX chat.
+  'import.fail.tooMany': "That's more than {limit} files at once. Drop fewer files, or split them into batches.",
+  'import.fail.tooBig': 'These files add up to more than {limit}. Drop fewer files at a time.',
   'import.fail.crash': 'Something went wrong while reading your files. Nothing was changed. Try again.',
   'import.others': '{count, plural, one {# other file} other {# other files}} imported. You can drop another file here.',
   'import.viewNotices': 'View all notices',
