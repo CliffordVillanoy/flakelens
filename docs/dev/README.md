@@ -47,7 +47,7 @@ Written from the security chat's review of `1afaeb6` (0 critical, high or medium
 | --- | --- | --- | --- |
 | [DEV-20](DEV-20.md) | Security B: validate stored data on load | S-4 (Low) | Done |
 | [DEV-21](DEV-21.md) | Security A: import limits before reading files | S-3 (Low) | Done |
-| [DEV-22](DEV-22.md) | Security C: Dependabot and a CI audit step | S-6 (Info) | To do |
+| [DEV-22](DEV-22.md) | Security C: Dependabot and a CI audit step | S-6 (Info) | Done |
 | [DEV-23](DEV-23.md) | Security E: neutralise bare URLs in the Markdown export | S-7 (Info) | To do |
 | [DEV-24](DEV-24.md) | Security D: frame guard and referrer policy (optional) | S-1 (Low), S-8 (Info) | Optional |
 
@@ -105,3 +105,4 @@ Every ticket below must carry these lines in its Acceptance Criteria, and the se
 - For the UI/UX chat (from DEV-21): interim keys `import.fail.tooMany` and `import.fail.tooBig`.
 - From DEV-21 (deferred minor): files are read one at a time, but all texts of a drop are kept until one worker call, so peak memory is bounded by the 200 MB total cap (plus the copy sent to the worker), not by one file. Parsing one file per worker call would keep it to one file at a time.
 - From the DEV-21 security re-review (S-3 closed as a Low residual): worst-case memory is about 2-3x the drop size (strings take up to 2 bytes per character, plus the worker copy). If memory complaints appear, lower `MAX_TOTAL_BYTES` to 100 MB (cheapest) or parse one file per worker call. Minor: `src/engine/import/failed.ts` holds a literal NUL character in `SEP`, so git treats it as binary; replace it with the `' '` escape (the failed-import IDs stay the same).
+- From DEV-22: the CI audit gates runtime dependencies only (`--omit=dev`); a runtime advisory turns `main` red until fixed, and a registry outage fails the check job (re-run). If branch protection ever requires `ci`, doc-only PRs stay pending (path filters). Dependabot's first PR can only be checked after the first push.
