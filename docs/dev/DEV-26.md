@@ -1,6 +1,6 @@
 # DEV-26: Pages deploy: stop the artifact timing failure
 
-**Status:** To do
+**Status:** Done locally (2026-11-22, commit `4bd3c86` on `fix/pages-two-jobs`; 291 unit tests pass). AC5 (green first try) is checked after the push.
 
 **Goal:** The GitHub Pages deploy succeeds on the first try, so a normal push publishes without a manual re-run.
 
