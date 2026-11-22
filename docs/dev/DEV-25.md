@@ -1,6 +1,6 @@
 # DEV-25: Dependabot: stop major bumps the toolchain cannot take
 
-**Status:** To do
+**Status:** Done locally (2026-11-22, commit `20d20ff` on `fix/dependabot-majors`; 287 unit tests pass; PR #1 closed). Not pushed or merged yet.
 
 **Goal:** Dependabot's weekly pull requests only carry updates the project can actually install, so a red PR means a real problem.
 
