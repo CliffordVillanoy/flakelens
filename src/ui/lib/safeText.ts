@@ -26,9 +26,23 @@ export function cleanText(s: string): string {
   return out.trim();
 }
 
-/** Markdown: escape what would change the meaning, and a leading = + - @ a spreadsheet would run as a formula. */
+// A zero-width space, written as a code point (a raw invisible character in source is lost by editors and tools).
+const ZWSP = String.fromCharCode(0x200b);
+
+/**
+ * Stops GitHub-style Markdown from turning text into a link when an export is pasted: a zero-width space goes
+ * after a URL scheme colon (http://, ftp://, mailto:), after "www" and after the "@" of an address. The text reads
+ * the same and copies back the same once the invisible characters are removed.
+ */
+export const breakAutolinks = (s: string) =>
+  s
+    .replace(/\b([a-z][a-z0-9+.-]*:)(?=\/\/)|\b(mailto|xmpp):/gi, (m) => m + ZWSP)
+    .replace(/\bwww\./gi, () => 'www' + ZWSP + '.')
+    .replace(/(?<=[^\s@])@(?=[^\s@])/g, '@' + ZWSP); // inside an address only: a leading @ is not one
+
+/** Markdown: escape what would change the meaning, break auto-links, and neutralise a leading = + - @ a spreadsheet would run as a formula. */
 export const escapeMd = (s: string) =>
-  cleanText(s)
+  breakAutolinks(cleanText(s))
     .replace(/[\\`|*_[\]<>]/g, '\\$&')
     .replace(/^[=+\-@]/, '\\$&');
 
