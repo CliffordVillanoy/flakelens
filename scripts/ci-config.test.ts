@@ -1,5 +1,5 @@
 import { readFileSync, readdirSync } from 'node:fs';
-import { it, expect } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 // Text checks on the GitHub config files (no YAML library: the files are small and the shapes are fixed).
 const read = (f: string) => readFileSync(f, 'utf8');
@@ -64,4 +64,51 @@ it('only documented Dependabot v2 keys are used', () => {
   ]);
   const keys = [...d.matchAll(/^\s*(?:- )?([a-z-]+):/gim)].map((m) => m[1]!);
   expect(keys.filter((k) => !allowed.has(k))).toEqual([]);
+});
+
+// Upload and deploy in one job raced: deploy-pages looked for the artifact about 2 s after the upload and found none.
+// A job boundary (as in GitHub's own Pages starter workflow) gives the artifact time to become visible.
+describe('pages.yml: build and deploy are separate jobs', () => {
+  const pages = read('.github/workflows/pages.yml');
+  const job = (name: string) => {
+    const start = pages.indexOf(`\n  ${name}:`);
+    expect(start, name).toBeGreaterThan(-1);
+    const rest = pages.slice(start + 1);
+    const next = rest.slice(1).search(/\n {2}[a-z-]+:\n/);
+    return next < 0 ? rest : rest.slice(0, next + 1);
+  };
+
+  it('has a build job and a deploy job that needs it', () => {
+    expect(pages).toMatch(/^jobs:\n(?: {2}#.*\n)* {2}build:\n/m);
+    expect(job('deploy')).toMatch(/^ {4}needs: build$/m);
+  });
+
+  it('build installs, builds and uploads the artifact, with read-only access', () => {
+    const b = job('build');
+    expect(b).toMatch(/- run: npm ci\n\s+- run: npm run build/);
+    expect(b).toMatch(/actions\/upload-pages-artifact@/);
+    expect(b).not.toMatch(/deploy-pages/);
+    expect(b).not.toMatch(/pages: write|id-token: write/);
+  });
+
+  it('only deploy may write to Pages and request the token, and it uses the github-pages environment', () => {
+    const d = job('deploy');
+    expect(d).toMatch(/pages: write/);
+    expect(d).toMatch(/id-token: write/);
+    expect(d).toMatch(/environment:\n\s+name: github-pages\n\s+url: \$\{\{ steps\.deployment\.outputs\.page_url \}\}/);
+    expect(d).toMatch(/actions\/deploy-pages@/);
+    expect(d).not.toMatch(/upload-pages-artifact|npm ci|checkout/);
+    expect(pages.match(/pages: write/g)).toHaveLength(1);
+    expect(pages.match(/id-token: write/g)).toHaveLength(1);
+  });
+
+  it('keeps the triggers, path filters, concurrency and timeouts', () => {
+    expect(pages).toMatch(/concurrency:\n {2}group: pages\n {2}cancel-in-progress: false/);
+    expect(pages).toContain("- '!docs/**'");
+    expect(pages).toContain("- 'docs/eval/**'");
+    expect(pages).toMatch(/branches: \[main\]/);
+    expect(pages).toMatch(/workflow_dispatch:/);
+    expect(job('build')).toMatch(/timeout-minutes: 10/);
+    expect(job('deploy')).toMatch(/timeout-minutes: 10/);
+  });
 });
