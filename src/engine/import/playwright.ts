@@ -1,5 +1,6 @@
 import { DEFAULT_CONFIG, type EngineConfig } from '../config';
 import { hashString } from '../hash';
+import { failedImport } from './failed';
 import type { Attempt, AttemptStatus, Failure, ImportResult, Notice, NoticeCode, Run, Test } from '../types';
 import { reportSchema, resultSchema, specSchema, suiteSchema, testSchema } from './schema';
 
@@ -27,26 +28,8 @@ export function parsePlaywrightReport(text: string, opts: ParseOptions): ImportR
     return parse(text, opts);
   } catch {
     // Last resort: a bug must still surface as a calm notice, never an exception.
-    return failed(opts, 'import.fail.unreadable');
+    return failedImport(opts, 'import.fail.unreadable');
   }
-}
-
-function failed(opts: ParseOptions, code: NoticeCode, params: Record<string, string | number> = {}): ImportResult {
-  return {
-    record: {
-      importId: hashString(opts.fileName + SEP + opts.importedAt + SEP + code),
-      fileName: opts.fileName,
-      importedAt: opts.importedAt,
-      result: 'failed',
-      counts: { found: 0, imported: 0, notImported: 0 },
-      notices: [{ code, severity: 'error', params: { file: opts.fileName, ...params } }],
-      runIds: [],
-    },
-    runs: [],
-    tests: [],
-    attempts: [],
-    failures: [],
-  };
 }
 
 class TooDeep extends Error {}
@@ -60,7 +43,7 @@ const errorOf = (r: Record<string, unknown>): { message: string; stack: string }
 function parse(text: string, opts: ParseOptions): ImportResult {
   const config = opts.config ?? DEFAULT_CONFIG;
   if (text.length > config.maxFileChars) {
-    return failed(opts, 'import.fail.tooLarge', { limit: `${Math.round(config.maxFileChars / 1_000_000)} MB` });
+    return failedImport(opts, 'import.fail.tooLarge', { limit: `${Math.round(config.maxFileChars / 1_000_000)} MB` });
   }
   // Strip a UTF-8 BOM before parsing and hashing, so a BOM copy of a report gets the same run ID.
   const body = text.charCodeAt(0) === 0xfeff ? text.slice(1) : text;
@@ -68,10 +51,10 @@ function parse(text: string, opts: ParseOptions): ImportResult {
   try {
     raw = JSON.parse(body);
   } catch {
-    return failed(opts, 'import.fail.unreadable');
+    return failedImport(opts, 'import.fail.unreadable');
   }
   const report = reportSchema.safeParse(raw);
-  if (!report.success) return failed(opts, 'import.fail.format');
+  if (!report.success) return failedImport(opts, 'import.fail.format');
 
   // An unreadable start time leaves the field empty (spec 9.1); readable ones are normalized to UTC ISO.
   const rawStart = report.data.stats?.startTime;
@@ -168,14 +151,14 @@ function parse(text: string, opts: ParseOptions): ImportResult {
     for (const s of report.data.suites) walk(s, [], undefined, 1);
   } catch (e) {
     if (e instanceof TooDeep)
-      return failed(opts, 'import.fail.tooLarge', { limit: `${config.maxSuiteDepth} nested suites` });
+      return failedImport(opts, 'import.fail.tooLarge', { limit: `${config.maxSuiteDepth} nested suites` });
     throw e;
   }
   if (badDurations > 0) warn('import.partial.badDuration', { count: badDurations });
   if (dupes > 0) warn('import.dupeIds', { count: dupes });
 
   const notImported = found - attempts.length;
-  if (found > 0 && notImported / found > config.maxBadShare) return failed(opts, 'import.fail.tooBad');
+  if (found > 0 && notImported / found > config.maxBadShare) return failedImport(opts, 'import.fail.tooBad');
 
   const run: Run = { runId, importId, commit, startedAt, order: opts.order };
   const partial = notImported > 0 || notices.some((n) => n.severity === 'warning');

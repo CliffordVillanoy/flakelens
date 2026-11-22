@@ -1,6 +1,6 @@
 # DEV-21: Security A: import limits before reading files
 
-**Status:** To do
+**Status:** Done (2026-11-22, commit `51f8f60` on `fix/security-hardening`; 250 unit + 34 e2e tests pass)
 
 **Goal:** An oversized file, or a huge drop, is refused with a clear message before the app reads it into memory.
 

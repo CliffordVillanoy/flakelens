@@ -1,7 +1,9 @@
 import { addImport } from '@/engine/dataset';
+import { failedImport } from '@/engine/import/failed';
 import { scoreTests } from '@/engine/score/score';
 import type { Dataset, ImportRecord, ImportResult } from '@/engine/types';
 import { saveImport, uniqueImportId } from './db';
+import { MAX_FILE_BYTES, MAX_FILES, MAX_TOTAL_BYTES } from './limits';
 import { workerParser } from './parser';
 import type { ParseInput } from './worker';
 
@@ -22,6 +24,17 @@ export class ImportTimeout extends Error {
   }
 }
 
+/** The whole drop is refused (too many files, too much together) before anything is read. Nothing changes. */
+export class ImportRefused extends Error {
+  constructor(
+    readonly code: 'import.fail.tooMany' | 'import.fail.tooBig',
+    readonly limit: string,
+  ) {
+    super(code);
+    this.name = 'ImportRefused';
+  }
+}
+
 export interface ImportOptions {
   dataset: Dataset;
   persist: boolean;
@@ -33,6 +46,7 @@ export interface ImportOptions {
 }
 
 const FILE_TIMEOUT_MS = 30_000;
+const mb = (bytes: number) => `${Math.round(bytes / 1_000_000)} MB`;
 
 const flakyIds = (ds: Dataset) => new Set(scoreTests(ds).filter((s) => s.label === 'flaky').map((s) => s.testId));
 
@@ -46,16 +60,29 @@ export async function runImport(
 ): Promise<ImportSummary & { dataset: Dataset; storageFailed: boolean }> {
   const { signal, timeoutMs = FILE_TIMEOUT_MS } = opts;
   signal.throwIfAborted();
-  const inputs: ParseInput[] = await Promise.all(
-    files.map(async (f) => ({ name: f.name, text: await f.text(), commitLabel: opts.commitLabels?.[f.name] })),
-  );
+  // Sizes first, from File.size: a huge drop is refused before a single byte is read.
+  if (files.length > MAX_FILES) throw new ImportRefused('import.fail.tooMany', String(MAX_FILES));
+  if (files.reduce((n, f) => n + f.size, 0) > MAX_TOTAL_BYTES) throw new ImportRefused('import.fail.tooBig', mb(MAX_TOTAL_BYTES));
+  const importedAt = new Date().toISOString();
+  // One file at a time keeps memory bounded; a cancel stops before the next read. A file over the limit is
+  // failed in place without being read.
+  const inputs: ParseInput[] = [];
+  const refused = new Map<number, ImportResult>();
+  for (const [i, f] of files.entries()) {
+    signal.throwIfAborted();
+    if (f.size > MAX_FILE_BYTES) {
+      refused.set(i, failedImport({ fileName: f.name, importedAt }, 'import.fail.tooLarge', { limit: mb(MAX_FILE_BYTES) }));
+      continue;
+    }
+    inputs.push({ name: f.name, text: await f.text(), commitLabel: opts.commitLabels?.[f.name] });
+  }
   signal.throwIfAborted();
 
   const parser = (opts.parser ?? workerParser)();
   let timer: ReturnType<typeof setTimeout> | undefined;
-  let results: ImportResult[];
+  let fromWorker: ImportResult[];
   try {
-    results = await new Promise<ImportResult[]>((resolve, reject) => {
+    fromWorker = await new Promise<ImportResult[]>((resolve, reject) => {
       const fail = (e: unknown) => {
         parser.terminate();
         reject(e);
@@ -69,7 +96,7 @@ export async function runImport(
       signal.addEventListener('abort', () => fail(signal.reason), { once: true });
       arm();
       parser
-        .parseFiles(inputs, new Date().toISOString(), (done) => {
+        .parseFiles(inputs, importedAt, (done) => {
           current = done;
           arm(); // the limit is per file
           opts.onProgress?.(done, inputs.length);
@@ -80,6 +107,9 @@ export async function runImport(
     clearTimeout(timer);
   }
   parser.terminate();
+  // Back in drop order: parsed results fill the gaps the refused files left.
+  const next = fromWorker[Symbol.iterator]();
+  const results = files.map((_, i) => refused.get(i) ?? next.next().value!);
   signal.throwIfAborted(); // a cancel or Clear all data that landed after parsing still wins
 
   let dataset = opts.dataset;

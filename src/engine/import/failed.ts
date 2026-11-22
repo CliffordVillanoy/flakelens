@@ -1,0 +1,29 @@
+import { hashString } from '../hash';
+import type { ImportResult, NoticeCode } from '../types';
+
+// Kept apart from the parser so the page can build a failed record (a file refused before it is read) without
+// loading the parser and zod. No UI or DOM code here.
+const SEP = '\u0000';
+
+/** A failed import: one error notice, no runs. The file was never (fully) read as a report. */
+export function failedImport(
+  opts: { fileName: string; importedAt: string },
+  code: NoticeCode,
+  params: Record<string, string | number> = {},
+): ImportResult {
+  return {
+    record: {
+      importId: hashString(opts.fileName + SEP + opts.importedAt + SEP + code),
+      fileName: opts.fileName,
+      importedAt: opts.importedAt,
+      result: 'failed',
+      counts: { found: 0, imported: 0, notImported: 0 },
+      notices: [{ code, severity: 'error', params: { file: opts.fileName, ...params } }],
+      runIds: [],
+    },
+    runs: [],
+    tests: [],
+    attempts: [],
+    failures: [],
+  };
+}

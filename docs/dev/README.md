@@ -45,10 +45,10 @@ Written from the security chat's review of `1afaeb6` (0 critical, high or medium
 
 | Ticket | Title | Finding | Status |
 | --- | --- | --- | --- |
-| [DEV-20](DEV-20.md) | Security B: validate stored data on load | S-4 (Low) | To do |
-| [DEV-21](DEV-21.md) | Security A: import limits before reading files | S-3 (Low) | To do |
-| [DEV-22](DEV-22.md) | Security C: Dependabot and a CI audit step | S-6 (Info) | To do |
-| [DEV-23](DEV-23.md) | Security E: neutralise bare URLs in the Markdown export | S-7 (Info) | To do |
+| [DEV-20](DEV-20.md) | Security B: validate stored data on load | S-4 (Low) | Done |
+| [DEV-21](DEV-21.md) | Security A: import limits before reading files | S-3 (Low) | Done |
+| [DEV-22](DEV-22.md) | Security C: Dependabot and a CI audit step | S-6 (Info) | Done |
+| [DEV-23](DEV-23.md) | Security E: neutralise bare URLs in the Markdown export | S-7 (Info) | Done |
 | [DEV-24](DEV-24.md) | Security D: frame guard and referrer policy (optional) | S-1 (Low), S-8 (Info) | Optional |
 
 Accepted risks (no ticket): S-2 non-cryptographic run IDs (revisit before any sync or share feature); S-5 `style-src 'unsafe-inline'`; S-1 and S-8 while hosting stays on GitHub Pages (revisit when the hosting move is scheduled, then set the full header set on the new host).
@@ -100,3 +100,14 @@ Every ticket below must carry these lines in its Acceptance Criteria, and the se
 - From DEV-19: new header link "Loaded data" (key `data.title`) so Clear all data stays one click away; placement and wording for the UI/UX chat to confirm. The address bar shows `?status=suspect` while the UI says Unproven.
 - Deferred minors from DEV-19 (not fixed): (1) copy-summary fields are not cleaned, so a newline in a test name can forge lines in copied text; (2) `stripAnsi` removes colour codes only; (3) zod's JIT uses `Function()` in the worker (`z.config({jitless:true})` would remove it); (4) sample-load fetch errors are not caught; (5) `downloadFile` revokes the object URL right after the click (Safari risk); (6) the result count line `role=status` announces every keystroke in search; (7) `Tests.tsx` `useEffect` on `route.query` runs every render; (8) see the `?status=suspect` note above; (9) Loaded data shows no import progress for drops made there.
 - Not covered by v0 tests: Firefox and Safari (Chromium only); no 10-run soak of the whole e2e suite.
+- For the UI/UX chat (from DEV-20): interim key `storage.skipped` (ICU plurals) for the "saved imports couldn't be read" banner, flat warning style like `storage.off`.
+- From DEV-20: stored rows are validated with `zod/mini` on the page (main chunk 485 kB; full zod would have been 553 kB). Validation strips unknown keys, so a future engine field must also be added to `src/ui/data/stored.ts`. Reload at 5,000 tests x 50 runs takes about 0.9 s to first row (was about 0.5 s). The `bundle.spec` assertion now checks that only the Playwright report parser stays out of the main bundle.
+- For the UI/UX chat (from DEV-21): interim keys `import.fail.tooMany` and `import.fail.tooBig`.
+- From DEV-21 (deferred minor): files are read one at a time, but all texts of a drop are kept until one worker call, so peak memory is bounded by the 200 MB total cap (plus the copy sent to the worker), not by one file. Parsing one file per worker call would keep it to one file at a time.
+- From the DEV-21 security re-review (S-3 closed as a Low residual): worst-case memory is about 2-3x the drop size (strings take up to 2 bytes per character, plus the worker copy). If memory complaints appear, lower `MAX_TOTAL_BYTES` to 100 MB (cheapest) or parse one file per worker call. Minor: `src/engine/import/failed.ts` holds a literal NUL character in `SEP`, so git treats it as binary; replace it with the `' '` escape (the failed-import IDs stay the same).
+- From DEV-22: the CI audit gates runtime dependencies only (`--omit=dev`); a runtime advisory turns `main` red until fixed, and a registry outage fails the check job (re-run). If branch protection ever requires `ci`, doc-only PRs stay pending (path filters). Dependabot's first PR can only be checked after the first push.
+- After the first push of the security branch (owner task, from the DEV-22 re-review): in repo Settings > Code security, confirm Dependabot version updates and security alerts are on; confirm its first PR appears and passes CI. Until then DEV-22 is not fully verified. Note: the audit runs only when CI runs, and `pages.yml` does not gate the deploy on it.
+- DEV-21 add-on done: `src/engine/import/failed.ts` now uses the `'\u0000'` escape (commit `e24f27f`), so git treats it as text.
+- From DEV-23: the Markdown copy now carries invisible zero-width spaces inside URLs and addresses (the point: they cannot auto-link). Anyone copying a URL out of a pasted export gets the joiner and must retype or strip it. Dev dependency `marked` 18.2.1 (MIT) is tests only and is not in `dist`.
+- From the DEV-23 security re-review: `breakAutolinks` took 0.47 s at 40,000 characters and 1.9 s at 80,000 on a string like `'a.'.repeat(n)` (quadratic). The ticket's own suggested approach lacked a bound; the fix bounds the scheme length to 31 characters and adds timing tests. Lesson for the classifier and fingerprint tickets: every regex over untrusted text needs a bounded quantifier and a timing test (already in the security acceptance lines).
+- DEV-23 timing fix done (`0a4664f`): scheme length capped at 31; `escapeMd` on 100,000-character hostile strings went from about 13 s to about 15 ms. A scheme longer than 32 characters followed by `://` is no longer broken (no real scheme is that long).

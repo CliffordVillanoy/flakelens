@@ -1,6 +1,6 @@
 # DEV-22: Security C: Dependabot and a CI audit step
 
-**Status:** To do
+**Status:** Done (2026-11-22, commit `9cedb99` on `fix/security-hardening`; 253 unit tests pass; first Dependabot PR not checkable until pushed)
 
 **Goal:** Pinned GitHub Actions and npm packages stay current, and a known-vulnerable runtime dependency fails CI.
 

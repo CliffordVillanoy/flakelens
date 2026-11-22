@@ -1,6 +1,6 @@
 # DEV-20: Security B: validate stored data on load
 
-**Status:** To do
+**Status:** Done (2026-11-22, commit `1959f0b` on `fix/security-hardening`; 240 unit + 32 e2e tests pass)
 
 **Goal:** A corrupt or old-format stored row can never stop the app from starting, and the user can always clear it.
 
