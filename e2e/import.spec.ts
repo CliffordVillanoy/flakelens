@@ -140,3 +140,32 @@ test('Esc that closes the shortcuts sheet does not also close the open test pane
   expect(await page.evaluate(() => window.location.hash)).toBe(hash);
   await expect(page.locator('aside h2')).toBeVisible();
 });
+
+test('a corrupt stored row never blocks Start; the warning shows and Clear all data removes it', async ({ page }) => {
+  await openApp(page);
+  await addFiles(page, [sampleFile('run-00.json')]);
+  await expect(page.locator('.ranked-row').first()).toBeVisible();
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve, reject) => {
+        const open = indexedDB.open('flakelens');
+        open.onerror = () => reject(open.error);
+        open.onsuccess = () => {
+          const tx = open.result.transaction('imports', 'readwrite');
+          tx.objectStore('imports').add({ importId: 'corrupt', seq: 99, result: 'not a result' });
+          tx.oncomplete = () => (open.result.close(), resolve());
+        };
+      }),
+  );
+  await page.reload();
+  await expect(page.locator('.ranked-row').first()).toBeVisible(); // valid rows still load
+  await expect(page.getByText("1 saved import couldn't be read and was skipped. Clear all data to remove it.")).toBeVisible();
+
+  await page.getByRole('link', { name: 'Loaded data' }).click();
+  await page.getByRole('button', { name: 'Clear all data' }).click();
+  await page.getByRole('dialog', { name: 'Clear all data?' }).getByRole('button', { name: 'Clear all data' }).click();
+  await expect(page.getByRole('heading', { level: 1, name: 'Find your flaky tests' })).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole('heading', { level: 1, name: 'Find your flaky tests' })).toBeVisible();
+  await expect(page.getByText(/couldn't be read and/)).toHaveCount(0); // the corrupt row went with the rest
+});

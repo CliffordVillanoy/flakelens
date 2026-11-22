@@ -294,6 +294,9 @@ export const catalog = {
   'storage.fail':
     "Your saved data couldn't be read. Reload the page to try again. If it keeps happening, clear all data and import your files again.",
   'storage.reload': 'Reload page',
+  // Interim key (DEV-20), to be confirmed by the UI/UX chat.
+  'storage.skipped':
+    "{count, plural, one {# saved import} other {# saved imports}} couldn't be read and {count, plural, one {was} other {were}} skipped. Clear all data to remove {count, plural, one {it} other {them}}.",
   'storage.off': "This browser won't keep your data after you close the tab. Results are still shown for now.",
 
   // Clear all data dialog

@@ -5,7 +5,7 @@ import Dexie from 'dexie';
 import { emptyDataset } from '@/engine/dataset';
 import { rankTests } from '@/engine/score/rank';
 import { scoreTests } from '@/engine/score/score';
-import { clearAll as clearDb, loadDataset } from './db';
+import { clearAll as clearDb, loadDataset, loadStored } from './db';
 import { parseFiles } from './worker';
 import { useStore } from './store';
 
@@ -122,4 +122,32 @@ it('an IndexedDB that never answers falls back to storage off instead of a blank
   } finally {
     vi.useRealTimers();
   }
+});
+
+it('restore with a corrupt stored row starts normally, keeps valid rows and counts the skipped ones', async () => {
+  await useStore.getState().restore();
+  await useStore.getState().importFiles([file('run-00.json')]);
+  const d = new Dexie('flakelens');
+  await d.open();
+  await d.table('imports').add({ importId: 'bad', seq: 99, result: 'nope' });
+  d.close();
+  useStore.setState(initial, true);
+  await useStore.getState().restore();
+  expect(useStore.getState()).toMatchObject({ mode: 'user', storage: 'ok', skippedRows: 1 });
+  expect(useStore.getState().dataset.runs).toHaveLength(1);
+  await useStore.getState().clearAll();
+  expect(useStore.getState().skippedRows).toBe(0);
+  expect((await loadDataset()).runs).toHaveLength(0);
+  expect((await loadStored()).skipped).toBe(0); // the bad row is gone too
+});
+
+it('when every stored row is bad the app is empty (Start) with the skipped count', async () => {
+  await useStore.getState().restore();
+  const d = new Dexie('flakelens');
+  await d.open();
+  await d.table('imports').add({ importId: 'bad', seq: 0, result: 1 });
+  d.close();
+  useStore.setState(initial, true);
+  await useStore.getState().restore();
+  expect(useStore.getState()).toMatchObject({ mode: 'empty', storage: 'ok', skippedRows: 1 });
 });

@@ -26,6 +26,7 @@ interface State {
   ranked: TestScore[];
   importing: ImportProgress | null;
   storage: Storage;
+  skippedRows: number; // saved imports that could not be read on load (corrupt or from a newer app)
   lastImport: LastImport | null;
   importError: ImportError | null;
   restore(): Promise<void>;
@@ -49,6 +50,7 @@ export const useStore = create<State>()((set, get) => ({
   ...empty(),
   importing: null,
   storage: 'ok',
+  skippedRows: 0,
   lastImport: null,
   importError: null,
 
@@ -60,8 +62,8 @@ export const useStore = create<State>()((set, get) => ({
     clearTimeout(timer);
     if (!available) return set({ ...empty(), storage: 'off' });
     try {
-      const ds = await db.loadDataset();
-      set({ ...withData(ds.runs.length > 0 ? 'user' : 'empty', ds), storage: 'ok' });
+      const { dataset: ds, skipped } = await db.loadStored();
+      set({ ...withData(ds.runs.length > 0 ? 'user' : 'empty', ds), storage: 'ok', skippedRows: skipped });
     } catch {
       set({ ...empty(), storage: 'failed' });
     }
@@ -138,6 +140,6 @@ export const useStore = create<State>()((set, get) => ({
       }
     }
     clearPrefs(); // column choice and dismissed tips; theme, density and the shortcuts switch stay
-    set({ ...empty(), storage, lastImport: null, importError: null });
+    set({ ...empty(), storage, skippedRows: 0, lastImport: null, importError: null });
   },
 }));

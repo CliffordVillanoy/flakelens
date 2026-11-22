@@ -19,7 +19,7 @@ vi.mock('../data/parser', () => ({
 }));
 vi.mock('../data/db', async (original) => {
   const real = await original<typeof import('../data/db')>();
-  return { ...real, loadDataset: () => (flags.failLoad ? Promise.reject(new Error('unreadable')) : real.loadDataset()) };
+  return { ...real, loadStored: () => (flags.failLoad ? Promise.reject(new Error('unreadable')) : real.loadStored()) };
 });
 
 const pw = (f: string) => new File([readFileSync(`fixtures/playwright/${f}`, 'utf8')], f);
@@ -305,4 +305,26 @@ it('no skip control on Start or Loaded data', async () => {
   await open('#/data');
   await screen.findByRole('heading', { level: 1, name: 'Loaded data' });
   expect(screen.queryByRole('button', { name: 'Skip to results' })).toBeNull();
+});
+
+const corruptRows = async (n: number) => {
+  const d = new Dexie('flakelens');
+  await d.open();
+  await d.table('imports').bulkAdd(Array.from({ length: n }, (_, i) => ({ importId: `bad${i}`, seq: i, result: 'nope' })));
+  d.close();
+};
+
+it('skipped stored rows: a warning with the count on Start, and Clear all data is the way out', async () => {
+  await useStore.getState().restore(); // creates the database
+  await corruptRows(2);
+  render(<App />);
+  expect(await screen.findByText("2 saved imports couldn't be read and were skipped. Clear all data to remove them.")).toBeInTheDocument();
+  expect(screen.getByRole('heading', { level: 1, name: 'Find your flaky tests' })).toBeInTheDocument();
+});
+
+it('one skipped stored row is said in the singular', async () => {
+  await useStore.getState().restore();
+  await corruptRows(1);
+  render(<App />);
+  expect(await screen.findByText("1 saved import couldn't be read and was skipped. Clear all data to remove it.")).toBeInTheDocument();
 });

@@ -1,6 +1,10 @@
 import { expose } from 'comlink';
+import { z } from 'zod';
 import { parsePlaywrightReport } from '@/engine/import/playwright';
 import type { ImportResult } from '@/engine/types';
+
+// The page CSP does not cover workers; this keeps zod from compiling parsers with Function() so none is needed.
+z.config({ jitless: true });
 
 export interface ParseInput {
   name: string;
