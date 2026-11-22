@@ -10,15 +10,15 @@ No account required · No report uploads · No backend · Free to use
 
 FlakeLens is a free, browser-based tool that helps QA Engineers, Automation Engineers, and SDETs identify, investigate, and prioritize flaky tests using historical Playwright CI execution reports.
 
-By analyzing multiple test runs, FlakeLens ranks unstable tests and distinguishes **confirmed flakiness** from **suspected instability**, helping teams make evidence-based decisions instead of relying solely on individual failures or retries.
+By analyzing multiple test runs, FlakeLens ranks unstable tests and separates **confirmed flakiness** from **unproven** results, helping teams make evidence-based decisions instead of relying solely on individual failures or retries.
 
 > **Development Status:** v0 — Work in Progress. Core flaky test detection, reporting, and browser-based analysis features are implemented. Additional capabilities are planned.
+
+> **v0 limitation:** v0 treats each imported file as its own commit. Commit labels and reading commits from report metadata are not in the app yet, so same-commit evidence across runs currently shows in the sample data. For your own reports, Flaky means a test passed on a retry within one run.
 
 ## Try FlakeLens
 
 **[Launch Live Demo](https://cliffordvillanoy.github.io/flakelens/)**
-
-*The application is published through GitHub Pages once Pages is enabled and its deployment workflow completes successfully.*
 
 ### Getting Started
 
@@ -38,8 +38,8 @@ FlakeLens analyzes test outcomes across CI runs to identify inconsistent behavio
 
 It distinguishes between:
 
-- **Confirmed Flaky:** A test has both passing and failing outcomes associated with the same commit.
-- **Suspected Instability:** A test exhibits concerning execution patterns, but the available evidence does not establish confirmed flakiness.
+- **Confirmed Flaky:** A test has both passing and failing outcomes associated with the same commit. (In v0 this applies to the built-in sample data; for your own reports see the v0 limitation above.)
+- **Unproven:** A test exhibits concerning execution patterns, but the available evidence does not establish confirmed flakiness.
 
 This distinction helps engineers avoid confusing legitimate regressions with unstable tests.
 
@@ -88,7 +88,7 @@ FlakeLens processes imported test reports locally in the browser without uploadi
 |---|---|
 | 1. Import | Load Playwright JSON reports from multiple CI runs. |
 | 2. Analyze | Examine test outcomes and execution history. |
-| 3. Classify | Identify confirmed flakiness and distinguish it from unproven instability. |
+| 3. Classify | Identify confirmed flakiness and distinguish it from unproven results. In v0, for your own reports each file counts as its own commit (see the v0 limitation above). |
 | 4. Rank | Apply the v0 scoring engine to prioritize tests for investigation. |
 | 5. Investigate | Review detailed execution histories and supporting evidence. |
 
@@ -100,13 +100,15 @@ FlakeLens looks for inconsistent outcomes associated with the **same commit**, p
 
 This helps separate observed flakiness from potential regressions, although the underlying root cause may still require investigation.
 
+In v0, same-commit evidence across runs shows in the built-in sample data. For your own reports, each imported file counts as its own commit, so a test is Flaky when it passes on a retry within one run.
+
 ## Detection Engine Evaluation
 
 FlakeLens includes a synthetic evaluation environment that compares its detection engine against Playwright's built-in flaky test classification.
 
 Playwright's baseline identifies a test as flaky when it fails and subsequently passes on retry within a single run.
 
-FlakeLens evaluates historical execution outcomes across runs, allowing it to detect certain cases that single-run retry classification may miss.
+FlakeLens evaluates historical execution outcomes across runs, allowing it to detect certain cases that single-run retry classification may miss. The lab data carries commit information, which imported files do not have in v0.
 
 ### Flake Lab Results
 
@@ -326,6 +328,7 @@ FlakeLens follows an incremental development approach, prioritizing test reliabi
 
 ### Planned Enhancements
 
+- [ ] Commit labels for imported files
 - [ ] JUnit XML report import
 - [ ] Individual imported-file removal
 - [ ] Failure fingerprinting and cause grouping
