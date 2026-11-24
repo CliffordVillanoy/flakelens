@@ -36,3 +36,9 @@ test('dist carries the self-hosted fonts and licences, and no external URLs in t
   const html = readFileSync('dist/index.html', 'utf8');
   expect(html).not.toMatch(/(src|href)="https?:/);
 });
+
+test('dist carries the favicon and the page links to it under the base path', () => {
+  const html = readFileSync('dist/index.html', 'utf8');
+  expect(html).toMatch(/<link rel="icon" type="image\/svg\+xml" href="(\.|\/flakelens)\/brand\/flakelens-favicon\.svg"/);
+  expect(readFileSync('dist/brand/flakelens-favicon.svg', 'utf8')).toContain('aria-label="FlakeLens"');
+});
