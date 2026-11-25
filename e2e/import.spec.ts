@@ -192,5 +192,5 @@ test('in a mixed drop the oversized file fails inline, the other imports, and Lo
   await expect(page.getByRole('alert')).toContainText('huge.json is larger than the 50 MB limit.');
   await page.getByRole('link', { name: 'Loaded data' }).click();
   await expect(page.getByText('huge.json', { exact: true }).first()).toBeVisible(); // name shows in the row and the failure list
-  await expect(page.getByText('run-01.json')).toBeVisible();
+  await expect(page.getByText('run-01.json', { exact: true }).first()).toBeVisible();
 });
