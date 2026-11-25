@@ -12,8 +12,8 @@
 <style>
 body{margin:0;font-family:'Mona Sans',system-ui,sans-serif;color:#1F2328;background:#F6F8FA;color-scheme:light}
 button,input,select,textarea,summary{color:inherit}
-::placeholder{color:#59636E;opacity:1}
-a{color:#0969DA;text-underline-offset:2px}a:hover{color:#0550AE}
+::placeholder{color:#4F5A65;opacity:1}
+a{color:#0860CA;text-underline-offset:2px}a:hover{color:#0550AE}
 :focus-visible{outline:2px solid #0969DA;outline-offset:2px}
 kbd{font-family:'JetBrains Mono',monospace;font-size:12px;padding:1px 6px;border:1px solid #D1D9E0;border-radius:4px;background:#FFFFFF;color:#393F46}
 @media (max-width:640px){header{padding-left:16px!important;padding-right:16px!important}.pg{padding-left:16px!important;padding-right:16px!important}}
@@ -41,7 +41,7 @@ kbd{font-family:'JetBrains Mono',monospace;font-size:12px;padding:1px 6px;border
     <div style="display: flex; flex-direction: column; gap: 6px">
       <a href="TestsLight.dc.html" style="display: inline-flex; align-items: center; gap: 4px; min-height: 24px; font-size: 13px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>Back to tests</a>
       <h1 style="margin: 0; font-size: 24px">Loaded data</h1>
-      <p style="margin: 0; font-size: 14px; color: #59636E">3 files · 12 runs · last added 18 Nov. Rankings use only these files, and everything stays in this browser.</p>
+      <p style="margin: 0; font-size: 14px; color: #4F5A65">3 files · 12 runs · last added 18 Nov</p>
     </div>
 
     <section aria-labelledby="files-title" style="display: flex; flex-direction: column; gap: 8px">
@@ -51,7 +51,7 @@ kbd{font-family:'JetBrains Mono',monospace;font-size:12px;padding:1px 6px;border
           <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 12px 16px; border-top: 1px solid #D8DEE4">
             <div style="flex: 1 1 240px; min-width: 0">
               <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px">{{f.name}}</div>
-              <div style="font-size: 12px; color: #59636E">Added {{f.added}} · {{f.counts}}</div>
+              <div style="font-size: 12px; color: #4F5A65">{{f.counts}}</div>
             </div>
             <span style="{{f.badgeStyle}}; gap: 5px"><sc-if value="{{f.ok}}" hint-placeholder-val="{{ true }}"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if><sc-if value="{{f.partial}}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16h.01" stroke-linecap="round" stroke-width="2.6"></path></svg></sc-if>{{f.result}}</span>
           </div>
@@ -70,7 +70,7 @@ kbd{font-family:'JetBrains Mono',monospace;font-size:12px;padding:1px 6px;border
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#BF8700" stroke-width="2" aria-hidden="true" style="flex: none; margin-top: 2px"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16h.01" stroke-linecap="round" stroke-width="2.6"></path></svg>
             <div style="display: flex; flex-direction: column; gap: 2px">
               <div>{{n.text}}</div>
-              <div style="font-size: 12px; color: #59636E">{{n.where}}</div>
+              <div style="font-size: 12px; color: #4F5A65">{{n.where}}</div>
             </div>
           </div>
         </sc-for>
@@ -81,7 +81,7 @@ kbd{font-family:'JetBrains Mono',monospace;font-size:12px;padding:1px 6px;border
       <h2 id="runs-title" style="margin: 0; font-size: 16px">Runs · 12</h2>
       <div style="overflow-x: auto; background: #FFFFFF; border: 1px solid #D1D9E0; border-radius: 8px">
         <div role="table" aria-label="Runs" style="min-width: 640px; font-size: 13px">
-          <div role="row" style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); color: #59636E; font-size: 12px; font-weight: 600; border-bottom: 1px solid #D1D9E0">
+          <div role="row" style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); color: #4F5A65; font-size: 12px; font-weight: 600; border-bottom: 1px solid #D1D9E0">
             <div role="columnheader" style="padding: 12px 16px; text-align: center">Run</div>
             <div role="columnheader" style="padding: 12px 16px; text-align: center">Commit</div>
             <div role="columnheader" style="padding: 12px 16px; text-align: center">Branch</div>
@@ -101,13 +101,13 @@ kbd{font-family:'JetBrains Mono',monospace;font-size:12px;padding:1px 6px;border
           </sc-for>
         </div>
       </div>
-      <button type="button" aria-expanded="false" style="align-self: flex-start; height: 28px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; color: #0969DA; font: inherit; font-size: 13px; font-weight: 600">Show all 12 runs</button>
+      <button type="button" aria-expanded="false" style="align-self: flex-start; height: 28px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; color: #0860CA; font: inherit; font-size: 13px; font-weight: 600">Show all 12 runs</button>
     </section>
 
     <section style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 16px; background: #FFFFFF; border: 1px solid #D1D9E0; border-radius: 8px">
       <div style="font-size: 14px">
         <div style="font-weight: 600">Remove data</div>
-        <div style="color: #59636E">Removing a single file comes in a later version. For now you can clear everything.</div>
+        <div style="color: #4F5A65">To remove a file, clear all data.</div>
       </div>
       <button type="button" style="height: 36px; padding: 0 14px; border: 1px solid #B62324; border-radius: 6px; background: #B62324; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 14px">Clear all data</button>
     </section>
@@ -120,9 +120,9 @@ class Component extends DCLogic {
     var b = 'display: inline-flex; align-items: center; height: 24px; padding: 0 8px; border-radius: 9999px; font-size: 12px; font-weight: 600; ';
     return {
       files: [
-        { name: 'nightly-2026-11-10_to_14.json', added: '15 Nov, 09:12', counts: '5 runs, 211 tests', ok: true, partial: false, result: 'Imported', badgeStyle: b + 'background: #ACEEBB; color: #116329' },
-        { name: 'pr-checks-week46.json', added: '18 Nov, 16:40', counts: '4 runs, 211 tests, 3 not imported', ok: false, partial: true, result: 'Partly imported', badgeStyle: b + 'background: #FFE58F; color: #7D4E00' },
-        { name: 'nightly-2026-11-15_to_17.json', added: '18 Nov, 16:40', counts: '3 runs, 211 tests', ok: true, partial: false, result: 'Imported', badgeStyle: b + 'background: #ACEEBB; color: #116329' }
+        { name: 'nightly-2026-11-10_to_14.json', added: '15 Nov, 09:12', counts: '5 runs · 211 tests', ok: true, partial: false, result: 'Imported', badgeStyle: b + 'background: #ACEEBB; color: #116329' },
+        { name: 'pr-checks-week46.json', added: '18 Nov, 16:40', counts: '4 runs · 211 tests', ok: false, partial: true, result: 'Partly imported', badgeStyle: b + 'background: #FFE58F; color: #7D4E00' },
+        { name: 'nightly-2026-11-15_to_17.json', added: '18 Nov, 16:40', counts: '3 runs · 211 tests', ok: true, partial: false, result: 'Imported', badgeStyle: b + 'background: #ACEEBB; color: #116329' }
       ],
       notices: [
         { text: '2 results had no status and were not imported.', where: 'pr-checks-week46.json · "checkout › applies coupon code", run 7' },

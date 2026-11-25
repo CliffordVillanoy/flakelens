@@ -12,8 +12,8 @@
 <style>
 body{margin:0;font-family:'Mona Sans',system-ui,sans-serif;color:#1F2328;background:#F6F8FA;color-scheme:light}
 button,input,select,textarea,summary{color:inherit}
-::placeholder{color:#59636E;opacity:1}
-a{color:#0969DA;text-underline-offset:2px}a:hover{color:#0550AE}
+::placeholder{color:#4F5A65;opacity:1}
+a{color:#0860CA;text-underline-offset:2px}a:hover{color:#0550AE}
 :focus-visible{outline:2px solid #0969DA;outline-offset:2px}
 kbd{font-family:'JetBrains Mono',monospace;font-size:12px;padding:1px 6px;border:1px solid #D1D9E0;border-radius:4px;background:#FFFFFF;color:#393F46}
 @media (max-width:640px){header{padding-left:16px!important;padding-right:16px!important}.pg{padding-left:16px!important;padding-right:16px!important}}
@@ -24,12 +24,12 @@ kbd{font-family:'JetBrains Mono',monospace;font-size:12px;padding:1px 6px;border
   <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr)); gap: 24px">
 
     <section style="display: flex; flex-direction: column; gap: 10px">
-      <p style="margin: 0; font-size: 13px; font-weight: 600; color: #59636E">A. Parsing (over 1 s shows Cancel)</p>
+      <p style="margin: 0; font-size: 13px; font-weight: 600; color: #4F5A65">A. Parsing (over 1 s shows Cancel). Progress is per file, with no percent</p>
       <div style="display: flex; flex-direction: column; gap: 12px; padding: 20px; background: #FFFFFF; border: 2px dashed #818B98; border-radius: 8px">
         <div style="font-size: 15px; font-weight: 600">Reading 3 files…</div>
         <sc-for list="{{files}}" as="f" hint-placeholder-count="3">
           <div style="display: flex; flex-direction: column; gap: 4px">
-            <div style="display: flex; justify-content: space-between; font-size: 13px"><span>{{f.name}}</span><span style="color: #59636E">{{f.label}}</span></div>
+            <div style="display: flex; justify-content: space-between; font-size: 13px"><span>{{f.name}}</span><span style="color: #4F5A65">{{f.label}}</span></div>
             <div style="height: 6px; background: #F6F8FA; border-radius: 4px"><div style="height: 6px; border-radius: 4px; background: #0969DA; width: {{f.pct}}"></div></div>
           </div>
         </sc-for>
@@ -38,7 +38,7 @@ kbd{font-family:'JetBrains Mono',monospace;font-size:12px;padding:1px 6px;border
     </section>
 
     <section style="display: flex; flex-direction: column; gap: 10px">
-      <p style="margin: 0; font-size: 13px; font-weight: 600; color: #59636E">B. Banner after import (success / partial)</p>
+      <p style="margin: 0; font-size: 13px; font-weight: 600; color: #4F5A65">B. Banner after import (success / partial)</p>
       <div role="status" style="display: flex; gap: 12px; padding: 14px 16px; background: #FFFFFF; border: 1px solid #D1D9E0; border-radius: 8px">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1A7F37" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12l3 3 5-6"></path></svg>
         <div style="flex: 1; display: flex; flex-direction: column; gap: 4px; font-size: 14px">
@@ -62,7 +62,7 @@ kbd{font-family:'JetBrains Mono',monospace;font-size:12px;padding:1px 6px;border
     </section>
 
     <section style="display: flex; flex-direction: column; gap: 10px">
-      <p style="margin: 0; font-size: 13px; font-weight: 600; color: #59636E">C. One file failed, others imported</p>
+      <p style="margin: 0; font-size: 13px; font-weight: 600; color: #4F5A65">C. One file failed, others imported</p>
       <div style="display: flex; flex-direction: column; gap: 12px; padding: 20px; background: #FFFFFF; border: 2px dashed #818B98; border-radius: 8px">
         <div style="display: flex; gap: 10px; padding: 12px; border: 1px solid #FF8182; border-radius: 6px; background: #FFEBE9">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#CF222E" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M15 9l-6 6M9 9l6 6"></path></svg>
@@ -78,10 +78,10 @@ kbd{font-family:'JetBrains Mono',monospace;font-size:12px;padding:1px 6px;border
     </section>
 
     <section style="display: flex; flex-direction: column; gap: 10px">
-      <p style="margin: 0; font-size: 13px; font-weight: 600; color: #59636E">D. Importing while in sample mode</p>
+      <p style="margin: 0; font-size: 13px; font-weight: 600; color: #4F5A65">D. Importing while in sample mode</p>
       <div role="dialog" aria-modal="true" aria-labelledby="leave-title" aria-describedby="leave-desc" style="display: flex; flex-direction: column; gap: 14px; padding: 20px; background: #FFFFFF; border: 1px solid #D1D9E0; border-radius: 8px; max-width: 460px">
         <h2 id="leave-title" style="margin: 0; font-size: 20px; font-weight: 600">Leave sample data?</h2>
-        <p id="leave-desc" style="margin: 0; font-size: 14px; color: #393F46">Your 2 files will be analysed on their own. Sample data is never mixed with your runs.</p>
+        <p id="leave-desc" style="margin: 0; font-size: 14px; color: #393F46">Your 2 files are analysed on their own.</p>
         <div style="display: flex; justify-content: flex-end; gap: 8px">
           <button type="button" data-autofocus="" style="height: 36px; padding: 0 14px; border: 1px solid #C3CCD5; border-radius: 6px; background: #EFF2F5; font: inherit; font-size: 14px">Stay in sample</button>
           <button type="button" style="height: 36px; padding: 0 14px; border: 0; border-radius: 6px; background: #1A7F37; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 14px">Analyse my files</button>
@@ -98,7 +98,7 @@ class Component extends DCLogic {
     return {
       files: [
         { name: 'nightly-2026-11-10_to_14.json', label: 'Done', pct: '100%' },
-        { name: 'pr-checks-week46.json', label: '64%', pct: '64%' },
+        { name: 'pr-checks-week46.json', label: 'Reading…', pct: '40%' },
         { name: 'nightly-2026-11-15_to_17.json', label: 'Waiting', pct: '0%' }
       ]
     };

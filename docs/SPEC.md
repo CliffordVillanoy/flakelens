@@ -102,6 +102,23 @@ Steps are numbered so other sections can refer to them ("step four", "step five"
 
 Other v1 work (JUnit importer, test detail page, correlations, export, PWA) is scheduled after step 5, in the order listed in section 6.
 
+**Status, 2026-11-25:** steps 1 to 4 and 2a are done and live at https://cliffordvillanoy.github.io/flakelens/ (the v0 build). The v1 work is planned in `docs/superpowers/plans/2026-11-25-v1.md` (tickets DEV-28 to DEV-46) and starts with run metadata, a commit or label per file, and the JUnit importer.
+
+### 6.2 What v0 shipped, and where it differs from this spec
+
+| Area | Spec says | v0 shipped | Fix |
+| --- | --- | --- | --- |
+| Commit or label per file | MVP: optional commit or label per file | Not in the app. Each imported file is its own commit; the app shows a "No commit info found" note. Same-commit evidence across runs shows only in the sample data. | DEV-30 (read commit from report metadata), DEV-31 (label field) |
+| Run fields | Run: commit, branch, runner, shard, browser, OS | Commit and start time only; Loaded data shows "-" for Branch and Browser | DEV-30 |
+| Export | Markdown, CSV and JSON | Markdown copy only; CSV and JSON shown as "Coming in v1" | DEV-40 |
+| Settings and per-file remove | Settings screen; remove one file | Not built; Clear all data and a Loaded data page exist | DEV-41 |
+| PWA and offline | v1 | Not built (the page loads from GitHub Pages) | DEV-42 |
+| Browsers tested | Chrome, Firefox, Safari | Chromium only | DEV-43 |
+| Sample data | Realistic run durations | Lab durations are tiny, so wasted time reads 0.1 to 0.3 minutes | DEV-28 |
+| Copy and tokens | Final wording from `04-ux-copy.md` | About 140 interim keys written while building; four contrast tokens failed axe | Confirmed by the UI/UX chat 2026-11-25 (`docs/ux/11-v0-review-decisions.md`); applying them is DEV-44 |
+| Hosting headers | Real headers where possible | Meta-tag CSP on GitHub Pages; the page can be framed | Accepted (19.2); DEV-24 optional |
+
+
 ## 7. Platform decision
 
 **Decision: web app, installable as a PWA.** Reasons, in order of weight:
@@ -657,6 +674,7 @@ The MVP wireframes in `docs/ux/wireframes/` and the design system in `DESIGN.md`
 - **Logo:** supplied by the user (2026-11-20), in dark and light versions, shown at the top of this spec (`FlakeLens-logo.webp`, kept next to this file). It is an open ring with three dots plus a two-tone "FlakeLens" wordmark: "Flake" in the text colour and "Lens" in the accent blue (#4493F8 on dark, #0969DA on light), with no tagline. The wireframe headers use the supplied SVG files (`docs/ux/brand/flakelens-dark.svg`, `flakelens-light.svg`).
 - **Sticky table header:** set `scroll-padding-top` to the header height so keyboard focus never lands on a row hidden under it.
 - **Visual system:** Mona Sans and JetBrains Mono (self-hosted), GitHub-style dark and light themes, status pills of 22px by 76px minimum, copy at reading grade 8 or lower.
+- **Less text (2026-11-25):** after the owner found too many labels and words, the UI follows `docs/ux/12-simplification-pass.md` and `DESIGN.md` "Less text, fewer decisions": say it once, one line of lead text at most, word budgets per screen (Start 40, Tests 60, Loaded data 60, detail panel 90, dialog 45, banner or toast 20), explanations in tooltips or closed blocks, rare choices in Settings, and no grey helper line under a label unless it prevents a mistake (rule 8, canvas v78).
 - **Versioning:** v0 is the first build. The project refines in small steps (v0.1, v0.2 and so on) up to enterprise production level.
 
 ## 14. Tech stack
@@ -832,6 +850,8 @@ If you decide to launch soon, ship the MVP early to real users and add the AI la
 
 The gate wording above is provisional, rebuilt from the section 6 and 11.1 criteria because the original roadmap diagram did not survive export. Replace it with the original wording if it differs.
 
+**Gate status, 2026-11-25:** Phase 1 (MVP) is built and live. Gate 2 is not fully closed: the flaky detector's definition of done on the flake lab is met (lab labels, bad-input tests, precision and recall published), but item 6, the owner's break-it review, and the section 13.2 timing check (a stranger reaches a ranked list in under 2 minutes) and the usability kit are still open. Phase 2 (v1) is planned in `docs/superpowers/plans/2026-11-25-v1.md`.
+
 Do not start the next phase until its gate passes. The gates are quality gates only; there is no deadline.
 
 **Launch readiness checklist**
@@ -920,7 +940,10 @@ This section lists what the tool cannot do or cannot guarantee today. It is a li
 | Detection | A real regression and a flaky test can look alike when history is short. | Both show failures over time. |
 | Scope | Phase two detectors (false passes, false failures) are not in the MVP. | Build order decision: flaky detection must be solid first. |
 | Input | Rich signals (steps, screenshots, assertions) depend on how the user configured their reporter. | A bare JUnit file carries much less than a detailed Playwright report. |
-| Input | The first version reads Playwright JSON and JUnit XML. Cypress is a stretch goal. | Each format needs its own importer and tests. |
+| Input | v0 reads Playwright JSON only. JUnit XML is the first v1 feature (DEV-32). Cypress is a stretch goal. | Each format needs its own importer and tests. |
+| Product | In v0, own reports carry no commit information, so "Flaky" on your own files means a pass on a retry within one run; same-commit evidence across runs shows in the sample data. | The commit label input and metadata reading come in v1 (DEV-30, DEV-31). |
+| Platform | The app is tested on Chromium only. Firefox and Safari are not tested yet. | The v0 browser tests run Chromium (DEV-43 adds the others). |
+| Security | Importing a drop keeps all file texts in memory until the worker call, so peak memory can reach about 2 to 3 times the 200 MB drop cap. | One file per worker call would bound it; deferred (security review S-3 residual). |
 | AI | Small local models give weaker explanations than large cloud models. | Model size and hardware limits. |
 | AI | The free cloud tiers have daily caps, and those limits change. | Provider policy, outside our control. |
 | AI | Guardrails reduce prompt-injection risk but do not eliminate it. | No filter is complete. This is why several layers exist. |
@@ -971,10 +994,12 @@ This section pairs each limitation with a planned or possible fix. Fixes that ne
 ## 20. Open decisions for you
 
 - [ ] **Name availability.** FlakeLens is kept as the working name; check it is free on GitHub and npm before going public.
-- [ ] **Repository.** GitHub repo link to be provided; git setup waits for it.
+- [x] **Repository.** https://github.com/CliffordVillanoy/flakelens (public; `main` is protected by a ruleset, so changes go through pull requests handled by the Dev Ops chat).
 - [ ] **Gate wording.** Confirm or replace the provisional gates in section 18 with the original roadmap wording.
 - [x] **Logo vectors.** Supplied 2026-11-20: `docs/ux/brand/flakelens-dark.svg` and `docs/ux/brand/flakelens-light.svg`. Use them as is in the v0 header.
 - [ ] **Publish eval results?** Recommended yes, even if the numbers are modest.
+- [ ] **Publish the security review?** `docs/security/review-2026-11-22.md` is still untracked; decide whether it goes into the public repo.
+- [ ] **Name check.** Confirm "FlakeLens" is free on npm.
 
 ## 20.1 Decisions made
 
@@ -991,6 +1016,9 @@ This section pairs each limitation with a planned or possible fix. Fixes that ne
 - **Spec location.** This file (docs/SPEC.md) is the single source of truth from 2026-11-20. The Downloads copy is retired; edit only this file.
 - **UI baseline.** The MVP wireframes and section 13.3 are the design baseline for v0. Stack stays Tailwind CSS and shadcn/ui.
 - **Storage.** All project files, caches and downloads live on the D: drive project folder.
+- **Chat roles (2026-11-24).** Planning writes plans, tickets and spec changes; development writes code; Project Dev Ops owns CI/CD and version control; security reviews; UI/UX owns design and copy.
+- **Live site (2026-11-21).** v0 is published on GitHub Pages at https://cliffordvillanoy.github.io/flakelens/ and passed a security review (7 findings, 4 fixed, 3 accepted).
+- **v1 plan (2026-11-25).** `docs/superpowers/plans/2026-11-25-v1.md`, tickets DEV-28 to DEV-46.
 
 - **Wasted-time ranking.** Unproven tests showing 0 wasted minutes and ranking last was not intended. Sort by group instead: confirmed Flaky first, then Unproven (by score), then Failing, then Stable, then Not enough data. Unproven tests can show "possible wasted time" from their failed attempts, labeled as an estimate.
 - **Rule thresholds.** The values are starting points: 95% for Failing, 0.2 for the Unproven flip rate, and more than half bad rejects an import. Keep them in one config file with tests, so tuning on the flake lab is visible.

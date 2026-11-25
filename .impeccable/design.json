@@ -588,6 +588,12 @@
       "accent-border": "#1F6FEB",
       "surface-hover": "#262C36",
       "border-control": "#3D444D"
+    },
+    "contrastFix2026_11_25": {
+      "fg-muted": "#A4ABB4",
+      "fg-muted-light": "#4F5A65",
+      "link-light": "#0860CA",
+      "rule": "amber #BF8700 is graphics only; amber text uses #7D4E00"
     }
   },
   "components": [
