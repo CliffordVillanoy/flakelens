@@ -12,8 +12,8 @@
 <style>
 body{margin:0;font-family:'Mona Sans',system-ui,sans-serif;color:#1F2328;background:#F6F8FA;color-scheme:light}
 button,input,select,textarea,summary{color:inherit}
-::placeholder{color:#59636E;opacity:1}
-a{color:#0969DA;text-underline-offset:2px}a:hover{color:#0550AE}
+::placeholder{color:#4F5A65;opacity:1}
+a{color:#0860CA;text-underline-offset:2px}a:hover{color:#0550AE}
 :focus-visible{outline:2px solid #0969DA;outline-offset:2px}
 kbd{font-family:'JetBrains Mono',monospace;font-size:12px;padding:1px 6px;border:1px solid #D1D9E0;border-radius:4px;background:#FFFFFF;color:#393F46}
 code{font-family:'JetBrains Mono',monospace;font-size:13px}
@@ -33,13 +33,13 @@ code{font-family:'JetBrains Mono',monospace;font-size:13px}
     <div style="width: 100%; max-width: 720px; display: flex; flex-direction: column; gap: 20px">
       <div style="display: flex; flex-direction: column; gap: 6px">
         <h1 style="margin: 0; font-size: 28px; font-weight: 700">Find your flaky tests</h1>
-        <p style="margin: 0; font-size: 15px; color: #59636E">A flaky test passes and fails on the same code. Drop test reports from a few CI runs. You get a ranked list of flaky tests and why each one was flagged.</p>
+        <p style="margin: 0; font-size: 15px; color: #4F5A65">A flaky test passes and fails on the same code. Drop your test reports to rank them.</p>
       </div>
 
       <section aria-label="Import reports" style="display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 40px 24px; background: #FFFFFF; border: 2px dashed #0969DA; border-radius: 8px; text-align: center">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#0969DA" stroke-width="1.5" aria-hidden="true"><path d="M12 16V4"></path><path d="M7 9l5-5 5 5"></path><path d="M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3"></path></svg>
         <div style="font-size: 17px; font-weight: 600">Drop Playwright JSON reports here</div>
-        <div style="font-size: 14px; color: #59636E">Each file can hold one or more CI runs. More runs give better results.</div>
+        <div style="font-size: 14px; color: #4F5A65">More runs give better results.</div>
         <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 6px">
           <button type="button" style="height: 40px; padding: 0 18px; border: 1px solid #C3CCD5; border-radius: 6px; background: #EFF2F5; color: #1F2328; font: inherit; font-weight: 600; font-size: 14px">Browse files</button>
           <button type="button" style="height: 40px; padding: 0 18px; border: 1px solid #C3CCD5; border-radius: 6px; background: #EFF2F5; color: #1F2328; font: inherit; font-weight: 600; font-size: 14px">Try sample data</button>

@@ -12,7 +12,7 @@
 <style>
 body{margin:0;font-family:'Mona Sans',system-ui,sans-serif;color:#E6EDF3;background:#0D1117;color-scheme:dark}
 button,input,select,textarea,summary{color:inherit}
-::placeholder{color:#9198A1;opacity:1}
+::placeholder{color:#A4ABB4;opacity:1}
 a{color:#4493F8;text-underline-offset:2px}a:hover{color:#79C0FF}
 :focus-visible{outline:2px solid #4493F8;outline-offset:2px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
@@ -47,7 +47,7 @@ kbd{font-family:'JetBrains Mono',monospace;font-size:12px;padding:1px 6px;border
 
     <div role="status" style="display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: #121D2F; border: 1px solid #1F6FEB; border-radius: 8px; font-size: 14px; color: #E6EDF3">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#79C0FF" stroke-width="2" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5"></path><path d="M12 8h.01" stroke-linecap="round" stroke-width="2.6"></path></svg>
-      <div style="flex: 1">Sample data: 211 tests from 12 runs. 3 results were not imported (<a href="LoadedData.dc.html">see why</a>). Start with the top 3 Flaky tests. They gave different results on the same code. <a href="Main.dc.html" style="font-weight: 600">Exit sample</a></div>
+      <div style="flex: 1">Sample data. Start with the top 3 Flaky tests. <a href="Main.dc.html" style="font-weight: 600">Exit sample</a></div>
       <button type="button" aria-label="Dismiss" style="display: inline-flex; align-items: center; justify-content: center; height: 28px; width: 28px; border: 0; border-radius: 6px; background: transparent">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C9D1D9" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
       </button>
@@ -57,15 +57,14 @@ kbd{font-family:'JetBrains Mono',monospace;font-size:12px;padding:1px 6px;border
       <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
         <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px">
           <h2 id="health-title" style="margin: 0; font-size: 15px; font-weight: 600">Test health</h2>
-          <span style="font-size: 13px; color: #9198A1">211 tests from 3 files · 12 runs · 9 commits</span>
+          <span style="font-size: 13px; color: #A4ABB4">211 tests · 12 runs</span>
           <a href="LoadedData.dc.html" style="display: inline-flex; align-items: center; gap: 5px; font-size: 13px; color: #D29922"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16h.01" stroke-linecap="round" stroke-width="2.6"></path></svg>3 results not imported</a>
         </div>
         <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px">
-          <span style="font-size: 13px; color: #C9D1D9">Wasted CI time <strong style="font-size: 15px; color: #E6EDF3; font-variant-numeric: tabular-nums">29 min</strong> <span style="color: #9198A1">+ ~7 min possible (Unproven, est.)</span></span>
+          <span style="font-size: 13px; color: #C9D1D9">Wasted CI time <strong style="font-size: 15px; color: #E6EDF3; font-variant-numeric: tabular-nums">29 min</strong> <span style="color: #A4ABB4" title="If the Unproven tests turn out to be flaky">+ ~7 min possible</span></span>
         </div>
       </div>
       <div role="img" aria-label="Status of 211 tests: 3 Flaky, 2 Unproven, 2 Failing, 201 Stable, 3 Not enough data" style="display: flex; gap: 2px; height: 8px; border-radius: 4px; overflow: hidden"><span style="flex: 3 1 0; min-width: 6px; background: #D29922"></span><span style="flex: 2 1 0; min-width: 6px; background: #AB7DF8"></span><span style="flex: 2 1 0; min-width: 6px; background: #F85149"></span><span style="flex: 201 1 0; min-width: 6px; background: #3FB950"></span><span style="flex: 3 1 0; min-width: 6px; background: #6E7681"></span></div>
-      <div style="display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 13px; color: #C9D1D9"><span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 9999px; background: #D29922"></span>Flaky <strong style="font-weight: 600; color: #E6EDF3">3</strong></span><span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 9999px; background: #AB7DF8"></span>Unproven <strong style="font-weight: 600; color: #E6EDF3">2</strong></span><span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 9999px; background: #F85149"></span>Failing <strong style="font-weight: 600; color: #E6EDF3">2</strong></span><span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 9999px; background: #3FB950"></span>Stable <strong style="font-weight: 600; color: #E6EDF3">201</strong></span><span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 9999px; background: #6E7681"></span>Not enough data <strong style="font-weight: 600; color: #E6EDF3">3</strong></span></div>
     </section>
 
     <div role="group" aria-label="Filter by status" style="display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 1px solid #30363D">
@@ -80,18 +79,17 @@ kbd{font-family:'JetBrains Mono',monospace;font-size:12px;padding:1px 6px;border
 
     <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
       <label style="display: flex; align-items: center; gap: 8px; flex: 1 1 280px; height: 36px; padding: 0 10px; background: #161B22; border: 1px solid #6E7681; border-radius: 6px">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9198A1" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-5-5"></path></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A4ABB4" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-5-5"></path></svg>
         <span class="sr">Search tests and files</span>
         <input type="search" placeholder="Search tests and files" aria-keyshortcuts="/" style="flex: 1; min-width: 0; border: 0; font: inherit; font-size: 14px; background: transparent">
         <kbd aria-hidden="true">/</kbd>
       </label>
       <button type="button" aria-haspopup="true" aria-expanded="false" style="display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border: 1px solid #6E7681; border-radius: 6px; background: #21262D; font: inherit; font-size: 13px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M9 4v16M15 4v16"></path></svg>Columns</button>
-      <div role="group" aria-label="Row density" style="display: inline-flex; gap: 2px; padding: 2px; border: 1px solid #6E7681; border-radius: 6px; background: #161B22"><button type="button" aria-pressed="false" style="height: 30px; padding: 0 10px; border: 0; border-radius: 4px; font: inherit; font-size: 13px; background: transparent">Compact</button><button type="button" aria-pressed="true" style="height: 30px; padding: 0 10px; border: 0; border-radius: 4px; font: inherit; font-size: 13px; background: #1B3358; color: #79C0FF; font-weight: 600">Comfortable</button></div>
       <button type="button" aria-haspopup="menu" aria-expanded="false" style="display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border: 1px solid #6E7681; border-radius: 6px; background: #21262D; font: inherit; font-size: 13px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"></path><path d="M7 10l5 5 5-5"></path><path d="M5 20h14"></path></svg>Export<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
-      <div role="status" aria-live="polite" style="font-size: 13px; color: #9198A1">Showing all 211 tests, grouped by status, most urgent first</div>
+      <div role="status" aria-live="polite" class="sr">Showing all 211 tests, grouped by status, most urgent first</div>
     </div>
 
-    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px; font-size: 12px; color: #9198A1"><span>Last 12 runs, oldest first:</span><span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 2px; background: #3FB950"></span>Passed</span><span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 2px; background: #D29922"></span>Passed on retry</span><span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 2px; box-sizing: border-box; border: 2px solid #F85149; background: transparent"></span>Failed</span><span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 2px; background: #9198A1"></span>Skipped</span></div>
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px; font-size: 12px; color: #A4ABB4"><span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 2px; background: #3FB950"></span>Passed</span><span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 2px; background: #D29922"></span>Passed on retry</span><span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 2px; box-sizing: border-box; border: 2px solid #F85149; background: transparent"></span>Failed</span><span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 2px; background: #A4ABB4"></span>Skipped</span></div>
 
     <div style="overflow-x: auto; background: #161B22; border: 1px solid #30363D; border-radius: 8px">
       <div role="table" id="results" tabindex="-1" class="tbl" aria-label="Tests ranked by fix priority" style="min-width: 1160px; font-size: 14px">
@@ -109,8 +107,7 @@ kbd{font-family:'JetBrains Mono',monospace;font-size:12px;padding:1px 6px;border
           <div role="rowgroup">
             <div role="row" style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; min-height: 44px; padding: 8px 16px; background: #262C36; border-top: 1px solid #21262D; font-size: 13px">
               <span role="rowheader" style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px">
-                <strong style="font-weight: 600">{{g.label}} · {{g.count}}</strong>
-                <span style="color: #9198A1; font-size: 12px">{{g.meaning}}</span>
+                <strong style="font-weight: 600" title="{{g.meaning}}">{{g.label}} · {{g.count}}</strong>
               </span>
               <sc-if value="{{g.collapsed}}" hint-placeholder-val="{{ false }}">
                 <button type="button" aria-expanded="false" style="height: 28px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; color: #4493F8; font: inherit; font-size: 13px; font-weight: 600">Show {{g.count}} {{g.label}} tests</button>
@@ -118,15 +115,15 @@ kbd{font-family:'JetBrains Mono',monospace;font-size:12px;padding:1px 6px;border
             </div>
             <sc-for list="{{g.rows}}" as="r" hint-placeholder-count="2">
               <div role="row" class="row" style="display: grid; grid-template-columns: 52px minmax(280px, 2.2fr) 120px 208px minmax(260px, 3fr) 128px; column-gap: 8px; align-items: center; min-height: 56px; border-top: 1px solid #21262D">
-                <div role="cell" style="padding: 12px 16px; color: #9198A1; font-variant-numeric: tabular-nums; text-align: center">{{r.rank}}</div>
+                <div role="cell" style="padding: 12px 16px; color: #A4ABB4; font-variant-numeric: tabular-nums; text-align: center">{{r.rank}}</div>
                 <div role="cell" style="padding: 12px 16px; min-width: 0; display: flex; flex-direction: column; gap: 2px">
                   <a class="rowlink" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis" href="TestDetail.dc.html">{{r.name}}</a>
-                  <span style="font-size: 12px; color: #9198A1; font-family: \'JetBrains Mono\', monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.file}}</span>
+                  <span style="font-size: 12px; color: #A4ABB4; font-family: \'JetBrains Mono\', monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.file}}</span>
                 </div>
                 <div role="cell" style="padding: 12px 16px; text-align: center">
                   <span style="{{r.badgeStyle}}">{{r.status}}</span>
                 </div>
-                <div role="cell" style="padding: 12px 16px"><span role="img" aria-label="{{r.runsLabel}}" style="display: flex; gap: 3px; align-items: center; justify-content: center"><sc-for list="{{r.runs}}" as="x" hint-placeholder-count="12"><sc-if value="{{x.p}}" hint-placeholder-val="{{ true }}"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="0.5" y="0.5" width="15" height="15" rx="3" fill="#3FB950"></rect><title>Passed</title></svg></sc-if><sc-if value="{{x.f}}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1.5" y="1.5" width="13" height="13" rx="3" fill="none" stroke="#F85149" stroke-width="2"></rect><title>Failed</title></svg></sc-if><sc-if value="{{x.r}}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="0.5" y="0.5" width="15" height="15" rx="3" fill="#D29922"></rect><title>Passed on retry</title></svg></sc-if><sc-if value="{{x.s}}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="0.5" y="0.5" width="15" height="15" rx="3" fill="#9198A1"></rect><title>Skipped</title></svg></sc-if></sc-for></span></div>
+                <div role="cell" style="padding: 12px 16px"><span role="img" aria-label="{{r.runsLabel}}" style="display: flex; gap: 3px; align-items: center; justify-content: center"><sc-for list="{{r.runs}}" as="x" hint-placeholder-count="12"><sc-if value="{{x.p}}" hint-placeholder-val="{{ true }}"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="0.5" y="0.5" width="15" height="15" rx="3" fill="#3FB950"></rect><title>Passed</title></svg></sc-if><sc-if value="{{x.f}}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1.5" y="1.5" width="13" height="13" rx="3" fill="none" stroke="#F85149" stroke-width="2"></rect><title>Failed</title></svg></sc-if><sc-if value="{{x.r}}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="0.5" y="0.5" width="15" height="15" rx="3" fill="#D29922"></rect><title>Passed on retry</title></svg></sc-if><sc-if value="{{x.s}}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="0.5" y="0.5" width="15" height="15" rx="3" fill="#A4ABB4"></rect><title>Skipped</title></svg></sc-if></sc-for></span></div>
                 <div role="cell" style="padding: 12px 16px; color: #C9D1D9; line-height: 1.45; text-align: center">{{r.why}}</div>
                 <div role="cell" style="padding: 12px 16px; text-align: center; font-variant-numeric: tabular-nums">{{r.wasted}}</div>
               </div>
@@ -135,7 +132,7 @@ kbd{font-family:'JetBrains Mono',monospace;font-size:12px;padding:1px 6px;border
         </sc-for>
       </div>
     </div>
-    <div style="display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: #9198A1">
+    <div style="display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: #A4ABB4">
       <span><kbd>j</kbd> <kbd>k</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>/</kbd> search</span><span><kbd>?</kbd> all shortcuts</span>
     </div>
   </main>

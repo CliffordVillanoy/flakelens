@@ -102,7 +102,7 @@ Steps are numbered so other sections can refer to them ("step four", "step five"
 
 Other v1 work (JUnit importer, test detail page, correlations, export, PWA) is scheduled after step 5, in the order listed in section 6.
 
-**Status, 2026-11-25:** steps 1 to 4 and 2a are done and live at https://cliffordvillanoy.github.io/flakelens/ (the v0 build). The v1 work is planned in `docs/superpowers/plans/2026-11-25-v1.md` (tickets DEV-28 to DEV-43) and starts with run metadata, a commit or label per file, and the JUnit importer.
+**Status, 2026-11-25:** steps 1 to 4 and 2a are done and live at https://cliffordvillanoy.github.io/flakelens/ (the v0 build). The v1 work is planned in `docs/superpowers/plans/2026-11-25-v1.md` (tickets DEV-28 to DEV-46) and starts with run metadata, a commit or label per file, and the JUnit importer.
 
 ### 6.2 What v0 shipped, and where it differs from this spec
 
@@ -115,7 +115,7 @@ Other v1 work (JUnit importer, test detail page, correlations, export, PWA) is s
 | PWA and offline | v1 | Not built (the page loads from GitHub Pages) | DEV-42 |
 | Browsers tested | Chrome, Firefox, Safari | Chromium only | DEV-43 |
 | Sample data | Realistic run durations | Lab durations are tiny, so wasted time reads 0.1 to 0.3 minutes | DEV-28 |
-| Copy | Final wording from `04-ux-copy.md` | About 140 interim keys written while building | UI/UX chat, `docs/ux/spec-sync-list-v0.md` |
+| Copy and tokens | Final wording from `04-ux-copy.md` | About 140 interim keys written while building; four contrast tokens failed axe | Confirmed by the UI/UX chat 2026-11-25 (`docs/ux/11-v0-review-decisions.md`); applying them is DEV-44 |
 | Hosting headers | Real headers where possible | Meta-tag CSP on GitHub Pages; the page can be framed | Accepted (19.2); DEV-24 optional |
 
 
@@ -674,6 +674,7 @@ The MVP wireframes in `docs/ux/wireframes/` and the design system in `DESIGN.md`
 - **Logo:** supplied by the user (2026-11-20), in dark and light versions, shown at the top of this spec (`FlakeLens-logo.webp`, kept next to this file). It is an open ring with three dots plus a two-tone "FlakeLens" wordmark: "Flake" in the text colour and "Lens" in the accent blue (#4493F8 on dark, #0969DA on light), with no tagline. The wireframe headers use the supplied SVG files (`docs/ux/brand/flakelens-dark.svg`, `flakelens-light.svg`).
 - **Sticky table header:** set `scroll-padding-top` to the header height so keyboard focus never lands on a row hidden under it.
 - **Visual system:** Mona Sans and JetBrains Mono (self-hosted), GitHub-style dark and light themes, status pills of 22px by 76px minimum, copy at reading grade 8 or lower.
+- **Less text (2026-11-25):** after the owner found too many labels and words, the UI follows `docs/ux/12-simplification-pass.md` and `DESIGN.md` "Less text, fewer decisions": say it once, one line of lead text at most, word budgets per screen (Start 40, Tests 60, Loaded data 60, detail panel 90, dialog 45, banner or toast 20), explanations in tooltips or closed blocks, rare choices in Settings, and no grey helper line under a label unless it prevents a mistake (rule 8, canvas v78).
 - **Versioning:** v0 is the first build. The project refines in small steps (v0.1, v0.2 and so on) up to enterprise production level.
 
 ## 14. Tech stack
@@ -1017,7 +1018,7 @@ This section pairs each limitation with a planned or possible fix. Fixes that ne
 - **Storage.** All project files, caches and downloads live on the D: drive project folder.
 - **Chat roles (2026-11-24).** Planning writes plans, tickets and spec changes; development writes code; Project Dev Ops owns CI/CD and version control; security reviews; UI/UX owns design and copy.
 - **Live site (2026-11-21).** v0 is published on GitHub Pages at https://cliffordvillanoy.github.io/flakelens/ and passed a security review (7 findings, 4 fixed, 3 accepted).
-- **v1 plan (2026-11-25).** `docs/superpowers/plans/2026-11-25-v1.md`, tickets DEV-28 to DEV-43.
+- **v1 plan (2026-11-25).** `docs/superpowers/plans/2026-11-25-v1.md`, tickets DEV-28 to DEV-46.
 
 - **Wasted-time ranking.** Unproven tests showing 0 wasted minutes and ranking last was not intended. Sort by group instead: confirmed Flaky first, then Unproven (by score), then Failing, then Stable, then Not enough data. Unproven tests can show "possible wasted time" from their failed attempts, labeled as an estimate.
 - **Rule thresholds.** The values are starting points: 95% for Failing, 0.2 for the Unproven flip rate, and more than half bad rejects an import. Keep them in one config file with tests, so tuning on the flake lab is visible.

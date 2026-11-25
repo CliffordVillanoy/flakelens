@@ -314,6 +314,132 @@
         ],
         "createdAt": "2026-11-19T16:21:00.681Z",
         "reason": "Claude: fixed-height table rows center text vertically; cells carry horizontal padding"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/CommitLabel.dc.html"
+        ],
+        "createdAt": "2026-11-25T11:34:59.599Z",
+        "reason": "Claude: fields and rows pad their children; detector misreads fixed-height boxes"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/CommitLabelLight.dc.html"
+        ],
+        "createdAt": "2026-11-25T11:34:59.813Z",
+        "reason": "Claude: fields and rows pad their children; detector misreads fixed-height boxes"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/Settings.dc.html"
+        ],
+        "createdAt": "2026-11-25T12:28:46.137Z",
+        "reason": "false positive: no 17px radius in the file"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/SettingsLight.dc.html"
+        ],
+        "createdAt": "2026-11-25T12:28:46.396Z",
+        "reason": "false positive: no 17px radius in the file"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/Groups.dc.html"
+        ],
+        "createdAt": "2026-11-25T12:35:08.199Z",
+        "reason": "false positive: apostrophe in quoted log text breaks the style parser; radii are 4 and 6"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/GroupsLight.dc.html"
+        ],
+        "createdAt": "2026-11-25T12:35:08.402Z",
+        "reason": "false positive: apostrophe in quoted log text breaks the style parser; radii are 4 and 6"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/FullTest.dc.html"
+        ],
+        "createdAt": "2026-11-25T12:38:11.328Z",
+        "reason": "false positive: quotes in log text break the style parser; radius is 4"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/FullTestLight.dc.html"
+        ],
+        "createdAt": "2026-11-25T12:38:11.546Z",
+        "reason": "false positive: quotes in log text break the style parser; radius is 4"
+      },
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/Report.dc.html"
+        ],
+        "createdAt": "2026-11-25T12:40:47.574Z",
+        "reason": "ramp is the DESIGN.md type scale 14/17/20/24; weight separates levels"
+      },
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/ReportLight.dc.html"
+        ],
+        "createdAt": "2026-11-25T12:40:47.833Z",
+        "reason": "ramp is the DESIGN.md type scale 14/17/20/24; weight separates levels"
+      },
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/Settings.dc.html"
+        ],
+        "createdAt": "2026-11-25T13:12:40.997Z",
+        "reason": "ramp is the DESIGN.md type scale; weight separates levels"
+      },
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/SettingsLight.dc.html"
+        ],
+        "createdAt": "2026-11-25T13:12:41.258Z",
+        "reason": "ramp is the DESIGN.md type scale; weight separates levels"
+      },
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/Groups.dc.html"
+        ],
+        "createdAt": "2026-11-25T13:12:41.472Z",
+        "reason": "ramp is the DESIGN.md type scale; weight separates levels"
+      },
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "docs/ux/wireframes/GroupsLight.dc.html"
+        ],
+        "createdAt": "2026-11-25T13:12:41.679Z",
+        "reason": "ramp is the DESIGN.md type scale; weight separates levels"
       }
     ]
   }

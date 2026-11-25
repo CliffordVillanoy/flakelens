@@ -10,7 +10,7 @@ colors:
   border-emphasis: "#6E7681"
   fg-default: "#E6EDF3"
   fg-secondary: "#C9D1D9"
-  fg-muted: "#9198A1"
+  fg-muted: "#A4ABB4"
   fg-on-emphasis: "#FFFFFF"
   accent-fg: "#4493F8"
   accent-fg-hover: "#79C0FF"
@@ -61,8 +61,9 @@ colors:
   border-emphasis-light: "#818B98"
   fg-default-light: "#1F2328"
   fg-secondary-light: "#393F46"
-  fg-muted-light: "#59636E"
+  fg-muted-light: "#4F5A65"
   accent-fg-light: "#0969DA"
+  link-light: "#0860CA"
   accent-fg-hover-light: "#0550AE"
   accent-subtle-light: "#DDF4FF"
   accent-muted-light: "#B6E3FF"
@@ -655,3 +656,65 @@ Same rule as the ranked table: header and cells share one alignment. All six col
 ## Logo vectors supplied (2026-11-20)
 
 The user supplied the official vector logos: `docs/ux/brand/flakelens-dark.svg` and `docs/ux/brand/flakelens-light.svg` (viewBox `-8 -8 1067 243`, the wordmark is outlined paths so no font is needed). The earlier redraw is retired. Dark uses #4493F8 (ring, dots, "Lens") and #E6EDF3 ("Flake"). Light uses #0969DA and #1F2328. Both match the theme tokens. The boards inline the SVG at 28px high in the header (Start, Tests, Test detail, Loaded data). In the build, use the files as is, with the existing `aria-label="FlakeLens"`.
+
+## Contrast tokens fixed after the v0 axe audit (2026-11-25)
+
+The dev chat's axe run found four pairs under 4.5:1. The values below are now the tokens (boards and DESIGN.md updated):
+
+| Pair | Was | Now | Ratio now |
+|---|---|---|---|
+| Light flaky amber `#BF8700` as text on white | 3.14 | **Rule:** amber `#BF8700` is for graphics only (squares, icons). Any amber text or link uses `#7D4E00` (`--status-flaky-text`) | 7.09 |
+| Light link `#0969DA` on row hover `#E6EAEF` | 4.30 | Link text `#0860CA` (`--link`). The accent `#0969DA` stays for the focus ring, borders and the logo | 4.91 (5.94 on white) |
+| Dark muted `#9198A1` on selection `#1B3358` | 4.34 | Muted text `#A4ABB4` (`--muted-foreground`) | 5.46 (7.47 on surface) |
+| Light muted `#59636E` on selection `#B6E3FF` | 4.49 | Muted text `#4F5A65` | 5.17 (7.04 on white) |
+
+The run square "skipped" follows muted (`#A4ABB4` dark, `#4F5A65` light). Disabled tab counters in the State matrix use an outline instead of a fill so disabled text keeps 4.5:1.
+
+## Commit or label field (board 9, 2026-11-25)
+
+- **Where:** inside each file row on Loaded data, below the file name and result pill.
+- **Field:** persistent label "Commit or label" above a 36px text field (6px radius, control border, monospace value). Empty shows a muted placeholder. The right end of the label row carries a small source tag: From the report, No commit info (warning colour), Your label, or Read-only.
+- **Editing:** focus draws the 2px accent ring and a counter "n / 100". Save label (primary) and Cancel appear only while editing. Enter saves, Esc cancels. The clear (x) button is a 24px target and has the accessible name "Remove label".
+- **After save:** a role-status line "Label saved. Rankings updated." Failure uses a role-alert box with Try again.
+- **Runs table:** a typed label shows in the Commit column in monospace with a small "label" tag.
+- **Read-only (sample):** surface fill, muted text, a lock icon and the source tag "Read-only".
+
+## Settings and per-file remove (board 10, 2026-11-25)
+
+- **Settings page:** one 720px column of boxed sections (Appearance, How rankings are decided, Your data, About), each with a 17px weight-600 heading and a muted caption below. Rows are label plus hint on the left and the control on the right; they wrap below 600px.
+- **Controls:** theme and density are segmented groups (`aria-pressed`, selected = selection fill with accent text, 28px high). Shortcuts is a 36x20 switch, on = accent fill with a white thumb, off = outline with a muted thumb.
+- **Thresholds:** read-only rows, plain sentence left, config name in JetBrains Mono right. Never editable in v1.
+- **Remove:** secondary button with trash icon and the word "Remove" on each file row. The dialog names the file in monospace, lists runs, tests affected and the label, defaults focus to "Keep file", and uses a filled danger button "Remove file".
+- **Undo toast:** 480px max, status role, success tick, Undo button with icon, dismiss (24px target), 3px accent timer bar along the bottom edge for 10 seconds. It pauses on hover and focus. It follows the app back to Start when the last file is removed.
+
+## System banners and toasts (board 11, 2026-11-25)
+
+- **Banner:** in the page flow under the header, full content width (max 1232px), 1px edge, 8px radius, 12px 16px padding, icon 18px, normal-weight 14px text, actions on the right (wrap below). Warning: surface fill, amber edge, amber triangle (`#D29922` dark, `#BF8700` light). Error: error-background fill (`#5A1E22` / `#FFCECB`), danger edge `#B62324`, error-text icon, role alert, no Dismiss. One banner at a time: failed, then skipped, then off. Dismiss lasts until the next page load.
+- **Toast:** 480px max, surface, 1px border, 8px radius, status role, icon 16px, Dismiss 28px target, optional 3px accent timer bar. Bottom left on desktop, full width on phones, newest at the bottom, at most 2; the update toast is never pushed out and has no timer. Never takes focus; Esc closes the focused toast; 150 ms fade, off with reduced motion.
+- **Install:** no pop-up. A row in Settings under About: button, then a status pill once installed, or how-to text on Safari. Hidden when the browser cannot install.
+
+## Failure groups and cause chips (board 12, 2026-11-25)
+
+- **Groups tab:** second tab beside Tests, same tab style and count pill. List order: environment events, then most failures. Cards are surface boxes, 16px padding, 12px gap. The environment-event card uses the info band fill and info edge.
+- **Template:** JetBrains Mono 13px, masked values as small grey tags (`‹n›`, `‹id›`, `‹path›`, `‹time›`, hover fill, 4px radius).
+- **Cause chip:** outlined pill (control edge, no fill), bolt icon, "Likely cause: {name}" and confidence in words after a dot. Never filled, so it cannot be mistaken for a status pill. Confidence is words only, never colour.
+- **Evidence block:** canvas fill, 1px border, line numbers muted, matched text on the selection fill with a dotted underline (not colour alone).
+- **Panel tip:** inside the status note box, below a divider: bold "Likely cause: {name}", muted confidence, two-sentence tip, link to the group. Added only at medium or high confidence.
+
+## Full test page and log viewer (board 13, 2026-11-25)
+
+- **Page:** one column, max 1232px, top bar (Back to tests left, Copy test name right), mono 20px title with status pill, path line, last-12 squares, four stat tiles (20px value, 12px muted label), status note with cause tip, then Run timeline, Failure log, What it depends on. Section headings 17px weight 600.
+- **Run timeline:** a bordered list, columns Run (link, mono), Commit (mono, "label" tag when typed), When, Result (squares plus words), Time (right). Phone: stacked rows.
+- **Log viewer:** canvas-filled area under a toolbar (search with live count, previous and next, Wrap lines switch, Copy line). Mono 12px, line height 1.7, muted non-selectable line numbers 52px wide. Evidence lines: info fill, 3px accent bar on the left, matched words selection fill with dotted underline. Current jump target: 2px focus ring inside the line. Virtualised, at most 150 rows drawn, lines over 2,000 characters cut with Show more.
+- **Evidence chip:** a bordered button, quote icon, "Quoted from the log · line N" over the mono quote. Unverified: amber edge, warning icon, "Not found in the log", not highlighted.
+- **Correlation finding:** surface box, dimension name with an outlined strength word, one plain sentence, rate bars (10px high, red only on the highlighted value, counts and rates in text), closed "How this was worked out" block. No-link, not-enough-data (3px muted left edge) and missing-data are quiet text boxes.
+
+## Export menu and report (board 14, 2026-11-25)
+
+- **Export menu:** 340px popover, surface fill, 1px border, 8px radius. Top block "What to export" is a radiogroup (Current view with count and hint, All tests with count). Divider, then four menuitems: icon, bold verb-plus-object label, muted one-line hint. Keyboard focus is a 2px inset ring on the item. With zero tests in view the file items are disabled (disabled text colour) and the empty state explains why. The menu keeps its v0 first item (Copy top Flaky tests).
+- **Report page:** top bar with Back to tests, 24px title, one lead line, primary "Copy Markdown" (filled green) and secondary "Download .md" on the right. Preview/Markdown is a segmented group (`aria-pressed`). Preview is a surface box with 20/17/14px type and a muted footer; Markdown is a canvas-filled monospace block that scrolls sideways and never wraps. Sample data shows an amber-edged status line above the report.
+- **Feedback:** the standard toast; a failed copy is an alert with a "Download .md" action.
+
+## Less text, fewer decisions (2026-11-25)
+
+Rules in `docs/ux/12-simplification-pass.md`: say it once; one lead line at most; word budgets per screen (Start 40, Tests 60, Loaded data 60, panel 90, dialog 45, banner or toast 20); explanations in tips and closed blocks; rare choices (density, theme) in Settings, not toolbars; one filled primary button per screen; board notes are labelled "Design note" and are not UI. Tests screen already updated (health legend removed, banner shortened, density toggle moved to Settings).
