@@ -2,6 +2,8 @@
 
 Each ticket follows the DEV format: Title, Goal, Objectives, Scope, Acceptance Criteria, Details, Skills/Plugins, Limitations/Restrictions, Definition of Done. The planning chat writes tickets; development runs in separate sessions, one ticket at a time.
 
+Roles (from 2026-11-24): the **planning chat** writes plans, tickets, spec changes and reviews; the **dev chat** writes code and tests; the **Project Dev Ops chat** owns CI/CD, pipeline logs, deploys and version control (branches, pull requests, merges, tags, version numbers); the **security chat** reviews; the **UI/UX chat** owns design and copy. `main` is protected by a ruleset (pull request required, checks `check` and `e2e`), so changes reach `main` through pull requests.
+
 Source of truth: `docs/SPEC.md`. Exact interfaces, test code and values: the linked implementation plan.
 
 ## v0 engine (plan: `docs/superpowers/plans/2026-11-20-v0-engine.md`, branch `feat/v0-engine`)
@@ -35,7 +37,7 @@ Merged into `main` and pushed to https://github.com/CliffordVillanoy/flakelens o
 | [DEV-16](DEV-16.md) | Test detail panel and keyboard navigation | Frontend | 6 | Done |
 | [DEV-17](DEV-17.md) | Loaded data, clear data, edge states, shortcuts sheet | Frontend | 7 | Done |
 | [DEV-18](DEV-18.md) | End-to-end, accessibility, privacy and deploy | Both (tests, CI, hosting) | 8 | Done |
-| [DEV-19](DEV-19.md) | v0 UI review and merge | Fix or refinement | Final review | Awaiting merge approval |
+| [DEV-19](DEV-19.md) | v0 UI review and merge | Fix or refinement | Final review | Done (merged and live) |
 
 Order: DEV-11 → DEV-12 → DEV-13 → DEV-14 → DEV-15 → DEV-16 → DEV-17 → DEV-18, then a final review and the user's merge approval.
 
@@ -50,7 +52,7 @@ Written from the security chat's review of `1afaeb6` (0 critical, high or medium
 | [DEV-22](DEV-22.md) | Security C: Dependabot and a CI audit step | S-6 (Info) | Done |
 | [DEV-23](DEV-23.md) | Security E: neutralise bare URLs in the Markdown export | S-7 (Info) | Done |
 | [DEV-25](DEV-25.md) | Dependabot: stop major bumps the toolchain cannot take | S-6 follow-up | Done and verified |
-| [DEV-27](DEV-27.md) | README accuracy fixes on PR #2 | Documentation | To do |
+| [DEV-27](DEV-27.md) | README accuracy fixes on PR #2 | Documentation | Done (pushed to PR #2, merged) |
 | [DEV-26](DEV-26.md) | Pages deploy: stop the artifact timing failure | Deploy reliability | Done and verified |
 | [DEV-24](DEV-24.md) | Security D: frame guard and referrer policy (optional) | S-1 (Low), S-8 (Info) | Optional |
 
@@ -70,6 +72,29 @@ Every ticket below must carry these lines in its Acceptance Criteria, and the se
 | PWA and service worker | Cache scope and update flow reviewed so a stale or hijacked worker cannot serve altered code. |
 | Any sync or share feature | Collision-resistant IDs (S-2), validate on load (S-4, done in DEV-20), integrity checks. |
 | Flake lab | The lab app stays out of the deployed `dist` and off the shared origin, or gets the same CSP. |
+
+## v1 (plan: `docs/superpowers/plans/2026-11-25-v1.md`)
+
+Written 2026-11-25. Ticket order is the number order unless "Needs first" is not ready. UI tickets wait for boards from the UI/UX chat (`docs/ux/spec-sync-list-v0.md`, section C). Branches, pull requests, merges and releases: Dev Ops chat.
+
+| Ticket | Title | Scope | Needs first | Status |
+| --- | --- | --- | --- | --- |
+| [DEV-28](DEV-28.md) | Sample data: realistic lab durations | Enhancement (flake lab) | nothing | To do |
+| [DEV-29](DEV-29.md) | v0 deferred minors cleanup | Fix or refinement (frontend) | nothing | To do |
+| [DEV-30](DEV-30.md) | Run metadata from Playwright reports | Backend (importer, storage) + small frontend | nothing | To do |
+| [DEV-31](DEV-31.md) | Commit or label per imported file | Frontend (+ pure engine helper) | DEV-30; board from the UI/UX chat | To do |
+| [DEV-32](DEV-32.md) | JUnit XML importer | Backend (importer) + small frontend | DEV-30 | To do |
+| [DEV-33](DEV-33.md) | Real-data check of the flaky detector | Backend (evaluation) | DEV-32 | To do |
+| [DEV-34](DEV-34.md) | Flake lab: one test per cause | Enhancement (flake lab) | DEV-28 | To do |
+| [DEV-35](DEV-35.md) | Failure fingerprinting and grouping | Backend (engine) | DEV-34 | To do |
+| [DEV-36](DEV-36.md) | Rule-based cause classifier | Backend (engine, evaluation) | DEV-35 | To do |
+| [DEV-37](DEV-37.md) | Failure groups screen and cause tips | Frontend | DEV-36; board from the UI/UX chat | To do |
+| [DEV-38](DEV-38.md) | Correlation by browser, shard, OS and time | Backend (engine) | DEV-30, DEV-34 | To do |
+| [DEV-39](DEV-39.md) | Full test page with log viewer | Frontend | DEV-36, DEV-38; board from the UI/UX chat | To do |
+| [DEV-40](DEV-40.md) | Export CSV and JSON, report preview | Frontend | DEV-35; board from the UI/UX chat | To do |
+| [DEV-41](DEV-41.md) | Settings screen and per-file remove | Frontend (+ pure engine helper) | board from the UI/UX chat | To do |
+| [DEV-42](DEV-42.md) | Installable offline app (PWA) | Frontend (build, service worker) | DEV-37 to DEV-41 | To do |
+| [DEV-43](DEV-43.md) | v1 review and release hand-off | Fix or refinement (review) | DEV-28 to DEV-42 | To do |
 
 ## Notes for later tickets
 
