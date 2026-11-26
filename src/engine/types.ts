@@ -32,12 +32,14 @@ export interface ImportRecord {
   counts: { found: number; imported: number; notImported: number };
   notices: Notice[];
   runIds: string[];
+  commitLabel?: string; // typed by the person; stands in for the commit of every run in this import
 }
 
 export interface Run {
   runId: string;
   importId: string;
   commit: string | null;
+  reportCommit?: string | null; // set only while a label replaces the commit from the report
   startedAt: string | null;
   order: number;
 }

@@ -37,7 +37,7 @@ export const catalog = {
   'start.sample': 'Try sample data',
   // Interim (DEV-31), to be confirmed by the UI/UX chat: the sample files could not be fetched or read.
   'sample.fail': "The sample data couldn't be loaded.",
-  'sample.retry': 'Retry',
+  'sample.retry': 'Try again',
   'start.privacy': 'Your files stay in this browser. Nothing is uploaded.',
   'start.help.title': 'How do I get a Playwright JSON report?',
   'start.help.step1': 'In CI, run your tests with the JSON reporter and save the file as an artifact:',
@@ -281,6 +281,30 @@ export const catalog = {
   'data.remove.title': 'Remove data',
   'data.remove.body': 'To remove a file, clear all data.',
   'data.remove.action': 'Clear all data',
+
+  // Commit or label per file (DEV-32; copy doc section 11, trimmed by the second sweep, section 7b of the simplification pass)
+  'files.commit.label': 'Commit or label',
+  'files.commit.source.report': 'From the report',
+  'files.commit.source.none': 'No commit info',
+  'files.commit.source.user': 'Your label',
+  'files.commit.source.readonly': 'Read-only',
+  'files.commit.hint.none': 'No commit info found. This file counts as its own commit.',
+  'files.commit.hint.shared': 'Also used by {count, plural, one {# other file} other {# other files}}.',
+  'files.commit.counter': '{n} / 100',
+  'files.commit.tooLong': 'Labels can be up to 100 characters. Typing stops at the limit.',
+  'files.commit.save': 'Save label',
+  'files.commit.cancel': 'Cancel',
+  'files.commit.remove': 'Remove label',
+  'files.commit.saved': 'Label saved. Rankings updated.',
+  'files.commit.removed': 'Label removed. Rankings updated.',
+  'files.commit.saveFailed': "Couldn't save the label. Your browser blocked storage, so the label would be lost when you close the tab.",
+  'files.commit.readonly': 'Read-only in sample data.',
+  // Interim copy (DEV-32, UI/UX to confirm): the board shows these but the copy doc has no key for them.
+  'files.commit.empty': 'Add a commit or label',
+  'files.commit.retry': 'Try again',
+  'files.commit.keys': 'Enter saves. Esc cancels.',
+  'import.noCommit.link': 'Add a commit label',
+  'runs.commit.labelTag': 'label',
 
   // Empty and edge states
   'empty.filter.title': 'No {status} tests in {runs, plural, one {this # run} other {these # runs}}',

@@ -1,6 +1,6 @@
 # DEV-32: Commit or label per imported file
 
-**Status:** To do
+**Status:** Done locally (2026-11-26, commits `48fdc27`, `2d9e187` and `9942274` (owner's addition: the header "Loaded data" link is hidden while on #/data, stays on every other page) on `feat/dev-32-commit-label` from origin/main 93d05f3, worktree `flakelens-dev32`; 391 unit + 46 e2e pass, axe 38 scans clean, verified by planning). Not pushed or merged. New interim keys (UI/UX to confirm, add to section 11): `files.commit.empty` "Add a commit or label", `files.commit.retry` "Try again", `files.commit.keys` "Enter saves. Esc cancels." (screen reader only). Known limits: the banner note "No commit info found in N files" stays after labelling; the test panel and Evidence cut a label to 7 characters; light theme checked by axe only.
 
 **Goal:** A user can say which commit a file belongs to, so two runs of the same commit show same-commit evidence.
 

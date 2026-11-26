@@ -36,6 +36,10 @@ export interface FileRow {
   runs: number;
   tests: number;
   notImported: number;
+  label: string | null; // typed by the person
+  commit: string | null; // what the runs use now: the label, else the commit from the report
+  reportCommit: string | null; // the commit from the report, kept while a label replaces it
+  sharedWith: number; // other files with the same label
 }
 
 export function fileRows(ds: Dataset): FileRow[] {
@@ -43,7 +47,13 @@ export function fileRows(ds: Dataset): FileRow[] {
   return ds.imports.map((r) => {
     const tests = new Set<string>();
     for (const runId of r.runIds) byRun.get(runId)?.forEach((id) => tests.add(id));
+    const run = ds.runs.find((x) => x.importId === r.importId);
+    const label = r.commitLabel ?? null;
     return {
+      label,
+      commit: run?.commit ?? null,
+      reportCommit: (label === null ? run?.commit : run?.reportCommit) ?? null,
+      sharedWith: label === null ? 0 : ds.imports.filter((o) => o.importId !== r.importId && o.commitLabel === label).length,
       importId: r.importId,
       fileName: r.fileName,
       importedAt: r.importedAt,
@@ -114,6 +124,7 @@ export interface RunRow {
   number: number; // position in chronological order, the same numbering the test panel uses
   runId: string;
   commit: string;
+  labelled: boolean; // a typed label, not a commit from the report
   branch: string;
   browser: string;
   time: string | null;
@@ -128,7 +139,8 @@ export function runRows(ds: Dataset): RunRow[] {
     .map((run, i) => ({
       number: i + 1,
       runId: run.runId,
-      commit: run.commit ? run.commit.slice(0, 7) : dash,
+      commit: run.reportCommit !== undefined && run.commit ? run.commit : run.commit ? run.commit.slice(0, 7) : dash,
+      labelled: run.reportCommit !== undefined,
       branch: dash,
       browser: dash,
       time: run.startedAt,

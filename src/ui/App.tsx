@@ -78,6 +78,7 @@ export function App() {
       <Header
         mode={HEADER_MODE[s.mode]}
         attention={needsLook(s.dataset.imports.at(-1))}
+        onDataPage={route.name === 'data'}
         onAddFiles={openPicker}
         onHelp={() => shortcutsSheet.open()}
       />

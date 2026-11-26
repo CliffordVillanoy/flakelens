@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { emptyDataset } from '@/engine/dataset';
+import { emptyDataset, setCommitLabel } from '@/engine/dataset';
 import { rankTests } from '@/engine/score/rank';
 import { scoreTests } from '@/engine/score/score';
 import type { Dataset, TestScore } from '@/engine/types';
@@ -33,7 +33,9 @@ interface State {
   lastImport: LastImport | null;
   importError: ImportError | null;
   dismissedBanners: ('skipped' | 'off')[]; // warnings the person closed; kept until the next page load
+  labelFailed: string[]; // imports whose label is in memory only because storage refused it
   dismissBanner(kind: 'skipped' | 'off'): void;
+  setCommitLabel(importId: string, label: string): Promise<'saved' | 'failed' | 'readonly'>;
   restore(): Promise<void>;
   importFiles(files: File[], commitLabels?: Record<string, string>): Promise<void>;
   cancelImport(): void;
@@ -57,11 +59,30 @@ export const useStore = create<State>()((set, get) => ({
   storage: 'ok',
   skippedRows: 0,
   dismissedBanners: [],
+  labelFailed: [],
   lastImport: null,
   importError: null,
 
   dismissBanner(kind) {
     set((s) => ({ dismissedBanners: [...s.dismissedBanners, kind] }));
+  },
+
+  async setCommitLabel(importId, label) {
+    const { mode, dataset, storage } = get();
+    if (mode !== 'user') return 'readonly';
+    // Memory first: Tests and the Evidence text recompute at once, whatever storage does next.
+    set(withData('user', setCommitLabel(dataset, importId, label)));
+    let saved = false;
+    if (storage === 'ok') {
+      try {
+        await db.saveCommitLabel(importId, label);
+        saved = true;
+      } catch {
+        /* reported below */
+      }
+    }
+    set((s) => ({ labelFailed: saved ? s.labelFailed.filter((id) => id !== importId) : [...new Set([...s.labelFailed, importId])] }));
+    return saved ? 'saved' : 'failed';
   },
 
   async restore() {
@@ -151,6 +172,6 @@ export const useStore = create<State>()((set, get) => ({
       }
     }
     clearPrefs(); // column choice and dismissed tips; theme, density and the shortcuts switch stay
-    set({ ...empty(), storage, skippedRows: 0, lastImport: null, importError: null });
+    set({ ...empty(), storage, skippedRows: 0, lastImport: null, importError: null, labelFailed: [] });
   },
 }));
