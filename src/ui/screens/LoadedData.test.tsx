@@ -344,10 +344,12 @@ it('the amber dot on the header\'s Loaded data link follows the last import: a w
   expect(warned.querySelector('[data-attention]')).not.toBeNull();
 });
 
-it('Loaded data footer: "Remove data" and one sentence, with Clear all data', async () => {
+it('Loaded data footer: only Clear all data; the old sentence and title are replaced by the per-file Remove button', async () => {
   await open('#/data');
-  expect(await screen.findByText('To remove a file, clear all data.')).toBeInTheDocument();
-  expect(screen.getByText('Remove data')).toBeInTheDocument();
+  expect((await screen.findAllByRole('button', { name: 'Remove' })).length).toBeGreaterThan(0);
+  expect(screen.getByRole('button', { name: 'Clear all data' })).toBeInTheDocument();
+  expect(screen.queryByText('To remove a file, clear all data.')).toBeNull();
+  expect(screen.queryByText('Remove data')).toBeNull();
   expect(screen.queryByText(/comes in a later version/)).toBeNull();
 });
 

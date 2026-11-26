@@ -278,8 +278,6 @@ export const catalog = {
   'data.runs.col.time': 'Time',
   'data.runs.col.tests': 'Tests',
   'data.runs.showAll': 'Show all {count} runs',
-  'data.remove.title': 'Remove data',
-  'data.remove.body': 'To remove a file, clear all data.',
   'data.remove.action': 'Clear all data',
 
   // Commit or label per file (DEV-32; copy doc section 11, trimmed by the second sweep, section 7b of the simplification pass)
@@ -303,6 +301,22 @@ export const catalog = {
   'files.commit.empty': 'Add a commit or label',
   'files.commit.retry': 'Try again',
   'files.commit.keys': 'Enter saves. Esc cancels.',
+  // Remove one file (DEV-33, copy doc section 12; file.remove.undoHint is retired, rule 8)
+  'file.remove': 'Remove',
+  'file.remove.title': 'Remove {file}?',
+  'file.remove.body': 'This removes the file and everything that came only from it. Rankings are recalculated.',
+  'file.remove.runs': '{count, plural, one {# run and its attempts} other {# runs and their attempts}}',
+  'file.remove.tests': '{count, plural, one {# test changes status or evidence} other {# tests change status or evidence}}',
+  'file.remove.label': 'the commit label "{label}"',
+  'file.remove.shared':
+    'This removes {removed, plural, one {1 run} other {# runs}}. {kept, plural, one {1 run in this file is} other {# runs in this file are}} also in {other}, so {kept, plural, one {it stays} other {they stay}}.',
+  'file.remove.last': 'This is your last file. Removing it clears all results and takes you back to the start screen.',
+  'file.remove.keep': 'Keep file',
+  'file.remove.confirm': 'Remove file',
+  'toast.fileRemoved': '{file} removed. Rankings updated.',
+  'toast.fileRemoved.last': '{file} removed. All results cleared.',
+  'toast.fileRestored': '{file} restored. Rankings updated.',
+  'toast.undo': 'Undo',
   'import.noCommit.link': 'Add a commit label',
   'runs.commit.labelTag': 'label',
 
