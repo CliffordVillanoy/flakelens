@@ -60,7 +60,7 @@ it('rows show the pill word only, the evidence sentence and wasted time; the nam
   const row = screen.getByRole('link', { name: 'flaky' }).closest<HTMLElement>('[role=row]')!;
   const pill = within(row).getByText('Flaky', { selector: '[data-pill]' });
   expect(pill.querySelector('svg')).toBeNull();
-  expect(row).toHaveTextContent('1 of 4 commits had both a pass and a fail');
+  expect(row).toHaveTextContent('1 of 4 commits had mixed results');
   expect(within(row).getByRole('link', { name: 'flaky' })).toHaveAttribute('href', '#/tests/flaky');
   const failing = screen.getByRole('link', { name: 'failing' }).closest<HTMLElement>('[role=row]')!;
   expect(failing).toHaveTextContent('Failed 4 of 4 runs');

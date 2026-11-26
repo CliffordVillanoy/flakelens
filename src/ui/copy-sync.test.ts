@@ -23,10 +23,6 @@ const parsed = rows.map((line) => {
 // board wins in the app (DEV-29). Each entry is the text the app shows. The UI/UX chat updates the doc; the entry then
 // fails ("the doc caught up") and is removed here.
 const BOARD_WINS: Record<string, string> = {
-  'note.flaky.means': 'This test gave different results on the same code.', // Test detail board: one sentence
-  'panel.history.legend.mixed': 'Mixed commit', // Test detail board: shortened key
-  'tip.export': 'Tip: Export copies the top Flaky tests as Markdown.', // no board shows it; shortened to fit the Tests word budget (60)
-  'data.summary': '{files, plural, one {# file} other {# files}} · {runs, plural, one {# run} other {# runs}} · last added {date}', // Loaded data board: no final period
 };
 
 // Doc rows for keys the app no longer has, because nothing shows them any more (DEV-29). The doc rows can go.
@@ -34,13 +30,13 @@ const RETIRED = ['tests.legend.title', 'tests.banner.sample.seeWhy', 'data.file.
 
 it('every row of sections 9 and 10 can be parsed', () => {
   expect(parsed.filter((p) => !('key' in p)).map((p) => p.line)).toEqual([]);
-  expect(parsed.length).toBeGreaterThanOrEqual(145);
+  expect(parsed.length).toBeGreaterThanOrEqual(140);
 });
 
 it('copy.ts has exactly the wording of every plain row in sections 9 and 10', () => {
   const mismatches = parsed
     .filter((p): p is { key: string; qualifier: string | undefined; text: string; line: string } => 'key' in p && !p.qualifier)
-    .filter((p) => !(p.key in BOARD_WINS) && !RETIRED.includes(p.key))
+    .filter((p) => !(p.key in BOARD_WINS) && !RETIRED.includes(p.key) && !p.text?.startsWith('Retired'))
     .filter((p) => (catalog as Record<string, string>)[p.key] !== p.text)
     .map((p) => `${p.key}: app "${(catalog as Record<string, string>)[p.key]}" vs doc "${p.text}"`);
   expect(mismatches).toEqual([]);
@@ -54,6 +50,12 @@ it('board-wins keys: the app shows the board text, shorter than the doc (remove 
     expect(row!.text, `${key}: the doc caught up, remove it from BOARD_WINS`).not.toBe(text);
     expect(text.length, key).toBeLessThan(row!.text.length);
   }
+});
+
+it('rows the doc marks "Retired" are gone from the app', () => {
+  const retiredRows = parsed.filter((p): p is { key: string; qualifier: string | undefined; text: string; line: string } => 'key' in p && !!p.text?.startsWith('Retired'));
+  expect(retiredRows.length).toBeGreaterThan(0);
+  for (const p of retiredRows) expect(p.key in catalog, p.key).toBe(false);
 });
 
 it('retired keys are gone from the app (remove the entry when the doc row is removed)', () => {

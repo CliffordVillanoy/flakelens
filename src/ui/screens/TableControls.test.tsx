@@ -37,7 +37,7 @@ beforeEach(() => {
   load(fixture());
 });
 
-const names = () => screen.getAllByRole('link').filter((a) => a.getAttribute('href')?.startsWith('#/tests/') && !a.textContent?.startsWith('see evidence')).map((a) => a.textContent);
+const names = () => screen.getAllByRole('link').filter((a) => a.getAttribute('href')?.startsWith('#/tests/')).map((a) => a.textContent);
 
 it('filter chips: removing one updates the table and the URL; Clear filters resets both', async () => {
   window.location.hash = '#/tests?status=flaky&q=e';
@@ -161,22 +161,13 @@ it('sortable headers: Test and Wasted time re-sort inside groups, with aria-sort
   expect(flakyNames()).toEqual(rankOrder);
 });
 
-it('first run: the top 3 Flaky rows get a "see evidence" link to their panel', () => {
+it('rows carry no "see evidence" text: the row itself is the link to the panel', () => {
   render(<Tests />);
-  const why = screen.getAllByRole('link', { name: /^see evidence/ });
-  expect(why).toHaveLength(3);
-  const first = screen.getAllByRole('row').find((r) => r.textContent?.includes('see evidence'))!;
-  const id = first.querySelector('a')!.getAttribute('href');
-  expect(why[0]).toHaveAttribute('href', id);
+  expect(screen.queryByRole('link', { name: /see evidence/ })).toBeNull();
+  expect(document.querySelector('.ranked-row')).not.toHaveTextContent('see evidence');
 });
 
-it('the Export tip can be dismissed and stays dismissed', async () => {
-  const { unmount } = render(<Tests />);
-  const tip = screen.getByRole('note');
-  expect(tip).toHaveTextContent(/Export/);
-  await userEvent.click(within(tip).getByRole('button', { name: 'Dismiss' }));
-  expect(screen.queryByRole('note')).toBeNull();
-  unmount();
+it('there is no first-run Export tip above the table (the Export menu says what it does)', () => {
   render(<Tests />);
   expect(screen.queryByRole('note')).toBeNull();
 });

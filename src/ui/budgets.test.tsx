@@ -149,10 +149,6 @@ it('every dialog stays within 45 words', async () => {
   check('Dialog', 'Leave sample data', await screen.findByRole('dialog', { name: 'Leave sample data?' }), BUDGET.dialog);
 });
 
-// storage.fail is 24 words: the doc and the board keep it as it is ("existing keys unchanged", 04-ux-copy section 13).
-// Reported to the UI/UX chat; the entry goes when the sentence is shortened.
-const OVER_BUDGET: Partial<Record<CopyKey, number>> = { 'storage.fail': 24 };
-
 it('every banner and toast sentence stays within 20 words', () => {
   const texts: [CopyKey, Record<string, number>?][] = [
     ['storage.off'],
@@ -170,8 +166,7 @@ it('every banner and toast sentence stays within 20 words', () => {
   for (const [key, params] of texts) {
     const n = sentence(key, params);
     report.push(`Banner or toast / ${key}: ${n} words, budget ${BUDGET.banner}`);
-    if (key in OVER_BUDGET) expect(n, key).toBe(OVER_BUDGET[key]);
-    else expect(n, key).toBeLessThanOrEqual(BUDGET.banner);
+    expect(n, key).toBeLessThanOrEqual(BUDGET.banner);
   }
 });
 

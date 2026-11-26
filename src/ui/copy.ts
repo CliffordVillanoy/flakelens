@@ -98,8 +98,6 @@ export const catalog = {
   'tests.filter.flaky': 'Flaky',
   'tests.filter.suspect': 'Unproven',
   'tests.filter.failing': 'Failing',
-  // Shortened to keep the Tests screen inside its 60-word budget (no board text for it; pinned in copy-sync.test.ts).
-  'tip.export': 'Tip: Export copies the top Flaky tests as Markdown.',
   'tests.wasted.title': 'Wasted CI time',
   'tests.wasted.estimate': '+ ~{min} min possible',
   // Interim: the reason moved out of the line into a tooltip.
@@ -152,7 +150,6 @@ export const catalog = {
   'tests.filters.search': 'Search: "{query}"',
   'tests.filters.remove': 'Remove filter {filter}',
   'tests.filters.clear': 'Clear filters',
-  'tests.why': 'see evidence',
   'tests.rows': 'Rows {a} to {b} of {n}',
   'tests.health.scope': 'All {n} tests',
   'tests.health.label': 'Status of {tests, plural, one {# test} other {# tests}}: {list}',
@@ -172,11 +169,11 @@ export const catalog = {
   'tests.group.insufficient': 'Not enough data · {n} · Too little history to judge',
 
   // Evidence sentences (number first)
-  'why.mixed': '{m} of {g} commits had both a pass and a fail',
+  'why.mixed': '{m} of {g} commits had mixed results',
   'why.retry': 'Passed on retry in {r} of {n} runs',
-  'why.suspect': 'Switched between pass and fail {f} times in {n} runs',
+  'why.suspect': 'Switched pass and fail {f} times in {n} runs',
   'why.failing': 'Failed {x} of {n} runs',
-  'why.failingWasFlaky': 'Failed {x} of {x} runs since {sha}. Flaky before that',
+  'why.failingWasFlaky': 'Failed {x} of {x} runs since {sha}',
   'why.stable': 'Passed {n} of {n} runs',
   'why.insufficient': 'Only {count, plural, one {# attempt} other {# attempts}} loaded',
 
@@ -244,9 +241,9 @@ export const catalog = {
   'note.flaky.means': 'This test gave different results on the same code.',
   'note.flaky.next':
     "Waits and timing · Data or state shared between tests · Test order · Slow or unavailable services the test needs. Tip: while you investigate, quarantine it in CI so it can't block merges.",
-  'note.suspect.means': 'Results are mixed, but never on the same commit. This could be flaky or a real bug.',
+  'note.suspect.means': 'Results are mixed but never on the same commit, so it could be flaky or a real bug.',
   'note.suspect.next': 'Code changes near the first failure · Run it again several times on one commit to confirm.',
-  'note.failing.means': 'It fails almost every run. This is likely a real bug or a broken test, not flakiness.',
+  'note.failing.means': 'It fails almost every run, so it is likely a real bug or a broken test.',
   'note.failing.next': 'The first commit where it started failing · Recent changes to the feature or the test.',
   'note.failingWasFlaky.means': 'It fails almost every run now. It was flaky before {sha}.',
   'note.failingWasFlaky.next': 'What changed at {sha} · Whether the flaky behaviour hid a real bug.',
@@ -294,7 +291,7 @@ export const catalog = {
   'missing.test.body': 'It may have been renamed, or its files were cleared.',
   'missing.test.action': 'Back to tests',
   'storage.fail':
-    "Your saved data couldn't be read. Reload the page to try again. If it keeps happening, clear all data and import your files again.",
+    "Your saved data couldn't be read. Reload to try again. If it keeps happening, clear all data and re-import.",
   'storage.reload': 'Reload page',
   'storage.skipped.action': 'Clear all data',
   // Interim key (DEV-20), to be confirmed by the UI/UX chat.

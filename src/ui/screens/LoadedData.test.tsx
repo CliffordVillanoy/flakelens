@@ -232,7 +232,7 @@ it('storage failure: a calm message with Reload, and Start still shows (never a 
   const reloadPage = vi.spyOn(reload, 'now').mockImplementation(() => {});
   render(<App />);
   const alert = await screen.findByRole('alert');
-  expect(alert).toHaveTextContent("Your saved data couldn't be read. Reload the page to try again.");
+  expect(alert).toHaveTextContent("Your saved data couldn't be read. Reload to try again.");
   expect(screen.getByRole('heading', { level: 1, name: 'Find your flaky tests' })).toBeInTheDocument();
   await userEvent.click(within(alert).getByRole('button', { name: 'Reload page' }));
   expect(reloadPage).toHaveBeenCalledTimes(1);

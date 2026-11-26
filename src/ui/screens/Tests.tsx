@@ -15,7 +15,7 @@ import { suggestSearch } from '../data/loaded';
 import { SampleBanner } from '../components/SampleBanner';
 import { StatusTabs } from '../components/StatusTabs';
 import { TestHealth } from '../components/TestHealth';
-import { ColumnsMenu, DensityToggle, ExportMenu, ExportTip, FilterChips, type Density } from '../components/TableControls';
+import { ColumnsMenu, DensityToggle, ExportMenu, FilterChips, type Density } from '../components/TableControls';
 import { copyText } from '../lib/clipboard';
 import { shortcutsSheet, useShortcuts } from '../lib/shortcuts';
 import { MissingTest, TestPanel } from './TestPanel';
@@ -53,7 +53,6 @@ export function Tests({
     return Array.isArray(saved) ? saved.filter((k): k is ColumnKey => COLUMNS.some((c) => c.key === k)) : DEFAULT_COLUMNS;
   });
   const [density, setDensity] = useState<Density>(() => (getPref<string>('density', 'comfortable') === 'compact' ? 'compact' : 'comfortable'));
-  const [tipHidden, setTipHidden] = useState(() => getPref<unknown>('exportTipDismissed', false) === true);
   const [sort, setSort] = useState<Sort>(RANK_SORT);
   const saveColumns = (next: ColumnKey[]) => {
     setColumns(next);
@@ -196,15 +195,6 @@ export function Tests({
         ]}
         onClear={() => navigate(listHash('all', ''))}
       />
-
-      {!tipHidden && h.counts.flaky > 0 && (
-        <ExportTip
-          onDismiss={() => {
-            setTipHidden(true);
-            setPref('exportTipDismissed', true);
-          }}
-        />
-      )}
 
       <RunLegend />
       </div>
