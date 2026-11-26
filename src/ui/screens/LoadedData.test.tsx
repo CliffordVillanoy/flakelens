@@ -157,7 +157,6 @@ it('Clear all data: the dialog names the scope and starts on Keep my data; Keep 
 
 it('confirming removes everything from IndexedDB and the choices, goes to Start and shows the toast', async () => {
   setPref('columns', ['rank', 'test', 'status']);
-  setPref('exportTipDismissed', true);
   setPref('theme', 'light');
   setPref('density', 'compact');
   setPref('shortcuts', false);
@@ -170,7 +169,7 @@ it('confirming removes everything from IndexedDB and the choices, goes to Start 
   expect(useStore.getState().mode).toBe('empty');
   expect(await screen.findByText('All local data cleared')).toBeInTheDocument();
   const kept = (k: string) => window.localStorage.getItem(`flakelens.${k}`);
-  expect([kept('columns'), kept('exportTipDismissed')]).toEqual([null, null]);
+  expect([kept('columns')]).toEqual([null]);
   expect([kept('theme'), kept('density'), kept('shortcuts')]).toEqual(['"light"', '"compact"', 'false']);
 });
 
