@@ -1,13 +1,13 @@
 import { useMemo, useSyncExternalStore } from 'react';
 
-export type RouteName = 'start' | 'tests' | 'test' | 'data';
+export type RouteName = 'start' | 'tests' | 'test' | 'data' | 'settings';
 export interface Route {
   name: RouteName;
   testId?: string;
   query: URLSearchParams;
 }
 
-// Hash routes (spec 13.3, IA): #/, #/tests?status=&q=, #/tests/:testId, #/data. Anything else is Start.
+// Hash routes (spec 13.3, IA): #/, #/tests?status=&q=, #/tests/:testId, #/data, #/settings. Anything else is Start.
 export function parseRoute(hash: string): Route {
   const raw = hash.replace(/^#/, '');
   const q = raw.indexOf('?');
@@ -17,6 +17,7 @@ export function parseRoute(hash: string): Route {
   if (!path.startsWith('/') && path !== '') return { name: 'start', query };
   if (parts.length === 1 && parts[0] === 'tests') return { name: 'tests', query };
   if (parts.length === 1 && parts[0] === 'data') return { name: 'data', query };
+  if (parts.length === 1 && parts[0] === 'settings') return { name: 'settings', query };
   if (parts.length === 2 && parts[0] === 'tests') {
     try {
       return { name: 'test', testId: decodeURIComponent(parts[1]!), query };

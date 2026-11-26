@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import Dexie from 'dexie';
 import { parsePlaywrightReport } from '@/engine/import/playwright';
 import { addImport, emptyDataset, setCommitLabel } from '@/engine/dataset';
-import { clearAll, loadDataset, loadStored, saveCommitLabel, saveImport, storageAvailable } from './db';
+import { clearAll, deleteImport, loadDataset, loadStored, saveCommitLabel, saveImport, storageAvailable } from './db';
 
 const read = (f: string) => readFileSync(`fixtures/lab/${f}`, 'utf8');
 const parse = (f: string, order: number, importedAt = '2026-11-21T10:00:00.000Z') =>
@@ -160,4 +160,26 @@ it('clearAll removes labels with the rows', async () => {
 
 it('labelling an import that is not stored fails, so the page can say so', async () => {
   await expect(saveCommitLabel('missing', 'c0')).rejects.toThrow();
+});
+
+// ---- deleteImport (DEV-33) ----
+it('deleteImport removes that row only; the label goes with it; a reload shows the rest', async () => {
+  const a = bare('run-00.json', 0);
+  const b = bare('run-01.json', 1);
+  await saveImport(a);
+  await saveImport(b);
+  await saveCommitLabel(a.record.importId, 'c0');
+  await deleteImport(a.record.importId);
+  expect(await loadDataset()).toEqual(addImport(emptyDataset(), b));
+  await deleteImport('not-there'); // nothing to delete is not an error
+  await deleteImport(b.record.importId);
+  expect(await loadDataset()).toEqual(emptyDataset());
+});
+
+it('a file saved again with the same id after a delete comes back (undo)', async () => {
+  const a = bare('run-00.json', 0);
+  await saveImport(a);
+  await deleteImport(a.record.importId);
+  await saveImport(a);
+  expect((await loadDataset()).imports.map((i) => i.importId)).toEqual([a.record.importId]);
 });

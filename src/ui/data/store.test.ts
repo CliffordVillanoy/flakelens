@@ -235,3 +235,72 @@ it('labelling run-00 and run-01 both c0 gives the same scores as importing them 
     labelled.map((r) => [r.testId, r.label, r.mixedCommits, r.repeatedCommits]),
   );
 });
+
+// ---- remove one file (DEV-33) ----
+it('removeImport drops the file, recomputes the ranking, deletes the stored row and survives a reload', async () => {
+  const [a, b] = await importTwo();
+  const gone = await useStore.getState().removeImport(a);
+  expect(gone).toMatchObject({ fileName: 'run-00.json', last: false });
+  const s = useStore.getState();
+  expect(s.dataset.imports.map((i) => i.importId)).toEqual([b]);
+  expect(s.ranked).toEqual(rankTests(scoreTests(s.dataset), s.dataset.tests));
+  expect((await loadDataset()).imports.map((i) => i.importId)).toEqual([b]);
+  useStore.setState(initial, true);
+  await useStore.getState().restore();
+  expect(useStore.getState().dataset.imports.map((i) => i.importId)).toEqual([b]);
+});
+
+it('the undo puts the file back, with its label, in memory and in storage', async () => {
+  const [a] = await importTwo();
+  await useStore.getState().setCommitLabel(a, 'c0');
+  const before = useStore.getState().dataset;
+  const gone = (await useStore.getState().removeImport(a))!;
+  await useStore.getState().restoreRemoved(gone);
+  const s = useStore.getState();
+  expect(s.dataset.imports.map((i) => i.importId)).toEqual(before.imports.map((i) => i.importId));
+  expect(s.dataset.imports[0]!.commitLabel).toBe('c0');
+  expect(s.ranked).toEqual(rankTests(scoreTests(s.dataset), s.dataset.tests));
+  const stored = await loadDataset();
+  // Storage keeps files in the order they were saved, so an undone file is last after a reload.
+  expect(stored.imports.map((i) => i.importId).sort()).toEqual(before.imports.map((i) => i.importId).sort());
+  expect(stored.imports.find((i) => i.importId === a)!.commitLabel).toBe('c0');
+});
+
+it('removing the last file goes back to mode empty; the undo brings the data back', async () => {
+  await useStore.getState().restore();
+  await useStore.getState().importFiles([file('run-00.json')]);
+  const id = useStore.getState().dataset.imports[0]!.importId;
+  const gone = (await useStore.getState().removeImport(id))!;
+  expect(gone.last).toBe(true);
+  expect(useStore.getState()).toMatchObject({ mode: 'empty', ranked: [] });
+  await useStore.getState().restoreRemoved(gone);
+  expect(useStore.getState().mode).toBe('user');
+  expect(useStore.getState().dataset.imports).toHaveLength(1);
+});
+
+it('with storage off the removal and the undo work in memory', async () => {
+  vi.spyOn(Dexie.prototype, 'open').mockRejectedValue(new Error('blocked'));
+  await useStore.getState().restore();
+  await useStore.getState().importFiles([file('run-00.json'), file('run-01.json')]);
+  const a = useStore.getState().dataset.imports[0]!.importId;
+  const gone = (await useStore.getState().removeImport(a))!;
+  expect(useStore.getState().dataset.imports).toHaveLength(1);
+  expect(useStore.getState().storage).toBe('off');
+  await useStore.getState().restoreRemoved(gone);
+  expect(useStore.getState().dataset.imports).toHaveLength(2);
+});
+
+it('when storage refuses the delete the file is still gone in memory and the page says storage failed', async () => {
+  const [a] = await importTwo();
+  vi.spyOn(Dexie.prototype, 'transaction').mockRejectedValueOnce(new Error('blocked'));
+  await useStore.getState().removeImport(a);
+  expect(useStore.getState().dataset.imports).toHaveLength(1);
+  expect(useStore.getState().storage).toBe('failed');
+});
+
+it('sample data cannot be removed', async () => {
+  await useStore.getState().startSample();
+  const before = useStore.getState().dataset;
+  expect(await useStore.getState().removeImport(before.imports[0]!.importId)).toBeNull();
+  expect(useStore.getState().dataset).toBe(before);
+});

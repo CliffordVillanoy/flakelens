@@ -14,7 +14,11 @@ test('Comfortable rows are at least 56px with the path on a second line; Compact
   const first = page.locator('.ranked-row').first();
   await expect(first.locator('.truncate.font-mono')).toHaveCount(1); // the path line
 
-  await page.getByRole('button', { name: 'Compact' }).click();
+  await expect(page.getByRole('group', { name: 'Row density' })).toHaveCount(0); // the control lives on Settings only
+  await page.evaluate(() => (window.location.hash = '#/settings'));
+  await page.getByRole('group', { name: 'Row density' }).getByRole('button', { name: 'Compact' }).click();
+  await page.evaluate(() => (window.location.hash = '#/tests'));
+  await expect(page.locator('.ranked-row').first()).toBeVisible();
   expect(new Set(await rowHeights(page))).toEqual(new Set([32]));
   await expect(page.locator('.ranked-row').first().locator('.truncate.font-mono')).toHaveCount(0);
   const title = await page.locator('.ranked-row a[data-test-id]').first().getAttribute('title');

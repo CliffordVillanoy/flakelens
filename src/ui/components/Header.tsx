@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { Database, Lock, Moon, Sun } from 'lucide-react';
+import { useSyncExternalStore } from 'react';
+import { Database, Lock, Moon, Settings, Sun } from 'lucide-react';
 import { t } from '../copy';
-import { currentTheme, setTheme, type Theme } from '../lib/theme';
+import { currentTheme, setTheme, subscribeTheme, type Theme } from '../lib/theme';
 
 export type DataMode = 'none' | 'sample' | 'own';
 
@@ -16,14 +16,16 @@ export function Header({
   onHelp,
   attention = false,
   onDataPage = false,
+  onSettingsPage = false,
 }: {
   mode: DataMode;
   onAddFiles?: () => void;
   onHelp?: () => void;
+  onSettingsPage?: boolean; // already on Settings, same pattern as the Loaded data link
   onDataPage?: boolean; // already on Loaded data: its own heading says so, the link would repeat it
   attention?: boolean; // the last import has a warning or error notice: an amber dot on Loaded data
 }) {
-  const [theme, setThemeState] = useState<Theme>(currentTheme);
+  const theme: Theme = useSyncExternalStore(subscribeTheme, currentTheme);
   const next: Theme = theme === 'dark' ? 'light' : 'dark';
   const toggleLabel = t(next === 'light' ? 'header.theme.toLight' : 'header.theme.toDark');
 
@@ -66,6 +68,15 @@ export function Header({
             )}
           </a>
         )}
+        {mode !== 'none' && !onSettingsPage && (
+          <a
+            href="#/settings"
+            className="inline-flex h-8 items-center gap-1.5 rounded-md bg-transparent px-2.5 text-[13px] font-semibold text-foreground no-underline hover:bg-surface-hover"
+          >
+            <Settings size={14} aria-hidden="true" />
+            {t('settings.title')}
+          </a>
+        )}
         {mode !== 'none' && (
           <button
             type="button"
@@ -80,10 +91,7 @@ export function Header({
           aria-label={toggleLabel}
           title={toggleLabel}
           className={iconButton}
-          onClick={() => {
-            setTheme(next);
-            setThemeState(next);
-          }}
+          onClick={() => setTheme(next)}
         >
           {theme === 'dark' ? <Sun size={16} aria-hidden="true" /> : <Moon size={16} aria-hidden="true" />}
         </button>

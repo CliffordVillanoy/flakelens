@@ -1,7 +1,7 @@
 import { it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { parsePlaywrightReport } from './import/playwright';
-import { addImport, emptyDataset, setCommitLabel, MAX_LABEL } from './dataset';
+import { addImport, emptyDataset, setCommitLabel, MAX_LABEL, removeImport, removalImpact, importSlice, restoreImport } from './dataset';
 
 const read = (f: string) => readFileSync(`fixtures/playwright/${f}`, 'utf8');
 const opts = { fileName: 'run.json', importedAt: '2026-11-20T12:00:00.000Z', order: 0 };
@@ -118,4 +118,87 @@ it('cleaning a hostile label is linear', () => {
   const t0 = performance.now();
   setCommitLabel(ds, ds.imports[0]!.importId, hostile);
   expect(performance.now() - t0).toBeLessThan(500);
+});
+
+// ---- removeImport (DEV-33) ----
+const lab = (f: string, order: number, label?: string) =>
+  parsePlaywrightReport(readFileSync(`fixtures/lab/${f}`, 'utf8'), { fileName: f, importedAt: `2026-11-2${order}T10:00:00.000Z`, order, commitLabel: label });
+const three = () => {
+  let ds = emptyDataset();
+  for (const [i, f] of ['run-00.json', 'run-01.json', 'run-02.json'].entries()) ds = addImport(ds, lab(f, i));
+  return ds;
+};
+
+it('removeImport deletes the import, its runs, attempts, failures, label and tests only it had', () => {
+  let ds = three();
+  const [a, b] = ds.imports.map((i) => i.importId) as [string, string];
+  ds = setCommitLabel(ds, a, 'c0');
+  const out = removeImport(ds, a);
+  expect(out.imports.map((i) => i.importId)).not.toContain(a);
+  expect(out.imports).toHaveLength(2);
+  expect(out.runs.some((r) => r.importId === a)).toBe(false);
+  const left = new Set(out.runs.map((r) => r.runId));
+  expect(out.attempts.every((x) => left.has(x.runId))).toBe(true);
+  const attemptIds = new Set(out.attempts.map((x) => x.attemptId));
+  expect(out.failures.every((f) => attemptIds.has(f.attemptId))).toBe(true);
+  expect(out.tests.every((x) => out.attempts.some((y) => y.testId === x.testId))).toBe(true);
+  expect(out.imports.every((i) => i.commitLabel === undefined)).toBe(true);
+  expect(out.runs.filter((r) => r.importId === b)).toEqual(ds.runs.filter((r) => r.importId === b));
+  expect(ds.imports).toHaveLength(3); // pure
+});
+
+it('removing every file gives the empty dataset', () => {
+  let ds = three();
+  for (const i of [...ds.imports]) ds = removeImport(ds, i.importId);
+  expect(ds).toEqual(emptyDataset());
+});
+
+it('an unknown id changes nothing', () => {
+  const ds = three();
+  expect(removeImport(ds, 'nope')).toBe(ds);
+});
+
+it('a file whose runs were already in an earlier file: removing it keeps the earlier runs', () => {
+  let ds = addImport(emptyDataset(), lab('run-00.json', 0));
+  ds = addImport(ds, { ...lab('run-00.json', 1), record: { ...lab('run-00.json', 1).record, importId: 'again' } });
+  const owner = ds.imports[0]!;
+  const out = removeImport(ds, 'again');
+  expect(out.runs).toEqual(ds.runs);
+  expect(out.attempts).toEqual(ds.attempts);
+  expect(out.imports).toEqual([owner]);
+});
+
+it('removalImpact counts runs and tests, names the label, and finds runs kept by another file', () => {
+  let ds = addImport(emptyDataset(), lab('run-00.json', 0));
+  ds = addImport(ds, { ...lab('run-00.json', 1), record: { ...lab('run-00.json', 1).record, importId: 'again' } });
+  ds = addImport(ds, lab('run-01.json', 2));
+  const second = ds.imports[2]!.importId;
+  ds = setCommitLabel(ds, second, 'c0');
+  const plain = removalImpact(ds, second);
+  expect(plain).toMatchObject({ runs: 1, label: 'c0', last: false, kept: 0, keptIn: [] });
+  expect(plain.tests).toBeGreaterThan(0);
+  const dupe = removalImpact(ds, 'again');
+  expect(dupe).toMatchObject({ runs: 0, kept: 1, keptIn: ['run-00.json'], label: null });
+  const only = removalImpact(removeImport(removeImport(ds, 'again'), second), ds.imports[0]!.importId);
+  expect(only.last).toBe(true);
+});
+
+it('restoreImport puts a removed file back in its place with everything it had', () => {
+  let ds = three();
+  const mid = ds.imports[1]!.importId;
+  ds = setCommitLabel(ds, mid, 'c0');
+  const { result, index } = importSlice(ds, mid)!;
+  const back = restoreImport(removeImport(ds, mid), result, index);
+  const key = (d: typeof ds) => ({
+    imports: d.imports.map((i) => i.importId),
+    runs: d.runs.map((r) => r.runId).sort(),
+    attempts: d.attempts.map((a) => a.attemptId).sort(),
+    tests: d.tests.map((x) => x.testId).sort(),
+    failures: d.failures.map((f) => f.attemptId).sort(),
+  });
+  expect(key(back)).toEqual(key(ds));
+  expect(back.imports[1]!.commitLabel).toBe('c0');
+  expect(back.runs.find((r) => r.importId === mid)!.commit).toBe('c0');
+  expect(restoreImport(ds, result, index)).toBe(ds); // already there
+  expect(importSlice(ds, 'nope')).toBeNull();
 });

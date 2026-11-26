@@ -1,16 +1,19 @@
 import { ImportBanner } from '../components/ImportBanner';
 import { ImportProgress } from '../components/ImportProgress';
 import { useMemo, useState } from 'react';
-import { ArrowLeft, CircleAlert, CircleCheck, CircleX, Info } from 'lucide-react';
+import { ArrowLeft, CircleAlert, CircleCheck, CircleX, Info, Trash2 } from 'lucide-react';
 import { t } from '../copy';
 import { useStore } from '../data/store';
+import { removalImpact } from '@/engine/dataset';
 import { fileRows, loadedSummary, noticeRows, runRows, type FileRow } from '../data/loaded';
+import { RemoveFileDialog } from '../components/RemoveFileDialog';
 import { CommitField } from '../components/CommitField';
 import { ClearDataDialog } from '../components/ClearDataDialog';
 import { DownloadList } from '../components/DownloadList';
-import { toast } from '../components/Toasts';
+import { toast, toastUndo } from '../components/Toasts';
 import { dangerButton, linkButton, secondaryButton } from '../components/buttons';
 import { navigate } from '../lib/router';
+import { cleanText } from '../lib/safeText';
 
 const FIRST_RUNS = 5; // the runs table starts with the newest five (board 5)
 
@@ -29,7 +32,7 @@ const SEVERITY_ICON = {
   info: <Info size={16} className="mt-0.5 shrink-0 text-link" aria-hidden="true" />,
 } as const;
 
-function FileItem({ f, sample }: { f: FileRow; sample: boolean }) {
+function FileItem({ f, sample, onRemove }: { f: FileRow; sample: boolean; onRemove: () => void }) {
   const { key, tone, Icon } = RESULT[f.result];
   const meta = { runs: f.runs, tests: f.tests };
   return (
@@ -44,6 +47,12 @@ function FileItem({ f, sample }: { f: FileRow; sample: boolean }) {
         <Icon size={14} aria-hidden="true" />
         {t(key)}
       </span>
+      {!sample && (
+        <button type="button" className={`${secondaryButton} h-8 px-2.5 text-[13px]`} onClick={onRemove}>
+          <Trash2 size={14} aria-hidden="true" />
+          {t('file.remove')}
+        </button>
+      )}
       {f.runs > 0 && <CommitField f={f} readOnly={sample} />}
     </li>
   );
@@ -54,6 +63,7 @@ export function LoadedData({ onExitSample }: { onExitSample: () => void }) {
   const { dataset: ds, mode, importing, lastImport, cancelImport, dismissImport } = useStore();
   const [showAll, setShowAll] = useState(false);
   const [confirming, setConfirming] = useState(false);
+  const [removing, setRemoving] = useState<string | null>(null);
   const summary = useMemo(() => loadedSummary(ds), [ds]);
   const files = useMemo(() => fileRows(ds), [ds]);
   const notices = useMemo(() => noticeRows(ds), [ds]);
@@ -66,6 +76,18 @@ export function LoadedData({ onExitSample }: { onExitSample: () => void }) {
     await useStore.getState().clearAll();
     navigate('#/');
     toast(t('clear.done'));
+  };
+
+  const removeFile = async () => {
+    const id = removing;
+    setRemoving(null);
+    if (id === null) return;
+    const gone = await useStore.getState().removeImport(id);
+    if (!gone) return;
+    if (gone.last) navigate('#/');
+    toastUndo(t(gone.last ? 'toast.fileRemoved.last' : 'toast.fileRemoved', { file: cleanText(gone.fileName) }), () => {
+      void useStore.getState().restoreRemoved(gone).then(() => toast(t('toast.fileRestored', { file: cleanText(gone.fileName) })));
+    });
   };
 
   return (
@@ -96,7 +118,7 @@ export function LoadedData({ onExitSample }: { onExitSample: () => void }) {
         </h2>
         <ul className="m-0 list-none overflow-hidden rounded-lg border border-border bg-card p-0">
           {files.map((f) => (
-            <FileItem key={f.importId} f={f} sample={sample} />
+            <FileItem key={f.importId} f={f} sample={sample} onRemove={() => setRemoving(f.importId)} />
           ))}
         </ul>
       </section>
@@ -172,18 +194,18 @@ export function LoadedData({ onExitSample }: { onExitSample: () => void }) {
             </button>
           </>
         ) : (
-          <>
-            <div className="text-sm">
-              <div className="font-semibold">{t('data.remove.title')}</div>
-              <div className="text-muted-foreground">{t('data.remove.body')}</div>
-            </div>
-            <button type="button" className={`${dangerButton} h-9 text-sm`} onClick={() => setConfirming(true)}>
-              {t('data.remove.action')}
-            </button>
-          </>
+          <button type="button" className={`${dangerButton} ml-auto h-9 text-sm`} onClick={() => setConfirming(true)}>
+            {t('data.remove.action')}
+          </button>
         )}
       </section>
 
+      <RemoveFileDialog
+        fileName={removing === null ? null : (ds.imports.find((i) => i.importId === removing)?.fileName ?? null)}
+        impact={removing === null ? null : removalImpact(ds, removing)}
+        onKeep={() => setRemoving(null)}
+        onConfirm={() => void removeFile()}
+      />
       <ClearDataDialog
         open={confirming}
         files={summary.files}

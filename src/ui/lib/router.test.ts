@@ -2,6 +2,11 @@ import { it, expect } from 'vitest';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { navigate, parseRoute, useRoute } from './router';
 
+it('parses the settings route', () => {
+  expect(parseRoute('#/settings')).toMatchObject({ name: 'settings' });
+  expect(parseRoute('#/settings/x')).toMatchObject({ name: 'start' });
+});
+
 it('parses the four routes', () => {
   expect(parseRoute('#/')).toMatchObject({ name: 'start' });
   expect(parseRoute('')).toMatchObject({ name: 'start' });
