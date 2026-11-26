@@ -24,7 +24,7 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-it('a failed sample load shows an inline error with Retry instead of an unhandled rejection; Retry loads the sample', async () => {
+it('a failed sample load shows an inline error with Try again instead of an unhandled rejection; Try again loads the sample', async () => {
   const unhandled = vi.fn();
   process.on('unhandledRejection', unhandled);
   let failing = true;
@@ -40,7 +40,7 @@ it('a failed sample load shows an inline error with Retry instead of an unhandle
   expect(useStore.getState().mode).toBe('empty');
 
   failing = false;
-  await userEvent.click(within(alert).getByRole('button', { name: 'Retry' }));
+  await userEvent.click(within(alert).getByRole('button', { name: 'Try again' }));
   await waitFor(() => expect(window.location.hash).toBe('#/tests'));
   expect(screen.queryByRole('alert')).toBeNull();
   await new Promise((r) => setTimeout(r, 20));

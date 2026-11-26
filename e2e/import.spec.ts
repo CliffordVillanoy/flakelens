@@ -195,7 +195,7 @@ test('in a mixed drop the oversized file fails inline, the other imports, and Lo
   await expect(page.getByText('run-01.json', { exact: true }).first()).toBeVisible();
 });
 
-test('a blocked sample manifest shows an inline error with Retry; Retry works once the file is reachable', async ({ page }) => {
+test('a blocked sample manifest shows an inline error with Try again; Try again works once the file is reachable', async ({ page }) => {
   let blocked = true;
   await page.route('**/sample/manifest.json', (route) => (blocked ? route.abort() : route.continue()));
   await openApp(page);
@@ -203,7 +203,7 @@ test('a blocked sample manifest shows an inline error with Retry; Retry works on
   await expect(page.getByRole('alert')).toContainText("The sample data couldn't be loaded.");
   await expect(page).not.toHaveURL(/#[/]tests/);
   blocked = false;
-  await page.getByRole('button', { name: 'Retry' }).click();
+  await page.getByRole('button', { name: 'Try again' }).click();
   await expect(page).toHaveURL(/#[/]tests/);
   await expect(page.locator('.ranked-row').first()).toBeVisible();
 });
