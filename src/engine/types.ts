@@ -85,6 +85,15 @@ export interface Dataset {
   failures: Failure[];
 }
 
+// Cause ids (DEV-37). The UI reads the name and tip from the copy keys cause.<id> and cause.<id>.tip (copy doc section 14).
+export type CauseId = 'timing' | 'order' | 'sharedState' | 'network' | 'environment' | 'concurrency' | 'locator' | 'time' | 'infrastructure' | 'unknown';
+export type CauseConfidence = 'low' | 'medium' | 'high';
+/** A quoted line of a failure text: the 1-based line number and text that is an exact substring of that line. */
+export interface EvidenceLine {
+  line: number;
+  text: string;
+}
+
 // One kind of failure (DEV-36): messages with the same fingerprint, plus near-duplicates merged by shingle similarity.
 export interface FailureGroup {
   fingerprint: string;
@@ -93,6 +102,7 @@ export interface FailureGroup {
   count: number; // failed attempts in the group
   testIds: string[];
   runIds: string[]; // oldest first
+  attemptIds: string[]; // every failed attempt in the group, in the order they were read
   firstRunId: string;
   lastRunId: string;
   environmentEvent: boolean; // enough distinct tests failed this way in one run to point at the environment

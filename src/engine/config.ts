@@ -15,6 +15,11 @@ export const DEFAULT_CONFIG = {
   // fingerprint in one run make an environment event. Starting values, tuned on the flake lab.
   groupMergeJaccard: 0.8,
   envEventMinTests: 5,
+  // Cause classifier (DEV-37): a group is classified from up to causeSampleSize of its failures; the winning category is
+  // 'high' confidence at this share of agreement or more (with a strong rule), 'medium' at the second share or more.
+  causeSampleSize: 20,
+  causeHighAgreement: 0.8,
+  causeMediumAgreement: 0.5,
 } as const;
 
 export type EngineConfig = { readonly [K in keyof typeof DEFAULT_CONFIG]: number };

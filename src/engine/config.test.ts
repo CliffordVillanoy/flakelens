@@ -13,3 +13,10 @@ it('failure grouping thresholds live in the config with their starting values (D
 it('the scoring thresholds did not change', () => {
   expect(DEFAULT_CONFIG).toMatchObject({ failingRate: 0.95, failingWindow: 10, minAttempts: 3, suspectMinAttempts: 5, suspectMinFlipRate: 0.2 });
 });
+
+it('cause classifier thresholds live in the config with their starting values (DEV-37)', () => {
+  expect(DEFAULT_CONFIG.causeSampleSize).toBe(20);
+  expect(DEFAULT_CONFIG.causeHighAgreement).toBe(0.8);
+  expect(DEFAULT_CONFIG.causeMediumAgreement).toBe(0.5);
+  expect(DEFAULT_CONFIG.causeMediumAgreement).toBeLessThan(DEFAULT_CONFIG.causeHighAgreement);
+});

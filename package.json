@@ -10,6 +10,7 @@
     "format": "prettier --write .",
     "lab": "node flake-lab/run-lab.mjs",
     "eval:lab": "tsx scripts/eval-lab.ts",
+    "eval:causes": "tsx scripts/eval-causes.ts",
     "prepare": "git config core.hooksPath .githooks",
     "e2e": "npm run build && playwright test"
   },
