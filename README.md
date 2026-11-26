@@ -338,6 +338,10 @@ FlakeLens follows an incremental development approach, prioritizing test reliabi
 
 Additional enhancements will be prioritized based on development progress, technical feasibility, and user feedback.
 
+## Feedback
+
+Found a bug or have an idea? Open an issue with one of the [issue templates](https://github.com/CliffordVillanoy/flakelens/issues/new/choose), and never attach real test reports or secrets. Report security problems privately, as described in the [security policy](SECURITY.md). To contribute, see the [contributing guide](CONTRIBUTING.md).
+
 ## Documentation
 
 For detailed technical information, implementation decisions, and evaluation methodology, refer to:
