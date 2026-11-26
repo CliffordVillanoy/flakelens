@@ -16,7 +16,9 @@ const scrub = (text) =>
   [JSON.stringify(root).slice(1, -1), root, root.replaceAll('\\', '/')]
     .reduce((t, p) => t.split(p).join('/repo'), text)
     .split(JSON.stringify(process.execPath).slice(1, -1))
-    .join('node');
+    .join('node')
+    // On Windows the rest of a path keeps its backslashes (escaped in JSON): "/repo\\flake-lab\\lib\\x.ts" -> "/repo/flake-lab/lib/x.ts".
+    .replace(/\/repo((?:\\\\[\w.@-]+)+)/g, (_, rest) => '/repo' + rest.replaceAll('\\\\', '/'));
 
 rmSync(labDir, { recursive: true, force: true });
 rmSync(sampleDir, { recursive: true, force: true });

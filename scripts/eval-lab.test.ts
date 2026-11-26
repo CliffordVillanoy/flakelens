@@ -1,22 +1,24 @@
 import { it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { scoreTests } from '../src/engine/score/score';
+import { labelKey, labelOf, readLabels } from '../flake-lab/labels';
 import { buildReport, evaluate, loadLab, prf } from './eval-lab';
 
 const json = (p: string) => JSON.parse(readFileSync(p, 'utf8'));
 const manifest: Array<{ file: string; commit: string }> = json('fixtures/lab/manifest.json');
 const sampleManifest: Array<{ file: string; commit: string }> = json('public/sample/manifest.json');
-const labels: Record<string, string> = json('flake-lab/labels.json');
+const labelEntries = readLabels();
+const labels = labelOf(labelEntries);
+const flakyCount = Object.values(labels).filter((l) => l === 'flaky').length;
 
 it('labels every lab test as its ground truth says', () => {
   const ds = loadLab(manifest, 'fixtures/lab');
-  const byTitle = new Map(ds.tests.map((t) => [t.testId, t.title]));
+  const byId = new Map(ds.tests.map((t) => [t.testId, labelKey(t.title, t.project)]));
   const scores = scoreTests(ds);
-  expect(Object.keys(labels)).toHaveLength(9);
-  expect(scores).toHaveLength(9);
+  expect(scores).toHaveLength(Object.keys(labels).length);
   for (const s of scores) {
-    const title = byTitle.get(s.testId)!;
-    expect([title, s.label]).toEqual([title, labels[title]]);
+    const key = byId.get(s.testId)!;
+    expect([key, s.label]).toEqual([key, labels[key]]);
   }
 });
 
@@ -39,10 +41,11 @@ it('evaluates engine and Playwright baseline at 4, 8 and 12 runs', () => {
     ['engine', 4], ['engine', 8], ['engine', 12],
     ['baseline', 4], ['baseline', 8], ['baseline', 12],
   ]);
-  // The engine finds all 3 flaky lab tests; Playwright's retry flag misses the cross-run one.
-  for (const r of rows.filter((r) => r.method === 'engine')) expect(r).toMatchObject({ tp: 3, fp: 0, fn: 0, recall: 1 });
-  for (const r of rows.filter((r) => r.method === 'baseline')) expect(r).toMatchObject({ tp: 2, fp: 0, fn: 1, precision: 1 });
-  for (const r of rows.filter((r) => r.method === 'baseline')) expect(r.recall).toBeCloseTo(2 / 3);
+  // The engine finds every flaky lab test at 4, 8 and 12 runs; Playwright's retry flag misses at least the cross-run one.
+  for (const r of rows.filter((r) => r.method === 'engine')) expect(r).toMatchObject({ fp: 0, fn: 0, precision: 1, recall: 1 });
+  expect(rows.find((r) => r.method === 'engine' && r.runs === 12)!.tp).toBe(flakyCount);
+  for (const r of rows.filter((r) => r.method === 'baseline')) expect(r).toMatchObject({ fp: 0, precision: 1 });
+  for (const r of rows.filter((r) => r.method === 'baseline')) expect(r.fn).toBeGreaterThanOrEqual(1);
 });
 
 it('Playwright never marks the cross-run test flaky', () => {
@@ -63,12 +66,12 @@ it('the committed report shows no tie note', () => {
 });
 
 it('the report has the table, the baseline and a Limits paragraph', () => {
-  const md = buildReport(evaluate(manifest, 'fixtures/lab', labels));
+  const md = buildReport(evaluate(manifest, 'fixtures/lab', labels), { tests: Object.keys(labels).length, flaky: flakyCount });
   expect(md).toMatch(/\| Method \| Runs \| Precision \| Recall \| F1 \|/);
   expect(md.match(/^\| Engine/gm)).toHaveLength(3);
   expect(md.match(/^\| Playwright baseline/gm)).toHaveLength(3);
   expect(md).toContain('Playwright marked the test flaky in any loaded run');
-  expect(md).toMatch(/## Limits[\s\S]*synthetic[\s\S]*9 tests[\s\S]*one browser[\s\S]*not a real-world benchmark/);
+  expect(md).toMatch(/## Limits[\s\S]*synthetic[\s\S]*\d+ tests[\s\S]*one browser engine[\s\S]*not a real-world benchmark/);
 });
 
 it('the report says when engine and baseline tie', () => {

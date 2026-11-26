@@ -2,10 +2,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Flake Lab Shop</title>
+    <style>
+      /* DEV-35: on a narrow screen (the chromium-mobile project) the navigation is behind the Menu button. */
+      #menu { display: none; }
+      @media (max-width: 600px) {
+        #nav { display: none; }
+        #menu { display: inline; }
+      }
+    </style>
   </head>
   <body>
     <h1>Flake Lab Shop</h1>
+    <nav id="nav"><a href="#cart">Cart</a></nav>
+    <button id="menu">Menu</button>
     <ul id="cart"></ul>
     <button id="add">Add item</button>
     <p id="status">Loading…</p>
@@ -14,6 +25,9 @@
     <label>Username <input id="username" /></label>
     <button id="check">Check name</button>
     <p id="name-result"></p>
+    <p id="order"></p>
+    <button id="save2">Save twice</button>
+    <p id="saved">Total: 10</p>
     <footer>Flake Lab footer</footer>
     <script>
       const q = new URLSearchParams(location.search);
@@ -29,6 +43,35 @@
       document.getElementById('check').onclick = () => {
         const name = document.getElementById('username').value;
         document.getElementById('name-result').textContent = taken.includes(name) ? 'taken' : 'available';
+      };
+      // Injected cause (order dependency): a previous test left an item in the cart.
+      if (q.get('leftover') === '1') {
+        const old = document.createElement('li');
+        old.textContent = 'item';
+        document.getElementById('cart').append(old);
+      }
+      // Injected cause (shared data): a cached order number that is one behind.
+      if (q.has('order')) document.getElementById('order').textContent = 'Order #' + q.get('order');
+      // Injected cause (locator): a promotion banner brings a second "Add item" button.
+      if (q.get('dup') === '1') {
+        const promo = document.createElement('button');
+        promo.id = 'promo';
+        promo.textContent = 'Add item';
+        document.getElementById('add').after(promo);
+      }
+      // Injected cause (concurrency): two saves that each read the total first and write it back later. When they
+      // overlap, the second one reads before the first has written, and one update is lost.
+      let saved = 10;
+      const save = () => {
+        const read = saved;
+        setTimeout(() => {
+          saved = read + 1;
+          document.getElementById('saved').textContent = 'Total: ' + saved;
+        }, 50);
+      };
+      document.getElementById('save2').onclick = () => {
+        save();
+        setTimeout(save, q.get('overlap') === '1' ? 10 : 120);
       };
       document.getElementById('add').onclick = () => {
         const li = document.createElement('li');

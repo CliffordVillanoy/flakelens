@@ -7,5 +7,9 @@ export default defineConfig({
   retries: 1,
   workers: 1,
   reporter: 'json', // path comes from PLAYWRIGHT_JSON_OUTPUT_FILE
-  projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
+  projects: [
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    // DEV-35: one test (responsive.spec.ts) also runs on a phone viewport, where it fails and the desktop run passes (for DEV-40).
+    { name: 'chromium-mobile', use: { ...devices['Pixel 5'] }, testMatch: /responsive\.spec\.ts/ },
+  ],
 });
