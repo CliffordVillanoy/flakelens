@@ -2,42 +2,45 @@ import { it, expect } from 'vitest';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { loadLab } from '../scripts/eval-lab';
 import { scoreTests } from '../src/engine/score/score';
+import { labelKey, readLabels } from './labels';
 
 // DEV-34: the lab reports carry realistic, simulated durations, and nothing else about the lab changed.
+// DEV-35: the same checks hold with the new cause tests added.
 const manifest = JSON.parse(readFileSync('fixtures/lab/manifest.json', 'utf8')) as { file: string; commit: string }[];
-const labels = JSON.parse(readFileSync('flake-lab/labels.json', 'utf8')) as Record<string, string>;
+const labels = readLabels();
 const baseline = JSON.parse(readFileSync('flake-lab/patterns.json', 'utf8')) as Record<string, Record<string, string[]>>;
 
 type Result = { status?: string; duration: number };
-type Suite = { suites?: Suite[]; specs?: { title: string; tests: { results: Result[] }[] }[] };
+type Suite = { suites?: Suite[]; specs?: { title: string; tests: { projectName: string; results: Result[] }[] }[] };
+// keyed like labels.json: "title", or "title [project]" outside the default project
 function attempts(file: string): Record<string, Result[]> {
   const out: Record<string, Result[]> = {};
   const walk = (s: Suite) => {
-    for (const sp of s.specs ?? []) out[sp.title] = sp.tests.flatMap((t) => t.results);
+    for (const sp of s.specs ?? []) for (const t of sp.tests) out[labelKey(sp.title, t.projectName)] = t.results;
     (s.suites ?? []).forEach(walk);
   };
   (JSON.parse(readFileSync(file, 'utf8')) as Suite).suites?.forEach(walk);
   return out;
 }
 
-it('every pass and fail pattern of every run is the one recorded before the durations were added (DEV-08 style)', () => {
+it('every pass and fail pattern of the nine original tests is the one recorded before the durations were added (DEV-08 style)', () => {
   expect(manifest).toHaveLength(12);
   for (const { file } of manifest) {
-    const now = Object.fromEntries(Object.entries(attempts(`fixtures/lab/${file}`)).map(([k, v]) => [k, v.map((r) => r.status)]));
-    expect(now, file).toEqual(baseline[file]);
+    const now = attempts(`fixtures/lab/${file}`);
+    for (const [title, expected] of Object.entries(baseline[file]!)) expect(now[title]?.map((r) => r.status), `${file} ${title}`).toEqual(expected);
   }
 });
 
 it('stable tests take 0.5 to 3 s; flaky, failing and unproven attempts take 3 to 40 s', () => {
   for (const { file } of manifest) {
-    for (const [title, results] of Object.entries(attempts(`fixtures/lab/${file}`))) {
+    for (const [key, results] of Object.entries(attempts(`fixtures/lab/${file}`))) {
       for (const r of results) {
-        if (labels[title] === 'stable' || labels[title] === 'insufficient') {
-          expect(r.duration, `${file} ${title}`).toBeGreaterThanOrEqual(500);
-          expect(r.duration, `${file} ${title}`).toBeLessThanOrEqual(3_000);
+        if (labels[key]!.label === 'stable' || labels[key]!.label === 'insufficient') {
+          expect(r.duration, `${file} ${key}`).toBeGreaterThanOrEqual(500);
+          expect(r.duration, `${file} ${key}`).toBeLessThanOrEqual(3_000);
         } else {
-          expect(r.duration, `${file} ${title}`).toBeGreaterThanOrEqual(3_000);
-          expect(r.duration, `${file} ${title}`).toBeLessThanOrEqual(40_000);
+          expect(r.duration, `${file} ${key}`).toBeGreaterThanOrEqual(3_000);
+          expect(r.duration, `${file} ${key}`).toBeLessThanOrEqual(40_000);
         }
       }
     }
@@ -47,7 +50,7 @@ it('stable tests take 0.5 to 3 s; flaky, failing and unproven attempts take 3 to
 it('the engine finds at least 1 minute for the top Flaky test and at least 10 minutes of Flaky wasted time', () => {
   const ds = loadLab(manifest, 'fixtures/lab');
   const flaky = scoreTests(ds).filter((s) => s.label === 'flaky');
-  expect(flaky).toHaveLength(3);
+  expect(flaky.length).toBeGreaterThanOrEqual(9);
   expect(Math.max(...flaky.map((s) => s.wastedMs))).toBeGreaterThanOrEqual(60_000);
   expect(flaky.reduce((n, s) => n + s.wastedMs, 0)).toBeGreaterThanOrEqual(600_000);
 });

@@ -5,6 +5,7 @@ import process from 'node:process';
 import { parsePlaywrightReport } from '../src/engine/import/playwright';
 import { addImport, emptyDataset } from '../src/engine/dataset';
 import { scoreTests } from '../src/engine/score/score';
+import { labelKey, labelOf, readLabels } from '../flake-lab/labels';
 import type { Dataset } from '../src/engine/types';
 
 type ManifestEntry = { file: string; commit: string };
@@ -55,9 +56,9 @@ export function prf(predicted: Set<string>, truth: Set<string>): Metrics {
 // Baseline: titles Playwright itself marked "flaky" (failed, then passed on retry) in any loaded run.
 function playwrightFlaky(files: ManifestEntry[], dir: string): Set<string> {
   const out = new Set<string>();
-  type Suite = { suites?: Suite[]; specs?: Array<{ title: string; tests: Array<{ status?: string }> }> };
+  type Suite = { suites?: Suite[]; specs?: Array<{ title: string; tests: Array<{ status?: string; projectName?: string }> }> };
   const walk = (s: Suite) => {
-    for (const spec of s.specs ?? []) if (spec.tests.some((t) => t.status === 'flaky')) out.add(spec.title);
+    for (const spec of s.specs ?? []) for (const t of spec.tests) if (t.status === 'flaky') out.add(labelKey(spec.title, t.projectName ?? ''));
     (s.suites ?? []).forEach(walk);
   };
   for (const { file } of files) (JSON.parse(readFileSync(`${dir}/${file}`, 'utf8')) as Suite).suites?.forEach(walk);
@@ -71,8 +72,9 @@ export function evaluate(manifest: ManifestEntry[], dir: string, labels: Record<
       const files = manifest.slice(0, runs);
       const ds = loadLab(files, dir);
       // Only tests present in this much history can be found.
-      const truth = new Set(ds.tests.map((t) => t.title).filter((title) => labels[title] === 'flaky'));
-      const title = new Map(ds.tests.map((t) => [t.testId, t.title]));
+      const key = (t: { title: string; project: string }) => labelKey(t.title, t.project);
+      const truth = new Set(ds.tests.map(key).filter((k) => labels[k] === 'flaky'));
+      const title = new Map(ds.tests.map((t) => [t.testId, key(t)]));
       const predicted =
         method === 'engine'
           ? new Set(scoreTests(ds).filter((s) => s.label === 'flaky').map((s) => title.get(s.testId)!))
@@ -85,7 +87,7 @@ export function evaluate(manifest: ManifestEntry[], dir: string, labels: Record<
 
 const fmt = (x: number | null) => (x === null ? 'n/a' : x.toFixed(2));
 
-export function buildReport(rows: Row[]): string {
+export function buildReport(rows: Row[], info: { tests: number; flaky: number } = { tests: 0, flaky: 0 }): string {
   const name = { engine: 'Engine (Flaky label)', baseline: 'Playwright baseline' };
   const metric = (r: Row) => `${r.runs}:${fmt(r.precision)}:${fmt(r.recall)}:${fmt(r.f1)}`;
   const tie = rows.filter((r) => r.method === 'engine').map(metric).join() === rows.filter((r) => r.method === 'baseline').map(metric).join();
@@ -99,7 +101,7 @@ export function buildReport(rows: Row[]): string {
     '',
     '## Method',
     '',
-    '- Positive class: tests whose ground-truth label is `flaky` (3 of the 9 lab tests).',
+    `- Positive class: tests whose ground-truth label is \`flaky\` (${info.flaky} of the ${info.tests} lab tests; a test that runs in two Playwright projects counts once per project).`,
     '- History length N: the first N runs in `fixtures/lab/manifest.json` order (2 runs per commit). Only tests present in those runs count.',
     '- Engine: the test gets the `flaky` label from `scoreTests` (a commit with both a pass and a fail).',
     '- Baseline: Playwright marked the test flaky in any loaded run (`tests[*].status === "flaky"` in the raw JSON, that is, it failed and then passed on retry).',
@@ -119,15 +121,15 @@ export function buildReport(rows: Row[]): string {
       : []),
     '## Limits',
     '',
-    'This is a synthetic lab with 9 tests, one browser (Chromium) and 12 runs over 6 commits, with causes we injected ourselves. The test durations are simulated (seeded waits in the lab app, see `flake-lab/README.md`), so the wasted-time figures shown in the demo are realistic in size but are not measurements of a real suite. It shows the engine gives the known answers; it is not a real-world benchmark. The check against public real-world data (spec section 11.1, item 5) is a v1 item, because that dataset needs the JUnit importer.',
+    `This is a synthetic lab with ${info.tests} tests, one browser engine (Chromium, in a desktop and a mobile project) and 12 runs over 6 commits, with causes we injected ourselves with seeded outcomes and realistic error text (it validates the text rules, not real mechanisms). The test durations are simulated (seeded waits in the lab app, see \`flake-lab/README.md\`), so the wasted-time figures shown in the demo are realistic in size but are not measurements of a real suite. It shows the engine gives the known answers; it is not a real-world benchmark. The check against public real-world data (spec section 11.1, item 5) is a v1 item, because that dataset needs the JUnit importer.`,
     '',
   ].join('\n');
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const manifest: ManifestEntry[] = JSON.parse(readFileSync('fixtures/lab/manifest.json', 'utf8'));
-  const labels: Record<string, string> = JSON.parse(readFileSync('flake-lab/labels.json', 'utf8'));
+  const labels = labelOf(readLabels());
   mkdirSync('docs/eval', { recursive: true });
-  writeFileSync('docs/eval/lab-detection.md', buildReport(evaluate(manifest, 'fixtures/lab', labels)));
+  writeFileSync('docs/eval/lab-detection.md', buildReport(evaluate(manifest, 'fixtures/lab', labels), { tests: Object.keys(labels).length, flaky: Object.values(labels).filter((l) => l === 'flaky').length }));
   process.stdout.write('wrote docs/eval/lab-detection.md\n');
 }
