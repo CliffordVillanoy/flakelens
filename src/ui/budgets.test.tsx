@@ -51,9 +51,7 @@ beforeAll(() => {
   for (const [k, v] of Object.entries(PROPS)) Object.defineProperty(HTMLElement.prototype, k, { configurable: true, get: () => v });
 });
 
-// panel: 90 in the doc. With the realistic lab durations (DEV-34) the first ranked test is another Flaky test, "flaky: timing",
-// whose panel has 91 words; the limit is 91 here until UI/UX decides to trim a panel sentence or accept 91.
-const BUDGET = { start: 40, tests: 60, loaded: 60, panel: 91, dialog: 45, banner: 20 } as const;
+const BUDGET = { start: 40, tests: 60, loaded: 60, panel: 90, dialog: 45, banner: 20 } as const;
 const report: string[] = [];
 const check = (screenName: string, state: string, root: Element, budget: number, stopAt?: string) => {
   const n = words(root, { stopAt });

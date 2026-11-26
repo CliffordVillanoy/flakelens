@@ -152,7 +152,7 @@ it('latest failure: failed lines, the passing retry, previous failure, and it op
   // The diff header already names the run and the attempts, so the run, commit and attempt line above it is gone.
   expect(failure).not.toHaveTextContent('commit bbbbbbb · attempt');
   expect(failure).toHaveTextContent('Run 2 · attempt 1 failed, attempt 2 passed · same commit');
-  expect(failure).toHaveTextContent('Attempt 2 passed in 3.1 s on the same commit.');
+  expect(failure).toHaveTextContent('Attempt 2 passed in 3.1 s.');
 });
 
 it('opening moves focus to the panel title; Esc and Close return it to the row', async () => {
@@ -290,7 +290,7 @@ it('the status note is one sentence, shows two checks, and keeps the rest closed
   expect(more.querySelector('summary')).toHaveTextContent('More to check');
   // Two checks outside the closed block...
   const shown = within(note).getAllByRole('listitem').filter((li) => !more.contains(li));
-  expect(shown.map((li) => li.textContent)).toEqual(['Waits and timing', 'Data or state shared between tests']);
+  expect(shown.map((li) => li.textContent)).toEqual(['Waits and timing', 'Shared data or state']);
   // ...and the other two plus the quarantine tip inside it.
   const hidden = [...more.querySelectorAll('li')].map((li) => li.textContent);
   expect(hidden).toEqual(['Test order', 'Slow or unavailable services the test needs']);
