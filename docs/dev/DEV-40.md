@@ -1,30 +1,30 @@
-# DEV-40: Export CSV and JSON, report preview
+# DEV-40: Correlation by browser, shard, OS and time
 
 **Status:** To do
 
-**Goal:** Take results to a ticket or a spreadsheet: CSV, JSON and a Markdown report.
+**Goal:** Show whether a test's failures depend on the browser, shard, OS or hour, with an effect size and honest small-sample handling.
 
 **Objectives:**
-- Enable the two disabled Export items.
-- Add the report preview.
+- Compute correlations with exact statistics.
 
-**Scope:** Frontend.
+**Scope:** Backend (engine).
 
 **Acceptance Criteria:**
-1. Export menu: "Download CSV" and "Download JSON" work. CSV has one row per test in the table order: rank, test, file, project, status, score, mixed commits, flip rate, attempts, wasted minutes, evidence, first seen, last failed. Cells use the shared formula-safe helper (`csvCell`); the file starts with a byte-order mark. JSON is the canonical export `{ app, version, exportedAt, scope, tests }`.
-2. Scope choice, as in board 14: the Export menu opens with a radiogroup "What to export" (`export.scope`): "Current view (n tests)" with the hint `export.scope.view.hint` (tab and search) or "All tests (n)" (ignores the tab and the search). The default is Current view and the choice is remembered while the user stays on the page. The menu order is: scope group, Copy top Flaky tests (kept from v0), Download CSV, Download JSON, Open report (`export.report`). Rule 8 (canvas v78): the Export menu shows no hints at all; `export.csv.hint`, `export.json.hint`, `export.scope.view.hint`, `export.scope.all.hint` and the Copy top Flaky tests and Open report hints are not shown (the item names carry the meaning; keep the explanation text as tooltips where useful). With zero tests in view the file items are disabled, the reason is written beside them, and `export.empty.title`, `export.empty.body` and the action `export.empty.all` ("Export all tests") appear. Retire the key `tests.export.later` ("Coming in v1").
-3. `#/report` (board 14): a top bar with Back to tests, the title, the lead line `report.lead`, the primary button "Copy Markdown" and the secondary "Download .md"; a Preview or Markdown segmented group (`aria-pressed`); the scope shown as text with a note to change it from the Export menu (`report.scope`); a sample-data status line (`report.sample`). The Markdown follows `report.md.*`: title, a meta line (date, files, runs, tests, scope), a Summary with the five status counts and the wasted CI time (measured Flaky time, and the Unproven estimate worded "up to ... more if the Unproven tests are flaky"), the Top Flaky tests ("Failed {failed} of {total} attempts, mixed results on {commits} commits, {minutes} min wasted", plus "Likely cause: {cause} ({level} confidence)" when the classifier has one) and the footer (version, rankings not calibrated, causes likely not certain). All text from the report goes through the shared `escapeMd`. The preview is a surface box; the Markdown view is a monospace block that scrolls sideways and never wraps. Edge states: `report.noData.*` (with the action Add your files) and `report.noFlaky` (summary only).
-4. File names are constants (`flakelens-tests.csv`, `flakelens-tests.json`, `flakelens-report.md`). Sample-data exports say "sample data" inside the file (CSV: a first comment-free marker column or row as the dev chat decides and reports; JSON: a `sample: true` field; Markdown: the `report.sample` sentence). Toasts name the file and the count: `toast.export.csv` (same pattern for JSON and the report), `toast.export.copied`; a blocked clipboard shows `toast.export.copyFailed` as an alert with the action "Download .md", replacing `toast.copyFailed` on the report page.
-5. Tests: names with a newline, leading `=`, commas and quotes; 5,000 tests export in under 1 s; e2e downloads and reads the files.
-6. No network; downloads use `downloadFile` (with the revoke delay from DEV-29).
-7. Rule 8 (`docs/ux/12-simplification-pass.md`, canvas v78): no grey helper line under a label; explanations go in a tooltip or a closed block; a helper stays only if it prevents a mistake. The report page has no lead sentence (`report.lead` is retired) and no scope hint line beyond the scope text itself. Do not add the retired keys.
+1. `correlate(ds, testId, config)` in `src/engine/correlate/` returns, for each dimension with at least two values (browser, shard, os, hour of day from run start times), the fail rate per value, the fail rate of the rest, an odds ratio (with a 0.5 correction) and the difference in fail rate.
+2. Fisher's exact test for 2x2 tables (a value versus the rest), computed exactly with log factorials; chi-square only for larger tables and only when every expected count is at least 5, otherwise skipped.
+3. Minimum evidence from config (`corrMinAttempts` 10, `corrMinFails` 3, `corrMinGroup` 3 attempts in each group); below it the result is `not enough data` and never a finding. The reason carries the numbers the screen prints: the thresholds, the test's attempts and failures, and the smallest group. A dimension the files do not have returns `missing` with the dimension name. Bonferroni adjustment across the dimensions tested for the test; each result carries the adjusted p, the number of comparisons, and a strength label `Strong`, `Moderate` or `Weak` (starting rule in config: Strong at adjusted p below 0.01 and a fail-rate difference of at least 0.3; Moderate at adjusted p below 0.05 and a difference of at least 0.2; Weak at adjusted p below 0.1; otherwise `no clear link`).
+4. Result shape (board 13, `docs/ux/04-ux-copy.md` section 15): per dimension `{ dimension, status: 'finding' | 'none' | 'notEnough' | 'missing', strength?, highlightedValue?, values: { value, failed, attempts, rate }[], others: { failed, attempts, rate }, pointsHigher, oddsRatio, adjustedP, comparisons }`, so the screen can print "{a} of {b} attempts against {c} of {d} on the others, {points} points higher" and draw the rate bars without recomputing anything.
+5. Tests: known Fisher results (several tables, tolerance 1e-9); properties (p in 0..1, symmetric under swapping categories, invariant to row order); missing dimension data skips the dimension.
+6. Lab: the lab test that fails only in one project (DEV-35) is flagged strongly; a uniformly flaky test is not.
+7. Timing: 5,000 tests x 50 runs correlated in under 2 s, or computed lazily per test (report which).
+8. No UI change, no new dependency.
 
 **Details:**
-- Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: DEV-36 for the "Likely cause" lines (without it the report simply omits them); the board is ready.
-- **Board ready (2026-11-25):** board 14, `docs/ux/wireframes/Report.dc.html` and `ReportLight.dc.html`; design rules in `DESIGN.md` "Export menu and report"; confirmed copy in `docs/ux/04-ux-copy.md` section 16 (`export.*`, `report.*`, `toast.export.*`). Use that wording and those keys. The Export menu is a 340px popover; keyboard focus is a 2px inset ring on the item; the menu keeps its v0 first item.
-- Spec: sections 3 (goal 5), 6, 13 (Report screen). Security chat re-review: yes (exports are an output boundary).
+- Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: DEV-39, DEV-35.
+- Spec: section 10 (contingency tables, Fisher, effect size, not just a flag).
+- Wording belongs to DEV-41; this ticket returns data only.
 
-**Skills/Plugins:** superpowers:executing-plans, superpowers:test-driven-development, superpowers:verification-before-completion, security-review, frontend-design / impeccable (match DESIGN.md).
+**Skills/Plugins:** superpowers:executing-plans, superpowers:test-driven-development, superpowers:verification-before-completion.
 
 **Limitations/Restrictions:**
 - Version control (branches, pull requests, merges, tags, version numbers) and every CI/CD change belong to the Project Dev Ops chat. Work on the branch the Dev Ops chat names; commit only task files; no push, no merge.

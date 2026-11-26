@@ -1,33 +1,31 @@
-# DEV-39: Full test page with log viewer
+# DEV-39: Run metadata from Playwright reports
 
 **Status:** To do
 
-**Goal:** A test's whole story on one page: run timeline, failure log with highlighted evidence, and correlations.
+**Goal:** Runs carry commit, branch, browser, shard and OS when the report has them, so evidence across commits works for the user's own reports.
 
 **Objectives:**
-- Add `#/tests/:testId/full` and the log viewer.
+- Read run metadata from Playwright JSON reports.
+- Store it safely and show it on Loaded data.
 
-**Scope:** Frontend.
+**Scope:** Backend (importer, storage) + small frontend.
 
 **Acceptance Criteria:**
-1. "Open full view" in the panel opens `#/tests/:testId/full`; back returns to the list with filters kept.
-2. Log viewer: virtualised, line numbers, mono, wrap toggle, search in the log, copy line, evidence lines highlighted. An evidence chip jumps to its line and says "Quoted from the log" (verified: the line exists in the input).
-3. A 5 MB log renders at most 150 DOM rows and stays responsive; lines over 2,000 characters are cut with "Show more".
-4. Correlations section from DEV-38 in plain words with effect size; `not enough data` shows a calm explanation, never a finding.
-5. Run timeline and score details reuse the panel parts. Phone layout works.
-6. Keyboard operable; axe clean in both themes; hostile text renders as text.
-7. e2e: open a test from the sample, full view, jump to evidence, back.
-8. Rule 8 (`docs/ux/12-simplification-pass.md`, canvas v78): no grey helper line under a label; explanations go in a tooltip or a closed block; a helper stays only if it prevents a mistake. On the full test page: no lead sentences (`corr.lead` is retired), shorter correlation sentences as on board 13 at canvas v78, and the log footer follows the board (`log.range` wording). Explanations move into tooltips or the closed "How this was worked out" block.
+1. First, produce real Playwright 1.65 JSON from the flake lab with git info capture on (the installed version's option, for example `captureGitInfo`), with the `shard` option and with two projects, and commit the files under `fixtures/playwright/real/`. Record in the report the exact JSON paths where commit, branch, project or browser, shard and OS appear. Anything not present is stated as not present; none of these paths is verified in the plan.
+2. `Run` gains optional `branch`, `browser`, `shard` (`{ current, total }`) and `os`. Values are validated at the boundary: strings trimmed, control characters cleaned, capped at 200 characters; shard numbers integers of at least 1. Hostile values (a 10,000-character branch, `<script>`, shard -1) become cleaned and capped text or null, never an exception.
+3. If the report holds a commit hash in its metadata, `Run.commit` uses it (full value stored, 7 characters shown). A user label still wins over it (DEV-32 adds the UI). When a commit is found, no `import.noCommit` notice is added.
+4. Missing fields stay null and are never invented.
+5. A v0 stored row (no new fields) still loads and scores the same (db test). `src/ui/data/stored.ts` lists the new fields as optional; `schemaVersion` stays 1.
+6. Loaded data runs table shows Branch, Browser and Shard from the data; missing values show "-" as today. Existing copy keys are reused; any new key is listed in the report.
+7. Tests: a unit test per field, bad-input tests extended with hostile metadata, and a property test that arbitrary metadata never throws.
 
 **Details:**
-- Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: DEV-36, DEV-38 (the board is ready).
-- **Board ready (2026-11-25):** board 13, `docs/ux/wireframes/FullTest.dc.html` and `FullTestLight.dc.html`; design rules in `DESIGN.md` "Full test page and log viewer"; confirmed copy in `docs/ux/04-ux-copy.md` section 15 (`full.*`, `log.*`, `evidence.*`, `corr.*`). Use that wording and those keys. Correlation wording rule: a link is a clue, never a cause ("fails more often on", never "is caused by"); strength is a word, never a bare p-value.
-- Board details to build: one column (max 1232px) with a top bar (Back to tests keeps filters and scroll place, Copy test name), the test name in mono with the status pill, the path, the last-12 squares, three stat tiles (attempts failed, passed on retry, wasted time; confidence is already in the status note, simplification pass), the status note with the cause tip, then Run timeline (Run, Commit with a "label" tag when typed, When, Result as squares plus words, Time; "Show all N runs"), Failure log, and What it depends on. Log viewer: search with a live count ("No matches" at zero), previous and next, the Wrap lines switch, Copy line, muted non-selectable line numbers, evidence lines with a 3px accent bar and a dotted underline, a 2px focus ring on the jump target, "Show more" for lines over 2,000 characters, at most 150 rows drawn, a run picker, a region named by `log.region`. Evidence chip: "Quoted from the log · line N", or the amber "Not found in the log" hint that is not highlighted. Correlations: a finding box with the strength word, one plain sentence, rate bars (red only on the highlighted value) and a closed "How this was worked out" block; the quiet boxes for no clear link, not enough data (with the exact thresholds and the test's numbers) and a missing dimension. Phone layout stacks the timeline rows. Edge states: no log text, a test that never failed, a 5 MB log, a hostile or very long line.
-- Simplification pass (`docs/ux/12-simplification-pass.md` section 4 and 6): the page shows three tiles; the plan also says correlation findings are closed except the strongest, and the log opens at the first evidence line. Check board 13 on the canvas (v77) for the final form before building, and follow the board where it differs. Board notes are in closed "Design note" blocks and are not UI.
-- Engine inputs: `correlate` (DEV-38: per-value failed and attempts, adjusted p, odds ratio, strength, the not-enough-data reason), `classifyGroup` and `verifyEvidence` (DEV-36), and per-line numbers for the log text (split lazily so a 5 MB message stays responsive).
-- Spec: section 13 (LogViewer, EvidenceChip), 6 (v1 row).
+- Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: nothing.
+- Plan risk: Playwright field names for git info, shard and project are unverified here; this ticket verifies them first.
+- Files: `src/engine/types.ts`, `src/engine/import/playwright.ts`, `src/ui/data/stored.ts`, `src/ui/screens/LoadedData.tsx`, `flake-lab/playwright.config.ts` (git capture, shard), `fixtures/playwright/real/`.
+- Security chat re-review: yes (new untrusted fields).
 
-**Skills/Plugins:** superpowers:executing-plans, superpowers:test-driven-development, superpowers:verification-before-completion, frontend-design / impeccable (match DESIGN.md), interaction-design.
+**Skills/Plugins:** superpowers:executing-plans, superpowers:test-driven-development, superpowers:verification-before-completion, security-review.
 
 **Limitations/Restrictions:**
 - Version control (branches, pull requests, merges, tags, version numbers) and every CI/CD change belong to the Project Dev Ops chat. Work on the branch the Dev Ops chat names; commit only task files; no push, no merge.

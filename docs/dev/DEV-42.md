@@ -1,35 +1,30 @@
-# DEV-42: Installable offline app (PWA)
+# DEV-42: Export CSV and JSON, report preview
 
 **Status:** To do
 
-**Goal:** FlakeLens installs like an app and works offline after the first load, without ever serving mixed old and new files.
+**Goal:** Take results to a ticket or a spreadsheet: CSV, JSON and a Markdown report.
 
 **Objectives:**
-- Add the manifest and a service worker.
-- Add a safe update flow.
+- Enable the two disabled Export items.
+- Add the report preview.
 
-**Scope:** Frontend (build, service worker).
+**Scope:** Frontend.
 
 **Acceptance Criteria:**
-1. `vite-plugin-pwa` (Workbox, generateSW) precaches the built files only: no runtime caching of other origins and no caching of anything outside the app. `scope`, `start_url` and the base path are `/flakelens/`. Icons come from the logo files (PNG 192 and 512 plus a maskable one); say how they were made.
-2. Update flow: the new worker waits; a toast says `pwa.update` with the primary button `pwa.updateAction` (Reload). The toast has no timer and is never pushed out by other toasts. When storage is off and data is loaded, the toast says `pwa.update.storageOff` instead and adds the secondary button `pwa.updateAction.anyway` (Reload anyway); for that the update toast reads the storage state from the store at the moment the worker reports the update. No `skipWaiting` mid-session, so a tab never mixes old and new files. Old caches are deleted on activate.
-3. Offline-ready toast `pwa.offlineReady` closes itself after 8 seconds and shows once per install.
-4. Install is a row in Settings under About (board 11, needs the DEV-41 settings page): `pwa.install.title`, `pwa.install.hint` and the button `pwa.install.action` when the browser offers installation (capture the `beforeinstallprompt` event; no pop-up anywhere); after install the row shows `pwa.installed.title`, `pwa.installed.hint` and the pill `pwa.installed.badge` (use the `appinstalled` event and the standalone display mode); on Safari on iPhone or iPad it shows the how-to text `pwa.install.ios.title` and `pwa.install.ios.hint` with no button; the whole row is hidden when the browser cannot install.
-5. Toast rules for these toasts: at most 2 at a time, bottom left on desktop and full width on phones, never take focus, Esc closes the focused toast, 150 ms fade that is off with reduced motion. Tests for each variant and for the stacking rule.
-6. CSP adds only what is needed (`manifest-src 'self'`); `worker-src 'self'` is already there. The privacy e2e still passes: every request, including the worker's, stays on the app origin.
-7. e2e: manifest valid, worker registered, then the network goes offline (`context.setOffline`) and the app loads, the sample works, importing a file works. An update simulation: serve build A, load, serve build B, the toast appears, Reload gives B only.
-8. Check that `sw.js` and the manifest are not cached for long by the host and report the response headers; if Pages caches them, hand the finding to the Dev Ops chat.
-9. Report the plugin's version and licence; bundle size change reported.
-10. Second sub-label sweep (`docs/ux/12-simplification-pass.md` section 7b, canvas v79): the install rows have no hints (the explanation is a tooltip); the Safari row is one line, "On iPhone or iPad: Share, then Add to Home Screen" (replace `pwa.install.ios.title` and `pwa.install.ios.hint` by one key). Retire `pwa.install.hint` and `pwa.installed.hint`.
+1. Export menu: "Download CSV" and "Download JSON" work. CSV has one row per test in the table order: rank, test, file, project, status, score, mixed commits, flip rate, attempts, wasted minutes, evidence, first seen, last failed. Cells use the shared formula-safe helper (`csvCell`); the file starts with a byte-order mark. JSON is the canonical export `{ app, version, exportedAt, scope, tests }`.
+2. Scope choice, as in board 14: the Export menu opens with a radiogroup "What to export" (`export.scope`): "Current view (n tests)" with the hint `export.scope.view.hint` (tab and search) or "All tests (n)" (ignores the tab and the search). The default is Current view and the choice is remembered while the user stays on the page. The menu order is: scope group, Copy top Flaky tests (kept from v0), Download CSV, Download JSON, Open report (`export.report`). Rule 8 (canvas v78): the Export menu shows no hints at all; `export.csv.hint`, `export.json.hint`, `export.scope.view.hint`, `export.scope.all.hint` and the Copy top Flaky tests and Open report hints are not shown (the item names carry the meaning; keep the explanation text as tooltips where useful). With zero tests in view the file items are disabled, the reason is written beside them, and `export.empty.title`, `export.empty.body` and the action `export.empty.all` ("Export all tests") appear. Retire the key `tests.export.later` ("Coming in v1").
+3. `#/report` (board 14): a top bar with Back to tests, the title, the lead line `report.lead`, the primary button "Copy Markdown" and the secondary "Download .md"; a Preview or Markdown segmented group (`aria-pressed`); the scope shown as text with a note to change it from the Export menu (`report.scope`); a sample-data status line (`report.sample`). The Markdown follows `report.md.*`: title, a meta line (date, files, runs, tests, scope), a Summary with the five status counts and the wasted CI time (measured Flaky time, and the Unproven estimate worded "up to ... more if the Unproven tests are flaky"), the Top Flaky tests ("Failed {failed} of {total} attempts, mixed results on {commits} commits, {minutes} min wasted", plus "Likely cause: {cause} ({level} confidence)" when the classifier has one) and the footer (version, rankings not calibrated, causes likely not certain). All text from the report goes through the shared `escapeMd`. The preview is a surface box; the Markdown view is a monospace block that scrolls sideways and never wraps. Edge states: `report.noData.*` (with the action Add your files) and `report.noFlaky` (summary only).
+4. File names are constants (`flakelens-tests.csv`, `flakelens-tests.json`, `flakelens-report.md`). Sample-data exports say "sample data" inside the file (CSV: a first comment-free marker column or row as the dev chat decides and reports; JSON: a `sample: true` field; Markdown: the `report.sample` sentence). Toasts name the file and the count: `toast.export.csv` (same pattern for JSON and the report), `toast.export.copied`; a blocked clipboard shows `toast.export.copyFailed` as an alert with the action "Download .md", replacing `toast.copyFailed` on the report page.
+5. Tests: names with a newline, leading `=`, commas and quotes; 5,000 tests export in under 1 s; e2e downloads and reads the files.
+6. No network; downloads use `downloadFile` (with the revoke delay from DEV-31).
+7. Rule 8 (`docs/ux/12-simplification-pass.md`, canvas v78): no grey helper line under a label; explanations go in a tooltip or a closed block; a helper stays only if it prevents a mistake. The report page has no lead sentence (`report.lead` is retired) and no scope hint line beyond the scope text itself. Do not add the retired keys.
 
 **Details:**
-- Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: DEV-37 to DEV-41.
-- Spec: sections 7 (PWA), 15 (offline behaviour). Plan Review Focus 5.
-- Pages deploy settings are the Dev Ops chat's; this ticket changes the build output only.
-- Security chat re-review: yes (cache scope, update flow, hijack resistance).
-- **Board ready (2026-11-25):** board 11, `docs/ux/wireframes/Banners.dc.html` and `BannersLight.dc.html`; design rules in `DESIGN.md` "System banners and toasts"; confirmed copy in `docs/ux/04-ux-copy.md` section 13 (`pwa.*` keys). Use that wording and those keys.
+- Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: DEV-37 for the "Likely cause" lines (without it the report simply omits them); the board is ready.
+- **Board ready (2026-11-25):** board 14, `docs/ux/wireframes/Report.dc.html` and `ReportLight.dc.html`; design rules in `DESIGN.md` "Export menu and report"; confirmed copy in `docs/ux/04-ux-copy.md` section 16 (`export.*`, `report.*`, `toast.export.*`). Use that wording and those keys. The Export menu is a 340px popover; keyboard focus is a 2px inset ring on the item; the menu keeps its v0 first item.
+- Spec: sections 3 (goal 5), 6, 13 (Report screen). Security chat re-review: yes (exports are an output boundary).
 
-**Skills/Plugins:** superpowers:executing-plans, superpowers:test-driven-development, superpowers:verification-before-completion, security-review.
+**Skills/Plugins:** superpowers:executing-plans, superpowers:test-driven-development, superpowers:verification-before-completion, security-review, frontend-design / impeccable (match DESIGN.md).
 
 **Limitations/Restrictions:**
 - Version control (branches, pull requests, merges, tags, version numbers) and every CI/CD change belong to the Project Dev Ops chat. Work on the branch the Dev Ops chat names; commit only task files; no push, no merge.

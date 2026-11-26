@@ -1,30 +1,29 @@
-# DEV-35: Failure fingerprinting and grouping
+# DEV-35: Flake lab: one test per cause
 
 **Status:** To do
 
-**Goal:** 200 red tests become a handful of failure groups, and many tests failing the same way at once read as one environment event.
+**Goal:** Ground truth for the cause classifier: one lab test per cause in the spec's list, with realistic failure text.
 
 **Objectives:**
-- Normalise failure messages into fingerprints and group them.
-- Detect environment events.
+- Add lab tests for the missing causes and record each test's cause in `labels.json`.
 
-**Scope:** Backend (engine).
+**Scope:** Enhancement (flake lab).
 
 **Acceptance Criteria:**
-1. `normalizeMessage(text)` in `src/engine/group/normalize.ts` masks numbers, hex, UUIDs, timestamps, absolute paths, ports, URL query strings, emails, tokens (long base64 or hex runs, `Bearer` values) and memory addresses, collapses whitespace and caps the result. It is linear time. Property tests: changing numbers, timestamps or UUIDs does not change the fingerprint; changing words does.
-2. Masked values in the template are typed placeholders the UI draws as small grey tags: `‹n›` for numbers and ports, `‹id›` for hex, UUIDs, tokens and memory addresses, `‹path›` for file paths and URLs, `‹time›` for timestamps (write the angle marks as the code points U+2039 and U+203A in source, never raw; export the four token strings from one constant). `fingerprint(text)` hashes the normalised text (reuse `hashString`) and keeps a capped template (300 characters) for display; the full normalised text stays available so the UI can show the full message (board 12). The normalised template never contains the fake token from the lab fixtures (test).
-3. `groupFailures(ds, config)` returns `FailureGroup { fingerprint, template, count, testIds, runIds, firstRunId, lastRunId, environmentEvent }[]` sorted by count. Near-duplicates merge by shingle Jaccard similarity at or above `config.groupMergeJaccard` (start 0.8) with union-find.
-4. `environmentEvent` is true when at least `config.envEventMinTests` (start 5) distinct tests fail with the same fingerprint in one run. Both thresholds live in `src/engine/config.ts` with tests.
-5. Timing: a 1 MB single-line message, 1 MB of `a.` repeated, and 100,000 distinct short messages each finish in under 500 ms, 500 ms and 2 s; grouping 5,000 tests x 50 runs finishes in under 2 s. Report the numbers.
-6. Lab check: the lab fixtures give one group for the infrastructure event and distinct groups for the other injected causes (list expected counts in the report).
-7. No UI change, no new dependency.
+1. `flake-lab/labels.json` gets a `cause` next to `label`, using the spec 12 categories: timing and waits, order dependency, shared state or data, network or external service, environment or resources, concurrency, locator or UI, time and randomness, infrastructure. Existing tests keep their labels and pass and fail patterns (before and after diff).
+2. New lab tests, at least one for each category not yet covered: order dependency, shared state or data, network or external service, environment or resources, concurrency (race), locator or UI, infrastructure. Each fails with realistic Playwright or Node error text (for example `strict mode violation`, `net::ERR_CONNECTION_REFUSED`, `ECONNRESET`, a 503, `expect(received).toBe(expected)` with stale data). The README lists each message. The lab injects causes with seeded outcomes and realistic text, so it validates the classifier's text rules, not real mechanisms; say so.
+3. Each new flaky test shows at least one mixed commit in the generated files (as DEV-05 AC3).
+4. An infrastructure event: in two runs, at least 4 tests fail with the same normalised message and recover afterwards.
+5. Failures include multi-line stacks with project frames and library frames, and one log with an obviously fake secret-like token (for redaction tests).
+6. A lab test that fails only in one of two Playwright projects (for example `chromium` and `chromium-mobile`, a different viewport), for DEV-40.
+7. Regenerate fixtures, sample set and `docs/eval/lab-detection.md`; flaky precision and recall rows stay 1.00 or the change is explained. Report the lab runtime and the sample size (keep it under 1 MB).
 
 **Details:**
 - Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: DEV-34.
-- Spec: section 10 (fingerprints, Jaccard, union-find) and 11.1 (environment event versus test problem).
-- Security chat re-review: yes (secrets in stacks, ReDoS).
+- Spec: section 16 (the flake lab: one test per cause).
+- Do not change engine code in this ticket; if the engine mislabels a new test, report it.
 
-**Skills/Plugins:** superpowers:executing-plans, superpowers:test-driven-development, superpowers:verification-before-completion, security-review.
+**Skills/Plugins:** superpowers:executing-plans, superpowers:test-driven-development, superpowers:verification-before-completion.
 
 **Limitations/Restrictions:**
 - Version control (branches, pull requests, merges, tags, version numbers) and every CI/CD change belong to the Project Dev Ops chat. Work on the branch the Dev Ops chat names; commit only task files; no push, no merge.

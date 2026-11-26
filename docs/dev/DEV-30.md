@@ -1,31 +1,30 @@
-# DEV-30: Run metadata from Playwright reports
+# DEV-30: Community files and feedback path
 
 **Status:** To do
 
-**Goal:** Runs carry commit, branch, browser, shard and OS when the report has them, so evidence across commits works for the user's own reports.
+**Goal:** The public repository has the community files the launch checklist (spec 18) and the Settings About links expect.
 
 **Objectives:**
-- Read run metadata from Playwright JSON reports.
-- Store it safely and show it on Loaded data.
+- Add SECURITY.md, CONTRIBUTING.md, CODE_OF_CONDUCT.md and issue templates.
+- Name a feedback path in the README.
 
-**Scope:** Backend (importer, storage) + small frontend.
+**Scope:** Documentation (repository files).
 
 **Acceptance Criteria:**
-1. First, produce real Playwright 1.65 JSON from the flake lab with git info capture on (the installed version's option, for example `captureGitInfo`), with the `shard` option and with two projects, and commit the files under `fixtures/playwright/real/`. Record in the report the exact JSON paths where commit, branch, project or browser, shard and OS appear. Anything not present is stated as not present; none of these paths is verified in the plan.
-2. `Run` gains optional `branch`, `browser`, `shard` (`{ current, total }`) and `os`. Values are validated at the boundary: strings trimmed, control characters cleaned, capped at 200 characters; shard numbers integers of at least 1. Hostile values (a 10,000-character branch, `<script>`, shard -1) become cleaned and capped text or null, never an exception.
-3. If the report holds a commit hash in its metadata, `Run.commit` uses it (full value stored, 7 characters shown). A user label still wins over it (DEV-31 adds the UI). When a commit is found, no `import.noCommit` notice is added.
-4. Missing fields stay null and are never invented.
-5. A v0 stored row (no new fields) still loads and scores the same (db test). `src/ui/data/stored.ts` lists the new fields as optional; `schemaVersion` stays 1.
-6. Loaded data runs table shows Branch, Browser and Shard from the data; missing values show "-" as today. Existing copy keys are reused; any new key is listed in the report.
-7. Tests: a unit test per field, bad-input tests extended with hostile metadata, and a property test that arbitrary metadata never throws.
+1. `SECURITY.md` explains how to report a vulnerability privately (GitHub's "Report a vulnerability" under the Security tab; the owner switches private reporting on in Settings > Code security, say so in the report), what is in scope (a client-only app: no backend, no accounts), what is not, which versions are supported (the latest on GitHub Pages), and the response expectation in plain words. It lists the accepted risks from `docs/security/review-2026-11-22.md` section 7 in two or three lines (non-cryptographic IDs, meta-tag CSP and shared `github.io` origin) without publishing the full report.
+2. `CONTRIBUTING.md` is short: how to run the app and tests (`npm install`, `npm run dev`, `npm test`, `npm run e2e`), what a good bug report holds, the rules (no secrets or real test reports in issues, plain commit messages, pull requests only because `main` is protected), and where the plan and tickets live (`docs/dev/README.md`).
+3. `CODE_OF_CONDUCT.md` uses the Contributor Covenant 2.1 with its required attribution. The enforcement contact is GitHub's private reporting or the maintainer through the repository; do not use the owner's email address. Ask the owner in the report whether they want another contact.
+4. Issue templates in `.github/ISSUE_TEMPLATE/`: a bug report (version or commit, browser, steps, a clear warning not to attach real reports or secrets and how to anonymize a report) and a feature request; `config.yml` turns off blank issues and links the security policy.
+5. The README gains one short "Feedback" paragraph linking the issue templates, the security policy and the contributing guide; nothing else in the README changes.
+6. All four files render (headings, links resolve); the links `Source code`, `Report an issue` and `Security policy` that the Settings About block uses work: the dev chat lists the exact URLs for DEV-33.
+7. No code changes.
 
 **Details:**
 - Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: nothing.
-- Plan risk: Playwright field names for git info, shard and project are unverified here; this ticket verifies them first.
-- Files: `src/engine/types.ts`, `src/engine/import/playwright.ts`, `src/ui/data/stored.ts`, `src/ui/screens/LoadedData.tsx`, `flake-lab/playwright.config.ts` (git capture, shard), `fixtures/playwright/real/`.
-- Security chat re-review: yes (new untrusted fields).
+- Source: spec section 18 (launch readiness checklist: issue templates, CONTRIBUTING, security policy, code of conduct, a feedback path) and board 10 (About links `settings.about.links`: Source code, Report an issue, Security policy, MIT licence).
+- Docs-only except the `.github/ISSUE_TEMPLATE` files, which the CI path filters do not skip; Dev Ops handles that.
 
-**Skills/Plugins:** superpowers:executing-plans, superpowers:test-driven-development, superpowers:verification-before-completion, security-review.
+**Skills/Plugins:** superpowers:verification-before-completion.
 
 **Limitations/Restrictions:**
 - Version control (branches, pull requests, merges, tags, version numbers) and every CI/CD change belong to the Project Dev Ops chat. Work on the branch the Dev Ops chat names; commit only task files; no push, no merge.
@@ -35,6 +34,5 @@
 - Plain commit messages, no Claude attribution.
 
 **Definition of Done:**
-- Tests written first and seen failing, then passing.
-- `npx vitest run`, `npm run typecheck`, `npm run lint` and `npm run build` green; `npm run e2e` green when the app changes.
+- Files written, links checked, nothing else changed.
 - Committed on the branch named by the Dev Ops chat; development report sent to the planning chat.

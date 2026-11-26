@@ -526,7 +526,7 @@ Rule for the build: the visible text is exactly what is in the Text column. Word
 | `tests.density.comfortable` | Comfortable | ✓ |
 | `tests.filters` | Active filters | ✓ |
 | `tests.filters.status` | Status: {status} | ✓ |
-| `tests.filters.search` | Search: "{query} | ✓ |
+| `tests.filters.search` | Search: "{query}" | ✓ |
 | `tests.filters.remove` | Remove filter {filter} | ✓ |
 | `tests.filters.clear` | Clear filters | ✓ |
 | `tests.why` | see evidence | ✎ The column is now Evidence |
@@ -587,7 +587,7 @@ New and changed keys from `docs/ux/11-v0-review-decisions.md`:
 | `clear.body` (addition) | …You can't undo this. Your theme and display choices are kept. | Decision 12 |
 | `tests.health.scope` | All {n} tests | Small caption in the Test health box, because the tabs follow the search and this box does not (decision 2) |
 
-## 11. v1 copy: commit or label per file (board 9, DEV-31, 2026-11-25)
+## 11. v1 copy: commit or label per file (board 9, DEV-32, 2026-11-25)
 
 | Key | Text | Note |
 |---|---|---|
@@ -613,7 +613,7 @@ New and changed keys from `docs/ux/11-v0-review-decisions.md`:
 | `import.noCommit.link` | Add a commit label | Link in the no-commit note. It moves focus to the first file without commit info |
 | `runs.commit.labelTag` | label | Small tag after a typed label in the Commit column of the runs table |
 
-## 12. Settings and per-file remove (board 10, DEV-41)
+## 12. Settings and per-file remove (board 10, DEV-33)
 
 | Key | Text | Note |
 |---|---|---|
@@ -650,7 +650,7 @@ New and changed keys from `docs/ux/11-v0-review-decisions.md`:
 | `toast.fileRestored` | {file} restored. Rankings updated. | |
 | `toast.undo` | Undo | |
 
-## 13. System banners and toasts (board 11, DEV-17, DEV-20, DEV-42)
+## 13. System banners and toasts (board 11, DEV-17, DEV-20, DEV-45)
 
 Existing keys confirmed as they are: `storage.off`, `storage.fail`, `storage.skipped`, `storage.reload`, `banner.dismiss`.
 
@@ -671,7 +671,7 @@ Existing keys confirmed as they are: `storage.off`, `storage.fail`, `storage.ski
 | `pwa.install.ios.title` | Install on iPhone or iPad | |
 | `pwa.install.ios.hint` | In Safari, choose Share, then Add to Home Screen. | No button |
 
-## 14. Failure groups, cause chips and cause tips (board 12, DEV-37)
+## 14. Failure groups, cause chips and cause tips (board 12, DEV-38)
 
 Wording rule: a cause is always "likely" or "probably", never a fact. Tips are two short sentences (what probably happened, then one thing to do). Unknown adds no tip.
 
@@ -717,7 +717,7 @@ Wording rule: a cause is always "likely" or "probably", never a fact. Tips are t
 | `cause.infrastructure` / `cause.infrastructure.tip` | Infrastructure | The CI service probably failed, not the test. Check the runner, then run it again. |
 | `cause.unknown` | Cause unknown | (no tip) |
 
-## 15. Full test page, log viewer and correlations (board 13, DEV-39)
+## 15. Full test page, log viewer and correlations (board 13, DEV-41)
 
 Wording rule for correlations: a link is a clue, never a cause. Say "fails more often on", never "is caused by". Strength is a word (Strong, Moderate, Weak), never a bare p-value.
 
@@ -760,9 +760,9 @@ Wording rule for correlations: a link is a clue, never a cause. Say "fails more 
 | `corr.how` | How this was worked out | Closed details |
 | `corr.how.body` | Compared {value} with the rest using Fisher's exact test. Odds ratio {or}, adjusted p {p} (corrected for {n} comparisons). Strength: {strength}. | |
 
-## 16. Export menu and report (board 14, DEV-40)
+## 16. Export menu and report (board 14, DEV-42)
 
-Existing keys kept: `tests.export` "Export", `tests.export.copyTop`, `tests.export.copyTop.hint`, `tests.export.csv` "Download CSV", `tests.export.json` "Download JSON". Retire `tests.export.later` ("Coming in v1") when DEV-40 lands.
+Existing keys kept: `tests.export` "Export", `tests.export.copyTop`, `tests.export.copyTop.hint`, `tests.export.csv` "Download CSV", `tests.export.json` "Download JSON". Retire `tests.export.later` ("Coming in v1") when DEV-42 lands.
 
 | Key | Text | Note |
 |---|---|---|

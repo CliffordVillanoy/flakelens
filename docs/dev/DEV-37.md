@@ -1,34 +1,33 @@
-# DEV-37: Failure groups screen and cause tips
+# DEV-37: Rule-based cause classifier
 
 **Status:** To do
 
-**Goal:** Users see failures as groups with a likely cause, and each test's note gives cause-specific tips.
+**Goal:** Each failure group gets a likely cause with quoted evidence, from rules only, no model.
 
 **Objectives:**
-- Add the Groups tab and cards.
-- Add cause tips and evidence lines to the detail panel.
+- Classify failures into the nine causes or "unknown".
+- Publish accuracy on the lab with its limits.
 
-**Scope:** Frontend.
+**Scope:** Backend (engine, evaluation).
 
 **Acceptance Criteria:**
-1. `#/groups` is a second tab beside Tests (IA section 3). Each failure group card shows the template in mono, count, first and last seen, a "Likely cause" chip with confidence and the quoted evidence lines, and links to its tests. Environment events collapse into one card ("N tests failed the same way in run X").
-2. The detail panel adds the cause tip to the status note when confidence is medium or high, in "likely" wording; `unknown` adds nothing. Evidence lines are highlighted in the latest-failure hunk.
-3. All text from the copy module with ICU plurals; new keys are interim and listed.
-4. Hostile and very long messages render as text; 5,000 groups stay responsive (virtualised).
-5. Keyboard operable; axe finds no serious or critical issue on the screen in both themes.
-6. `#/groups?q=` filters by template text; sort and search state live in the URL.
-7. Rule 8 (`docs/ux/12-simplification-pass.md`, canvas v78): no grey helper line under a label; explanations go in a tooltip or a closed block; a helper stays only if it prevents a mistake. On Groups: no lead sentence, the card meta reads "{failures} failures · {tests} tests · last seen {date}", no "Showing n of N groups" line and no unknown-cause note. Do not add these keys, or retire them: `groups.lead`, `groups.showing`, `groups.unknown.note`; `groups.meta` takes the shorter form. Tooltips keep the explanation text.
-8. e2e: sample, Groups tab, open a card, open its test, see the cause tip.
+1. `classifyFailure({ message, stack, ... })` returns `{ category, confidence: 'low' | 'medium' | 'high', evidence: { line, text }[], hint? }`. Categories are exactly the spec 12 list plus `unknown` when no rule fires; it never forces a guess. The cause ids are the string union `'timing' | 'order' | 'sharedState' | 'network' | 'environment' | 'concurrency' | 'locator' | 'time' | 'infrastructure' | 'unknown'`, so the UI reads its names and tips from the copy keys `cause.<id>` and `cause.<id>.tip` (UI/UX copy, section 14).
+2. Rules live in `src/engine/cause/rules.ts` as data: id, category, bounded pattern, weight, tip. Cover at least: timeout and waiting-for-locator text, `strict mode violation` and visibility or detached errors, `net::ERR_*`, `ECONNREFUSED`, `ECONNRESET`, `getaddrinfo`, 5xx, `Target closed`, out-of-memory and `ENOSPC`, date or time-looking mismatches. Document each rule in the report.
+3. Evidence lines are exact substrings of the input with 1-based line numbers (property test: every evidence text occurs in the input at that line). Library frames are dropped, project-code frames kept, at most 5 lines.
+4. Optional correlation hints (for example fails only on one browser) change confidence, never the quoted evidence. An `environmentEvent` group classifies as infrastructure unless a stronger test-specific rule fires.
+5. ReDoS: a table-driven test runs every rule on 1 MB hostile strings and each finishes in under 500 ms.
+6. Group level (needed by board 12): `classifyGroup(group, ds, config)` returns `{ category, confidence: 'high' | 'medium' | 'low', evidence: { line, text }[], attemptId, agreement }`. It classifies up to 20 sampled failures of the group; the winning category is the majority; `agreement` is its share; confidence is `high` only when agreement is at least 0.8 and the winning rule's weight is high, `medium` at agreement of at least 0.5, otherwise `low`; no rule gives `unknown`. `attemptId` is a representative failure that matched the winning rule (the latest one), and `evidence` is quoted from that failure's text with 1-based line numbers. The thresholds live in `src/engine/config.ts` with tests; the UI shows a cause tip only for `medium` and `high`. The group's count, first and last seen and run count come from `FailureGroup` (DEV-36).
+7. `verifyEvidence(logText, evidence)` returns whether each quoted line really occurs at its line number in the log text (board 13 shows "Quoted from the log" or "Not found in the log" per quote); property test: evidence produced by the classifier always verifies, and a changed or shifted line does not.
+8. `npm run eval:causes` writes `docs/eval/lab-causes.md`: accuracy and a confusion matrix per category on the lab (needs DEV-35), `unknown` counted as wrong and shown separately, a limits paragraph (synthetic messages, small sample). Publish whatever the numbers are.
+9. No UI change, no new dependency.
 
 **Details:**
-- Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: DEV-36 (the board is ready).
-- **Board ready (2026-11-25):** board 12, `docs/ux/wireframes/Groups.dc.html` and `GroupsLight.dc.html`; design rules in `DESIGN.md` "Failure groups and cause chips"; confirmed copy in `docs/ux/04-ux-copy.md` section 14 (`groups.*`, `panel.cause.*`, `panel.latest`, `cause.<id>` names and `cause.<id>.tip` tips for the nine causes and Unknown). Use that wording and those keys; the wording rule is "likely" or "probably", never a fact.
-- Board details to build: `#/groups` as the second tab with a count pill, search (`?q=`), sort (Most failures, Most tests, Latest) and "Showing n of N groups"; list order is environment events first, then the chosen sort. A group card has the masked template in mono with the grey tags (`‹n›`, `‹id›`, `‹path›`, `‹time›`), counts, first and last seen, an outlined (never filled) chip "Likely cause: {name}" with confidence in words (High, Medium, Low) or `groups.chip.unknown`, an evidence block (canvas fill, muted line numbers, matched text on the selection fill with a dotted underline), test links and "Show all N tests" expanding in place. The environment-event card sits on top on the info band with the heading "N tests failed the same way in run X". Cause tip in the detail panel: inside the status note box below a divider, bold "Likely cause", muted confidence, the two-sentence tip and the link "See the group of N failures"; added only at medium or high confidence, with the highlighted hunk; Low and Unknown add nothing. Edge states: no failures, no match with Clear search, a message over 300 characters cut with "Show full message", and 5,000 groups virtualised.
-- Simplification pass (`docs/ux/12-simplification-pass.md` section 4): the plan collapses each card's evidence to 2 lines with "Show all" and drops "Likely cause:" from the chip when a heading already says it. Check board 12 on the canvas (v77) for the final form and follow the board where it differs.
-- Engine inputs this ticket reads: `groupFailures` (DEV-35: template, counts, test ids, run ids, first and last run, environment event) and `classifyGroup` (DEV-36: category, confidence, evidence lines with numbers, representative attempt).
-- IA: `docs/ux/02-information-architecture.md` section 8 (v1 additions).
+- Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: DEV-36.
+- Spec: sections 12 (category list, evidence rule), 17 (cause accuracy), 19.1.
+- Wording is always "likely"; the classifier never states a cause as fact.
+- Security chat re-review: yes.
 
-**Skills/Plugins:** superpowers:executing-plans, superpowers:test-driven-development, superpowers:verification-before-completion, frontend-design / impeccable (match DESIGN.md), interaction-design.
+**Skills/Plugins:** superpowers:executing-plans, superpowers:test-driven-development, superpowers:verification-before-completion, security-review.
 
 **Limitations/Restrictions:**
 - Version control (branches, pull requests, merges, tags, version numbers) and every CI/CD change belong to the Project Dev Ops chat. Work on the branch the Dev Ops chat names; commit only task files; no push, no merge.

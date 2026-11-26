@@ -79,25 +79,51 @@ Written 2026-11-25. Build order is in "Build sequence from 2026-11-26" in the v1
 
 | Ticket | Title | Scope | Needs first | Status |
 | --- | --- | --- | --- | --- |
-| [DEV-28](DEV-28.md) | Sample data: realistic lab durations | Enhancement (flake lab) | nothing | To do |
-| [DEV-29](DEV-29.md) | v0 deferred minors cleanup | Fix or refinement (frontend) | nothing | To do |
-| [DEV-44](DEV-44.md) | Apply the UI/UX v0 review decisions (tokens, copy sync, banners and toasts) | Frontend | nothing | To do |
-| [DEV-46](DEV-46.md) | Simplification pass on the v0 screens | Frontend (copy and screen changes) | DEV-44 | To do |
-| [DEV-45](DEV-45.md) | Community files and feedback path | Documentation (repository files) | nothing | To do |
-| [DEV-30](DEV-30.md) | Run metadata from Playwright reports | Backend (importer, storage) + small frontend | nothing | To do |
-| [DEV-31](DEV-31.md) | Commit or label per imported file | Frontend (+ pure engine helper) | DEV-30; board from the UI/UX chat | To do |
-| [DEV-32](DEV-32.md) | JUnit XML importer | Backend (importer) + small frontend | DEV-30 | To do |
-| [DEV-33](DEV-33.md) | Real-data check of the flaky detector | Backend (evaluation) | DEV-32 | To do |
-| [DEV-34](DEV-34.md) | Flake lab: one test per cause | Enhancement (flake lab) | DEV-28 | To do |
-| [DEV-35](DEV-35.md) | Failure fingerprinting and grouping | Backend (engine) | DEV-34 | To do |
-| [DEV-36](DEV-36.md) | Rule-based cause classifier | Backend (engine, evaluation) | DEV-35 | To do |
-| [DEV-37](DEV-37.md) | Failure groups screen and cause tips | Frontend | DEV-36; board from the UI/UX chat | To do |
-| [DEV-38](DEV-38.md) | Correlation by browser, shard, OS and time | Backend (engine) | DEV-30, DEV-34 | To do |
-| [DEV-39](DEV-39.md) | Full test page with log viewer | Frontend | DEV-36, DEV-38; board from the UI/UX chat | To do |
-| [DEV-40](DEV-40.md) | Export CSV and JSON, report preview | Frontend | DEV-35; board from the UI/UX chat | To do |
-| [DEV-41](DEV-41.md) | Settings screen and per-file remove | Frontend (+ pure engine helper) | board from the UI/UX chat | To do |
-| [DEV-42](DEV-42.md) | Installable offline app (PWA) | Frontend (build, service worker) | DEV-37 to DEV-41 | To do |
-| [DEV-43](DEV-43.md) | v1 review and release hand-off | Fix or refinement (review) | DEV-28 to DEV-42 | To do |
+| [DEV-28](DEV-28.md) | Apply the UI/UX v0 review decisions (tokens, copy sync, banners and toasts) | Frontend | nothing | Done locally (not pushed) |
+| [DEV-29](DEV-29.md) | Simplification pass on the v0 screens | Frontend (copy and screen changes) | DEV-28 | To do |
+| [DEV-30](DEV-30.md) | Community files and feedback path | Documentation (repository files) | nothing | To do |
+| [DEV-31](DEV-31.md) | v0 deferred minors cleanup | Fix or refinement (frontend) | nothing | To do |
+| [DEV-32](DEV-32.md) | Commit or label per imported file | Frontend (+ pure engine helper) | DEV-39; board from the UI/UX chat | To do |
+| [DEV-33](DEV-33.md) | Settings screen and per-file remove | Frontend (+ pure engine helper) | board from the UI/UX chat | To do |
+| [DEV-34](DEV-34.md) | Sample data: realistic lab durations | Enhancement (flake lab) | nothing | To do |
+| [DEV-35](DEV-35.md) | Flake lab: one test per cause | Enhancement (flake lab) | DEV-34 | To do |
+| [DEV-36](DEV-36.md) | Failure fingerprinting and grouping | Backend (engine) | DEV-35 | To do |
+| [DEV-37](DEV-37.md) | Rule-based cause classifier | Backend (engine, evaluation) | DEV-36 | To do |
+| [DEV-38](DEV-38.md) | Failure groups screen and cause tips | Frontend | DEV-37; board from the UI/UX chat | To do |
+| [DEV-39](DEV-39.md) | Run metadata from Playwright reports | Backend (importer, storage) + small frontend | nothing | To do |
+| [DEV-40](DEV-40.md) | Correlation by browser, shard, OS and time | Backend (engine) | DEV-39, DEV-35 | To do |
+| [DEV-41](DEV-41.md) | Full test page with log viewer | Frontend | DEV-37, DEV-40; board from the UI/UX chat | To do |
+| [DEV-42](DEV-42.md) | Export CSV and JSON, report preview | Frontend | DEV-36; board from the UI/UX chat | To do |
+| [DEV-43](DEV-43.md) | JUnit XML importer | Backend (importer) + small frontend | DEV-39 | To do |
+| [DEV-44](DEV-44.md) | Real-data check of the flaky detector | Backend (evaluation) | DEV-43 | To do |
+| [DEV-45](DEV-45.md) | Installable offline app (PWA) | Frontend (build, service worker) | DEV-33, DEV-38, DEV-40, DEV-41 and DEV-42 | To do |
+| [DEV-46](DEV-46.md) | v1 review and release hand-off | Fix or refinement (review) | DEV-28 to DEV-45 | To do |
+
+### Renumbering (2026-11-26)
+
+The v1 tickets were renumbered so the number follows the build sequence (DEV-24 stays on hold and keeps its number; done tickets keep theirs). Messages and notes written before this date cite the old numbers; use this table to translate.
+
+| New | Old | Title |
+| --- | --- | --- |
+| DEV-28 | DEV-44 | Apply the UI/UX v0 review decisions |
+| DEV-29 | DEV-46 | Simplification pass on the v0 screens |
+| DEV-30 | DEV-45 | Community files and feedback path |
+| DEV-31 | DEV-29 | v0 deferred minors cleanup |
+| DEV-32 | DEV-31 | Commit or label per imported file |
+| DEV-33 | DEV-41 | Settings screen and per-file remove |
+| DEV-34 | DEV-28 | Sample data: realistic lab durations |
+| DEV-35 | DEV-34 | Flake lab: one test per cause |
+| DEV-36 | DEV-35 | Failure fingerprinting and grouping |
+| DEV-37 | DEV-36 | Rule-based cause classifier |
+| DEV-38 | DEV-37 | Failure groups screen and cause tips |
+| DEV-39 | DEV-30 | Run metadata from Playwright reports |
+| DEV-40 | DEV-38 | Correlation by browser, shard, OS and time |
+| DEV-41 | DEV-39 | Full test page with log viewer |
+| DEV-42 | DEV-40 | Export CSV and JSON, report preview |
+| DEV-43 | DEV-32 | JUnit XML importer |
+| DEV-44 | DEV-33 | Real-data check of the flaky detector |
+| DEV-45 | DEV-42 | Installable offline app (PWA) |
+| DEV-46 | DEV-43 | v1 review and release hand-off |
 
 ## Notes for later tickets
 
@@ -144,14 +170,14 @@ Written 2026-11-25. Build order is in "Build sequence from 2026-11-26" in the v1
 - DEV-23 timing fix done (`0a4664f`): scheme length capped at 31; `escapeMd` on 100,000-character hostile strings went from about 13 s to about 15 ms. A scheme longer than 32 characters followed by `://` is no longer broken (no real scheme is that long).
 - From DEV-25: Dependabot PR #1 (typescript 6.0.3 to 7.0.2) was closed; `typescript` majors are ignored until `typescript-eslint` supports TypeScript 7 (remove the rule then, as its own migration ticket). Grouped PRs now carry minor and patch only; majors arrive as single PRs; `open-pull-requests-limit` is 5.
 - Verified 2026-11-22: the two-job Pages workflow deployed on the first try (one run). Watch the next few deploys; if the artifact race returns, add a short wait or retry before `deploy-pages`. Dependabot re-ran with the DEV-25 rules and opened no PR.
-- 2026-11-25, UI/UX chat answered the v0 review (`docs/ux/11-v0-review-decisions.md`, `docs/ux/04-ux-copy.md` sections 9 and 10, `DESIGN.md` contrast tokens). Applying it to the app is DEV-44. The six v1 boards are not designed yet; the UI/UX chat will post them in this order: DEV-31, DEV-41, system banners and toasts (DEV-17, 20, 42), DEV-37, DEV-39, DEV-40.
-- 2026-11-25, UI/UX board 1 of 6 is ready: board 9, commit or label per file (`docs/ux/wireframes/CommitLabel*.dc.html`, copy in `docs/ux/04-ux-copy.md` section 11). DEV-31 is unblocked (after DEV-30). Next boards in order: settings and per-file remove (DEV-41), system banners and toasts, failure groups (DEV-37), full test page (DEV-39), report (DEV-40).
-- 2026-11-25, UI/UX board 2 of 6 is ready: board 10, settings and per-file remove (`docs/ux/wireframes/Settings*.dc.html`, copy in `docs/ux/04-ux-copy.md` section 12). DEV-41 is unblocked. Decision: the About privacy text says "FlakeLens makes no network requests" until a cloud provider exists. The About block links to Security policy and Report an issue, so DEV-45 adds SECURITY.md and issue templates. Next boards: system banners and toasts, failure groups (DEV-37), full test page (DEV-39), report (DEV-40).
-- 2026-11-25, UI/UX board 3 of 6 is ready: board 11, system banners and toasts (`docs/ux/wireframes/Banners*.dc.html`, copy in `docs/ux/04-ux-copy.md` section 13). The v0 banner rules (one at a time, skipped-banner action, toast stacking) went into DEV-44; the PWA toasts and the Install row in Settings went into DEV-42. DEV-42 needs the DEV-41 settings page and the storage state at the time the worker reports an update. Next boards: failure groups (DEV-37), full test page (DEV-39), report (DEV-40).
-- 2026-11-25, UI/UX board 4 of 6 is ready: board 12, failure groups and cause chips (`docs/ux/wireframes/Groups*.dc.html`, copy in `docs/ux/04-ux-copy.md` section 14). DEV-37 is unblocked after DEV-36. Engine needs added to the tickets: typed mask tokens in the template (DEV-35) and a group-level `classifyGroup` with confidence, evidence lines and a representative attempt (DEV-36). Next boards: full test page (DEV-39), report (DEV-40).
-- 2026-11-25, UI/UX board 5 of 6 is ready: board 13, full test page and log viewer (`docs/ux/wireframes/FullTest*.dc.html`, copy in `docs/ux/04-ux-copy.md` section 15). DEV-39 is unblocked after DEV-36 and DEV-38. Engine needs added: the correlation result shape with per-value counts, adjusted p, odds ratio, Strong/Moderate/Weak and the not-enough-data numbers (DEV-38), and `verifyEvidence` (DEV-36). Last board: report preview and export (DEV-40).
-- 2026-11-25, UI/UX board 6 of 6 is ready: board 14, report preview and export (`docs/ux/wireframes/Report*.dc.html`, copy in `docs/ux/04-ux-copy.md` section 16). **All six v1 boards are done**; no v1 ticket waits for design any more. The UI/UX chat also reminds that the contrast token changes (light link `#0860CA`, muted dark `#A4ABB4` and light `#4F5A65`, skipped run square follows muted) are still pending in the app: that is DEV-44.
-- 2026-11-25, UI/UX simplification pass (`docs/ux/12-simplification-pass.md`, canvas v77): fewer words per screen, word budgets, rare choices in Settings. Applied to the v0 screens in DEV-44 (Tests, Start, detail panel, Loaded data, edge and import states; the density toggle stays until DEV-41 moves it to Settings) and to the v1 tickets DEV-31, DEV-37, DEV-39, DEV-40 and DEV-41. The planning plan carries the budgets as a global constraint.
-- 2026-11-25, UI/UX rule 8 (canvas v78): no grey helper line under a label. Applied to DEV-37, DEV-39, DEV-40, DEV-41 and DEV-44 (retired keys listed there). Replaces the earlier planning decision on the About privacy line: About shows only "FlakeLens {version}" and links. Note for Dev Ops: `package.json` still says version `0.0.0`; the Settings About line and the JSON export read it.
-- 2026-11-25, UI/UX second sub-label sweep (canvas v79, `docs/ux/12-simplification-pass.md` section 7b): shorter file sub-lines, no commit-field helper sentences, install rows without hints. Applied to DEV-31, DEV-41, DEV-42 and DEV-44. Kept on purpose: the file path under the test name, SHA and branch cells, the no-commit warning, the not-imported detail.
-- 2026-11-25: DEV-44 was split in two (17 criteria was too much for one ticket): DEV-44 keeps tokens, copy sync, header, banners and toasts; the new DEV-46 carries the simplification pass and sub-label sweeps. Sequence for the 2026-11-26 start is in the v1 plan.
+- 2026-11-25, UI/UX chat answered the v0 review (`docs/ux/11-v0-review-decisions.md`, `docs/ux/04-ux-copy.md` sections 9 and 10, `DESIGN.md` contrast tokens). Applying it to the app is DEV-28. The six v1 boards are not designed yet; the UI/UX chat will post them in this order: DEV-32, DEV-33, system banners and toasts (DEV-17, 20, 45), DEV-38, DEV-41, DEV-42.
+- 2026-11-25, UI/UX board 1 of 6 is ready: board 9, commit or label per file (`docs/ux/wireframes/CommitLabel*.dc.html`, copy in `docs/ux/04-ux-copy.md` section 11). DEV-32 is unblocked (after DEV-39). Next boards in order: settings and per-file remove (DEV-33), system banners and toasts, failure groups (DEV-38), full test page (DEV-41), report (DEV-42).
+- 2026-11-25, UI/UX board 2 of 6 is ready: board 10, settings and per-file remove (`docs/ux/wireframes/Settings*.dc.html`, copy in `docs/ux/04-ux-copy.md` section 12). DEV-33 is unblocked. Decision: the About privacy text says "FlakeLens makes no network requests" until a cloud provider exists. The About block links to Security policy and Report an issue, so DEV-30 adds SECURITY.md and issue templates. Next boards: system banners and toasts, failure groups (DEV-38), full test page (DEV-41), report (DEV-42).
+- 2026-11-25, UI/UX board 3 of 6 is ready: board 11, system banners and toasts (`docs/ux/wireframes/Banners*.dc.html`, copy in `docs/ux/04-ux-copy.md` section 13). The v0 banner rules (one at a time, skipped-banner action, toast stacking) went into DEV-28; the PWA toasts and the Install row in Settings went into DEV-45. DEV-45 needs the DEV-33 settings page and the storage state at the time the worker reports an update. Next boards: failure groups (DEV-38), full test page (DEV-41), report (DEV-42).
+- 2026-11-25, UI/UX board 4 of 6 is ready: board 12, failure groups and cause chips (`docs/ux/wireframes/Groups*.dc.html`, copy in `docs/ux/04-ux-copy.md` section 14). DEV-38 is unblocked after DEV-37. Engine needs added to the tickets: typed mask tokens in the template (DEV-36) and a group-level `classifyGroup` with confidence, evidence lines and a representative attempt (DEV-37). Next boards: full test page (DEV-41), report (DEV-42).
+- 2026-11-25, UI/UX board 5 of 6 is ready: board 13, full test page and log viewer (`docs/ux/wireframes/FullTest*.dc.html`, copy in `docs/ux/04-ux-copy.md` section 15). DEV-41 is unblocked after DEV-37 and DEV-40. Engine needs added: the correlation result shape with per-value counts, adjusted p, odds ratio, Strong/Moderate/Weak and the not-enough-data numbers (DEV-40), and `verifyEvidence` (DEV-37). Last board: report preview and export (DEV-42).
+- 2026-11-25, UI/UX board 6 of 6 is ready: board 14, report preview and export (`docs/ux/wireframes/Report*.dc.html`, copy in `docs/ux/04-ux-copy.md` section 16). **All six v1 boards are done**; no v1 ticket waits for design any more. The UI/UX chat also reminds that the contrast token changes (light link `#0860CA`, muted dark `#A4ABB4` and light `#4F5A65`, skipped run square follows muted) are still pending in the app: that is DEV-28.
+- 2026-11-25, UI/UX simplification pass (`docs/ux/12-simplification-pass.md`, canvas v77): fewer words per screen, word budgets, rare choices in Settings. Applied to the v0 screens in DEV-28 (Tests, Start, detail panel, Loaded data, edge and import states; the density toggle stays until DEV-33 moves it to Settings) and to the v1 tickets DEV-32, DEV-38, DEV-41, DEV-42 and DEV-33. The planning plan carries the budgets as a global constraint.
+- 2026-11-25, UI/UX rule 8 (canvas v78): no grey helper line under a label. Applied to DEV-38, DEV-41, DEV-42, DEV-33 and DEV-28 (retired keys listed there). Replaces the earlier planning decision on the About privacy line: About shows only "FlakeLens {version}" and links. Note for Dev Ops: `package.json` still says version `0.0.0`; the Settings About line and the JSON export read it.
+- 2026-11-25, UI/UX second sub-label sweep (canvas v79, `docs/ux/12-simplification-pass.md` section 7b): shorter file sub-lines, no commit-field helper sentences, install rows without hints. Applied to DEV-32, DEV-33, DEV-45 and DEV-28. Kept on purpose: the file path under the test name, SHA and branch cells, the no-commit warning, the not-imported detail.
+- 2026-11-25: DEV-28 was split in two (17 criteria was too much for one ticket): DEV-28 keeps tokens, copy sync, header, banners and toasts; the new DEV-29 carries the simplification pass and sub-label sweeps. Sequence for the 2026-11-26 start is in the v1 plan.
