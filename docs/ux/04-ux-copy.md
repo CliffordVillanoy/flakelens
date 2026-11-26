@@ -70,7 +70,7 @@ Drafted 2026-11-19 in the UI/UX chat. Covers every string on the 6 MVP wireframe
 |---|---|
 | `app.name` | FlakeLens |
 | `header.sampleTag` | Sample data |
-| `header.dataChip` | Retired 2026-11-20. Now `health.subtitle`: "{tests} tests from {files} files · {runs} runs · {commits} commits" plus the link `health.notImported`: "{n} results not imported" (Tests), and the Loaded data lead |
+| `header.dataChip` | Retired 2026-11-20. Now `health.subtitle`: "{tests} tests · {runs} runs" plus the link `health.notImported`: "{n} results not imported" (Tests), and the Loaded data lead |
 | `header.privacy` | Nothing leaves this browser |
 | `header.privacy.hint` | FlakeLens makes 0 network requests unless you turn on a cloud provider. |
 | `header.addFiles.sample` | Add your files |
@@ -85,9 +85,9 @@ Drafted 2026-11-19 in the UI/UX chat. Covers every string on the 6 MVP wireframe
 | Key | Copy |
 |---|---|
 | `start.title` | Find your flaky tests |
-| `start.lead` | Drop test reports from a few CI runs. You get a ranked list of flaky tests and why each one was flagged. |
+| `start.lead` | A flaky test passes and fails on the same code. Drop your test reports to rank them. | Updated 2026-11-26 (simplification pass) |
 | `start.drop.title` | Drop Playwright JSON reports here |
-| `start.drop.hint` | Each file can hold one or more CI runs. More runs give better results. |
+| `start.drop.hint` | More runs give better results. | Updated 2026-11-26 (simplification pass) |
 | `start.browse` | Browse files |
 | `start.sample` | Try sample data |
 | `start.privacy` | Your files stay in this browser. Nothing is uploaded. |
@@ -130,7 +130,7 @@ Hostile content needs no message. It is imported as plain text (spec 9.1).
 | Key | Copy |
 |---|---|
 | `leaveSample.title` | Leave sample data? |
-| `leaveSample.body` | Your {count, plural, one {file} other {# files}} will be analysed on their own. Sample data is never mixed with your runs. |
+| `leaveSample.body` | Your {count, plural, one {file is} other {# files are}} analysed on {count, plural, one {its} other {their}} own. | Updated 2026-11-26 (simplification pass) |
 | `leaveSample.stay` | Stay in sample |
 | `leaveSample.confirm` | Analyse my files |
 
@@ -139,11 +139,11 @@ Hostile content needs no message. It is imported as plain text (spec 9.1).
 | Key | Copy |
 |---|---|
 | `tests.h1` (visually hidden) | Tests ranked by fix priority |
-| `tests.banner.sample` | Sample data: {tests} tests from {runs} runs. {count} results were not imported (see why). Start with the top 3 Flaky tests. They gave different results on the same code. |
+| `tests.banner.sample` | Sample data. Start with the top 3 Flaky tests. | Updated 2026-11-26 (simplification pass) |
 | `tests.filter.label` | Filter by status |
 | `tests.filter.all` / `flaky` / `suspect` / `failing` | All / Flaky / Unproven / Failing |
-| `tests.wasted.title` | Wasted CI time (Flaky) |
-| `tests.wasted.estimate` | + ~{min} min possible (Unproven, estimate) |
+| `tests.wasted.title` | Wasted CI time | Updated 2026-11-26 (simplification pass) |
+| `tests.wasted.estimate` | + ~{min} min possible | Updated 2026-11-26 (simplification pass) |
 | `tests.search.placeholder` | Search tests and files |
 | `tests.moreColumns` | More columns |
 | `tests.count` (live region) | Showing {count, plural, one {# test} other {# tests}}, most urgent first |
@@ -187,8 +187,8 @@ Hostile content needs no message. It is imported as plain text (spec 9.1).
 | `panel.wasted` | Wasted CI time {min} min |
 | `panel.history.title` | Run history · {runs} runs on {commits} commits |
 | `panel.history.filter` | Show: All attempts / Failures only |
-| `panel.history.legend` | Pass · Fail · Pass after retry · Skipped · Mixed commit: passed and failed on the same code |
-| `panel.history.hint` | Oldest on the left. Each column is one run. Stacked shapes are retries in that run. |
+| `panel.history.legend` | Retired 2026-11-26 (doc 12: say it once, no helper lines) |
+| `panel.history.hint` | Retired 2026-11-26 (doc 12: say it once, no helper lines) |
 | `panel.history.runLabel` (accessible name) | Run {n}, commit {sha}[, mixed commit]: {attempts} |
 | `panel.note.title` | What this means |
 | `panel.note.next` | What to check next |
@@ -229,9 +229,9 @@ Analysed locally with FlakeLens. Likely cause, not proof.
 |---|---|
 | `data.back` | Back to tests |
 | `data.title` | Loaded data |
-| `data.lead` | Rankings use only these files. Everything stays in this browser. |
+| `data.lead` | Retired 2026-11-26 (doc 12: say it once, no helper lines) |
 | `data.files` | Files · {count} |
-| `data.file.meta` | Added {date} · {runs} runs, {tests} tests[, {n} not imported] |
+| `data.file.meta` | {runs, plural, one {# run} other {# runs}} · {tests, plural, one {# test} other {# tests}} | Updated 2026-11-26 (simplification pass) |
 | `data.file.ok` / `partial` | Imported / Partly imported |
 | `data.notices` | Notices · {count} |
 | `data.download` | Download not-imported list: CSV / JSON |
@@ -239,7 +239,7 @@ Analysed locally with FlakeLens. Likely cause, not proof.
 | `data.runs.cols` | Run / Commit / Branch / Browser / Time / Tests |
 | `data.runs.showAll` | Show all {count} runs |
 | `data.remove.title` | Remove data |
-| `data.remove.body` | Removing a single file comes in a later version. For now you can clear everything. |
+| `data.remove.body` | To remove a file, clear all data. | Updated 2026-11-26 (simplification pass). Replaced by per-file Remove in v1 (board 10) |
 | `data.remove.action` | Clear all data |
 
 ### Empty and edge states
@@ -247,7 +247,7 @@ Analysed locally with FlakeLens. Likely cause, not proof.
 | Key | Copy |
 |---|---|
 | `empty.filter.title` | No {status} tests in these {runs} runs |
-| `empty.filter.body` (Flaky) | Good news. More runs make this more certain. |
+| `empty.filter.body` | More runs make this more certain. | Updated 2026-11-26 (simplification pass) (Flaky filter) |
 | `empty.filter.action` | Show all tests |
 | `empty.search.title` | No test matches "{query}" |
 | `empty.search.body` | Search covers test names and file names. |
@@ -256,7 +256,7 @@ Analysed locally with FlakeLens. Likely cause, not proof.
 | `missing.test.title` | This test isn't in the loaded data |
 | `missing.test.body` | It may have been renamed, or its files were cleared. |
 | `missing.test.action` | Back to tests |
-| `storage.fail` | Your saved data couldn't be read. Reload the page to try again. If it keeps happening, clear all data and import your files again. |
+| `storage.fail` | Your saved data couldn't be read. Reload to try again. If it keeps happening, clear all data and re-import. | Shortened to 19 words (banner budget 20), 2026-11-26 |
 | `storage.off` | This browser won't keep your data after you close the tab. Results are still shown for now. |
 
 ### Clear all data dialog
@@ -275,7 +275,7 @@ Analysed locally with FlakeLens. Likely cause, not proof.
 |---|---|
 | `keys.title` | Keyboard shortcuts |
 | `keys.toggle` | Single-key shortcuts |
-| `keys.toggle.hint` | They never fire while you type in a text field. |
+| `keys.toggle.hint` | Retired 2026-11-26 (doc 12: say it once, no helper lines) |
 | `keys.list` | j / k: Next / previous test · Enter: Open details · Esc: Close details · /: Search · ?: This sheet |
 
 ## 5. Localization notes
@@ -289,8 +289,8 @@ Analysed locally with FlakeLens. Likely cause, not proof.
 
 | Key | New copy |
 |---|---|
-| `start.lead` | A flaky test passes and fails on the same code. Drop test reports from a few CI runs. You get a ranked list of flaky tests and why each one was flagged. |
-| `tests.legend` | Last 12 runs, oldest first: Passed · Passed on retry · Failed · Skipped (each square's tooltip shows its result) |
+| `start.lead` | A flaky test passes and fails on the same code. Drop your test reports to rank them. | Updated 2026-11-26 (simplification pass) |
+| `tests.legend` | Retired 2026-11-26 (doc 12: say it once, no helper lines) |
 | `tests.col.wasted.hint` | CI minutes spent on failed attempts of commits where this test also passed. Sorts inside each group. |
 | `tests.count` | Showing {all }{count} {status }tests{ matching "{query}"}, grouped by status, {sort}. Example: "Showing 1 Flaky test matching 'coupon', grouped by status, sorted by wasted time" |
 | `tests.export` | Export (menu): "Copy top Flaky tests" (hint: Markdown list: rank, name, evidence, wasted minutes) · "Download CSV" and "Download JSON" (hint: Coming in v1) |
@@ -339,8 +339,7 @@ Rule for the build: the visible text is exactly what is in the Text column. Word
 
 | Key | Text | |
 |---|---|---|
-| `data.summary` | {files, plural, one {# file} other {# files}} · {runs, plural, one {# run} other {# runs}} · last added {date}. | ✓ |
-| `data.file.meta.notImported` | Added {date} · {runs, plural, one {# run} other {# runs}}, {tests, plural, one {# test} other {# tests}}, {n} not imported | ✓ |
+| `data.summary` | {files, plural, one {# file} other {# files}} · {runs, plural, one {# run} other {# runs}} · last added {date} | ✓ |
 | `data.file.partial` | Partly imported | ✓ |
 | `data.file.failed` | Couldn't import | ✓ |
 | `data.download.csv` | CSV | ✓ |
@@ -396,11 +395,11 @@ Rule for the build: the visible text is exactly what is in the Text column. Word
 
 | Key | Text | |
 |---|---|---|
-| `note.flaky.means` | This test gave different results on the same code. The likely cause is in the test or its environment, not in a code change. | ✓ |
+| `note.flaky.means` | This test gave different results on the same code. | ✓ |
 | `note.flaky.next` | Waits and timing · Data or state shared between tests · Test order · Slow or unavailable services the test needs. Tip: while you investigate, quarantine it in CI so it can't block merges. | ✓ |
-| `note.suspect.means` | Results are mixed, but never on the same commit. This could be flaky or a real bug. | ✎ It is not a verdict either way |
+| `note.suspect.means` | Results are mixed but never on the same commit, so it could be flaky or a real bug. | ✓ One sentence (doc 12) |
 | `note.suspect.next` | Code changes near the first failure · Run it again several times on one commit to confirm. | ✓ |
-| `note.failing.means` | It fails almost every run. This is likely a real bug or a broken test, not flakiness. | ✓ |
+| `note.failing.means` | It fails almost every run, so it is likely a real bug or a broken test. | ✓ |
 | `note.failing.next` | The first commit where it started failing · Recent changes to the feature or the test. | ✓ |
 | `note.failingWasFlaky.means` | It fails almost every run now. It was flaky before {sha}. | ✓ |
 | `note.failingWasFlaky.next` | What changed at {sha} · Whether the flaky behaviour hid a real bug. | ✓ |
@@ -415,7 +414,7 @@ Rule for the build: the visible text is exactly what is in the Text column. Word
 | Key | Text | |
 |---|---|---|
 | `panel.next` | Next test | ✓ |
-| `panel.history.legend.mixed` | Mixed commit: passed and failed on the same code | ✓ |
+| `panel.history.legend.mixed` | Mixed commit | ✓ |
 | `panel.failure.metaNoDate` | Run {n} · commit {sha} · attempt {a} of {total} | ✓ |
 | `panel.wasted.label` | Wasted CI time | ✓ |
 | `panel.close.hint` | Close panel (Esc) | ✓ |
@@ -529,9 +528,7 @@ Rule for the build: the visible text is exactly what is in the Text column. Word
 | `tests.filters.search` | Search: "{query}" | ✓ |
 | `tests.filters.remove` | Remove filter {filter} | ✓ |
 | `tests.filters.clear` | Clear filters | ✓ |
-| `tests.why` | see evidence | ✎ The column is now Evidence |
-| `tests.banner.sample.seeWhy` | see why | ✓ |
-| `tests.legend.title` | Last 12 runs, oldest first: | ✓ |
+| `tests.why` | Retired 2026-11-26 | The row is already the link; the sample banner says where to start |
 | `tests.rows` | Rows {a} to {b} of {n} | ✓ |
 | `tests.health.label` | Status of {tests, plural, one {# test} other {# tests}}: {list} | ✓ |
 | `tests.group.flaky` | Flaky · {n} · Different results on the same commit | ✓ |
@@ -544,7 +541,6 @@ Rule for the build: the visible text is exactly what is in the Text column. Word
 
 | Key | Text | |
 |---|---|---|
-| `tip.export` | Tip: share the top Flaky tests with your team. Use Export to copy them as a Markdown list. | ✓ |
 
 ### `toast.*`
 
@@ -564,11 +560,11 @@ Rule for the build: the visible text is exactly what is in the Text column. Word
 
 | Key | Text | |
 |---|---|---|
-| `why.mixed` | {m} of {g} commits had both a pass and a fail | ✓ |
+| `why.mixed` | {m} of {g} commits had mixed results | ✎ Shorter, so Evidence fits one line (2026-11-26) |
 | `why.retry` | Passed on retry in {r} of {n} runs | ✓ |
-| `why.suspect` | Switched between pass and fail {f} times in {n} runs | ✓ |
+| `why.suspect` | Switched pass and fail {f} times in {n} runs | ✎ Shorter (2026-11-26) |
 | `why.failing` | Failed {x} of {n} runs | ✓ |
-| `why.failingWasFlaky` | Failed {x} of {x} runs since {sha}. Flaky before that | ✓ |
+| `why.failingWasFlaky` | Failed {x} of {x} runs since {sha} | ✎ Shorter. "Flaky before" is said in the panel note (2026-11-26) |
 | `why.stable` | Passed {n} of {n} runs | ✓ |
 | `why.insufficient` | Only {count, plural, one {# attempt} other {# attempts}} loaded | ✓ |
 
@@ -793,3 +789,32 @@ Existing keys kept: `tests.export` "Export", `tests.export.copyTop`, `tests.expo
 | `toast.export.csv` | Downloaded flakelens-tests.csv. {count, plural, one {# test} other {# tests}}. | role status. Same pattern for JSON and `flakelens-report.md` |
 | `toast.export.copied` | Copied the report. Paste it into your ticket. | |
 | `toast.export.copyFailed` | Couldn't copy. Your browser blocked clipboard access. Download the .md file instead. | role alert, action "Download .md". Replaces `toast.copyFailed` on the report page |
+
+
+## 17. Keys confirmed or removed after DEV-29 (2026-11-26)
+
+| Key | Text | Note |
+|---|---|---|
+| `health.subtitle` | {tests} tests · {runs} runs | Confirmed. Files and commits live on Loaded data |
+| `panel.note.more` | More to check | Confirmed. Summary of the closed block with the extra checks and the quarantine tip |
+| `tests.wasted.estimate.hint` | An estimate, from Unproven tests. | Confirmed. Tooltip on "+ ~{min} min possible" |
+| `tip.export` | Removed | The Export menu says what it does; no tip is shown |
+| `note.*.means` | One sentence each | flaky, suspect (Unproven), failing, stable, insufficient are one sentence now. `failingWasFlaky` stays two short sentences |
+| `storage.fail` | Your saved data couldn't be read. Reload to try again. If it keeps happening, clear all data and re-import. | 19 words |
+
+Word budgets (doc 12 rule 3) count explanatory text and data text up to the first data row. Control names (buttons, tabs, field labels), screen-reader-only text and closed blocks are not counted. The measured counts (Start 40 of 40, Tests 52 of 60, Loaded data 15 of 60, panel 82 of 90) pass under that rule.
+
+## 18. Evidence on one line (2026-11-26)
+
+Decision (row height follow-up): shorten the Evidence sentences so Comfortable rows stay 64px at the 1232px container. Longest string is now 44 characters.
+
+| Key | Text | Longest example |
+|---|---|---|
+| `why.mixed` | {m} of {g} commits had mixed results | 4 of 9 commits had mixed results (32) |
+| `why.retry` | Passed on retry in {r} of {n} runs | 34 |
+| `why.suspect` | Switched pass and fail {f} times in {n} runs | Switched pass and fail 5 times in 12 runs (41) |
+| `why.failing` | Failed {x} of {n} runs | 22 |
+| `why.failingWasFlaky` | Failed {x} of {x} runs since {sha} | 34 |
+| `tests.why` | Retired | The " see evidence" text is gone from the row |
+
+Safety net: the Evidence cell is `white-space: nowrap` with an ellipsis and the full sentence in a `title`, so a long locale or number never changes the row height.
