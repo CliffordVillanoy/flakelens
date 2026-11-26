@@ -123,7 +123,7 @@ Copy needed for v1 (no text yet): cause names and tips for the nine causes plus 
 | Key | Current text in the app |
 | --- | --- |
 | `note.flaky.means` | This test gave different results on the same code. The likely cause is in the test or its environment, not in a code change. |
-| `note.flaky.next` | Waits and timing · Data or state shared between tests · Test order · Slow or unavailable services the test needs. Tip: while you investigate, quarant... |
+| `note.flaky.next` | Waits and timing · Shared data or state · Test order · Slow or unavailable services the test needs. Tip: while you investigate, quarant... |
 | `note.suspect.means` | Results are mixed, but never on the same commit. This could be a real bug, not flakiness. |
 | `note.suspect.next` | Code changes near the first failure · Run it again several times on one commit to confirm. |
 | `note.failing.means` | It fails almost every run. This is likely a real bug or a broken test, not flakiness. |

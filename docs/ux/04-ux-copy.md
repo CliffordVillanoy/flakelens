@@ -71,8 +71,8 @@ Drafted 2026-11-19 in the UI/UX chat. Covers every string on the 6 MVP wireframe
 | `app.name` | FlakeLens |
 | `header.sampleTag` | Sample data |
 | `header.dataChip` | Retired 2026-11-20. Now `health.subtitle`: "{tests} tests · {runs} runs" plus the link `health.notImported`: "{n} results not imported" (Tests), and the Loaded data lead |
-| `header.privacy` | Nothing leaves this browser |
-| `header.privacy.hint` | FlakeLens makes 0 network requests unless you turn on a cloud provider. |
+| `header.privacy` | Retired in DEV-34 (2026-11-26). Was "Nothing leaves this browser" |
+| `header.privacy.hint` | Retired in DEV-34. Was the tooltip of the header privacy line |
 | `header.addFiles.sample` | Add your files |
 | `header.addFiles` | Add files |
 | `header.leaveSample` | Retired 2026-11-20. Now `tests.banner.exitSample`: "Exit sample" link at the end of the sample banner |
@@ -194,7 +194,7 @@ Hostile content needs no message. It is imported as plain text (spec 9.1).
 | `panel.note.next` | What to check next |
 | `panel.failure.title` | Latest failure |
 | `panel.failure.meta` | Run {n} · commit {sha} · attempt {a} of {total} · {date} |
-| `panel.failure.passedAfter` | Attempt {a} passed in {s} s on the same commit. |
+| `panel.failure.passedAfter` | Attempt {a} passed in {s} s. | Shortened in DEV-34 (section 21): the hunk header above already says "same commit" |
 | `panel.failure.prev` | Show previous failure |
 | `panel.failure.copy` | Copy error message |
 | `panel.score.title` | How the score is built |
@@ -216,7 +216,7 @@ Analysed locally with FlakeLens. Likely cause, not proof.
 
 | Status | What this means | What to check next |
 |---|---|---|
-| Flaky | This test gave different results on the same code. The likely cause is in the test or its environment, not in a code change. | Waits and timing · Data or state shared between tests · Test order · Slow or unavailable services the test needs. Tip: while you investigate, quarantine it in CI so it can't block merges. |
+| Flaky | This test gave different results on the same code. The likely cause is in the test or its environment, not in a code change. | Waits and timing · Shared data or state · Test order · Slow or unavailable services the test needs. Tip: while you investigate, quarantine it in CI so it can't block merges. |
 | Unproven | Results are mixed, but never on the same commit. This could be a real bug, not flakiness. | Code changes near the first failure · Run it again several times on one commit to confirm. |
 | Failing | It fails almost every run. This is likely a real bug or a broken test, not flakiness. | The first commit where it started failing · Recent changes to the feature or the test. |
 | Failing, was flaky | It fails almost every run now. It was flaky before {sha}. | What changed at {sha} · Whether the flaky behaviour hid a real bug. |
@@ -396,7 +396,7 @@ Rule for the build: the visible text is exactly what is in the Text column. Word
 | Key | Text | |
 |---|---|---|
 | `note.flaky.means` | This test gave different results on the same code. | ✓ |
-| `note.flaky.next` | Waits and timing · Data or state shared between tests · Test order · Slow or unavailable services the test needs. Tip: while you investigate, quarantine it in CI so it can't block merges. | ✓ |
+| `note.flaky.next` | Waits and timing · Shared data or state · Test order · Slow or unavailable services the test needs. Tip: while you investigate, quarantine it in CI so it can't block merges. | ✓ |
 | `note.suspect.means` | Results are mixed but never on the same commit, so it could be flaky or a real bug. | ✓ One sentence (doc 12) |
 | `note.suspect.next` | Code changes near the first failure · Run it again several times on one commit to confirm. | ✓ |
 | `note.failing.means` | It fails almost every run, so it is likely a real bug or a broken test. | ✓ |
@@ -576,7 +576,7 @@ New and changed keys from `docs/ux/11-v0-review-decisions.md`:
 
 | Key | Text | Note |
 |---|---|---|
-| `header.privacy.short` | Local only | Phone width. The full line `header.privacy` shows as the tooltip and as the accessible name |
+| `header.privacy.short` | Retired in DEV-34 | Was "Local only" at phone width |
 | `header.data` (link text; the app uses `data.title`) | Loaded data | Ghost button with a data icon, before "Add your files" |
 | `import.noCommit.many` | No commit info found in {count} files. Evidence across commits will be limited. | One note per import, not one per file, until v1 has the commit label field |
 | `import.progress.reading` | Reading… | Replaces the percent. Progress is per file |
@@ -619,20 +619,24 @@ Known limits accepted (DEV-32): the banner note "No commit info found in N files
 | `settings.title` | Settings | Page heading and header link |
 | `settings.back` | Back to tests | |
 | `settings.appearance` | Appearance | |
-| `settings.theme` | Theme | Choices: Dark, Light. Hint: "Dark is the default." |
+| `settings.theme` | Theme | Choices: Dark, Light. No hint line |
 | `settings.density` | Row density | Choices: Compact, Comfortable |
-| `settings.density.hint` | Comfortable shows the file path under each test name. Compact fits more rows. | |
 | `settings.shortcuts` | Single-key shortcuts | Switch, accessible name is the label |
-| `settings.shortcuts.hint` | j, k, /, ? and Enter work when you are not typing in a field. | |
-| `settings.saved.hint` | Saved in this browser. Clear all data keeps these choices. | |
 | `settings.rules.title` | How rankings are decided | |
-| `settings.rules.note` | These are starting values and are not calibrated yet. They cannot be changed in this version. | Read-only list. Right column shows the config name in monospace |
+| `settings.rules.note` | These are starting values, not calibrated yet. | Shortened to one sentence (board line). Read-only list, config name in monospace |
 | `settings.data.title` | Your data | |
 | `settings.data.summary` | {files} files · {runs} runs · last added {date} | |
-| `settings.data.hint` | Everything stays in this browser. Nothing is uploaded. | |
+| `settings.theme.dark` / `light` | Dark / Light | Confirmed. Theme choices |
+| `settings.shortcuts.tip` | j, k, /, ? and Enter work when you are not typing in a field. | Confirmed. Tooltip only, never a visible line (rule 8) |
+| `settings.rules.show` | Show thresholds | Confirmed. Opens the closed block |
+| `settings.rules.failing` | Fails {rate}% or more of its last {window} runs. | Confirmed |
+| `settings.rules.unproven` | Has at least {min} attempts and switches between pass and fail at least {flips} times in {window}. | Confirmed |
+| `settings.rules.insufficient` | Fewer than {min} attempts, unless it passed on retry. | Confirmed |
+| `settings.rules.rejected.name` | File rejected | Confirmed |
+| `settings.rules.rejected` | More than half of its records are unclear, so rankings would mislead. | Confirmed |
 | `settings.about.title` | About | |
-| `settings.about.privacy` | Your files stay in this browser. FlakeLens makes no network requests. | Confirmed by the planning chat 2026-11-25. Add a cloud clause only when a provider exists (v2) |
-| `settings.about.links` | Source code · Report an issue · Security policy · MIT licence | External links, new tab, icon plus word |
+| `settings.about.version` | FlakeLens {version} | |
+| `settings.about.source` / `report` / `security` / `license` | Source code / Report an issue / Security policy / MIT licence | Replaces `settings.about.links`. External links, new tab, icon plus word |
 | `file.remove` | Remove | Button on each file row, trash icon |
 | `file.remove.title` | Remove {file}? | |
 | `file.remove.body` | This removes the file and everything that came only from it. Rankings are recalculated. | |
@@ -641,13 +645,16 @@ Known limits accepted (DEV-32): the banner note "No commit info found in N files
 | `file.remove.label` | the commit label "{label}" | List item, only when a label exists |
 | `file.remove.shared` | This removes {removed, plural, one {1 run} other {# runs}}. {kept, plural, one {1 run in this file is} other {# runs in this file are}} also in {other}, so {kept, plural, one {it stays} other {they stay}}. | When runs overlap another file |
 | `file.remove.last` | This is your last file. Removing it clears all results and takes you back to the start screen. | |
-| `file.remove.undoHint` | You can undo this for 10 seconds. | |
 | `file.remove.keep` | Keep file | Default focus |
 | `file.remove.confirm` | Remove file | Filled danger button |
 | `toast.fileRemoved` | {file} removed. Rankings updated. | role status, action "Undo", dismiss "Dismiss" |
 | `toast.fileRemoved.last` | {file} removed. All results cleared. | |
 | `toast.fileRestored` | {file} restored. Rankings updated. | |
 | `toast.undo` | Undo | |
+
+Retired in DEV-33 (do not add back; rule 8, say it once): `settings.density.hint`, the Theme hint, `settings.shortcuts.hint` (now `settings.shortcuts.tip`, tooltip), `settings.saved.hint`, `settings.data.hint`, `settings.about.privacy` (the Start screen says it), `file.remove.undoHint` (the toast carries the Undo button), `settings.about.links` (split into four keys).
+
+Known limits accepted (DEV-33): removing the earlier of two files that share runs also removes those runs, because the later file's copies were dropped at import; after Undo the file is last in stored order; Settings and Loaded data load as separate chunks, so a blank frame is possible for a moment.
 
 ## 13. System banners and toasts (board 11, DEV-17, DEV-20, DEV-45)
 
@@ -828,3 +835,11 @@ Safety net: the Evidence cell is `white-space: nowrap` with an ellipsis and the 
 |---|---|---|
 | `sample.fail` | The sample data couldn't be loaded. | Confirmed. Inline alert on Start (role alert), under the sample link |
 | `sample.retry` | Try again | Reworded from "Retry". Same verb as `files.commit.saveFailed` and the other failure actions, so one recovery word is used everywhere |
+
+## 20. Header without the privacy line (DEV-34, 2026-11-26)
+
+Owner request: the header no longer shows the green lock or the privacy text. Retired in DEV-34: `header.privacy`, `header.privacy.hint`, `header.privacy.short`. The privacy statement stays on Start (`start.privacy`, "Your files stay in this browser. Nothing is uploaded.") and in nothing else. The header logo gets a 24px left gutter.
+
+## 21. Panel word budget (DEV-34, 2026-11-26)
+
+The panel budget stays 90. The sample's first test is now "flaky: timing" with 91 counted words (the pinned "flaky: random data" has 92). The first try, shortening `panel.failure.passedAfter`, saves 0 counted words: that sentence sits in the diff group, which the count leaves out as row content. The shortened text "Attempt {a} passed in {s} s." stays anyway (say it once). The trim that counts: in `note.flaky.next`, the second shown check "Data or state shared between tests" becomes "Shared data or state" (6 words to 4). Expected 89 and 90 words. Board TestDetail and `spec-sync-list-v0.md` follow. The dev chat sets `BUDGET.panel` back to 90.

@@ -1,6 +1,6 @@
 # DEV-33: Settings screen and per-file remove
 
-**Status:** To do
+**Status:** Done locally (2026-11-26, commits `3541bb3`, `110c5f6`, `ff12738`, `0e30283` on `feat/dev-33-settings-remove` from origin/main 8b44712, worktree `flakelens-dev33`; 427 unit + 51 e2e pass, axe 46 scans clean, verified by planning). Not pushed or merged. Interim keys: `settings.theme.dark/light`, `settings.shortcuts.tip`, `settings.rules.note/show/failing/unproven/insufficient/rejected/rejected.name`, `settings.about.version/source/report/security/license` (doc has one joined `settings.about.links`). Settings and Loaded data are lazy chunks (main 493.7 kB). package.json still 0.0.0, so About shows "FlakeLens 0.0.0". Known: removing the earlier of two files that share runs also removes those runs; after an undo the file is last in stored order; Settings link not on Start; light theme checked by one screenshot.
 
 **Goal:** Users manage preferences in one place and can remove a single wrong file without clearing everything.
 

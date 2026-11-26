@@ -413,7 +413,7 @@ In light, the run squares use #1A7F37, #BF8700, #CF222E and #59636E. Every squar
 
 The layout uses a 4px base grid. Spacing tokens are the on-grid steps observed in the build: 4, 8, 12, 16, 20, 24, 32, 40 and 56px.
 
-- **App header:** full width, 24px side padding, with the brand, data chip and privacy line on the left and actions on the right. It wraps on narrow screens.
+- **App header:** full width, 24px side padding, with the brand on the left and actions on the right. It wraps on narrow screens.
 - **Containers:** the ranked list is capped at 1232px with 24px gutters. The Loaded data page is capped at 960px. The start screen column is capped at 720px with 56px top padding.
 - **Sections** stack with 20px gaps. The ranked list currently uses an off-grid 14px gap, which is drift and not a step. Inside a box, rows are 40px tall minimum with 12px cell padding. Group header rows are 36px tall.
 - **List and detail:** the detail panel opens to the right of the list (flex basis 520px, max 600px) with a 1px left border. The list keeps a 420px basis and stays usable while the panel is open. Below a combined width of about 940px, the panel wraps under the list.
@@ -462,7 +462,7 @@ Quiet, compact and conventional. The family has three filled variants plus an in
 - **Select:** 28px tall, same edge and radius.
 
 ### Navigation
-- **App header:** a Box Surface bar with a bottom Hairline. It holds the stroke logo mark in Review Blue with a 16px/700 wordmark, the data-source chip, a file-count control and the green privacy line. The primary action, theme toggle and help button sit on the right.
+- **App header:** a Box Surface bar with a bottom Hairline. It holds the stroke logo mark in Review Blue with a 16px/700 wordmark, the data-source chip, and a file-count control. The privacy line and lock icon were removed (DEV-34, 2026-11-26); the statement lives on Start only. The logo has a 24px left gutter, 16px on phones. The primary action, theme toggle and help button sit on the right.
 - **Keyboard hints:** `kbd` keys in mono 12px with a 1px Hairline border, 4px radius and Box Surface fill.
 
 ### Status filter (as built)
@@ -724,3 +724,8 @@ Rules in `docs/ux/12-simplification-pass.md`: say it once; one lead line at most
 The build measured Comfortable rows at 62 to 66px (name line 20px, path line 16px, cell padding 12px, Evidence wrapping to two lines at narrow widths). Decision: the rule follows the real, readable layout. **Comfortable = 64px**, no cell padding reduction. Keep the Evidence text on one line from 1280px up by giving the Evidence column the spare width; below that it may wrap. Compact stays 32px. Density is a Settings choice, so people who want more rows switch to Compact.
 
 - **Evidence cell (2026-11-26):** one line, no wrap, ellipsis with a `title` as a safety net. Sentences are at most 44 characters (doc 04 section 18). No "see evidence" text in the row; the row itself opens the panel.
+
+### Header links (DEV-33, 2026-11-26)
+
+- Settings link: shown in own and sample modes; hidden on `#/settings` and on Start. The `?` shortcuts sheet does not list Settings.
+- Loaded data link: hidden on `#/data`. A link to the page you are on is never shown.
