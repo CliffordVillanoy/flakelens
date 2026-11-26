@@ -4,7 +4,7 @@ import { rankTests } from '@/engine/score/rank';
 import { scoreTests } from '@/engine/score/score';
 import type { Dataset } from '@/engine/types';
 import { t } from '../copy';
-import { countLine, datasetSummary, escapeMd, failuresFor, filterRows, groupRows, health, sortRows, tableRows, topFlakyMarkdown, wastedText, type Row } from './selectors';
+import { countLine, datasetSummary, escapeMd, failuresFor, filterRows, groupRows, health, sortRows, stripAnsi, summaryText, tableRows, topFlakyMarkdown, wastedText, type Row } from './selectors';
 
 const rows = (ds: Dataset) => tableRows(ds, rankTests(scoreTests(ds), ds.tests));
 const one = (ds: Dataset) => rows(ds)[0]!;
@@ -181,4 +181,51 @@ it('failure text drops ANSI colour codes that Playwright puts in error messages'
   const [f] = failuresFor(ds, 't');
   expect(f!.message).toBe('expect(received)');
   expect(f!.stack).toBe('at x');
+});
+
+// DEV-31 item 1 and 2: hostile names and failure text.
+const ESC = String.fromCharCode(27);
+const BEL = String.fromCharCode(7);
+const ST = String.fromCharCode(92); // the backslash that ends an OSC with ESC
+
+it('the copy summary is cleaned: a newline or a leading = in a test name cannot forge lines', () => {
+  const ds = buildDataset([{ commit: 'a', tests: { ['evil' + String.fromCharCode(10) + 'Status: Stable. Nothing to see.']: ['fail', 'pass'] } }]);
+  const r = one(ds);
+  const latest = { runNumber: 1, commit: 'abc1234', attempt: 1, total: 1, message: 'boom' + String.fromCharCode(10) + 'Wasted CI time: 0 min', stack: '', startedAt: null, passedAfter: null };
+  const lines = summaryText(r, latest as never).split(String.fromCharCode(10));
+  // title, status, (wasted when measured), failure, footer: no line the name or message could add
+  expect(lines.filter((l) => l.startsWith('Status:'))).toHaveLength(1);
+  expect(lines.filter((l) => l.startsWith('Wasted CI time:'))).toHaveLength(r.score.label === 'flaky' && r.score.wastedMs > 0 ? 1 : 0);
+  expect(lines[0]).toContain('evil Status: Stable. Nothing to see.');
+  expect(lines.some((l) => l.startsWith('Latest failure: run 1, commit abc1234: boom'))).toBe(true);
+});
+
+it('a name that starts with a newline and = stays on one line (a plain-text summary needs no formula escape)', () => {
+  const r = one(buildDataset([{ commit: 'a', tests: { [String.fromCharCode(10) + '=HYPERLINK("x")']: ['pass'] } }]));
+  const lines = summaryText(r, undefined).split(String.fromCharCode(10));
+  expect(lines).toHaveLength(3); // title, status, footer
+  expect(lines[0]).toContain('=HYPERLINK("x")');
+});
+
+it('stripAnsi removes colour, cursor and title sequences (CSI and OSC), and keeps plain text', () => {
+  expect(stripAnsi(ESC + '[31mred' + ESC + '[0m')).toBe('red');
+  expect(stripAnsi('a' + ESC + '[2K' + ESC + '[1Gb' + ESC + '[?25lc')).toBe('abc');
+  expect(stripAnsi(ESC + ']0;window title' + BEL + 'text')).toBe('text');
+  expect(stripAnsi(ESC + ']8;;http://x.test' + ESC + ST + 'link' + ESC + ']8;;' + ESC + ST)).toBe('link');
+  expect(stripAnsi('plain [31m text')).toBe('plain [31m text'); // no escape character, nothing to strip
+});
+
+it('stripAnsi stays fast on hostile input (bounded patterns)', () => {
+  const cases = [
+    (ESC + '[').repeat(500_000),
+    ESC + ']' + 'a'.repeat(1_000_000),
+    ESC + '['.concat('1;'.repeat(500_000)),
+    (ESC + '[1;').repeat(300_000),
+    ESC.repeat(1_000_000),
+  ];
+  for (const c of cases) {
+    const start = performance.now();
+    stripAnsi(c);
+    expect(performance.now() - start).toBeLessThan(500);
+  }
 });

@@ -27,3 +27,19 @@ it('useRoute follows navigate()', async () => {
   act(() => navigate('#/'));
   await waitFor(() => expect(result.current.name).toBe('start'));
 });
+
+it('useRoute returns the same route object until the hash really changes (so effects on route.query run once per change)', () => {
+  window.location.hash = '#/tests?status=flaky';
+  const { result, rerender } = renderHook(() => useRoute());
+  const first = result.current;
+  rerender();
+  rerender();
+  expect(result.current).toBe(first);
+  expect(result.current.query).toBe(first.query);
+  act(() => {
+    window.location.hash = '#/tests?status=flaky&q=a';
+    window.dispatchEvent(new HashChangeEvent('hashchange'));
+  });
+  expect(result.current.query).not.toBe(first.query);
+  expect(result.current.query.get('q')).toBe('a');
+});

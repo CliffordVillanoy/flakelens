@@ -153,7 +153,7 @@ it('sortable headers: Test and Wasted time re-sort inside groups, with aria-sort
   await userEvent.click(within(wastedHeader).getByRole('button'));
   expect(wastedHeader).toHaveAttribute('aria-sort', 'descending');
   expect(testHeader).toHaveAttribute('aria-sort', 'none');
-  expect(screen.getByText(/sorted by wasted time$/)).toBeInTheDocument();
+  await waitFor(() => expect(screen.getByText(/sorted by wasted time$/)).toBeInTheDocument());
   await userEvent.click(within(wastedHeader).getByRole('button'));
   expect(wastedHeader).toHaveAttribute('aria-sort', 'ascending');
   await userEvent.click(within(wastedHeader).getByRole('button'));

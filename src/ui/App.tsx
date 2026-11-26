@@ -35,7 +35,8 @@ export function App() {
 
   const runImport = async (files: File[]) => {
     await useStore.getState().importFiles(files);
-    if (useStore.getState().lastImport?.records.some((r) => r.result !== 'failed')) navigate('#/tests');
+    // On Loaded data the progress and the result show right there; elsewhere a good import goes to Tests.
+    if (route.name !== 'data' && useStore.getState().lastImport?.records.some((r) => r.result !== 'failed')) navigate('#/tests');
   };
   // In sample mode, confirm first: the user's files replace the sample (board 2, state D).
   const onFiles = (files: File[]) => {

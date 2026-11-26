@@ -350,3 +350,14 @@ it('Loaded data footer: "Remove data" and one sentence, with Clear all data', as
   expect(screen.getByText('Remove data')).toBeInTheDocument();
   expect(screen.queryByText(/comes in a later version/)).toBeNull();
 });
+
+it('files dropped on Loaded data show the result banner there and keep the page (no jump to Tests)', async () => {
+  await open('#/data', [lab('run-00.json')]);
+  await screen.findByRole('heading', { level: 1, name: 'Loaded data' });
+  const input = document.querySelector<HTMLInputElement>('input[type=file]')!;
+  await userEvent.upload(input, [lab('run-01.json')]);
+  expect(await screen.findByRole('status', { name: 'Import result' })).toHaveTextContent('Added 1 run.');
+  expect(window.location.hash).toBe('#/data');
+  expect(screen.getByRole('heading', { level: 1, name: 'Loaded data' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Files · 2' })).toBeInTheDocument();
+});

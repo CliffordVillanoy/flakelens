@@ -1,3 +1,5 @@
+import { ImportBanner } from '../components/ImportBanner';
+import { ImportProgress } from '../components/ImportProgress';
 import { useMemo, useState } from 'react';
 import { ArrowLeft, CircleAlert, CircleCheck, CircleX, Info } from 'lucide-react';
 import { t } from '../copy';
@@ -47,7 +49,7 @@ function FileItem({ f }: { f: FileRow }) {
 
 // Board 5: what is loaded, what was not imported and why, the runs, and the one way to remove it all.
 export function LoadedData({ onExitSample }: { onExitSample: () => void }) {
-  const { dataset: ds, mode } = useStore();
+  const { dataset: ds, mode, importing, lastImport, cancelImport, dismissImport } = useStore();
   const [showAll, setShowAll] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const summary = useMemo(() => loadedSummary(ds), [ds]);
@@ -76,6 +78,15 @@ export function LoadedData({ onExitSample }: { onExitSample: () => void }) {
           {t('data.summary', { files: summary.files, runs: summary.runs, date: summary.lastAdded ? day.format(new Date(summary.lastAdded)) : t('wasted.none') })}
         </p>
       </div>
+
+      {importing && <ImportProgress files={importing.files} done={importing.done} onCancel={cancelImport} />}
+      {lastImport && !importing && (
+        <ImportBanner
+          summary={lastImport}
+          totals={{ tests: ds.tests.length, runs: ds.runs.length }}
+          onDismiss={dismissImport}
+        />
+      )}
 
       <section aria-labelledby="files-title" className="flex flex-col gap-2">
         <h2 id="files-title" className="m-0 text-base font-semibold">

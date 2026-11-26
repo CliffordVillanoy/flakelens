@@ -1,5 +1,5 @@
-import { it, expect, beforeEach, beforeAll, afterAll } from 'vitest';
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { it, expect, beforeEach, beforeAll, afterAll, vi } from 'vitest';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { buildDataset } from '@/engine/score/testkit';
 import { rankTests } from '@/engine/score/rank';
@@ -104,7 +104,7 @@ it('status tabs show counts, sync to ?status= and disable empty ones', async () 
   await waitFor(() => expect(within(tabs).getByRole('button', { name: /Flaky\s*1/ })).toHaveAttribute('aria-pressed', 'true'));
   expect(screen.queryByRole('link', { name: 'failing' })).toBeNull();
   expect(screen.getByRole('status', { name: '' })).toBeDefined();
-  expect(screen.getByText('Showing 1 Flaky test, grouped by status, most urgent first')).toBeInTheDocument();
+  await waitFor(() => expect(screen.getByText('Showing 1 Flaky test, grouped by status, most urgent first')).toBeInTheDocument()); // announced after typing settles
 });
 
 it('search filters by name or file, syncs to ?q= and "/" focuses it', async () => {
@@ -114,7 +114,7 @@ it('search filters by name or file, syncs to ?q= and "/" focuses it', async () =
   expect(box).toHaveFocus();
   await userEvent.type(box, 'fail');
   await waitFor(() => expect(window.location.hash).toBe('#/tests?q=fail'));
-  expect(screen.getByText('Showing 1 test matching "fail", grouped by status, most urgent first')).toBeInTheDocument();
+  await waitFor(() => expect(screen.getByText('Showing 1 test matching "fail", grouped by status, most urgent first')).toBeInTheDocument());
   expect(screen.queryByRole('link', { name: 'flaky' })).toBeNull();
   expect(screen.getByRole('link', { name: 'failing' })).toBeInTheDocument();
 });
@@ -200,4 +200,42 @@ it('"Showing n tests..." is for screen readers only', () => {
   const line = screen.getByText('Showing all 4 tests, grouped by status, most urgent first');
   expect(line).toHaveClass('sr-only');
   expect(line.closest('[role="status"]')).not.toBeNull();
+});
+
+it('the live count is announced after typing settles (about 500 ms), not on every keystroke', async () => {
+  vi.useFakeTimers({ shouldAdvanceTime: false });
+  try {
+    render(<Tests />);
+    const line = () => screen.getByText(/^Showing /);
+    expect(line()).toHaveTextContent('Showing all 4 tests, grouped by status, most urgent first');
+    const box = screen.getByRole('searchbox');
+    for (const q of ['f', 'fa', 'fai', 'fail']) {
+      act(() => void fireEvent.change(box, { target: { value: q } }));
+      act(() => void vi.advanceTimersByTime(100));
+    }
+    // 400 ms after the first keystroke and 100 ms after the last: still the old announcement.
+    expect(line()).toHaveTextContent('Showing all 4 tests');
+    act(() => void vi.advanceTimersByTime(300));
+    expect(line()).toHaveTextContent('Showing all 4 tests'); // 400 ms since the last keystroke
+    act(() => void vi.advanceTimersByTime(150));
+    expect(line()).toHaveTextContent('Showing 1 test matching "fail"');
+  } finally {
+    vi.useRealTimers();
+  }
+});
+
+it('the Unproven tab writes ?status=unproven; an old ?status=suspect link still opens the Unproven list', async () => {
+  load(buildDataset(['a', 'b', 'c', 'd', 'e', 'f'].map((commit, i) => ({ commit, tests: { alt: [i % 2 ? ('fail' as const) : ('pass' as const)] } }))));
+  window.location.hash = '#/tests?status=suspect';
+  const { unmount } = render(<Tests />);
+  const tabs = screen.getByRole('group', { name: 'Filter by status' });
+  expect(within(tabs).getByRole('button', { name: /Unproven/ })).toHaveAttribute('aria-pressed', 'true');
+  unmount();
+
+  window.location.hash = '#/tests?status=unproven';
+  render(<Tests />);
+  expect(within(screen.getByRole('group', { name: 'Filter by status' })).getByRole('button', { name: /Unproven/ })).toHaveAttribute('aria-pressed', 'true');
+  await userEvent.click(within(screen.getByRole('group', { name: 'Filter by status' })).getByRole('button', { name: /All/ }));
+  await userEvent.click(within(screen.getByRole('group', { name: 'Filter by status' })).getByRole('button', { name: /Unproven/ }));
+  await waitFor(() => expect(window.location.hash).toBe('#/tests?status=unproven'));
 });

@@ -2,7 +2,7 @@
 import type { Attempt, AttemptStatus, Dataset, Label, Test, TestScore } from '@/engine/types';
 import { orderRuns, runHistories, type RunCell } from '@/engine/view';
 import { t, type CopyKey } from '../copy';
-import { escapeMd } from '../lib/safeText';
+import { cleanText, escapeMd } from '../lib/safeText';
 
 export const GROUP_ORDER: Label[] = ['flaky', 'suspect', 'failing', 'stable', 'insufficient'];
 const STRIP_RUNS = 12;
@@ -190,9 +190,21 @@ export interface FailureEntry {
   passedAfter: { attempt: number; durationMs: number | null } | null; // the first later attempt that passed
 }
 
-// Playwright colours its error text with ANSI escape codes; they are noise outside a terminal.
-// eslint-disable-next-line no-control-regex -- the escape character is what is being matched
-const stripAnsi = (s: string) => s.replace(/\u001b\[[0-9;]*m/g, '');
+// Playwright colours its error text with ANSI escape codes, and tools add cursor and window-title sequences; all are
+// noise outside a terminal. The escape characters are built from code points (a raw one in source is lost by tools).
+// Every part is bounded, so a hostile megabyte of escapes cannot make the scan slow (timing test in selectors.test.ts):
+//   CSI: ESC [ parameters (max 64) intermediates (max 8) final byte
+//   OSC: ESC ] text (max 2,048) ended by BEL or ESC backslash
+//   other two-character sequences: ESC and one of @ to Z, backslash, ], ^, _
+const ESC = String.fromCharCode(27);
+const BEL = String.fromCharCode(7);
+const BS = String.fromCharCode(92);
+const ANSI = new RegExp(
+  ESC + '(?:' + BS + '[[0-?]{0,64}[ -/]{0,8}[@-~]|' + BS + '][^' + BEL + ESC + ']{0,2048}(?:' + BEL + '|' + ESC + BS + BS + ')|[@-Z' + BS + BS + '-_])',
+  'g',
+);
+export const stripAnsi = (s: string) => s.replace(ANSI, '');
+
 
 /** Every failed attempt of one test, oldest first. */
 export function failuresFor(ds: Dataset, testId: string): FailureEntry[] {
@@ -247,15 +259,16 @@ export function noteFor(row: Row): { means: Note; next: Note } {
 /** Plain-text summary for a ticket (04-ux-copy "Copy summary"). */
 export function summaryText(row: Row, latest: FailureEntry | undefined): string {
   const { score, test, evidence } = row;
+  // Names, files and messages come from the report: cleanText keeps a newline in one of them from forging a line.
   const lines = [
-    t('summary.title', { name: [...test.suitePath, test.title].join(' › '), file: test.file }),
+    t('summary.title', { name: cleanText([...test.suitePath, test.title].join(' › ')), file: cleanText(test.file) }),
     t('summary.status', { status: t(`status.${score.label}`), evidence: t(evidence.key, evidence.params) }),
   ];
   if (score.label === 'flaky' && score.wastedMs > 0)
     lines.push(t('summary.wasted', { min: formatMinutes(score.wastedMs), runs: score.runs }));
   if (latest)
     lines.push(
-      t('summary.failure', { n: latest.runNumber, sha: latest.commit, message: latest.message.split('\n')[0] ?? '' }),
+      t('summary.failure', { n: latest.runNumber, sha: cleanText(latest.commit), message: cleanText(latest.message.split(String.fromCharCode(10))[0] ?? '') }),
     );
   lines.push(t('summary.footer'));
   return lines.join('\n');

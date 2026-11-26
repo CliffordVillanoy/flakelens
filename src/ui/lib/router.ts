@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from 'react';
+import { useMemo, useSyncExternalStore } from 'react';
 
 export type RouteName = 'start' | 'tests' | 'test' | 'data';
 export interface Route {
@@ -43,7 +43,9 @@ const subscribe = (cb: () => void) => {
 };
 const getHash = () => window.location.hash;
 
-// Parse per render from the hash string, so the snapshot stays a stable primitive.
+// The snapshot is the hash string (a stable primitive); the parsed route is memoised on it, so `route.query` keeps
+// its identity until the hash really changes and effects that depend on it run once per change.
 export function useRoute(): Route {
-  return parseRoute(useSyncExternalStore(subscribe, getHash));
+  const hash = useSyncExternalStore(subscribe, getHash);
+  return useMemo(() => parseRoute(hash), [hash]);
 }

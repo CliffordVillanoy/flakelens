@@ -194,3 +194,28 @@ test('in a mixed drop the oversized file fails inline, the other imports, and Lo
   await expect(page.getByText('huge.json', { exact: true }).first()).toBeVisible(); // name shows in the row and the failure list
   await expect(page.getByText('run-01.json', { exact: true }).first()).toBeVisible();
 });
+
+test('a blocked sample manifest shows an inline error with Retry; Retry works once the file is reachable', async ({ page }) => {
+  let blocked = true;
+  await page.route('**/sample/manifest.json', (route) => (blocked ? route.abort() : route.continue()));
+  await openApp(page);
+  await page.getByRole('button', { name: 'Try sample data' }).click();
+  await expect(page.getByRole('alert')).toContainText("The sample data couldn't be loaded.");
+  await expect(page).not.toHaveURL(/#[/]tests/);
+  blocked = false;
+  await page.getByRole('button', { name: 'Retry' }).click();
+  await expect(page).toHaveURL(/#[/]tests/);
+  await expect(page.locator('.ranked-row').first()).toBeVisible();
+});
+
+test('files dropped on Loaded data show the result there, and the page stays on Loaded data', async ({ page }) => {
+  await openApp(page);
+  await addFiles(page, [sampleFile('run-00.json')]);
+  await expect(page.locator('.ranked-row').first()).toBeVisible();
+  await page.getByRole('link', { name: 'Loaded data' }).click();
+  await expect(page.getByRole('heading', { level: 1, name: 'Loaded data' })).toBeVisible();
+  await addFiles(page, [sampleFile('run-01.json')]);
+  await expect(page.getByRole('status', { name: 'Import result' })).toContainText('Added 1 run');
+  await expect(page).toHaveURL(/#[/]data$/);
+  await expect(page.getByRole('heading', { name: 'Files · 2' })).toBeVisible();
+});
