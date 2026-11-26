@@ -32,6 +32,8 @@ interface State {
   skippedRows: number; // saved imports that could not be read on load (corrupt or from a newer app)
   lastImport: LastImport | null;
   importError: ImportError | null;
+  dismissedBanners: ('skipped' | 'off')[]; // warnings the person closed; kept until the next page load
+  dismissBanner(kind: 'skipped' | 'off'): void;
   restore(): Promise<void>;
   importFiles(files: File[], commitLabels?: Record<string, string>): Promise<void>;
   cancelImport(): void;
@@ -54,8 +56,13 @@ export const useStore = create<State>()((set, get) => ({
   importing: null,
   storage: 'ok',
   skippedRows: 0,
+  dismissedBanners: [],
   lastImport: null,
   importError: null,
+
+  dismissBanner(kind) {
+    set((s) => ({ dismissedBanners: [...s.dismissedBanners, kind] }));
+  },
 
   async restore() {
     // An open that never answers (another tab holds it, some private modes) must not leave a blank page.

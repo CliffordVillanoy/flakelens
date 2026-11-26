@@ -19,7 +19,7 @@ export function ImportProgress({ files, done, onCancel }: { files: string[]; don
             <div className="flex justify-between gap-3 text-[13px]">
               <span className="truncate">{name}</span>
               <span className="text-muted-foreground">
-                {i < done ? t('import.file.done') : i > done ? t('import.file.waiting') : ''}
+                {i < done ? t('import.file.done') : i > done ? t('import.file.waiting') : t('import.progress.reading')}
               </span>
             </div>
             <div className="h-1.5 overflow-hidden rounded-sm bg-secondary">

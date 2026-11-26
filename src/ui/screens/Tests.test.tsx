@@ -162,3 +162,11 @@ it('focusing a row scrolls the whole row clear of the sticky header', () => {
   link.focus();
   expect(calls).toEqual([{ block: 'nearest' }]);
 });
+
+it('the health box says it counts all tests, because the tabs follow the search and the box does not', async () => {
+  render(<Tests />);
+  const box = screen.getByRole('region', { name: 'Test health' });
+  expect(within(box).getByText('All 4 tests')).toBeInTheDocument();
+  await userEvent.type(screen.getByRole('searchbox'), 'zzzz');
+  expect(within(screen.getByRole('region', { name: 'Test health' })).getByText('All 4 tests')).toBeInTheDocument();
+});

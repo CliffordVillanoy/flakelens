@@ -23,7 +23,7 @@
   --secondary: #21262d;
   --secondary-foreground: #e6edf3;
   --muted: #21262d;
-  --muted-foreground: #9198a1;
+  --muted-foreground: #a4abb4;
   --accent: #121d2f;
   --accent-foreground: #e6edf3;
   --accent-border: #1f6feb;
@@ -56,7 +56,7 @@
   --status-stable-subtle: #1a3d26;
   --status-none: #c9d1d9;
   --status-none-subtle: #30363d;
-  --status-skip: #9198a1;
+  --status-skip: #a4abb4;
   --status-new: #39c5cf;
   --status-new-subtle: #0f3a3d;
   --diff-del: #25171c;
@@ -81,7 +81,7 @@
   --secondary: #eff2f5;
   --secondary-foreground: #1f2328;
   --muted: #eff2f5;
-  --muted-foreground: #59636e;
+  --muted-foreground: #4f5a65;
   --accent: #ddf4ff;
   --accent-foreground: #1f2328;
   --accent-border: #54aeff;
@@ -93,7 +93,7 @@
   --border-control: #c3ccd5;
   --input: #818b98;
   --ring: #0969da;
-  --link: #0969da;
+  --link: #0860ca;
   --link-hover: #0550ae;
   --fg-secondary: #393f46;
   --disabled-fg: #656d76;
@@ -112,7 +112,7 @@
   --status-stable-subtle: #aceebb;
   --status-none: #393f46;
   --status-none-subtle: #d8dee4;
-  --status-skip: #59636e;
+  --status-skip: #4f5a65;
   --status-new: #0b6b73;
   --status-new-subtle: #d5f5f6;
   --diff-del: #ffebe9;
@@ -331,3 +331,7 @@
 #results:focus {
   outline: none;
 }
+
+/* Toasts: 150 ms fade, only where motion is allowed (the classes carry motion-safe:). */
+@keyframes toast-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes toast-out { from { opacity: 1; } to { opacity: 0; } }

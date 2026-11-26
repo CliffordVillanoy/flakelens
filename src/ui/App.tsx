@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type DragEvent } from 'react';
+import type { ImportRecord } from '@/engine/types';
 import { Header, type DataMode } from './components/Header';
 import { filesFrom } from './components/DropZone';
 import { LeaveSampleDialog } from './components/LeaveSampleDialog';
@@ -13,6 +14,8 @@ import { ShortcutsSheet } from './components/ShortcutsSheet';
 import { StorageBanner } from './components/StorageBanner';
 import { Toasts } from './components/Toasts';
 
+// Info notices (no commit info) do not count: only a warning or an error asks the person to look.
+const needsLook = (rec?: ImportRecord) => !!rec?.notices.some((n) => n.severity === 'warning' || n.severity === 'error');
 const HEADER_MODE = { empty: 'none', sample: 'sample', user: 'own' } as const satisfies Record<string, DataMode>;
 
 export function App() {
@@ -71,7 +74,12 @@ export function App() {
           {t('skip.results')}
         </button>
       )}
-      <Header mode={HEADER_MODE[s.mode]} onAddFiles={openPicker} onHelp={() => shortcutsSheet.open()} />
+      <Header
+        mode={HEADER_MODE[s.mode]}
+        attention={needsLook(s.dataset.imports.at(-1))}
+        onAddFiles={openPicker}
+        onHelp={() => shortcutsSheet.open()}
+      />
       <StorageBanner />
       <input
         ref={picker}

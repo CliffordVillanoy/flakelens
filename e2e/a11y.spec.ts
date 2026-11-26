@@ -66,6 +66,23 @@ for (const theme of ['dark', 'light'] as const) {
       await importSampleFilesAsOwn(page);
       await scan(page, theme, '07-tests-own-data');
 
+      // A saved import that cannot be read: the skipped banner (with its action) and the Loaded data link.
+      await page.evaluate(
+        () =>
+          new Promise<void>((resolve, reject) => {
+            const open = indexedDB.open('flakelens');
+            open.onerror = () => reject(open.error);
+            open.onsuccess = () => {
+              const tx = open.result.transaction('imports', 'readwrite');
+              tx.objectStore('imports').add({ importId: 'corrupt', seq: 999, result: 'nope' });
+              tx.oncomplete = () => (open.result.close(), resolve());
+            };
+          }),
+      );
+      await page.reload();
+      await expect(page.getByText(/saved import couldn't be read/)).toBeVisible();
+      await scan(page, theme, '16-skipped-banner');
+
       await page.evaluate(() => (window.location.hash = '#/tests?q=zzzz'));
       await expect(page.getByRole('heading', { name: 'No test matches "zzzz"' })).toBeVisible();
       await scan(page, theme, '08-edge-no-search-match');
@@ -82,7 +99,7 @@ for (const theme of ['dark', 'light'] as const) {
       await expect(page.getByRole('heading', { level: 1, name: 'Loaded data' })).toBeVisible();
       await scan(page, theme, '11-loaded-data');
 
-      await page.getByRole('button', { name: 'Clear all data' }).click();
+      await page.getByRole('main').getByRole('button', { name: 'Clear all data' }).click();
       await expect(page.getByRole('dialog', { name: 'Clear all data?' })).toBeVisible();
       await scan(page, theme, '12-dialog-clear-data');
       await page.keyboard.press('Escape');

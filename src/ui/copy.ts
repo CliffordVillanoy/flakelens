@@ -5,6 +5,8 @@ export const catalog = {
   'app.name': 'FlakeLens',
   'header.sampleTag': 'Sample data',
   'header.privacy': 'Nothing leaves this browser',
+  // Section 10 of docs/ux/04-ux-copy.md (decision 5): the phone-width line; the full line is its tooltip and name.
+  'header.privacy.short': 'Local only',
   'header.privacy.hint': 'FlakeLens makes 0 network requests unless you turn on a cloud provider.',
   'header.addFiles.sample': 'Add your files',
   'header.addFiles': 'Add files',
@@ -59,6 +61,8 @@ export const catalog = {
   'import.partial.badDate': "{file}: the run start time couldn't be read, so this run keeps its import order.",
   'import.dupeIds': '{count} tests shared a name. They were told apart by project name and position.',
   'import.dupeRun': "This run was already loaded, so it wasn't counted twice.",
+  'import.noCommit.many': 'No commit info found in {count} files. Evidence across commits will be limited.',
+  'import.progress.reading': 'Reading…',
   'import.noCommit': 'No commit info found in {file}. Evidence across commits will be limited.',
   'import.fail.format':
     "{file} wasn't imported. It isn't a Playwright JSON report. JUnit XML support is planned for a later version.",
@@ -70,7 +74,7 @@ export const catalog = {
   // Interim keys (DEV-21), to be confirmed by the UI/UX chat.
   'import.fail.tooMany': "That's more than {limit} files at once. Drop fewer files, or split them into batches.",
   'import.fail.tooBig': 'These files add up to more than {limit}. Drop fewer files at a time.',
-  'import.fail.crash': 'Something went wrong while reading your files. Nothing was changed. Try again.',
+  'import.fail.crash': "FlakeLens couldn't finish reading your files, and nothing was changed. Try again, or try fewer files.",
   'import.others': '{count, plural, one {# other file} other {# other files}} imported. You can drop another file here.',
   'import.viewNotices': 'View all notices',
   'import.region': 'Import reports',
@@ -148,18 +152,19 @@ export const catalog = {
   'tests.filters.search': 'Search: "{query}"',
   'tests.filters.remove': 'Remove filter {filter}',
   'tests.filters.clear': 'Clear filters',
-  'tests.why': 'why?',
+  'tests.why': 'see evidence',
   'tip.export': 'Tip: share the top Flaky tests with your team. Use Export to copy them as a Markdown list.',
   'tests.banner.sample.seeWhy': 'see why',
   'tests.legend.title': 'Last 12 runs, oldest first:',
   'tests.rows': 'Rows {a} to {b} of {n}',
+  'tests.health.scope': 'All {n} tests',
   'tests.health.label': 'Status of {tests, plural, one {# test} other {# tests}}: {list}',
   'run.pass': 'Passed',
   'run.retryPass': 'Passed on retry',
   'run.fail': 'Failed',
   'run.skip': 'Skipped',
   'runs.label': 'Last {count} runs, oldest first: {list}',
-  'glossary.suspect': 'Mixed results, but never on the same commit. Could be a real bug',
+  'glossary.suspect': 'Mixed results, but never on the same commit. Could be flaky or a real bug',
   'glossary.mixedCommit': 'A commit where the test both passed and failed',
   'glossary.wasted': 'Minutes of failed attempts on commits where the test also passed',
   'tests.keys': 'j k move · Enter open · / search · ? all shortcuts',
@@ -210,7 +215,7 @@ export const catalog = {
   'panel.failure.diff': 'Latest failure as a diff: failed attempt, then the retry that passed',
   'run.attempt.pass': 'pass',
   'run.attempt.fail': 'fail',
-  'run.attempt.retry': 'pass after retry',
+  'run.attempt.retry': 'passed on retry',
   'run.attempt.skip': 'skipped',
   // Copy summary (04-ux-copy "Copy summary"), one key per line.
   'summary.title': '{name} ({file})',
@@ -219,7 +224,7 @@ export const catalog = {
   'summary.failure': 'Latest failure: run {n}, commit {sha}: {message}',
   'summary.footer': 'Analysed locally with FlakeLens. Likely cause, not proof.',
   // Interim copy from the planning chat (DEV-16), pending UI/UX confirmation.
-  'toast.copyFailed': "Couldn't copy. Your browser blocked the clipboard.",
+  'toast.copyFailed': "Couldn't copy. Your browser blocked clipboard access. Select the text and copy it yourself.",
   'panel.note.title': 'What this means',
   'panel.note.next': 'What to check next',
   'panel.failure.title': 'Latest failure',
@@ -242,7 +247,7 @@ export const catalog = {
     'This test gave different results on the same code. The likely cause is in the test or its environment, not in a code change.',
   'note.flaky.next':
     "Waits and timing · Data or state shared between tests · Test order · Slow or unavailable services the test needs. Tip: while you investigate, quarantine it in CI so it can't block merges.",
-  'note.suspect.means': 'Results are mixed, but never on the same commit. This could be a real bug, not flakiness.',
+  'note.suspect.means': 'Results are mixed, but never on the same commit. This could be flaky or a real bug.',
   'note.suspect.next': 'Code changes near the first failure · Run it again several times on one commit to confirm.',
   'note.failing.means': 'It fails almost every run. This is likely a real bug or a broken test, not flakiness.',
   'note.failing.next': 'The first commit where it started failing · Recent changes to the feature or the test.',
@@ -297,6 +302,7 @@ export const catalog = {
   'storage.fail':
     "Your saved data couldn't be read. Reload the page to try again. If it keeps happening, clear all data and import your files again.",
   'storage.reload': 'Reload page',
+  'storage.skipped.action': 'Clear all data',
   // Interim key (DEV-20), to be confirmed by the UI/UX chat.
   'storage.skipped':
     "{count, plural, one {# saved import} other {# saved imports}} couldn't be read and {count, plural, one {was} other {were}} skipped. Clear all data to remove {count, plural, one {it} other {them}}.",
@@ -305,7 +311,7 @@ export const catalog = {
   // Clear all data dialog
   'clear.title': 'Clear all data?',
   'clear.body':
-    "This deletes {files, plural, one {# file} other {# files}}, {runs, plural, one {# run} other {# runs}} and all results from this browser. You can't undo this.",
+    "This deletes {files, plural, one {# file} other {# files}}, {runs, plural, one {# run} other {# runs}} and all results from this browser. You can't undo this. Your theme and display choices are kept.",
   'clear.keep': 'Keep my data',
   'clear.confirm': 'Clear all data',
   'clear.done': 'All local data cleared',

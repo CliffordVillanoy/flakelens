@@ -37,7 +37,7 @@ beforeEach(() => {
   load(fixture());
 });
 
-const names = () => screen.getAllByRole('link').filter((a) => a.getAttribute('href')?.startsWith('#/tests/') && !a.textContent?.startsWith('why?')).map((a) => a.textContent);
+const names = () => screen.getAllByRole('link').filter((a) => a.getAttribute('href')?.startsWith('#/tests/') && !a.textContent?.startsWith('see evidence')).map((a) => a.textContent);
 
 it('filter chips: removing one updates the table and the URL; Clear filters resets both', async () => {
   window.location.hash = '#/tests?status=flaky&q=e';
@@ -161,11 +161,11 @@ it('sortable headers: Test and Wasted time re-sort inside groups, with aria-sort
   expect(flakyNames()).toEqual(rankOrder);
 });
 
-it('first run: the top 3 Flaky rows get a "why?" link to their panel', () => {
+it('first run: the top 3 Flaky rows get a "see evidence" link to their panel', () => {
   render(<Tests />);
-  const why = screen.getAllByRole('link', { name: /^why\?/ });
+  const why = screen.getAllByRole('link', { name: /^see evidence/ });
   expect(why).toHaveLength(3);
-  const first = screen.getAllByRole('row').find((r) => r.textContent?.includes('why?'))!;
+  const first = screen.getAllByRole('row').find((r) => r.textContent?.includes('see evidence'))!;
   const id = first.querySelector('a')!.getAttribute('href');
   expect(why[0]).toHaveAttribute('href', id);
 });

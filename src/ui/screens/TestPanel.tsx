@@ -87,7 +87,7 @@ export function TestPanel({ row, ds, position, closeHref }: Props) {
       </div>
 
       <div className="flex flex-col gap-2">
-        <h2 id="panel-title" ref={title} tabIndex={-1} className="m-0 text-xl font-bold break-words outline-none">
+        <h2 id="panel-title" ref={title} tabIndex={-1} className="m-0 text-xl font-semibold break-words outline-none">
           {test.title}
         </h2>
         <FileHeaderBar file={test.file} project={test.project} passed={passed} failed={failed} />
