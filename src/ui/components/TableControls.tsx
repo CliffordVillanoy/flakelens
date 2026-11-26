@@ -205,19 +205,3 @@ export function ExportMenu({ onCopyTop }: { onCopyTop: () => Promise<void> | voi
     </div>
   );
 }
-
-export function ExportTip({ onDismiss }: { onDismiss: () => void }) {
-  return (
-    <div role="note" className="flex items-center gap-3 rounded-lg border border-border bg-card px-3.5 py-2 text-[13px] text-fg-secondary">
-      <p className="m-0 flex-1">{t('tip.export')}</p>
-      <button
-        type="button"
-        aria-label={t('banner.dismiss')}
-        className="inline-flex size-7 shrink-0 items-center justify-center rounded-md hover:bg-surface-hover"
-        onClick={onDismiss}
-      >
-        <X size={16} aria-hidden="true" />
-      </button>
-    </div>
-  );
-}

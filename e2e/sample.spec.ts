@@ -7,7 +7,7 @@ test('sample data reaches a ranked list and an open Flaky test in well under 2 m
   await trySample(page);
   const firstFlaky = page.locator('.ranked-row', { has: page.locator('[data-pill]', { hasText: 'Flaky' }) }).first();
   await expect(firstFlaky).toBeVisible();
-  await expect(page.getByRole('link', { name: /^see evidence/ })).toHaveCount(3);
+  await expect(page.getByText('see evidence')).toHaveCount(0); // the row is the link
   await firstFlaky.getByRole('link').first().click();
   await expect(page.locator('aside h2')).toBeVisible();
   await expect(page.getByRole('region', { name: 'What this means' })).toBeVisible();

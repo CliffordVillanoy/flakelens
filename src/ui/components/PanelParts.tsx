@@ -139,12 +139,13 @@ export function RunHistory({ ds, testId }: { ds: Dataset; testId: string }) {
           {t('panel.history.legend.mixed')}
         </span>
       </div>
-      <div className="text-xs text-muted-foreground">{t('panel.history.hint')}</div>
     </section>
   );
 }
 
 // "What this means" and "What to check next", split into a list; a trailing "Tip: …" sentence stays separate.
+const SHOWN_CHECKS = 2;
+
 export function StatusNote({ row }: { row: Row }) {
   const id = useId();
   const note = noteFor(row);
@@ -161,14 +162,25 @@ export function StatusNote({ row }: { row: Row }) {
       <div className="mt-1 text-sm font-semibold">{t('panel.note.next')}</div>
       {items.length > 1 ? (
         <ul className="m-0 flex list-disc flex-col gap-[3px] pl-[18px] text-sm text-fg-secondary">
-          {items.map((x) => (
+          {items.slice(0, SHOWN_CHECKS).map((x) => (
             <li key={x}>{x}</li>
           ))}
         </ul>
       ) : (
         <p className="m-0 text-sm text-fg-secondary">{list}.</p>
       )}
-      {tipAt !== -1 && <div className="text-[13px] text-muted-foreground">{next.slice(tipAt + 1)}</div>}
+      {/* Two checks show; the rest and the quarantine tip wait behind "More to check". */}
+      {(items.length > SHOWN_CHECKS || tipAt !== -1) && (
+        <details className="text-sm">
+          <summary className="cursor-pointer font-semibold">{t('panel.note.more')}</summary>
+          <ul className="m-0 mt-1 flex list-disc flex-col gap-[3px] pl-[18px] text-fg-secondary">
+            {items.slice(SHOWN_CHECKS).map((x) => (
+              <li key={x}>{x}</li>
+            ))}
+          </ul>
+          {tipAt !== -1 && <div className="mt-1.5 text-[13px] text-muted-foreground">{next.slice(tipAt + 1)}</div>}
+        </details>
+      )}
     </section>
   );
 }
@@ -190,11 +202,14 @@ export function LatestFailure({ failures }: { failures: FailureEntry[] }) {
       <h3 id={`${id}-title`} className="m-0 text-[15px] font-semibold">
         {t('panel.failure.title')}
       </h3>
-      <div className="text-[13px] text-muted-foreground">
-        {f.startedAt
-          ? t('panel.failure.meta', { ...meta, date: dateTime.format(new Date(f.startedAt)) })
-          : t('panel.failure.metaNoDate', meta)}
-      </div>
+      {/* With a passing retry the diff header names the run and the attempts; the line only stands in when there is none. */}
+      {!f.passedAfter && (
+        <div className="text-[13px] text-muted-foreground">
+          {f.startedAt
+            ? t('panel.failure.meta', { ...meta, date: dateTime.format(new Date(f.startedAt)) })
+            : t('panel.failure.metaNoDate', meta)}
+        </div>
+      )}
       <div role="group" aria-label={t('panel.failure.diff')} className="overflow-hidden rounded-md border border-border">
         {f.passedAfter && (
           <div className="border-b border-accent-border bg-accent px-3 py-1 font-mono text-xs leading-5 text-fg-secondary">

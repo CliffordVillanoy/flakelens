@@ -114,7 +114,7 @@ kbd{font-family:'JetBrains Mono',monospace;font-size:12px;padding:1px 6px;border
               </sc-if>
             </div>
             <sc-for list="{{g.rows}}" as="r" hint-placeholder-count="2">
-              <div role="row" class="row" style="display: grid; grid-template-columns: 52px minmax(280px, 2.2fr) 120px 208px minmax(260px, 3fr) 128px; column-gap: 8px; align-items: center; min-height: 56px; border-top: 1px solid #21262D">
+              <div role="row" class="row" style="display: grid; grid-template-columns: 52px minmax(280px, 2.2fr) 120px 208px minmax(260px, 3fr) 128px; column-gap: 8px; align-items: center; min-height: 64px; border-top: 1px solid #21262D">
                 <div role="cell" style="padding: 12px 16px; color: #A4ABB4; font-variant-numeric: tabular-nums; text-align: center">{{r.rank}}</div>
                 <div role="cell" style="padding: 12px 16px; min-width: 0; display: flex; flex-direction: column; gap: 2px">
                   <a class="rowlink" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis" href="TestDetail.dc.html">{{r.name}}</a>
@@ -166,17 +166,17 @@ class Component extends DCLogic {
       tiles: [tile('All', '211', true), tile('Flaky', '3'), tile('Unproven', '2'), tile('Failing', '2')],
       groups: [
         { label: 'Flaky', count: '3', meaning: 'Different results on the same commit', collapsed: false, rows: [
-          row(1, 'checkout › applies coupon code', 'tests/checkout.spec.ts', 'Flaky', '4 of 9 commits had both a pass and a fail', '14 min'),
-          row(2, 'search › shows results after typing', 'tests/search.spec.ts', 'Flaky', '3 of 9 commits had both a pass and a fail', '9 min'),
+          row(1, 'checkout › applies coupon code', 'tests/checkout.spec.ts', 'Flaky', '4 of 9 commits had mixed results', '14 min'),
+          row(2, 'search › shows results after typing', 'tests/search.spec.ts', 'Flaky', '3 of 9 commits had mixed results', '9 min'),
           row(3, 'profile › uploads avatar', 'tests/profile.spec.ts', 'Flaky', 'Passed on retry in 3 of 12 runs', '6 min')
         ]},
         { label: 'Unproven', count: '2', meaning: 'Mixed results, never on the same commit. Could be flaky or a real bug', collapsed: false, rows: [
-          row(4, 'cart › updates item quantity', 'tests/cart.spec.ts', 'Unproven', 'Switched between pass and fail 5 times in 12 runs', '~4 min (est.)'),
-          row(5, 'login › remembers the session', 'tests/login.spec.ts', 'Unproven', 'Switched between pass and fail 3 times in 12 runs', '~3 min (est.)')
+          row(4, 'cart › updates item quantity', 'tests/cart.spec.ts', 'Unproven', 'Switched pass and fail 5 times in 12 runs', '~4 min (est.)'),
+          row(5, 'login › remembers the session', 'tests/login.spec.ts', 'Unproven', 'Switched pass and fail 3 times in 12 runs', '~3 min (est.)')
         ]},
         { label: 'Failing', count: '2', meaning: 'Fails almost every run. Likely a real bug', collapsed: false, rows: [
           row(6, 'reports › exports a PDF', 'tests/reports.spec.ts', 'Failing', 'Failed 12 of 12 runs', '—'),
-          row(7, 'settings › saves the time zone', 'tests/settings.spec.ts', 'Failing', 'Failed 4 of 4 runs since a41f2c9. Flaky before that', '—')
+          row(7, 'settings › saves the time zone', 'tests/settings.spec.ts', 'Failing', 'Failed 4 of 4 runs since a41f2c9', '—')
         ]},
         { label: 'Stable', count: '201', meaning: 'No sign of flakiness', collapsed: true, rows: [] },
         { label: 'Not enough data', count: '3', meaning: 'Too little history to judge', collapsed: true, rows: [] }

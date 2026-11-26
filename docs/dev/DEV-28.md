@@ -1,6 +1,6 @@
 # DEV-28: Apply the UI/UX v0 review decisions
 
-**Status:** Done locally (2026-11-26, commit `66041f1` on `feat/dev-28-tokens-copy-sync`, cut from `docs/v1-plan` HEAD `2c58fa1`; 333 unit + 38 e2e tests pass, axe 32 scans clean). Not pushed or merged. Needs the docs committed first (copy-sync test reads `docs/ux/04-ux-copy.md`). Open: Comfortable row height is 62 to 66px, DESIGN.md says 56px (UI/UX decision); doc typo in `tests.filters.search`.
+**Status:** Done locally (2026-11-26, commit `66041f1` on `feat/dev-28-tokens-copy-sync`, cut from `docs/v1-plan` HEAD `2c58fa1`; 333 unit + 38 e2e tests pass, axe 32 scans clean). Not pushed or merged. Needs the docs committed first (copy-sync test reads `docs/ux/04-ux-copy.md`). Row height resolved by the UI/UX chat (Comfortable is 64px, handled in DEV-29); the `tests.filters.search` doc typo is fixed in the doc.
 
 **Goal:** The live app matches the design and copy the UI/UX chat confirmed on 2026-11-25.
 

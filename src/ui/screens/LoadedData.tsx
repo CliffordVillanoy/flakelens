@@ -28,13 +28,13 @@ const SEVERITY_ICON = {
 
 function FileItem({ f }: { f: FileRow }) {
   const { key, tone, Icon } = RESULT[f.result];
-  const meta = { date: dateTime.format(new Date(f.importedAt)), runs: f.runs, tests: f.tests, n: f.notImported };
+  const meta = { runs: f.runs, tests: f.tests };
   return (
     <li className="flex flex-wrap items-center gap-3 border-t border-border-muted px-4 py-3 first:border-t-0">
       <div className="min-w-0 flex-[1_1_240px]">
         <div className="font-mono text-[13px] break-all">{f.fileName}</div>
         <div className="text-xs text-muted-foreground">
-          {t(f.notImported > 0 ? 'data.file.meta.notImported' : 'data.file.meta', meta)}
+          {t('data.file.meta', meta)}
         </div>
       </div>
       <span className={`inline-flex h-6 items-center gap-[5px] rounded-full px-2 text-xs font-semibold ${tone}`}>
@@ -73,8 +73,7 @@ export function LoadedData({ onExitSample }: { onExitSample: () => void }) {
         </a>
         <h1 className="m-0 text-2xl font-bold">{t('data.title')}</h1>
         <p className="m-0 text-sm text-muted-foreground">
-          {t('data.summary', { files: summary.files, runs: summary.runs, date: summary.lastAdded ? day.format(new Date(summary.lastAdded)) : t('wasted.none') })}{' '}
-          {t('data.lead')}
+          {t('data.summary', { files: summary.files, runs: summary.runs, date: summary.lastAdded ? day.format(new Date(summary.lastAdded)) : t('wasted.none') })}
         </p>
       </div>
 

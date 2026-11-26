@@ -1,6 +1,6 @@
 # DEV-29: Simplification pass on the v0 screens
 
-**Status:** To do
+**Status:** Done locally (2026-11-26, commits `0eeab35`, `be7f7e3` and `7503704` on `feat/dev-29-simplification`, stacked on DEV-28; 350 unit + 43 e2e tests pass, axe 32 scans clean, word budgets tested). Not pushed or merged. Comfortable rows measure 63px with Evidence on one line at 1440px and 1100px (option C).
 
 **Goal:** The live v0 screens follow the owner's less-text rules: fewer words, no grey helper lines, word budgets.
 
@@ -17,7 +17,8 @@
 4. Word budgets (rule 3 of the pass): visible UI text above the first data row, excluding row content, is at most 40 words on Start, 60 on Tests, 60 on Loaded data, 90 in the detail panel, 45 in any dialog and 20 in any banner or toast. A unit test per screen renders it in its main states and asserts the budget; the counting rule (visible text only, tooltips and screen-reader-only text excluded) is stated in the test and in the report.
 5. Rule 8 (`docs/ux/12-simplification-pass.md`, canvas v78): no grey helper line under a label; explanations go in a tooltip or a closed block; a helper stays only if it prevents a mistake. On the v0 screens: the group meaning line on Tests becomes a tooltip on the group name; the detail panel caption is removed. Keys that no longer show are retired.
 6. Second sub-label sweep (`docs/ux/12-simplification-pass.md` section 7b, canvas v79): on Loaded data the file sub-line is "{runs} runs · {tests} tests" only (no added date, no "3 not imported"; the result pill says it); the shortcuts sheet drops the line "They never fire while you type in a text field." (the behaviour stays). Kept on purpose, do not remove: the file path under the test name, the SHA and branch cells, the no-commit warning, and the not-imported detail. Retire the keys that no longer show (`data.file.meta` is shortened; the typing note in `keys.*`).
-7. Unit and e2e tests updated or added for every item above; full suites green.
+7. Row height (UI/UX decision 2026-11-26, option C, `DESIGN.md` Evidence cell rule, copy doc section 18, boards at canvas v83): Comfortable rows are 64px, two lines (name, then path), no cell-padding reduction; the container stays 1232px and the fixed column widths stay. The Evidence sentences are shortened: `why.mixed` = "{m} of {g} commits had mixed results", `why.suspect` = "Switched pass and fail {f} times in {n} runs", `why.failingWasFlaky` = "Failed {x} of {x} runs since {sha}"; `why.retry`, `why.failing`, `why.stable` and `why.insufficient` are unchanged; `tests.why` ("see evidence") is retired (the row is already the link). Safety net: the Evidence cell is `white-space: nowrap` with `text-overflow: ellipsis` and the full sentence in a `title` attribute, so rows stay 64px even with long numbers. Add an e2e measurement at 1440px and at 1100px (rows about 64px, Evidence on one line at both); the copy-sync test follows the doc.
+8. Unit and e2e tests updated or added for every item above; full suites green.
 
 **Details:**
 - Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: DEV-28.

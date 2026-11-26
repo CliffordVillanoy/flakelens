@@ -46,3 +46,75 @@ test('the header says "Local only" below 1000px and the full line from 1000px up
   await expect(full).toBeVisible();
   expect(await short.evaluate((e) => Math.round(e.getBoundingClientRect().width))).toBe(0);
 });
+
+// DEV-29 (docs/ux/12-simplification-pass.md): less text, checked in a real browser.
+test('Tests: one-sentence sample banner, short health line, no legend row, group meaning as a tooltip', async ({ page }) => {
+  await openApp(page);
+  await trySample(page);
+  await expect(page.getByText('Sample data. Start with the top 3 Flaky tests.')).toBeVisible();
+  const box = page.getByRole('region', { name: 'Test health' });
+  await expect(box.getByText(/^\d+ tests · \d+ runs$/)).toBeVisible();
+  await expect(box).not.toContainText('commits');
+  await expect(page.getByText(/oldest first/)).toHaveCount(0);
+  const flaky = page.getByRole('rowheader').filter({ hasText: /^Flaky · \d+$/ }).locator('strong');
+  await expect(flaky).toHaveAttribute('title', 'Different results on the same commit');
+});
+
+test('detail panel: a one-sentence note, two checks, the rest closed under "More to check"', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openApp(page);
+  await trySample(page);
+  await page.locator('.ranked-row a[data-test-id]').first().click();
+  const note = page.getByRole('region', { name: 'What this means' });
+  await expect(note).toContainText('This test gave different results on the same code.');
+  const more = note.locator('details');
+  await expect(more).not.toHaveAttribute('open', '');
+  await expect(more.locator('summary')).toHaveText('More to check');
+  await expect(note.getByText('Test order')).toBeHidden();
+  await more.locator('summary').click();
+  await expect(note.getByText('Test order')).toBeVisible();
+  await expect(page.getByText(/Oldest on the left/)).toHaveCount(0);
+});
+
+test('Start and Loaded data say less', async ({ page }) => {
+  await openApp(page);
+  await expect(page.getByText('A flaky test passes and fails on the same code. Drop your test reports to rank them.')).toBeVisible();
+  await expect(page.getByText('More runs give better results.')).toBeVisible();
+});
+
+// DEV-29 criterion 7 (DESIGN.md "Row height decision", copy doc section 18): Comfortable rows are about 64px, two lines
+// (name, path), and the Evidence cell is one line at every width (nowrap, ellipsis, full sentence in the tooltip).
+const measure = (page: import('@playwright/test').Page) =>
+  page.locator('.ranked-row').evaluateAll((rows) =>
+    rows.slice(0, 12).map((row) => {
+      const why = row.querySelector<HTMLElement>('.c-why')!;
+      // The cell has 12px padding top and bottom and a 20px line: its content height tells the number of lines.
+      const inner = why.getBoundingClientRect().height - 24;
+      const text = why.querySelector<HTMLElement>('span')!;
+      return {
+        row: Math.round(row.getBoundingClientRect().height),
+        whyLines: Math.round(inner / 20),
+        cut: text.scrollWidth > text.clientWidth,
+        titleIsText: text.getAttribute('title') === text.textContent,
+        see: why.textContent!.includes('see evidence'),
+      };
+    }),
+  );
+
+for (const width of [1440, 1100]) {
+  test(`at ${width}px Comfortable rows are about 64px and Evidence is one line`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await openApp(page);
+    await trySample(page);
+    await expect(page.locator('.ranked-row').first()).toBeVisible();
+    const rows = await measure(page);
+    expect(rows.length).toBeGreaterThan(3);
+    for (const r of rows) {
+      expect(r.row, JSON.stringify(r)).toBeGreaterThanOrEqual(62);
+      expect(r.row, JSON.stringify(r)).toBeLessThanOrEqual(66);
+      expect(r.whyLines, JSON.stringify(r)).toBe(1);
+      expect(r.titleIsText, JSON.stringify(r)).toBe(true); // nothing is lost when a line is cut
+      expect(r.see).toBe(false);
+    }
+  });
+}

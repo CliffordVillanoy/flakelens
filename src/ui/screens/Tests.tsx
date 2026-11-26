@@ -15,7 +15,7 @@ import { suggestSearch } from '../data/loaded';
 import { SampleBanner } from '../components/SampleBanner';
 import { StatusTabs } from '../components/StatusTabs';
 import { TestHealth } from '../components/TestHealth';
-import { ColumnsMenu, DensityToggle, ExportMenu, ExportTip, FilterChips, type Density } from '../components/TableControls';
+import { ColumnsMenu, DensityToggle, ExportMenu, FilterChips, type Density } from '../components/TableControls';
 import { copyText } from '../lib/clipboard';
 import { shortcutsSheet, useShortcuts } from '../lib/shortcuts';
 import { MissingTest, TestPanel } from './TestPanel';
@@ -53,7 +53,6 @@ export function Tests({
     return Array.isArray(saved) ? saved.filter((k): k is ColumnKey => COLUMNS.some((c) => c.key === k)) : DEFAULT_COLUMNS;
   });
   const [density, setDensity] = useState<Density>(() => (getPref<string>('density', 'comfortable') === 'compact' ? 'compact' : 'comfortable'));
-  const [tipHidden, setTipHidden] = useState(() => getPref<unknown>('exportTipDismissed', false) === true);
   const [sort, setSort] = useState<Sort>(RANK_SORT);
   const saveColumns = (next: ColumnKey[]) => {
     setColumns(next);
@@ -122,7 +121,7 @@ export function Tests({
       <h1 className="sr-only">{t('tests.h1')}</h1>
       <div className="listpane flex flex-col gap-3.5" data-panel={panelOpen}>
       {s.mode === 'sample' && !sampleHidden && (
-        <SampleBanner dataset={s.dataset} onExit={onExitSample} onDismiss={() => setSampleHidden(true)} />
+        <SampleBanner onExit={onExitSample} onDismiss={() => setSampleHidden(true)} />
       )}
       {s.importing && <ImportProgress files={s.importing.files} done={s.importing.done} onCancel={s.cancelImport} />}
       {!s.importing && (failed.length > 0 || s.importError) && (
@@ -180,7 +179,7 @@ export function Tests({
         <ExportMenu
           onCopyTop={() => copyText(topFlakyMarkdown(rows), t('panel.copySummary.done'))}
         />
-        <div role="status" aria-live="polite" className="text-[13px] text-muted-foreground">
+        <div role="status" aria-live="polite" className="sr-only">
           {countLine(shown.length, isLabel(status) ? status : 'all', q, sort)}
         </div>
       </div>
@@ -196,15 +195,6 @@ export function Tests({
         ]}
         onClear={() => navigate(listHash('all', ''))}
       />
-
-      {!tipHidden && h.counts.flaky > 0 && (
-        <ExportTip
-          onDismiss={() => {
-            setTipHidden(true);
-            setPref('exportTipDismissed', true);
-          }}
-        />
-      )}
 
       <RunLegend />
       </div>

@@ -1,6 +1,6 @@
 # DEV-30: Community files and feedback path
 
-**Status:** To do
+**Status:** Done locally (2026-11-26, commit `6f5f5de` on `feat/dev-30-community-files`, stacked on DEV-29; 7 files, no code; YAML parses, relative links resolve). Not pushed or merged. Owner must enable Private vulnerability reporting (Settings > Code security) and may change the 7-day reply wording and the conduct contact.
 
 **Goal:** The public repository has the community files the launch checklist (spec 18) and the Settings About links expect.
 

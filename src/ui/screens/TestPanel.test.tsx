@@ -95,7 +95,7 @@ it('the panel shows the title, the pill, the same evidence sentence as the row, 
   const panel = await open('flaky');
   expect(within(panel).getByRole('heading', { level: 2, name: 'flaky' })).toBeInTheDocument();
   expect(within(panel).getByText('Flaky', { selector: '[data-pill]' })).toBeInTheDocument();
-  expect(panel).toHaveTextContent('1 of 3 commits had both a pass and a fail');
+  expect(panel).toHaveTextContent('1 of 3 commits had mixed results');
   expect(panel).toHaveTextContent('x.spec.ts');
   expect(within(panel).getByRole('img', { name: '3 passed · 3 failed attempts' })).toBeInTheDocument();
   expect(panel).toHaveTextContent('1 of 3 shown');
@@ -103,7 +103,7 @@ it('the panel shows the title, the pill, the same evidence sentence as the row, 
 
 it.each<[string, Dataset, string, string]>([
   ['flaky', fixture(), 'flaky', 'This test gave different results on the same code.'],
-  ['failing', fixture(), 'failing', 'It fails almost every run.'],
+  ['failing', fixture(), 'failing', 'It fails almost every run, so it is likely a real bug or a broken test.'],
   [
     'failing that was flaky, with its SHA',
     buildDataset([
@@ -149,7 +149,8 @@ it('latest failure: failed lines, the passing retry, previous failure, and it op
   await userEvent.click(within(failure).getByRole('button', { name: 'Show previous failure' }));
   expect(failure).toHaveTextContent('Run 4 · commit ccccccc · attempt 1 of 2');
   await userEvent.click(within(failure).getByRole('button', { name: 'Show previous failure' }));
-  expect(failure).toHaveTextContent('Run 2 · commit bbbbbbb · attempt 1 of 2');
+  // The diff header already names the run and the attempts, so the run, commit and attempt line above it is gone.
+  expect(failure).not.toHaveTextContent('commit bbbbbbb · attempt');
   expect(failure).toHaveTextContent('Run 2 · attempt 1 failed, attempt 2 passed · same commit');
   expect(failure).toHaveTextContent('Attempt 2 passed in 3.1 s on the same commit.');
 });
@@ -172,7 +173,7 @@ it('j and k move through the shown tests, in the panel and in the list', async (
   render(<Tests />);
   const order = screen
     .getAllByRole('link')
-    .filter((a) => a.getAttribute('href')?.startsWith('#/tests/') && !a.textContent?.startsWith('see evidence'))
+    .filter((a) => a.getAttribute('href')?.startsWith('#/tests/'))
     .map((a) => a.textContent!);
   screen.getByRole('link', { name: order[0] }).focus();
   await userEvent.keyboard('j');
@@ -229,7 +230,7 @@ it('Copy summary copies the plain-text template; a blocked clipboard shows an er
   expect(writeText.mock.calls[0]![0]).toBe(
     [
       'flaky (x.spec.ts)',
-      'Status: Flaky. 1 of 3 commits had both a pass and a fail.',
+      'Status: Flaky. 1 of 3 commits had mixed results.',
       'Wasted CI time: 0.1 min across 4 runs.',
       'Latest failure: run 4, commit ccccccc: TimeoutError in run3',
       'Analysed locally with FlakeLens. Likely cause, not proof.',
@@ -276,4 +277,36 @@ it('Esc that closes the shortcuts sheet leaves the panel open', async () => {
   await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Keyboard shortcuts' })).toBeNull());
   expect(window.location.hash).toBe(before);
   expect(screen.getByRole('heading', { level: 2, name: 'flaky' })).toBeInTheDocument();
+});
+
+it('the status note is one sentence, shows two checks, and keeps the rest closed under "More to check"', async () => {
+  render(<Tests />);
+  const panel = await open('flaky');
+  const note = within(panel).getByRole('region', { name: 'What this means' });
+  expect(note).toHaveTextContent('This test gave different results on the same code.');
+  expect(note).not.toHaveTextContent('The likely cause is in the test');
+  const more = note.querySelector('details')!;
+  expect(more.open).toBe(false);
+  expect(more.querySelector('summary')).toHaveTextContent('More to check');
+  // Two checks outside the closed block...
+  const shown = within(note).getAllByRole('listitem').filter((li) => !more.contains(li));
+  expect(shown.map((li) => li.textContent)).toEqual(['Waits and timing', 'Data or state shared between tests']);
+  // ...and the other two plus the quarantine tip inside it.
+  const hidden = [...more.querySelectorAll('li')].map((li) => li.textContent);
+  expect(hidden).toEqual(['Test order', 'Slow or unavailable services the test needs']);
+  expect(more).toHaveTextContent("Tip: while you investigate, quarantine it in CI so it can't block merges.");
+});
+
+it('a status with two checks has no "More to check"', async () => {
+  render(<Tests />);
+  const panel = await open('failing');
+  expect(within(panel).getByRole('region', { name: 'What this means' }).querySelector('details')).toBeNull();
+});
+
+it('the run-history caption is gone and the key says just "Mixed commit"', async () => {
+  render(<Tests />);
+  const panel = await open('flaky');
+  expect(panel).not.toHaveTextContent('Oldest on the left');
+  expect(panel).toHaveTextContent('Mixed commit');
+  expect(panel).not.toHaveTextContent('Mixed commit: passed and failed');
 });

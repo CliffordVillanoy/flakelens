@@ -79,7 +79,8 @@ it('Loaded data lists the files with their result, the notices and the runs tabl
   expect(await screen.findByRole('heading', { level: 1, name: 'Loaded data' })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'Back to tests' })).toHaveAttribute('href', '#/tests');
   expect(screen.getByText(/^4 files · 3 runs · last added \d/)).toBeInTheDocument();
-  expect(screen.getByText(/Rankings use only these files\. Everything stays in this browser\./)).toBeInTheDocument();
+  expect(screen.queryByText(/Rankings use only these files/)).toBeNull(); // the lead is the summary line alone
+  expect(screen.getByText(/^4 files · 3 runs · last added [^.]*$/)).toBeInTheDocument(); // and has no final period
 
   const files = screen.getByRole('region', { name: 'Files · 4' });
   const rows = within(files).getAllByRole('listitem');
@@ -87,7 +88,10 @@ it('Loaded data lists the files with their result, the notices and the runs tabl
   expect(rows[0]).toHaveTextContent('ok.json');
   expect(rows[0]).toHaveTextContent('Imported');
   expect(rows[1]).toHaveTextContent('no-status.json');
-  expect(rows[1]).toHaveTextContent('1 not imported');
+  // The sub-line is only "{runs} runs · {tests} tests": no added date, no "not imported" (the pill says it).
+  expect(within(rows[0]!).getByText(/^[0-9]+ runs? · [0-9]+ tests?$/)).toBeInTheDocument();
+  expect(rows[1]).not.toHaveTextContent('not imported');
+  expect(rows[0]).not.toHaveTextContent('Added');
   expect(rows[1]).toHaveTextContent('Partly imported');
   expect(rows[3]).toHaveTextContent('wrong-format.json');
   expect(rows[3]).toHaveTextContent("Couldn't import");
@@ -153,7 +157,6 @@ it('Clear all data: the dialog names the scope and starts on Keep my data; Keep 
 
 it('confirming removes everything from IndexedDB and the choices, goes to Start and shows the toast', async () => {
   setPref('columns', ['rank', 'test', 'status']);
-  setPref('exportTipDismissed', true);
   setPref('theme', 'light');
   setPref('density', 'compact');
   setPref('shortcuts', false);
@@ -166,7 +169,7 @@ it('confirming removes everything from IndexedDB and the choices, goes to Start 
   expect(useStore.getState().mode).toBe('empty');
   expect(await screen.findByText('All local data cleared')).toBeInTheDocument();
   const kept = (k: string) => window.localStorage.getItem(`flakelens.${k}`);
-  expect([kept('columns'), kept('exportTipDismissed')]).toEqual([null, null]);
+  expect([kept('columns')]).toEqual([null]);
   expect([kept('theme'), kept('density'), kept('shortcuts')]).toEqual(['"light"', '"compact"', 'false']);
 });
 
@@ -190,7 +193,7 @@ it('in sample mode the button reads "Exit sample" and never touches storage', as
 it('an empty filter says so and offers Show all tests (Flaky gets the good-news line)', async () => {
   await open('#/tests?status=flaky', [json('a.json', [spec('login works')]), json('b.json', [spec('login works')], '2026-11-02T10:00:00.000Z')]);
   expect(await screen.findByRole('heading', { name: 'No Flaky tests in these 2 runs' })).toBeInTheDocument();
-  expect(screen.getByText('Good news. More runs make this more certain.')).toBeInTheDocument();
+  expect(screen.getByText('More runs make this more certain.')).toBeInTheDocument();
   await userEvent.click(screen.getByRole('button', { name: 'Show all tests' }));
   await waitFor(() => expect(window.location.hash).toBe('#/tests'));
   expect(screen.queryByRole('heading', { name: /No Flaky tests/ })).toBeNull();
@@ -228,7 +231,7 @@ it('storage failure: a calm message with Reload, and Start still shows (never a 
   const reloadPage = vi.spyOn(reload, 'now').mockImplementation(() => {});
   render(<App />);
   const alert = await screen.findByRole('alert');
-  expect(alert).toHaveTextContent("Your saved data couldn't be read. Reload the page to try again.");
+  expect(alert).toHaveTextContent("Your saved data couldn't be read. Reload to try again.");
   expect(screen.getByRole('heading', { level: 1, name: 'Find your flaky tests' })).toBeInTheDocument();
   await userEvent.click(within(alert).getByRole('button', { name: 'Reload page' }));
   expect(reloadPage).toHaveBeenCalledTimes(1);
@@ -240,7 +243,7 @@ it('the shortcuts sheet opens from "?" and the header button, lists the keys and
   await userEvent.keyboard('?');
   const sheet = await screen.findByRole('dialog', { name: 'Keyboard shortcuts' });
   expect(within(sheet).getByRole('checkbox', { name: 'Single-key shortcuts' })).toBeChecked();
-  expect(sheet).toHaveTextContent('They never fire while you type in a text field.');
+  expect(sheet).not.toHaveTextContent('They never fire while you type'); // the behaviour stays, the line goes
   expect(within(sheet).getByText('j / k')).toHaveProperty('tagName', 'KBD');
   for (const line of ['Next / previous test', 'Open details', 'Close details', 'Search', 'This sheet']) expect(sheet).toHaveTextContent(line);
   await userEvent.keyboard('{Escape}');
@@ -339,4 +342,11 @@ it('the amber dot on the header\'s Loaded data link follows the last import: a w
   await open('#/tests', [pw('partial-no-status.json')]); // results left out: a warning
   const warned = await screen.findByRole('link', { name: 'Loaded data' });
   expect(warned.querySelector('[data-attention]')).not.toBeNull();
+});
+
+it('Loaded data footer: "Remove data" and one sentence, with Clear all data', async () => {
+  await open('#/data');
+  expect(await screen.findByText('To remove a file, clear all data.')).toBeInTheDocument();
+  expect(screen.getByText('Remove data')).toBeInTheDocument();
+  expect(screen.queryByText(/comes in a later version/)).toBeNull();
 });

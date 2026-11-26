@@ -13,7 +13,6 @@ export const HEADER_PX = 40; // sticky column header
 export const BAND_PX = 44; // sticky group label under it
 const ROW_PX: Record<Density, number> = { comfortable: 56, compact: 32 }; // DESIGN.md "Ranked table spacing", "Table controls"
 const COLLAPSED_BY_DEFAULT: Label[] = ['stable', 'insufficient'];
-const FIRST_RUN_WHY = 3; // spec 13.1: the top three Flaky tests get a "why?" link
 
 type Item = { kind: 'group'; label: Label; count: number; collapsed: boolean } | { kind: 'row'; row: Row };
 
@@ -53,8 +52,10 @@ function GroupBand({ label, count, collapsed, onShow }: { label: Label; count: n
   return (
     <div className="flex min-h-11 flex-wrap items-center gap-2.5 border-t border-border-muted bg-surface-hover px-4 py-2 text-[13px]">
       <span role="rowheader" className="flex flex-wrap items-baseline gap-x-2">
-        <strong className="font-semibold">{text.slice(0, cut)}</strong>
-        <span className="text-xs text-muted-foreground">{text.slice(cut)}</span>
+        {/* The meaning of the group is a tooltip on its name, not a grey line under it. */}
+        <strong className="font-semibold" title={text.slice(cut).replace(/^ · /, '') || undefined}>
+          {text.slice(0, cut)}
+        </strong>
       </span>
       {collapsed && (
         <span role="cell">
@@ -259,8 +260,7 @@ function TestRow({
   query: string;
 }) {
   const { score, test, cells, evidence, flakyRank } = row;
-  // Rank is the fix-priority position, shown for Flaky rows as on board 3; the top three get "why?".
-  const why = flakyRank !== null && flakyRank <= FIRST_RUN_WHY;
+  // Rank is the fix-priority position, shown for Flaky rows as on board 3.
   const href = `#/tests/${encodeURIComponent(score.testId)}${query}`;
   const compact = density === 'compact';
   const pad = compact ? 'px-3 py-1' : 'px-4 py-3';
@@ -287,20 +287,16 @@ function TestRow({
     ),
     status: () => <StatusPill label={score.label} />,
     runs: () => <RunStrip cells={cells} />,
-    why: () => (
-      <>
-        {t(evidence.key, evidence.params)}
-        {why && (
-          <>
-            {' '}
-            <a href={href} className="relative z-10 font-semibold">
-              {t('tests.why')}
-              <span className="sr-only"> {test.title}</span>
-            </a>
-          </>
-        )}
-      </>
-    ),
+    // Evidence is one line at every width (DESIGN.md "Row height decision", copy doc section 18): a long sentence is cut
+    // with an ellipsis and its full text is the tooltip, so Comfortable rows stay about 64px. The row is the link.
+    why: () => {
+      const text = t(evidence.key, evidence.params);
+      return (
+        <span title={text} className="block truncate">
+          {text}
+        </span>
+      );
+    },
     wasted: () => wastedText(score),
     score: () => Math.round(score.score),
     mixed: () => t('cell.fraction', { a: score.mixedCommits, b: row.commits }),

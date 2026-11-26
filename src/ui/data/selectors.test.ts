@@ -19,7 +19,7 @@ it('evidence: mixed commits, number first', () => {
     ]),
   );
   expect(r.score.label).toBe('flaky');
-  expect(text(r)).toBe('1 of 2 commits had both a pass and a fail');
+  expect(text(r)).toBe('1 of 2 commits had mixed results');
 });
 
 it('evidence: retry only when there is no commit info', () => {
@@ -32,7 +32,7 @@ it('evidence: Unproven counts the switches', () => {
     buildDataset(['a', 'a', 'b', 'b', 'c', 'c'].map((commit, i) => ({ commit, tests: { t: [i === 2 || i === 3 ? 'fail' : 'pass'] } }))),
   );
   expect(r.score.label).toBe('suspect');
-  expect(text(r)).toBe('Switched between pass and fail 2 times in 6 runs');
+  expect(text(r)).toBe('Switched pass and fail 2 times in 6 runs');
 });
 
 it('evidence: Failing, and Failing that was flaky names the commit where it started', () => {
@@ -44,7 +44,7 @@ it('evidence: Failing, and Failing that was flaky names the commit where it star
     ]),
   );
   expect(r.score.wasFlakyEarlier).toBe(true);
-  expect(text(r)).toBe('Failed 10 of 10 runs since b2c3d4e. Flaky before that');
+  expect(text(r)).toBe('Failed 10 of 10 runs since b2c3d4e');
 });
 
 it('evidence: Stable and Not enough data', () => {

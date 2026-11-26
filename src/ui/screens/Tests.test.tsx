@@ -41,11 +41,14 @@ const groupBands = () => screen.getAllByRole('rowheader').map((h) => h.textConte
 it('groups appear Flaky, Unproven, Failing, Stable, Not enough data; Stable and Not enough data start collapsed', async () => {
   render(<Tests />);
   expect(groupBands()).toEqual([
-    'Flaky · 1 · Different results on the same commit',
-    'Failing · 1 · Fails almost every run. Likely a real bug',
-    'Stable · 1 · No sign of flakiness',
-    'Not enough data · 1 · Too little history to judge',
+    'Flaky · 1',
+    'Failing · 1',
+    'Stable · 1',
+    'Not enough data · 1',
   ]);
+  // The meaning of a group is a tooltip on its name, not a grey line under it (rule 8).
+  expect(screen.getByText('Flaky · 1')).toHaveAttribute('title', 'Different results on the same commit');
+  expect(screen.getByText('Stable · 1')).toHaveAttribute('title', 'No sign of flakiness');
   expect(screen.getByRole('link', { name: 'flaky' })).toBeInTheDocument();
   expect(screen.queryByRole('link', { name: 'stable' })).toBeNull();
   await userEvent.click(screen.getByRole('button', { name: 'Show 1 Stable tests' }));
@@ -57,7 +60,7 @@ it('rows show the pill word only, the evidence sentence and wasted time; the nam
   const row = screen.getByRole('link', { name: 'flaky' }).closest<HTMLElement>('[role=row]')!;
   const pill = within(row).getByText('Flaky', { selector: '[data-pill]' });
   expect(pill.querySelector('svg')).toBeNull();
-  expect(row).toHaveTextContent('1 of 4 commits had both a pass and a fail');
+  expect(row).toHaveTextContent('1 of 4 commits had mixed results');
   expect(within(row).getByRole('link', { name: 'flaky' })).toHaveAttribute('href', '#/tests/flaky');
   const failing = screen.getByRole('link', { name: 'failing' }).closest<HTMLElement>('[role=row]')!;
   expect(failing).toHaveTextContent('Failed 4 of 4 runs');
@@ -119,11 +122,11 @@ it('search filters by name or file, syncs to ?q= and "/" focuses it', async () =
 it('the health box gives counts, the distribution bar label and wasted time', () => {
   render(<Tests />);
   const box = screen.getByRole('region', { name: 'Test health' });
-  expect(box).toHaveTextContent('4 tests from 0 files · 4 runs · 4 commits');
+  expect(box).toHaveTextContent('4 tests · 4 runs');
   expect(within(box).getByRole('img')).toHaveAccessibleName(
     'Status of 4 tests: 1 Flaky, 0 Unproven, 1 Failing, 1 Stable, 1 Not enough data',
   );
-  expect(box).toHaveTextContent('Wasted CI time (Flaky)');
+  expect(box).toHaveTextContent('Wasted CI time');
   expect(within(box).queryByRole('link', { name: /not imported/ })).toBeNull();
 });
 
@@ -149,7 +152,8 @@ it('5,000 tests: only the visible rows are in the page', async () => {
 it('sample mode shows the sample banner with Exit sample', () => {
   load(fixture(), 'sample');
   render(<Tests />);
-  expect(screen.getByText(/^Sample data: 4 tests from 4 runs\./)).toBeInTheDocument();
+  expect(screen.getByText('Sample data. Start with the top 3 Flaky tests.')).toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: 'see why' })).toBeNull();
   expect(screen.getByRole('button', { name: 'Exit sample' })).toBeInTheDocument();
 });
 
@@ -169,4 +173,31 @@ it('the health box says it counts all tests, because the tabs follow the search 
   expect(within(box).getByText('All 4 tests')).toBeInTheDocument();
   await userEvent.type(screen.getByRole('searchbox'), 'zzzz');
   expect(within(screen.getByRole('region', { name: 'Test health' })).getByText('All 4 tests')).toBeInTheDocument();
+});
+
+it('the health line is "{tests} tests · {runs} runs": files and commits live on Loaded data', () => {
+  render(<Tests />);
+  const box = screen.getByRole('region', { name: 'Test health' });
+  expect(within(box).getByText('4 tests · 4 runs')).toBeInTheDocument();
+  expect(box).not.toHaveTextContent(/files|commits/);
+});
+
+it('the status legend row is gone from the health box: the tabs carry the dot and the count', () => {
+  render(<Tests />);
+  const box = screen.getByRole('region', { name: 'Test health' });
+  for (const label of ['Flaky', 'Unproven', 'Failing', 'Stable', 'Not enough data']) expect(within(box).queryByText(label)).toBeNull();
+  expect(within(box).getByRole('img')).toHaveAccessibleName(/1 Flaky/); // the bar keeps one accessible name
+});
+
+it('the run-square key has no "Last 12 runs, oldest first:" prefix, but keeps the four names', () => {
+  render(<Tests />);
+  expect(screen.queryByText(/oldest first/)).toBeNull();
+  for (const name of ['Passed', 'Passed on retry', 'Failed', 'Skipped']) expect(screen.getAllByText(name).length).toBeGreaterThan(0);
+});
+
+it('"Showing n tests..." is for screen readers only', () => {
+  render(<Tests />);
+  const line = screen.getByText('Showing all 4 tests, grouped by status, most urgent first');
+  expect(line).toHaveClass('sr-only');
+  expect(line.closest('[role="status"]')).not.toBeNull();
 });
