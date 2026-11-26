@@ -17,11 +17,11 @@ Keys that `04-ux-copy.md` writes in shorthand ("a / b") are listed here again as
 | 7 | Panel width: the app uses 600px (its max) on desktop, the board 520px. Panel headings are 600 weight (DESIGN.md), the board 700. | DEV-16. |
 | 8 | No board exists for the storage banners (storage off, storage failed, saved imports skipped). The app uses the flat warning style of the sample banner. | DEV-17, DEV-20. |
 | 9 | Progress bar has no percent (the worker reports per file). Board 2 shows "64%". | DEV-13. |
-| 10 | Every own file shows the "No commit info found" note, because v0 has no commit label input. A board for the label field comes with v1 (DEV-31). | DEV-13, spec 20.1. |
+| 10 | Every own file shows the "No commit info found" note, because v0 has no commit label input. A board for the label field comes with v1 (DEV-32). | DEV-13, spec 20.1. |
 | 11 | The not-imported download holds only the "no status" and "no name" notices; the Notices list on screen shows the rest. Confirm. | DEV-17. |
 | 12 | Clear all data keeps theme, density and the shortcuts switch (settings, not data). Confirm. | DEV-17. |
 | 13 | The Markdown copy puts invisible zero-width spaces inside URLs and addresses (so they cannot become links). Mention in the export hint? | DEV-23. |
-| 14 | Branch and Browser columns on Loaded data show "-" in v0. Fine until v1 (DEV-30). | DEV-17. |
+| 14 | Branch and Browser columns on Loaded data show "-" in v0. Fine until v1 (DEV-39). | DEV-17. |
 
 ## B. Contrast fixes (tokens were NOT changed)
 
@@ -38,12 +38,12 @@ Found by axe in DEV-18. The app uses workarounds; please decide the token values
 
 | Board | For ticket |
 | --- | --- |
-| Import: commit or label per file (field on Loaded data file rows, link from the no-commit note) | DEV-31 |
-| Failure groups screen, cause chips with confidence and quoted evidence, environment-event card, cause tips in the detail panel | DEV-37 |
-| Full test page: run timeline, log viewer (line numbers, highlighted evidence, search), evidence chips, correlations with "not enough data" state | DEV-39 |
-| Report preview (`#/report`) and export options (scope, formats) | DEV-40 |
-| Settings screen; per-file remove confirmation with undo toast | DEV-41 |
-| Update-available toast, offline-ready toast, install prompt | DEV-42 |
+| Import: commit or label per file (field on Loaded data file rows, link from the no-commit note) | DEV-32 |
+| Failure groups screen, cause chips with confidence and quoted evidence, environment-event card, cause tips in the detail panel | DEV-38 |
+| Full test page: run timeline, log viewer (line numbers, highlighted evidence, search), evidence chips, correlations with "not enough data" state | DEV-41 |
+| Report preview (`#/report`) and export options (scope, formats) | DEV-42 |
+| Settings screen; per-file remove confirmation with undo toast | DEV-33 |
+| Update-available toast, offline-ready toast, install prompt | DEV-45 |
 
 Copy needed for v1 (no text yet): cause names and tips for the nine causes plus "unknown", confidence wording, environment-event wording, correlation wording ("fails mostly on browser X", "not enough data to tell"), export and report text, settings text, commit label text, PWA toasts. Tone rules from `04-ux-copy.md` apply: always "likely", never a cause stated as fact.
 

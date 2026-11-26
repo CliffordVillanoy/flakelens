@@ -1,29 +1,33 @@
-# DEV-33: Real-data check of the flaky detector
+# DEV-33: Settings screen and per-file remove
 
 **Status:** To do
 
-**Goal:** Finish the flaky detector's definition of done (spec 11.1 item 5): check it on messier real-world data and publish the result, even if modest.
+**Goal:** Users manage preferences in one place and can remove a single wrong file without clearing everything.
 
 **Objectives:**
-- Decide first whether a public dataset is usable.
-- Run the engine on it and publish precision and recall with the limits.
+- Add `#/settings`.
+- Add per-file remove with undo.
 
-**Scope:** Backend (evaluation).
+**Scope:** Frontend (+ pure engine helper).
 
 **Acceptance Criteria:**
-1. Go or no-go first: inspect the IDoFT list (Illinois) and the Zenodo regression-test history for Maven (FTW 2024). Record licence, format, size and whether per-commit pass and fail outcomes exist. If neither is usable, report Blocked with the facts and propose alternatives (for example public CI JUnit artifacts from open-source projects with documented flaky tests). No guessing.
-2. If usable: converter scripts in `scripts/real-data/` write JUnit XML (or canonical records) into `.cache/real-data/` (git-ignored). Raw data is never committed; a tiny excerpt only if the licence allows.
-3. Run the engine; ground truth is the dataset's own flaky labels. Report precision, recall and F1 at several history lengths (spec 17), plus the top false positives and false negatives with short reasons, and the baseline "any retry-based flaky mark" when the data has retries.
-4. `docs/eval/real-data-detection.md` holds method, dataset citation and licence, numbers and limits. The README links it only after numbers exist.
-5. Do not change thresholds in `src/engine/config.ts`; record suggestions. Any change is its own ticket with the flake lab rerun.
-6. No work data is used (spec: only anonymized and with permission).
+1. `#/settings` holds theme, row density, the shortcuts switch, a read-only view of the thresholds with a plain note that they are starting values and not calibrated, the Clear all data action (existing dialog) and an About block ("FlakeLens {version}" read from `package.json`, and the links Source code, Report an issue, Security policy and MIT licence).
+2. Per-file remove on Loaded data: a confirmation names the file, its runs and the tests affected. Removing deletes the import, its runs, attempts and commit label, and rankings recompute. Pure engine function `removeImport(ds, importId)` with tests; storage `deleteImport(importId)`.
+3. Undo toast for 10 seconds restores the file from memory; closing the tab loses the undo, not the deletion. Works in storage-off mode (memory only).
+4. Tests: duplicate runs across files, labelled files, the last file removed (back to Start), reload after remove, storage failure.
+5. Keyboard operable; axe clean in both themes. The settings page, the remove dialog and the undo toast are covered by the a11y scans; the toast timer pauses on hover and focus (test with fake timers).
+6. Simplification pass (`docs/ux/12-simplification-pass.md`): the row density control moves from the Tests toolbar to Settings only, so remove it from the toolbar in this ticket (the saved choice keeps working); the thresholds list is closed by default; each Settings row has at most one hint and the duplicate hint under Clear all data is gone; the old Loaded data footer "To remove a file, clear all data." is replaced by the per-file Remove button.
+7. Rule 8 (`docs/ux/12-simplification-pass.md`, canvas v78): no grey helper line under a label; explanations go in a tooltip or a closed block; a helper stays only if it prevents a mistake. On Settings: no hints under Theme, Density or Shortcuts (the shortcut keys are in a tooltip); no caption lines; the thresholds list has no config-name column and stays closed by default (keep the one-line "starting values, not calibrated" note unless board 10 on the canvas v78 drops it, because it prevents a wrong reading); the remove dialog has no undo line; each file row has the sub-line "{runs} runs · {tests} tests". Do not add these keys, or retire them if present: `settings.density.hint`, the Theme hint, `settings.shortcuts.hint`, `settings.saved.hint`, `settings.data.hint`, `settings.about.privacy`, `file.remove.undoHint`. Tooltips keep the explanation text.
+8. Second sub-label sweep (`docs/ux/12-simplification-pass.md` section 7b, canvas v79): the file row sub-line is "{runs} runs · {tests} tests" only: no added date and no not-imported count (the result pill already says it).
 
 **Details:**
-- Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: DEV-32.
-- Spec: sections 11.1 item 5, 16 (public datasets), 17.
-- Datasets are large: keep everything under `.cache/` on the D: drive.
+- Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: nothing (the board is ready); the About links need DEV-30 to land first or to point at the GitHub pages.
+- **Board ready (2026-11-25):** board 10, `docs/ux/wireframes/Settings.dc.html` and `SettingsLight.dc.html` (preview: launch config `wireframe-preview`); design rules in `DESIGN.md` "Settings and per-file remove"; confirmed copy in `docs/ux/04-ux-copy.md` section 12 (keys `settings.*`, `file.remove.*`, `toast.fileRemoved`, `toast.fileRemoved.last`, `toast.fileRestored`, `toast.undo`). Use that wording and those keys.
+- IA decision Q3: per-file remove is v1.
+- **About block (rule 8, supersedes the earlier planning decision on the privacy line):** the About block shows only "FlakeLens {version}" and the links. The `settings.about.privacy` line is retired (the privacy statement stays on Start). The version is read from `package.json`, which says `0.0.0` today; the release version number is the Dev Ops chat's call, so show whatever `package.json` holds and tell the planning chat if it still says `0.0.0` when this ticket lands. The links are ordinary links the user clicks, opened in a new tab with `rel="noopener noreferrer"`.
+- Board details: one 720px column of boxed sections (Appearance, How rankings are decided, Your data, About); theme and density as segmented groups (`aria-pressed`), the shortcuts switch (36x20, accessible name is the label); thresholds read-only with the config name in monospace; a Settings link in the header (`settings.title`); a "Remove" button with a trash icon on each file row; a confirmation that names the file in monospace and lists runs, tests affected and the commit label, with variants for runs that stay because another file also holds them (`file.remove.shared`) and for the last file (`file.remove.last`, returns to Start); default focus on "Keep file", filled danger button "Remove file"; a 10-second undo toast (480px max, status role, 3px timer bar, Undo and Dismiss, pauses on hover and focus, follows the app back to Start when the last file was removed).
 
-**Skills/Plugins:** superpowers:executing-plans, superpowers:test-driven-development, superpowers:verification-before-completion.
+**Skills/Plugins:** superpowers:executing-plans, superpowers:test-driven-development, superpowers:verification-before-completion, frontend-design / impeccable (match DESIGN.md), interaction-design.
 
 **Limitations/Restrictions:**
 - Version control (branches, pull requests, merges, tags, version numbers) and every CI/CD change belong to the Project Dev Ops chat. Work on the branch the Dev Ops chat names; commit only task files; no push, no merge.

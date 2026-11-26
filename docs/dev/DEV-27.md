@@ -1,6 +1,6 @@
 # DEV-27: README accuracy fixes on pull request #2
 
-**Status:** To do
+**Status:** Done (2026-11-22, commit `27a195b` on the PR #2 branch; PR #2 merged on GitHub).
 
 **Goal:** The rewritten README (PR #2, branch `CliffordVillanoy-patch-1`) says only what the v0 app really does, so nobody is surprised when they try their own reports.
 

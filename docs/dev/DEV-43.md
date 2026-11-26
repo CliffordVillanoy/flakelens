@@ -1,29 +1,32 @@
-# DEV-43: v1 review and release hand-off
+# DEV-43: JUnit XML importer
 
 **Status:** To do
 
-**Goal:** An independent review of the whole v1 change set and a clear hand-off to the Dev Ops chat for versioning and release.
+**Goal:** Teams on Java, Python, .NET and most other stacks can import their reports.
 
 **Objectives:**
-- Review, fix serious findings, check accessibility and browsers, and prepare release notes.
+- Parse JUnit XML into the canonical records, safely, inside the worker.
+- Pick the importer by content.
 
-**Scope:** Fix or refinement (review).
+**Scope:** Backend (importer) + small frontend.
 
 **Acceptance Criteria:**
-1. One whole-change review by a fresh reviewer on the most capable model, using the plan's Review Focus (5 items) with one line of evidence each, plus checks for security, privacy, data integrity (a v0 stored row still loads), accessibility, copy and the engine boundary.
-2. The security chat re-reviews JUnit, fingerprints, classifier, exports and PWA; its findings are fixed or ruled.
-3. Accessibility: axe on every new screen and dialog in both themes, a keyboard-only walkthrough, and one screen reader pass (NVDA on Windows) with notes.
-4. Browsers: the e2e smoke flow runs on Chromium, Firefox and WebKit (install the extra browsers under the D: drive cache); list differences; check downloads, dialogs and IndexedDB behaviour for Safari risks.
-5. Gate 3 checklist (spec 18): v1 done-when (works offline, accessibility pass done) and the real-data check published; list anything not met.
-6. Critical and Important findings are fixed with tests that failed first; Minor findings are listed as deferred.
-7. Release notes draft and the list of spec changes needed, handed to the Dev Ops chat. Version number, tag, merge and deploy are the Dev Ops chat's call.
+1. `parseJUnitReport(text, opts)` in `src/engine/import/junit.ts` returns the same `ImportResult` and notice codes as the Playwright importer and never throws. A dispatcher `parseReport(text, opts)` chooses the importer by content (a JSON object versus an XML root of `testsuites` or `testsuite`); the worker uses it. An unknown format fails with `import.fail.format`, whose copy no longer says JUnit is "planned".
+2. Mapping: `testcase` `classname` and `name` give file, suite path and title; `time` (seconds) gives `durationMs`; `failure` and `error` give a failed attempt with message and stack from the attributes and element text; `skipped` gives a skip; no child gives a pass. Surefire rerun elements are attempts in order: `flakyFailure` and `flakyError` are failed attempts followed by the final pass; `rerunFailure` and `rerunError` are failed retries.
+3. Metadata: read `git.commit`, `git.branch`, `os.name` and `browser` from `<properties>` when present (document the names read); otherwise null and the no-commit notice.
+4. Every row of spec 9.1 has an XML fixture and a test: valid, partial (missing name, bad time), duplicates, same run twice, wrong format, empty or truncated, more than half bad, too large or deep, hostile text.
+5. Security: DTD and external entity processing are off. An XXE payload that references a local file or an HTTP URL causes no read and no request and ends as a failed import or plain text with a notice. A billion-laughs payload fails in under 1 s with a notice. The existing 50 MB and depth limits apply. Parsing runs only in the worker. A fuzz test (random and corrupted XML) never throws.
+6. UI: dropping a JUnit file works from Start and Loaded data; the format help text gains a JUnit step; e2e with a Surefire file.
+7. Report the parser's name, version, licence and why it meets the security line; it is not in the main bundle (extend `e2e/bundle.spec.ts`).
+8. Commit small JUnit fixtures: valid, surefire-rerun, partial, hostile.
 
 **Details:**
-- Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: DEV-28 to DEV-42.
-- Same process as DEV-07 and DEV-19: one fix pass, rulings and deferred minors reported to the planning chat.
-- Not covered by earlier tests: Firefox and Safari.
+- Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: DEV-39.
+- Parser choice is the dev chat's, within the security line. No parser is assumed in this plan.
+- Spec: sections 9, 9.1, 19.1 (malicious or oversized input).
+- Security chat re-review: yes.
 
-**Skills/Plugins:** superpowers:executing-plans, superpowers:test-driven-development, superpowers:verification-before-completion, superpowers:requesting-code-review, security-review.
+**Skills/Plugins:** superpowers:executing-plans, superpowers:test-driven-development, superpowers:verification-before-completion, security-review.
 
 **Limitations/Restrictions:**
 - Version control (branches, pull requests, merges, tags, version numbers) and every CI/CD change belong to the Project Dev Ops chat. Work on the branch the Dev Ops chat names; commit only task files; no push, no merge.

@@ -1,30 +1,34 @@
-# DEV-38: Correlation by browser, shard, OS and time
+# DEV-38: Failure groups screen and cause tips
 
 **Status:** To do
 
-**Goal:** Show whether a test's failures depend on the browser, shard, OS or hour, with an effect size and honest small-sample handling.
+**Goal:** Users see failures as groups with a likely cause, and each test's note gives cause-specific tips.
 
 **Objectives:**
-- Compute correlations with exact statistics.
+- Add the Groups tab and cards.
+- Add cause tips and evidence lines to the detail panel.
 
-**Scope:** Backend (engine).
+**Scope:** Frontend.
 
 **Acceptance Criteria:**
-1. `correlate(ds, testId, config)` in `src/engine/correlate/` returns, for each dimension with at least two values (browser, shard, os, hour of day from run start times), the fail rate per value, the fail rate of the rest, an odds ratio (with a 0.5 correction) and the difference in fail rate.
-2. Fisher's exact test for 2x2 tables (a value versus the rest), computed exactly with log factorials; chi-square only for larger tables and only when every expected count is at least 5, otherwise skipped.
-3. Minimum evidence from config (`corrMinAttempts` 10, `corrMinFails` 3, `corrMinGroup` 3 attempts in each group); below it the result is `not enough data` and never a finding. The reason carries the numbers the screen prints: the thresholds, the test's attempts and failures, and the smallest group. A dimension the files do not have returns `missing` with the dimension name. Bonferroni adjustment across the dimensions tested for the test; each result carries the adjusted p, the number of comparisons, and a strength label `Strong`, `Moderate` or `Weak` (starting rule in config: Strong at adjusted p below 0.01 and a fail-rate difference of at least 0.3; Moderate at adjusted p below 0.05 and a difference of at least 0.2; Weak at adjusted p below 0.1; otherwise `no clear link`).
-4. Result shape (board 13, `docs/ux/04-ux-copy.md` section 15): per dimension `{ dimension, status: 'finding' | 'none' | 'notEnough' | 'missing', strength?, highlightedValue?, values: { value, failed, attempts, rate }[], others: { failed, attempts, rate }, pointsHigher, oddsRatio, adjustedP, comparisons }`, so the screen can print "{a} of {b} attempts against {c} of {d} on the others, {points} points higher" and draw the rate bars without recomputing anything.
-5. Tests: known Fisher results (several tables, tolerance 1e-9); properties (p in 0..1, symmetric under swapping categories, invariant to row order); missing dimension data skips the dimension.
-6. Lab: the lab test that fails only in one project (DEV-34) is flagged strongly; a uniformly flaky test is not.
-7. Timing: 5,000 tests x 50 runs correlated in under 2 s, or computed lazily per test (report which).
-8. No UI change, no new dependency.
+1. `#/groups` is a second tab beside Tests (IA section 3). Each failure group card shows the template in mono, count, first and last seen, a "Likely cause" chip with confidence and the quoted evidence lines, and links to its tests. Environment events collapse into one card ("N tests failed the same way in run X").
+2. The detail panel adds the cause tip to the status note when confidence is medium or high, in "likely" wording; `unknown` adds nothing. Evidence lines are highlighted in the latest-failure hunk.
+3. All text from the copy module with ICU plurals; new keys are interim and listed.
+4. Hostile and very long messages render as text; 5,000 groups stay responsive (virtualised).
+5. Keyboard operable; axe finds no serious or critical issue on the screen in both themes.
+6. `#/groups?q=` filters by template text; sort and search state live in the URL.
+7. Rule 8 (`docs/ux/12-simplification-pass.md`, canvas v78): no grey helper line under a label; explanations go in a tooltip or a closed block; a helper stays only if it prevents a mistake. On Groups: no lead sentence, the card meta reads "{failures} failures · {tests} tests · last seen {date}", no "Showing n of N groups" line and no unknown-cause note. Do not add these keys, or retire them: `groups.lead`, `groups.showing`, `groups.unknown.note`; `groups.meta` takes the shorter form. Tooltips keep the explanation text.
+8. e2e: sample, Groups tab, open a card, open its test, see the cause tip.
 
 **Details:**
-- Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: DEV-30, DEV-34.
-- Spec: section 10 (contingency tables, Fisher, effect size, not just a flag).
-- Wording belongs to DEV-39; this ticket returns data only.
+- Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: DEV-37 (the board is ready).
+- **Board ready (2026-11-25):** board 12, `docs/ux/wireframes/Groups.dc.html` and `GroupsLight.dc.html`; design rules in `DESIGN.md` "Failure groups and cause chips"; confirmed copy in `docs/ux/04-ux-copy.md` section 14 (`groups.*`, `panel.cause.*`, `panel.latest`, `cause.<id>` names and `cause.<id>.tip` tips for the nine causes and Unknown). Use that wording and those keys; the wording rule is "likely" or "probably", never a fact.
+- Board details to build: `#/groups` as the second tab with a count pill, search (`?q=`), sort (Most failures, Most tests, Latest) and "Showing n of N groups"; list order is environment events first, then the chosen sort. A group card has the masked template in mono with the grey tags (`‹n›`, `‹id›`, `‹path›`, `‹time›`), counts, first and last seen, an outlined (never filled) chip "Likely cause: {name}" with confidence in words (High, Medium, Low) or `groups.chip.unknown`, an evidence block (canvas fill, muted line numbers, matched text on the selection fill with a dotted underline), test links and "Show all N tests" expanding in place. The environment-event card sits on top on the info band with the heading "N tests failed the same way in run X". Cause tip in the detail panel: inside the status note box below a divider, bold "Likely cause", muted confidence, the two-sentence tip and the link "See the group of N failures"; added only at medium or high confidence, with the highlighted hunk; Low and Unknown add nothing. Edge states: no failures, no match with Clear search, a message over 300 characters cut with "Show full message", and 5,000 groups virtualised.
+- Simplification pass (`docs/ux/12-simplification-pass.md` section 4): the plan collapses each card's evidence to 2 lines with "Show all" and drops "Likely cause:" from the chip when a heading already says it. Check board 12 on the canvas (v77) for the final form and follow the board where it differs.
+- Engine inputs this ticket reads: `groupFailures` (DEV-36: template, counts, test ids, run ids, first and last run, environment event) and `classifyGroup` (DEV-37: category, confidence, evidence lines with numbers, representative attempt).
+- IA: `docs/ux/02-information-architecture.md` section 8 (v1 additions).
 
-**Skills/Plugins:** superpowers:executing-plans, superpowers:test-driven-development, superpowers:verification-before-completion.
+**Skills/Plugins:** superpowers:executing-plans, superpowers:test-driven-development, superpowers:verification-before-completion, frontend-design / impeccable (match DESIGN.md), interaction-design.
 
 **Limitations/Restrictions:**
 - Version control (branches, pull requests, merges, tags, version numbers) and every CI/CD change belong to the Project Dev Ops chat. Work on the branch the Dev Ops chat names; commit only task files; no push, no merge.

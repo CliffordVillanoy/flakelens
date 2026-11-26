@@ -108,14 +108,14 @@ Other v1 work (JUnit importer, test detail page, correlations, export, PWA) is s
 
 | Area | Spec says | v0 shipped | Fix |
 | --- | --- | --- | --- |
-| Commit or label per file | MVP: optional commit or label per file | Not in the app. Each imported file is its own commit; the app shows a "No commit info found" note. Same-commit evidence across runs shows only in the sample data. | DEV-30 (read commit from report metadata), DEV-31 (label field) |
-| Run fields | Run: commit, branch, runner, shard, browser, OS | Commit and start time only; Loaded data shows "-" for Branch and Browser | DEV-30 |
-| Export | Markdown, CSV and JSON | Markdown copy only; CSV and JSON shown as "Coming in v1" | DEV-40 |
-| Settings and per-file remove | Settings screen; remove one file | Not built; Clear all data and a Loaded data page exist | DEV-41 |
-| PWA and offline | v1 | Not built (the page loads from GitHub Pages) | DEV-42 |
-| Browsers tested | Chrome, Firefox, Safari | Chromium only | DEV-43 |
-| Sample data | Realistic run durations | Lab durations are tiny, so wasted time reads 0.1 to 0.3 minutes | DEV-28 |
-| Copy and tokens | Final wording from `04-ux-copy.md` | About 140 interim keys written while building; four contrast tokens failed axe | Confirmed by the UI/UX chat 2026-11-25 (`docs/ux/11-v0-review-decisions.md`); applying them is DEV-44 |
+| Commit or label per file | MVP: optional commit or label per file | Not in the app. Each imported file is its own commit; the app shows a "No commit info found" note. Same-commit evidence across runs shows only in the sample data. | DEV-39 (read commit from report metadata), DEV-32 (label field) |
+| Run fields | Run: commit, branch, runner, shard, browser, OS | Commit and start time only; Loaded data shows "-" for Branch and Browser | DEV-39 |
+| Export | Markdown, CSV and JSON | Markdown copy only; CSV and JSON shown as "Coming in v1" | DEV-42 |
+| Settings and per-file remove | Settings screen; remove one file | Not built; Clear all data and a Loaded data page exist | DEV-33 |
+| PWA and offline | v1 | Not built (the page loads from GitHub Pages) | DEV-45 |
+| Browsers tested | Chrome, Firefox, Safari | Chromium only | DEV-46 |
+| Sample data | Realistic run durations | Lab durations are tiny, so wasted time reads 0.1 to 0.3 minutes | DEV-34 |
+| Copy and tokens | Final wording from `04-ux-copy.md` | About 140 interim keys written while building; four contrast tokens failed axe | Confirmed by the UI/UX chat 2026-11-25 (`docs/ux/11-v0-review-decisions.md`); applying them is DEV-28 |
 | Hosting headers | Real headers where possible | Meta-tag CSP on GitHub Pages; the page can be framed | Accepted (19.2); DEV-24 optional |
 
 
@@ -940,9 +940,9 @@ This section lists what the tool cannot do or cannot guarantee today. It is a li
 | Detection | A real regression and a flaky test can look alike when history is short. | Both show failures over time. |
 | Scope | Phase two detectors (false passes, false failures) are not in the MVP. | Build order decision: flaky detection must be solid first. |
 | Input | Rich signals (steps, screenshots, assertions) depend on how the user configured their reporter. | A bare JUnit file carries much less than a detailed Playwright report. |
-| Input | v0 reads Playwright JSON only. JUnit XML is the first v1 feature (DEV-32). Cypress is a stretch goal. | Each format needs its own importer and tests. |
-| Product | In v0, own reports carry no commit information, so "Flaky" on your own files means a pass on a retry within one run; same-commit evidence across runs shows in the sample data. | The commit label input and metadata reading come in v1 (DEV-30, DEV-31). |
-| Platform | The app is tested on Chromium only. Firefox and Safari are not tested yet. | The v0 browser tests run Chromium (DEV-43 adds the others). |
+| Input | v0 reads Playwright JSON only. JUnit XML is the first v1 feature (DEV-43). Cypress is a stretch goal. | Each format needs its own importer and tests. |
+| Product | In v0, own reports carry no commit information, so "Flaky" on your own files means a pass on a retry within one run; same-commit evidence across runs shows in the sample data. | The commit label input and metadata reading come in v1 (DEV-39, DEV-32). |
+| Platform | The app is tested on Chromium only. Firefox and Safari are not tested yet. | The v0 browser tests run Chromium (DEV-46 adds the others). |
 | Security | Importing a drop keeps all file texts in memory until the worker call, so peak memory can reach about 2 to 3 times the 200 MB drop cap. | One file per worker call would bound it; deferred (security review S-3 residual). |
 | AI | Small local models give weaker explanations than large cloud models. | Model size and hardware limits. |
 | AI | The free cloud tiers have daily caps, and those limits change. | Provider policy, outside our control. |

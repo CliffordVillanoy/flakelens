@@ -1,31 +1,31 @@
-# DEV-41: Settings screen and per-file remove
+# DEV-41: Full test page with log viewer
 
 **Status:** To do
 
-**Goal:** Users manage preferences in one place and can remove a single wrong file without clearing everything.
+**Goal:** A test's whole story on one page: run timeline, failure log with highlighted evidence, and correlations.
 
 **Objectives:**
-- Add `#/settings`.
-- Add per-file remove with undo.
+- Add `#/tests/:testId/full` and the log viewer.
 
-**Scope:** Frontend (+ pure engine helper).
+**Scope:** Frontend.
 
 **Acceptance Criteria:**
-1. `#/settings` holds theme, row density, the shortcuts switch, a read-only view of the thresholds with a plain note that they are starting values and not calibrated, the Clear all data action (existing dialog) and an About block ("FlakeLens {version}" read from `package.json`, and the links Source code, Report an issue, Security policy and MIT licence).
-2. Per-file remove on Loaded data: a confirmation names the file, its runs and the tests affected. Removing deletes the import, its runs, attempts and commit label, and rankings recompute. Pure engine function `removeImport(ds, importId)` with tests; storage `deleteImport(importId)`.
-3. Undo toast for 10 seconds restores the file from memory; closing the tab loses the undo, not the deletion. Works in storage-off mode (memory only).
-4. Tests: duplicate runs across files, labelled files, the last file removed (back to Start), reload after remove, storage failure.
-5. Keyboard operable; axe clean in both themes. The settings page, the remove dialog and the undo toast are covered by the a11y scans; the toast timer pauses on hover and focus (test with fake timers).
-6. Simplification pass (`docs/ux/12-simplification-pass.md`): the row density control moves from the Tests toolbar to Settings only, so remove it from the toolbar in this ticket (the saved choice keeps working); the thresholds list is closed by default; each Settings row has at most one hint and the duplicate hint under Clear all data is gone; the old Loaded data footer "To remove a file, clear all data." is replaced by the per-file Remove button.
-7. Rule 8 (`docs/ux/12-simplification-pass.md`, canvas v78): no grey helper line under a label; explanations go in a tooltip or a closed block; a helper stays only if it prevents a mistake. On Settings: no hints under Theme, Density or Shortcuts (the shortcut keys are in a tooltip); no caption lines; the thresholds list has no config-name column and stays closed by default (keep the one-line "starting values, not calibrated" note unless board 10 on the canvas v78 drops it, because it prevents a wrong reading); the remove dialog has no undo line; each file row has the sub-line "{runs} runs · {tests} tests". Do not add these keys, or retire them if present: `settings.density.hint`, the Theme hint, `settings.shortcuts.hint`, `settings.saved.hint`, `settings.data.hint`, `settings.about.privacy`, `file.remove.undoHint`. Tooltips keep the explanation text.
-8. Second sub-label sweep (`docs/ux/12-simplification-pass.md` section 7b, canvas v79): the file row sub-line is "{runs} runs · {tests} tests" only: no added date and no not-imported count (the result pill already says it).
+1. "Open full view" in the panel opens `#/tests/:testId/full`; back returns to the list with filters kept.
+2. Log viewer: virtualised, line numbers, mono, wrap toggle, search in the log, copy line, evidence lines highlighted. An evidence chip jumps to its line and says "Quoted from the log" (verified: the line exists in the input).
+3. A 5 MB log renders at most 150 DOM rows and stays responsive; lines over 2,000 characters are cut with "Show more".
+4. Correlations section from DEV-40 in plain words with effect size; `not enough data` shows a calm explanation, never a finding.
+5. Run timeline and score details reuse the panel parts. Phone layout works.
+6. Keyboard operable; axe clean in both themes; hostile text renders as text.
+7. e2e: open a test from the sample, full view, jump to evidence, back.
+8. Rule 8 (`docs/ux/12-simplification-pass.md`, canvas v78): no grey helper line under a label; explanations go in a tooltip or a closed block; a helper stays only if it prevents a mistake. On the full test page: no lead sentences (`corr.lead` is retired), shorter correlation sentences as on board 13 at canvas v78, and the log footer follows the board (`log.range` wording). Explanations move into tooltips or the closed "How this was worked out" block.
 
 **Details:**
-- Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: nothing (the board is ready); the About links need DEV-45 to land first or to point at the GitHub pages.
-- **Board ready (2026-11-25):** board 10, `docs/ux/wireframes/Settings.dc.html` and `SettingsLight.dc.html` (preview: launch config `wireframe-preview`); design rules in `DESIGN.md` "Settings and per-file remove"; confirmed copy in `docs/ux/04-ux-copy.md` section 12 (keys `settings.*`, `file.remove.*`, `toast.fileRemoved`, `toast.fileRemoved.last`, `toast.fileRestored`, `toast.undo`). Use that wording and those keys.
-- IA decision Q3: per-file remove is v1.
-- **About block (rule 8, supersedes the earlier planning decision on the privacy line):** the About block shows only "FlakeLens {version}" and the links. The `settings.about.privacy` line is retired (the privacy statement stays on Start). The version is read from `package.json`, which says `0.0.0` today; the release version number is the Dev Ops chat's call, so show whatever `package.json` holds and tell the planning chat if it still says `0.0.0` when this ticket lands. The links are ordinary links the user clicks, opened in a new tab with `rel="noopener noreferrer"`.
-- Board details: one 720px column of boxed sections (Appearance, How rankings are decided, Your data, About); theme and density as segmented groups (`aria-pressed`), the shortcuts switch (36x20, accessible name is the label); thresholds read-only with the config name in monospace; a Settings link in the header (`settings.title`); a "Remove" button with a trash icon on each file row; a confirmation that names the file in monospace and lists runs, tests affected and the commit label, with variants for runs that stay because another file also holds them (`file.remove.shared`) and for the last file (`file.remove.last`, returns to Start); default focus on "Keep file", filled danger button "Remove file"; a 10-second undo toast (480px max, status role, 3px timer bar, Undo and Dismiss, pauses on hover and focus, follows the app back to Start when the last file was removed).
+- Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: DEV-37, DEV-40 (the board is ready).
+- **Board ready (2026-11-25):** board 13, `docs/ux/wireframes/FullTest.dc.html` and `FullTestLight.dc.html`; design rules in `DESIGN.md` "Full test page and log viewer"; confirmed copy in `docs/ux/04-ux-copy.md` section 15 (`full.*`, `log.*`, `evidence.*`, `corr.*`). Use that wording and those keys. Correlation wording rule: a link is a clue, never a cause ("fails more often on", never "is caused by"); strength is a word, never a bare p-value.
+- Board details to build: one column (max 1232px) with a top bar (Back to tests keeps filters and scroll place, Copy test name), the test name in mono with the status pill, the path, the last-12 squares, three stat tiles (attempts failed, passed on retry, wasted time; confidence is already in the status note, simplification pass), the status note with the cause tip, then Run timeline (Run, Commit with a "label" tag when typed, When, Result as squares plus words, Time; "Show all N runs"), Failure log, and What it depends on. Log viewer: search with a live count ("No matches" at zero), previous and next, the Wrap lines switch, Copy line, muted non-selectable line numbers, evidence lines with a 3px accent bar and a dotted underline, a 2px focus ring on the jump target, "Show more" for lines over 2,000 characters, at most 150 rows drawn, a run picker, a region named by `log.region`. Evidence chip: "Quoted from the log · line N", or the amber "Not found in the log" hint that is not highlighted. Correlations: a finding box with the strength word, one plain sentence, rate bars (red only on the highlighted value) and a closed "How this was worked out" block; the quiet boxes for no clear link, not enough data (with the exact thresholds and the test's numbers) and a missing dimension. Phone layout stacks the timeline rows. Edge states: no log text, a test that never failed, a 5 MB log, a hostile or very long line.
+- Simplification pass (`docs/ux/12-simplification-pass.md` section 4 and 6): the page shows three tiles; the plan also says correlation findings are closed except the strongest, and the log opens at the first evidence line. Check board 13 on the canvas (v77) for the final form before building, and follow the board where it differs. Board notes are in closed "Design note" blocks and are not UI.
+- Engine inputs: `correlate` (DEV-40: per-value failed and attempts, adjusted p, odds ratio, strength, the not-enough-data reason), `classifyGroup` and `verifyEvidence` (DEV-37), and per-line numbers for the log text (split lazily so a 5 MB message stays responsive).
+- Spec: section 13 (LogViewer, EvidenceChip), 6 (v1 row).
 
 **Skills/Plugins:** superpowers:executing-plans, superpowers:test-driven-development, superpowers:verification-before-completion, frontend-design / impeccable (match DESIGN.md), interaction-design.
 

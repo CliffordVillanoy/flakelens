@@ -593,7 +593,7 @@ The Flaky, Unproven, Failing and Not enough data pills show only the coloured pi
 ## Ranked table spacing (Comfortable, 2026-11-20)
 
 - **Cells:** 12px top and bottom, 16px left and right, 8px between columns. Header cells match.
-- **Rows:** 56px minimum. The test name sits on line 1 and the file path (mono, 12px) on line 2. Each truncates on its own.
+- **Rows:** Comfortable rows are 64px (62 to 66 as measured), two lines: name, then path. The Evidence cell stays on one line at 1280px and wider and may wrap to two lines below that (rows then grow to about 68px). Compact rows are 32px, one line. The test name sits on line 1 and the file path (mono, 12px) on line 2. Each truncates on its own.
 - **Columns:** rank 52px, Test minmax(280px, 2.2fr), Status 120px, Last 12 runs 208px, Why minmax(260px, 3fr), Wasted time 128px. The table's minimum width is 1160px; below that it scrolls inside its box.
 - **Group header bands:** 44px minimum, 8px top and bottom, 16px left and right, on the same edge as the cells.
 - **Compact density** keeps the 32px single-line rows from the Table controls board.
@@ -718,3 +718,7 @@ The run square "skipped" follows muted (`#A4ABB4` dark, `#4F5A65` light). Disabl
 ## Less text, fewer decisions (2026-11-25)
 
 Rules in `docs/ux/12-simplification-pass.md`: say it once; one lead line at most; word budgets per screen (Start 40, Tests 60, Loaded data 60, panel 90, dialog 45, banner or toast 20); explanations in tips and closed blocks; rare choices (density, theme) in Settings, not toolbars; one filled primary button per screen; board notes are labelled "Design note" and are not UI. Tests screen already updated (health legend removed, banner shortened, density toggle moved to Settings).
+
+## Row height decision (2026-11-26)
+
+The build measured Comfortable rows at 62 to 66px (name line 20px, path line 16px, cell padding 12px, Evidence wrapping to two lines at narrow widths). Decision: the rule follows the real, readable layout. **Comfortable = 64px**, no cell padding reduction. Keep the Evidence text on one line from 1280px up by giving the Evidence column the spare width; below that it may wrap. Compact stays 32px. Density is a Settings choice, so people who want more rows switch to Compact.

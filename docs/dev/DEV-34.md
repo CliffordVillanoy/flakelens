@@ -1,27 +1,28 @@
-# DEV-34: Flake lab: one test per cause
+# DEV-34: Sample data: realistic lab durations
 
 **Status:** To do
 
-**Goal:** Ground truth for the cause classifier: one lab test per cause in the spec's list, with realistic failure text.
+**Goal:** The demo's wasted-time numbers look like a real suite instead of 0.1 minutes.
 
 **Objectives:**
-- Add lab tests for the missing causes and record each test's cause in `labels.json`.
+- Give the flake lab tests realistic, deterministic durations.
+- Regenerate the lab fixtures, the sample set and the detection report.
 
 **Scope:** Enhancement (flake lab).
 
 **Acceptance Criteria:**
-1. `flake-lab/labels.json` gets a `cause` next to `label`, using the spec 12 categories: timing and waits, order dependency, shared state or data, network or external service, environment or resources, concurrency, locator or UI, time and randomness, infrastructure. Existing tests keep their labels and pass and fail patterns (before and after diff).
-2. New lab tests, at least one for each category not yet covered: order dependency, shared state or data, network or external service, environment or resources, concurrency (race), locator or UI, infrastructure. Each fails with realistic Playwright or Node error text (for example `strict mode violation`, `net::ERR_CONNECTION_REFUSED`, `ECONNRESET`, a 503, `expect(received).toBe(expected)` with stale data). The README lists each message. The lab injects causes with seeded outcomes and realistic text, so it validates the classifier's text rules, not real mechanisms; say so.
-3. Each new flaky test shows at least one mixed commit in the generated files (as DEV-05 AC3).
-4. An infrastructure event: in two runs, at least 4 tests fail with the same normalised message and recover afterwards.
-5. Failures include multi-line stacks with project frames and library frames, and one log with an obviously fake secret-like token (for redaction tests).
-6. A lab test that fails only in one of two Playwright projects (for example `chromium` and `chromium-mobile`, a different viewport), for DEV-38.
-7. Regenerate fixtures, sample set and `docs/eval/lab-detection.md`; flaky precision and recall rows stay 1.00 or the change is explained. Report the lab runtime and the sample size (keep it under 1 MB).
+1. Durations come from seeded waits inside the lab app (a slow-page simulation), not from editing the JSON: stable tests take 0.5 to 3 s, flaky and failing tests 3 to 40 s per attempt (a failing attempt may end at a 5 to 30 s timeout). The seeding uses the existing shared PRNG so reruns match.
+2. In the regenerated sample the top Flaky test shows at least 1 minute of wasted time and the Wasted CI time (Flaky) total is at least 10 minutes. The totals are computed by the engine, never typed in.
+3. All 9 lab labels and every pass and fail pattern are unchanged: compare the per-run attempt patterns before and after, as in DEV-08.
+4. `docs/eval/lab-detection.md` regenerated with identical precision and recall rows; `flake-lab/README.md` says durations are simulated and lists the ranges.
+5. The full lab run (12 runs) finishes in under 10 minutes on this machine; report the actual time. Sample size stays under 1 MB (report it).
+6. No engine or UI code changes.
 
 **Details:**
-- Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: DEV-28.
-- Spec: section 16 (the flake lab: one test per cause).
-- Do not change engine code in this ticket; if the engine mislabels a new test, report it.
+- Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: nothing.
+- Why: DEV-14 found the sample shows 0.1 to 0.3 min of wasted time, which makes the demo look unconvincing.
+- Files: `flake-lab/app/index.html`, `flake-lab/tests/lab.spec.ts`, `flake-lab/README.md`, regenerated `fixtures/lab/*`, `public/sample/*`, `docs/eval/lab-detection.md`.
+- Honest labelling: simulated durations are said so in the README and in the lab report limits.
 
 **Skills/Plugins:** superpowers:executing-plans, superpowers:test-driven-development, superpowers:verification-before-completion.
 
