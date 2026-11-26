@@ -818,3 +818,10 @@ Decision (row height follow-up): shorten the Evidence sentences so Comfortable r
 | `tests.why` | Retired | The " see evidence" text is gone from the row |
 
 Safety net: the Evidence cell is `white-space: nowrap` with an ellipsis and the full sentence in a `title`, so a long locale or number never changes the row height.
+
+## 19. Sample data failure (DEV-31, 2026-11-26)
+
+| Key | Text | Note |
+|---|---|---|
+| `sample.fail` | The sample data couldn't be loaded. | Confirmed. Inline alert on Start (role alert), under the sample link |
+| `sample.retry` | Try again | Reworded from "Retry". Same verb as `files.commit.saveFailed` and the other failure actions, so one recovery word is used everywhere |

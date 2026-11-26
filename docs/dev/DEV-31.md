@@ -1,6 +1,6 @@
 # DEV-31: v0 deferred minors cleanup
 
-**Status:** In progress, partial (2026-11-26; the dev chat hit its usage limit). Uncommitted work on `feat/dev-31-minors` (cut from `feat/dev-30-community-files`): done with tests first: copy summary cleaning, `stripAnsi`, `downloadFile` revoke delay, sample-load error with Retry (interim keys `sample.fail`, `sample.retry`), route effect. In progress: result-count debounce (3 old tests in `Tests.test.tsx` need a `waitFor`). Not started: worker `Function()` check, `?status=unproven`, import progress on Loaded data, optional one-file-per-worker-call, two e2e tests.
+**Status:** Done locally except optional item 10 (2026-11-26, commit `d2012af` on `feat/dev-31-minors`, stacked on DEV-30; 361 unit + 45 e2e tests pass, axe 32 scans clean). Not pushed or merged. Item 3 closed with no code (built worker has no `new Function`). Item 10 (one file per worker call) skipped: not small. New interim keys: `sample.fail`, `sample.retry`.
 
 **Goal:** Close the nine minor findings deferred from the v0 review, each with a test.
 
