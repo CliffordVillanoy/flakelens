@@ -21,7 +21,6 @@ const parsed = rows.map((line) => {
 
 // Doc rows that are wrong on their face, reported to the UI/UX chat. The app keeps the right text.
 const DOC_DEFECTS: Record<string, string> = {
-  'tests.filters.search': 'the doc drops the closing quote: Search: "{query}',
 };
 
 it('every row of sections 9 and 10 can be parsed', () => {
