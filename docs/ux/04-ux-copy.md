@@ -588,16 +588,12 @@ New and changed keys from `docs/ux/11-v0-review-decisions.md`:
 | Key | Text | Note |
 |---|---|---|
 | `files.commit.label` | Commit or label | Persistent label above the field |
-| `files.commit.placeholder.report` | Commit from the report: {sha} | Shown when the field is empty and the report has a commit |
-| `files.commit.placeholder.none` | Add a commit or label | Shown when there is no commit info |
 | `files.commit.source.report` | From the report | Tag at the right of the label |
 | `files.commit.source.none` | No commit info | Same tag, in the warning colour |
 | `files.commit.source.user` | Your label | Same tag |
 | `files.commit.source.readonly` | Read-only | Sample data |
-| `files.commit.hint.report` | Leave empty to use the commit from the report. A label you type replaces it. | |
 | `files.commit.hint.none` | No commit info found. This file counts as its own commit. | Warning colour, with the warning icon |
-| `files.commit.hint.shared` | Files with the same label count as one commit. | Add " Also used by {count, plural, one {# other file} other {# other files}}." when shared |
-| `files.commit.hint.editing` | Files with the same label count as one commit. Enter saves, Esc cancels. | |
+| `files.commit.hint.shared` | Also used by {count, plural, one {# other file} other {# other files}}. | Shown only when another file has the same label. Shortened (DEV-32 item 8) |
 | `files.commit.counter` | {n} / 100 | Shown while editing |
 | `files.commit.tooLong` | Labels can be up to 100 characters. Typing stops at the limit. | Error colour at 100 / 100 |
 | `files.commit.save` / `cancel` | Save label / Cancel | Only while editing |
@@ -605,9 +601,16 @@ New and changed keys from `docs/ux/11-v0-review-decisions.md`:
 | `files.commit.saved` | Label saved. Rankings updated. | role status |
 | `files.commit.removed` | Label removed. Rankings updated. | role status |
 | `files.commit.saveFailed` | Couldn't save the label. Your browser blocked storage, so the label would be lost when you close the tab. | role alert, with the action "Try again" |
-| `files.commit.readonly` | Read-only in sample data. Add your own files to label them. | |
+| `files.commit.readonly` | Read-only in sample data. | Shortened (DEV-32 item 8) |
+| `files.commit.empty` | Add a commit or label | Confirmed. The only text in an empty, editable field (board 9). It is the one cue that the box can be typed in. Not shown when the field has a value |
+| `files.commit.retry` | Try again | Confirmed. Same recovery verb as `sample.retry` |
+| `files.commit.keys` | Enter saves. Esc cancels. | Confirmed. Screen reader description only, never shown |
 | `import.noCommit.link` | Add a commit label | Link in the no-commit note. It moves focus to the first file without commit info |
 | `runs.commit.labelTag` | label | Small tag after a typed label in the Commit column of the runs table |
+
+Retired in DEV-32 (do not add back): `files.commit.placeholder.report`, `files.commit.placeholder.none` (replaced by `files.commit.empty`), `files.commit.hint.report`, `files.commit.hint.editing`.
+
+Known limits accepted (DEV-32): the banner note "No commit info found in N files" stays after labelling (a later ticket may update the count); the test panel and Evidence cut a label to 7 characters, the runs table shows it in full. Light theme checked by axe only, so the board's light twin is the visual reference.
 
 ## 12. Settings and per-file remove (board 10, DEV-33)
 

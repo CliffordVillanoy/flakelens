@@ -83,7 +83,7 @@ Written 2026-11-25. Build order is in "Build sequence from 2026-11-26" in the v1
 | [DEV-29](DEV-29.md) | Simplification pass on the v0 screens | Frontend (copy and screen changes) | DEV-28 | Done locally (not pushed) |
 | [DEV-30](DEV-30.md) | Community files and feedback path | Documentation (repository files) | nothing | Done locally (not pushed) |
 | [DEV-31](DEV-31.md) | v0 deferred minors cleanup | Fix or refinement (frontend) | nothing | Done locally (not pushed) |
-| [DEV-32](DEV-32.md) | Commit or label per imported file | Frontend (+ pure engine helper) | DEV-39; board from the UI/UX chat | To do |
+| [DEV-32](DEV-32.md) | Commit or label per imported file | Frontend (+ pure engine helper) | nothing (board ready) | Done locally (not pushed) |
 | [DEV-33](DEV-33.md) | Settings screen and per-file remove | Frontend (+ pure engine helper) | board from the UI/UX chat | To do |
 | [DEV-34](DEV-34.md) | Sample data: realistic lab durations | Enhancement (flake lab) | nothing | To do |
 | [DEV-35](DEV-35.md) | Flake lab: one test per cause | Enhancement (flake lab) | DEV-34 | To do |
