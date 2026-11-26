@@ -30,7 +30,7 @@ const strip = (s: string) => s.split(ESC).map((part, i) => (i === 0 ? part : par
 const messages = (r: Result) => strip(r.error?.message ?? r.errors?.[0]?.message ?? '');
 
 const NEW_FLAKY = ['flaky: order dependency', 'flaky: stale data', 'flaky: external call', 'flaky: low memory', 'flaky: lost update', 'flaky: strict locator'];
-const INFRA = ['infra: login page', 'infra: search', 'infra: cart api', 'infra: profile'];
+const INFRA = ['infra: login page', 'infra: search', 'infra: cart api', 'infra: profile', 'infra: checkout'];
 
 it('every test has a label and a cause from the spec list (or null for a test that is not a flake)', () => {
   expect(Object.keys(labels).length).toBeGreaterThanOrEqual(21);
@@ -84,7 +84,7 @@ it('each new flaky test fails with its realistic message', () => {
   expect(failed('flaky: strict locator').some((m) => m.includes('strict mode violation') && m.includes('resolved to 2 elements'))).toBe(true);
 });
 
-it('infrastructure event: in two runs at least 4 tests fail with the same normalised message and recover', () => {
+it('infrastructure event: in two runs at least 5 tests fail with the same normalised message and recover', () => {
   const norm = (m: string) => m.split('\n')[0]!.replace(/\d+/g, '<n>');
   const byRun = new Map<number, Map<string, string>>();
   for (const x of all.filter((t) => INFRA.includes(t.title))) {
@@ -98,7 +98,7 @@ it('infrastructure event: in two runs at least 4 tests fail with the same normal
   const runs = [...byRun.keys()].sort((a, b) => a - b);
   expect(runs[1]! - runs[0]!).toBe(1);
   for (const m of byRun.values()) {
-    expect(m.size).toBeGreaterThanOrEqual(4);
+    expect(m.size).toBeGreaterThanOrEqual(5);
     expect(new Set(m.values()).size).toBe(1);
     expect([...m.values()][0]).toContain('ECONNRESET');
   }

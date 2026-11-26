@@ -4,6 +4,7 @@ import { mkdirSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import process from 'node:process';
+import { trimReport } from './trim.mjs';
 import console from 'node:console';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -53,7 +54,7 @@ const runOne = (run) =>
     });
     child.on('error', reject);
     child.on('close', () => {
-      const text = scrub(readFileSync(out, 'utf8'));
+      const text = trimReport(scrub(readFileSync(out, 'utf8')));
       writeFileSync(out, text);
       writeFileSync(join(sampleDir, file), text);
       console.log(`lab run ${run} (${commit}) -> ${file}`);
