@@ -122,7 +122,7 @@ export function Tests({
       <h1 className="sr-only">{t('tests.h1')}</h1>
       <div className="listpane flex flex-col gap-3.5" data-panel={panelOpen}>
       {s.mode === 'sample' && !sampleHidden && (
-        <SampleBanner dataset={s.dataset} onExit={onExitSample} onDismiss={() => setSampleHidden(true)} />
+        <SampleBanner onExit={onExitSample} onDismiss={() => setSampleHidden(true)} />
       )}
       {s.importing && <ImportProgress files={s.importing.files} done={s.importing.done} onCancel={s.cancelImport} />}
       {!s.importing && (failed.length > 0 || s.importError) && (
@@ -180,7 +180,7 @@ export function Tests({
         <ExportMenu
           onCopyTop={() => copyText(topFlakyMarkdown(rows), t('panel.copySummary.done'))}
         />
-        <div role="status" aria-live="polite" className="text-[13px] text-muted-foreground">
+        <div role="status" aria-live="polite" className="sr-only">
           {countLine(shown.length, isLabel(status) ? status : 'all', q, sort)}
         </div>
       </div>

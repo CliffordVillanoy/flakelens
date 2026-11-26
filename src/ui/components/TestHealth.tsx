@@ -35,21 +35,16 @@ export function TestHealth({ summary, h }: { summary: ReturnType<typeof datasetS
           {t('tests.wasted.title')}{' '}
           <strong className="text-[15px] text-foreground tabular-nums">{t('wasted.measured', { min: formatMinutes(h.wastedMs) })}</strong>
           {h.possibleMs > 0 && (
-            <span className="text-muted-foreground"> {t('tests.wasted.estimate', { min: formatMinutes(h.possibleMs) })}</span>
+            <span className="text-muted-foreground" title={t('tests.wasted.estimate.hint')}>
+              {' '}
+              {t('tests.wasted.estimate', { min: formatMinutes(h.possibleMs) })}
+            </span>
           )}
         </span>
       </div>
       <div role="img" aria-label={t('tests.health.label', { tests: h.total, list })} className="flex h-2 gap-0.5 overflow-hidden rounded-sm">
         {GROUP_ORDER.filter((l) => h.counts[l] > 0).map((l) => (
           <span key={l} className={`min-w-1.5 ${BAR[l]}`} style={{ flex: `${h.counts[l]} 1 0` }} />
-        ))}
-      </div>
-      <div className="flex flex-wrap gap-x-5 gap-y-2 text-[13px] text-fg-secondary">
-        {GROUP_ORDER.map((l) => (
-          <span key={l} className="inline-flex items-center gap-1.5">
-            <span aria-hidden="true" className={`size-2 rounded-full ${BAR[l]}`} />
-            {t(`status.${l}`)} <strong className="font-semibold text-foreground">{h.counts[l]}</strong>
-          </span>
         ))}
       </div>
     </section>

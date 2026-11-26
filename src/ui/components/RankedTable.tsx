@@ -53,8 +53,10 @@ function GroupBand({ label, count, collapsed, onShow }: { label: Label; count: n
   return (
     <div className="flex min-h-11 flex-wrap items-center gap-2.5 border-t border-border-muted bg-surface-hover px-4 py-2 text-[13px]">
       <span role="rowheader" className="flex flex-wrap items-baseline gap-x-2">
-        <strong className="font-semibold">{text.slice(0, cut)}</strong>
-        <span className="text-xs text-muted-foreground">{text.slice(cut)}</span>
+        {/* The meaning of the group is a tooltip on its name, not a grey line under it. */}
+        <strong className="font-semibold" title={text.slice(cut).replace(/^ · /, '') || undefined}>
+          {text.slice(0, cut)}
+        </strong>
       </span>
       {collapsed && (
         <span role="cell">

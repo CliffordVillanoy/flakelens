@@ -25,15 +25,14 @@ export const catalog = {
 
   // Test health summary (replaces the header data chip)
   'health.title': 'Test health',
-  'health.subtitle': '{tests} tests from {files} files · {runs} runs · {commits} commits',
+  'health.subtitle': '{tests} tests · {runs} runs',
   'health.notImported': '{n} results not imported',
 
   // Start (no data)
   'start.title': 'Find your flaky tests',
-  'start.lead':
-    'A flaky test passes and fails on the same code. Drop test reports from a few CI runs. You get a ranked list of flaky tests and why each one was flagged.',
+  'start.lead': 'A flaky test passes and fails on the same code. Drop your test reports to rank them.',
   'start.drop.title': 'Drop Playwright JSON reports here',
-  'start.drop.hint': 'Each file can hold one or more CI runs. More runs give better results.',
+  'start.drop.hint': 'More runs give better results.',
   'start.browse': 'Browse files',
   'start.sample': 'Try sample data',
   'start.privacy': 'Your files stay in this browser. Nothing is uploaded.',
@@ -85,27 +84,28 @@ export const catalog = {
 
   // Leave sample dialog
   'leaveSample.title': 'Leave sample data?',
-  'leaveSample.body':
-    'Your {count, plural, one {file} other {# files}} will be analysed on their own. Sample data is never mixed with your runs.',
+  'leaveSample.body': 'Your {count, plural, one {file is} other {# files are}} analysed on {count, plural, one {its} other {their}} own.',
   'leaveSample.stay': 'Stay in sample',
   'leaveSample.confirm': 'Analyse my files',
 
   // Tests (ranked list)
   'tests.h1': 'Tests ranked by fix priority',
-  'tests.banner.sample':
-    'Sample data: {tests} tests from {runs} runs. {count} results were not imported (see why). Start with the top 3 Flaky tests. They gave different results on the same code.',
+  // Simplification pass (docs/ux/12-simplification-pass.md): one sentence; the not-imported link is in the health box.
+  'tests.banner.sample': 'Sample data. Start with the top 3 Flaky tests.',
   'tests.banner.exitSample': 'Exit sample',
   'tests.filter.label': 'Filter by status',
   'tests.filter.all': 'All',
   'tests.filter.flaky': 'Flaky',
   'tests.filter.suspect': 'Unproven',
   'tests.filter.failing': 'Failing',
-  'tests.wasted.title': 'Wasted CI time (Flaky)',
-  'tests.wasted.estimate': '+ ~{min} min possible (Unproven, estimate)',
+  // Shortened to keep the Tests screen inside its 60-word budget (no board text for it; pinned in copy-sync.test.ts).
+  'tip.export': 'Tip: Export copies the top Flaky tests as Markdown.',
+  'tests.wasted.title': 'Wasted CI time',
+  'tests.wasted.estimate': '+ ~{min} min possible',
+  // Interim: the reason moved out of the line into a tooltip.
+  'tests.wasted.estimate.hint': 'An estimate, from Unproven tests.',
   'tests.search.placeholder': 'Search tests and files',
   'tests.moreColumns': 'More columns',
-  'tests.legend':
-    "Last 12 runs, oldest first: Passed · Passed on retry · Failed · Skipped (each square's tooltip shows its result)",
   'tests.col.rank': '#',
   'tests.col.rank.label': 'Rank',
   'tests.col.test': 'Test',
@@ -153,9 +153,6 @@ export const catalog = {
   'tests.filters.remove': 'Remove filter {filter}',
   'tests.filters.clear': 'Clear filters',
   'tests.why': 'see evidence',
-  'tip.export': 'Tip: share the top Flaky tests with your team. Use Export to copy them as a Markdown list.',
-  'tests.banner.sample.seeWhy': 'see why',
-  'tests.legend.title': 'Last 12 runs, oldest first:',
   'tests.rows': 'Rows {a} to {b} of {n}',
   'tests.health.scope': 'All {n} tests',
   'tests.health.label': 'Status of {tests, plural, one {# test} other {# tests}}: {list}',
@@ -199,14 +196,12 @@ export const catalog = {
   'panel.diffstat': '{passed} passed · {failed} failed attempts',
   'panel.history.title':
     'Run history · {runs, plural, one {# run} other {# runs}} on {commits, plural, one {# commit} other {# commits}}',
-  'panel.history.legend.mixed': 'Mixed commit: passed and failed on the same code',
+  'panel.history.legend.mixed': 'Mixed commit',
   'panel.failure.metaNoDate': 'Run {n} · commit {sha} · attempt {a} of {total}',
   'panel.wasted.label': 'Wasted CI time',
   'panel.close.hint': 'Close panel (Esc)',
   'panel.history.filter.all': 'All attempts',
   'panel.history.filter.failures': 'Failures only',
-  'panel.history.legend': 'Pass · Fail · Pass after retry · Skipped · Mixed commit: passed and failed on the same code',
-  'panel.history.hint': 'Oldest on the left. Each column is one run. Stacked shapes are retries in that run.',
   'panel.history.runLabel': 'Run {n}, commit {sha}: {attempts}',
   'panel.history.runLabel.mixed': 'Run {n}, commit {sha}, mixed commit: {attempts}',
   'panel.fileBar': '{file} · project {project}',
@@ -227,6 +222,8 @@ export const catalog = {
   'toast.copyFailed': "Couldn't copy. Your browser blocked clipboard access. Select the text and copy it yourself.",
   'panel.note.title': 'What this means',
   'panel.note.next': 'What to check next',
+  // Interim (Test detail board): the closed block with the other checks and the quarantine tip.
+  'panel.note.more': 'More to check',
   'panel.failure.title': 'Latest failure',
   'panel.failure.meta': 'Run {n} · commit {sha} · attempt {a} of {total} · {date}',
   'panel.failure.hunk': 'Run {n} · attempt {a} failed, attempt {b} passed · same commit',
@@ -243,8 +240,8 @@ export const catalog = {
   'panel.score.seen': 'First seen {first} · last failed {last}',
 
   // Status notes
-  'note.flaky.means':
-    'This test gave different results on the same code. The likely cause is in the test or its environment, not in a code change.',
+  // One sentence (Test detail board, docs/ux/12 rule 2); pinned in copy-sync.test.ts BOARD_WINS.
+  'note.flaky.means': 'This test gave different results on the same code.',
   'note.flaky.next':
     "Waits and timing · Data or state shared between tests · Test order · Slow or unavailable services the test needs. Tip: while you investigate, quarantine it in CI so it can't block merges.",
   'note.suspect.means': 'Results are mixed, but never on the same commit. This could be flaky or a real bug.',
@@ -262,12 +259,9 @@ export const catalog = {
   // Loaded data
   'data.back': 'Back to tests',
   'data.title': 'Loaded data',
-  'data.lead': 'Rankings use only these files. Everything stays in this browser.',
-  'data.summary': '{files, plural, one {# file} other {# files}} · {runs, plural, one {# run} other {# runs}} · last added {date}.',
+  'data.summary': '{files, plural, one {# file} other {# files}} · {runs, plural, one {# run} other {# runs}} · last added {date}',
   'data.files': 'Files · {count}',
-  'data.file.meta': 'Added {date} · {runs, plural, one {# run} other {# runs}}, {tests, plural, one {# test} other {# tests}}',
-  'data.file.meta.notImported':
-    'Added {date} · {runs, plural, one {# run} other {# runs}}, {tests, plural, one {# test} other {# tests}}, {n} not imported',
+  'data.file.meta': '{runs, plural, one {# run} other {# runs}} · {tests, plural, one {# test} other {# tests}}',
   'data.file.ok': 'Imported',
   'data.file.partial': 'Partly imported',
   // Interim copy (DEV-17): a file that could not be imported at all still has a row.
@@ -285,12 +279,12 @@ export const catalog = {
   'data.runs.col.tests': 'Tests',
   'data.runs.showAll': 'Show all {count} runs',
   'data.remove.title': 'Remove data',
-  'data.remove.body': 'Removing a single file comes in a later version. For now you can clear everything.',
+  'data.remove.body': 'To remove a file, clear all data.',
   'data.remove.action': 'Clear all data',
 
   // Empty and edge states
   'empty.filter.title': 'No {status} tests in {runs, plural, one {this # run} other {these # runs}}',
-  'empty.filter.body': 'Good news. More runs make this more certain.',
+  'empty.filter.body': 'More runs make this more certain.',
   'empty.filter.action': 'Show all tests',
   'empty.search.title': 'No test matches "{query}"',
   'empty.search.body': 'Search covers test names and file names.',
@@ -322,7 +316,6 @@ export const catalog = {
   // Interim copy (DEV-18), pending UI/UX confirmation.
   'skip.results': 'Skip to results',
   'keys.toggle': 'Single-key shortcuts',
-  'keys.toggle.hint': 'They never fire while you type in a text field.',
   'keys.list': 'j / k: Next / previous test · Enter: Open details · Esc: Close details · /: Search · ?: This sheet',
 } as const satisfies Record<string, string>;
 

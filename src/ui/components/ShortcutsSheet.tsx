@@ -52,7 +52,6 @@ export function ShortcutsSheet() {
             }}
           />
         </label>
-        <div className="text-xs text-muted-foreground">{t('keys.toggle.hint')}</div>
         <dl className="m-0 grid grid-cols-[70px_1fr] items-baseline gap-x-3 gap-y-1.5 text-sm">
           {KEYS.map((k) => (
             <div key={k.key} className="contents">

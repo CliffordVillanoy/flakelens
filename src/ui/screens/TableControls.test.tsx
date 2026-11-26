@@ -181,8 +181,9 @@ it('the Export tip can be dismissed and stays dismissed', async () => {
   expect(screen.queryByRole('note')).toBeNull();
 });
 
-it('sample banner: "see why" opens Loaded data, where the not-imported results are listed', () => {
+it('sample banner: one sentence and Exit sample; the not-imported link lives in the health box', () => {
   load(fixture(), 'sample');
   render(<Tests />);
-  expect(screen.getByRole('link', { name: 'see why' })).toHaveAttribute('href', '#/data');
+  expect(screen.queryByRole('link', { name: 'see why' })).toBeNull();
+  expect(screen.getByRole('button', { name: 'Exit sample' })).toBeInTheDocument();
 });

@@ -170,13 +170,14 @@ it('sample: banner, Leave-sample dialog with focus on Stay, then own files repla
   await start();
   await userEvent.click(screen.getByRole('button', { name: 'Try sample data' }));
   await onTests();
-  expect(await screen.findByText(/^Sample data: 9 tests from 13 runs\. 3 results were not imported/)).toBeInTheDocument();
+  expect(await screen.findByText('Sample data. Start with the top 3 Flaky tests.')).toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'Exit sample' })).toBeInTheDocument();
 
   await userEvent.click(screen.getByRole('button', { name: 'Add your files' }));
   await upload(pw('valid-basic.json'), pw('two-projects.json'));
   const dialog = await screen.findByRole('dialog', { name: 'Leave sample data?' });
-  expect(dialog).toHaveTextContent('Your 2 files will be analysed on their own. Sample data is never mixed with your runs.');
+  expect(dialog).toHaveTextContent('Your 2 files are analysed on their own.');
+  expect(dialog).not.toHaveTextContent('never mixed');
   expect(within(dialog).getByRole('button', { name: 'Stay in sample' })).toHaveFocus();
   await userEvent.click(within(dialog).getByRole('button', { name: 'Stay in sample' }));
   await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());

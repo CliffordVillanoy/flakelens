@@ -40,7 +40,6 @@ export function RunStrip({ cells }: { cells: RunCell[] }) {
 export function RunLegend() {
   return (
     <div className="flex flex-wrap items-center gap-3.5 text-xs text-muted-foreground">
-      <span>{t('tests.legend.title')}</span>
       {(['pass', 'retryPass', 'fail', 'skip'] as const).map((o) => (
         <span key={o} className="inline-flex items-center gap-[5px]">
           <RunSquare outcome={o} size={10} />
