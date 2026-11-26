@@ -1,9 +1,9 @@
 import { it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Header } from './Header';
 import { getPref } from '../lib/prefs';
-import { applyTheme } from '../lib/theme';
+import { applyTheme, setTheme } from '../lib/theme';
 
 it('shows logo, privacy line, add files, theme and help (data loaded, board 3)', () => {
   render(<Header mode="sample" />);
@@ -88,4 +88,26 @@ it('on the Loaded data page itself the link to it is not shown', () => {
   render(<Header mode="own" onDataPage />);
   expect(screen.queryByRole('link', { name: 'Loaded data' })).toBeNull();
   expect(screen.getByRole('button', { name: 'Add files' })).toBeInTheDocument();
+});
+
+it('own data and sample data have a Settings link; Start does not; the page itself does not repeat it', () => {
+  const { unmount } = render(<Header mode="own" />);
+  expect(screen.getByRole('link', { name: 'Settings' })).toHaveAttribute('href', '#/settings');
+  unmount();
+  const s = render(<Header mode="sample" />);
+  expect(screen.getByRole('link', { name: 'Settings' })).toHaveAttribute('href', '#/settings');
+  s.unmount();
+  const p = render(<Header mode="own" onSettingsPage />);
+  expect(screen.queryByRole('link', { name: 'Settings' })).toBeNull();
+  p.unmount();
+  render(<Header mode="none" />);
+  expect(screen.queryByRole('link', { name: 'Settings' })).toBeNull();
+});
+
+it('the logo follows a theme change made elsewhere (the Settings page)', async () => {
+  applyTheme();
+  render(<Header mode="none" />);
+  act(() => setTheme('light'));
+  expect(screen.getByRole('img', { name: 'FlakeLens' })).toHaveAttribute('src', expect.stringContaining('flakelens-light.svg'));
+  act(() => setTheme('dark'));
 });

@@ -1,4 +1,5 @@
 import { it, expect, beforeEach, beforeAll, afterAll, vi } from 'vitest';
+import { setPref } from '../lib/prefs';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { buildDataset } from '@/engine/score/testkit';
@@ -75,19 +76,14 @@ it('columns: Test and Status are locked, choices survive a remount, Reset to def
   expect(screen.getByRole('columnheader', { name: 'Evidence' })).toBeInTheDocument();
 });
 
-it('density: Comfortable by default, Compact is saved and survives a remount', async () => {
-  const { unmount } = render(<Tests />);
-  const group = screen.getByRole('group', { name: 'Row density' });
-  expect(within(group).getByRole('button', { name: 'Comfortable' })).toHaveAttribute('aria-pressed', 'true');
-  await userEvent.click(within(group).getByRole('button', { name: 'Compact' }));
-  expect(screen.getByRole('table')).toHaveAttribute('data-density', 'compact');
-  unmount();
+it('density: the control moved to Settings; the table is Comfortable by default and uses the saved choice', () => {
+  const first = render(<Tests />);
+  expect(screen.queryByRole('group', { name: 'Row density' })).toBeNull();
+  expect(screen.getByRole('table')).toHaveAttribute('data-density', 'comfortable');
+  first.unmount();
+  setPref('density', 'compact');
   render(<Tests />);
   expect(screen.getByRole('table')).toHaveAttribute('data-density', 'compact');
-  expect(within(screen.getByRole('group', { name: 'Row density' })).getByRole('button', { name: 'Compact' })).toHaveAttribute(
-    'aria-pressed',
-    'true',
-  );
 });
 
 it('export: copies the Markdown list and shows the toast; CSV and JSON cannot be activated', async () => {

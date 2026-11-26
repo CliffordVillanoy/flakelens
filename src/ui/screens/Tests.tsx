@@ -15,7 +15,7 @@ import { suggestSearch } from '../data/loaded';
 import { SampleBanner } from '../components/SampleBanner';
 import { StatusTabs } from '../components/StatusTabs';
 import { TestHealth } from '../components/TestHealth';
-import { ColumnsMenu, DensityToggle, ExportMenu, FilterChips, type Density } from '../components/TableControls';
+import { ColumnsMenu, ExportMenu, FilterChips, type Density } from '../components/TableControls';
 import { copyText } from '../lib/clipboard';
 import { shortcutsSheet, useShortcuts } from '../lib/shortcuts';
 import { MissingTest, TestPanel } from './TestPanel';
@@ -66,7 +66,8 @@ export function Tests({
     const saved = getPref<unknown>('columns', DEFAULT_COLUMNS);
     return Array.isArray(saved) ? saved.filter((k): k is ColumnKey => COLUMNS.some((c) => c.key === k)) : DEFAULT_COLUMNS;
   });
-  const [density, setDensity] = useState<Density>(() => (getPref<string>('density', 'comfortable') === 'compact' ? 'compact' : 'comfortable'));
+  // Chosen on the Settings page; read when this page opens.
+  const [density] = useState<Density>(() => (getPref<string>('density', 'comfortable') === 'compact' ? 'compact' : 'comfortable'));
   const [sort, setSort] = useState<Sort>(RANK_SORT);
   const saveColumns = (next: ColumnKey[]) => {
     setColumns(next);
@@ -186,13 +187,6 @@ export function Tests({
           visible={new Set(columns)}
           onToggle={(k) => saveColumns(columns.includes(k as ColumnKey) ? columns.filter((c) => c !== k) : [...columns, k as ColumnKey])}
           onReset={() => saveColumns(DEFAULT_COLUMNS)}
-        />
-        <DensityToggle
-          value={density}
-          onChange={(d) => {
-            setDensity(d);
-            setPref('density', d);
-          }}
         />
         <ExportMenu
           onCopyTop={() => copyText(topFlakyMarkdown(rows), t('panel.copySummary.done'))}

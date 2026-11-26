@@ -113,24 +113,6 @@ export function ColumnsMenu({
 
 export type Density = 'comfortable' | 'compact';
 
-export function DensityToggle({ value, onChange }: { value: Density; onChange: (d: Density) => void }) {
-  return (
-    <div role="group" aria-label={t('tests.density')} className="inline-flex gap-0.5 rounded-md border border-input bg-card p-0.5">
-      {(['compact', 'comfortable'] as const).map((d) => (
-        <button
-          key={d}
-          type="button"
-          aria-pressed={value === d}
-          onClick={() => onChange(d)}
-          className={`h-[30px] rounded-sm px-2.5 text-[13px] ${value === d ? 'bg-selection font-semibold text-link-hover' : 'hover:bg-surface-hover'}`}
-        >
-          {t(`tests.density.${d}`)}
-        </button>
-      ))}
-    </div>
-  );
-}
-
 interface MenuItem {
   title: CopyKey;
   hint: CopyKey;

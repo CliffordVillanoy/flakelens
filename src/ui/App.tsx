@@ -8,6 +8,7 @@ import { navigate, useRoute } from './lib/router';
 import { shortcutsSheet, useShortcuts } from './lib/shortcuts';
 import { Start } from './screens/Start';
 import { t } from './copy';
+import { Settings } from './screens/Settings';
 import { LoadedData } from './screens/LoadedData';
 import { Tests } from './screens/Tests';
 import { ShortcutsSheet } from './components/ShortcutsSheet';
@@ -79,6 +80,7 @@ export function App() {
         mode={HEADER_MODE[s.mode]}
         attention={needsLook(s.dataset.imports.at(-1))}
         onDataPage={route.name === 'data'}
+        onSettingsPage={route.name === 'settings'}
         onAddFiles={openPicker}
         onHelp={() => shortcutsSheet.open()}
       />
@@ -96,7 +98,9 @@ export function App() {
         }}
       />
       <main className="flex-1">
-        {s.mode === 'empty' ? (
+        {route.name === 'settings' ? (
+          <Settings />
+        ) : s.mode === 'empty' ? (
           <Start onFiles={onFiles} onBrowse={openPicker} />
         ) : route.name === 'data' ? (
           <LoadedData onExitSample={exitSample} />
