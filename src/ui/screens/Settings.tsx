@@ -10,7 +10,7 @@ import { dangerButton } from '../components/buttons';
 import { getPref, setPref } from '../lib/prefs';
 import { navigate } from '../lib/router';
 import { currentTheme, setTheme, subscribeTheme, type Theme } from '../lib/theme';
-import pkg from '../../../package.json';
+import { version } from '../../../package.json'; // a named import: the rest of package.json is left out of the build
 
 const REPO = 'https://github.com/CliffordVillanoy/flakelens';
 const LINKS = [
@@ -182,7 +182,7 @@ export function Settings() {
       </Section>
 
       <Section title={t('settings.about.title')}>
-        <div className="text-sm font-semibold">{t('settings.about.version', { version: pkg.version })}</div>
+        <div className="text-sm font-semibold">{t('settings.about.version', { version })}</div>
         <ul className="m-0 flex list-none flex-wrap gap-x-5 gap-y-2 p-0 text-sm">
           {LINKS.map((l) => (
             <li key={l.key}>

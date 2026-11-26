@@ -125,6 +125,25 @@ for (const theme of ['dark', 'light'] as const) {
       await page.keyboard.press('Escape');
     });
 
+    test('Settings, the remove dialog and the undo toast', async ({ page }) => {
+      await openApp(page, theme);
+      await importSampleFilesAsOwn(page);
+      await page.evaluate(() => (window.location.hash = '#/settings'));
+      await expect(page.getByRole('heading', { level: 1, name: 'Settings' })).toBeVisible();
+      await scan(page, theme, '20-settings');
+      await page.getByText('Show thresholds').click();
+      await scan(page, theme, '21-settings-thresholds-open');
+
+      await page.evaluate(() => (window.location.hash = '#/data'));
+      await expect(page.getByRole('heading', { level: 1, name: 'Loaded data' })).toBeVisible();
+      await page.getByRole('button', { name: 'Remove' }).first().click();
+      await expect(page.getByRole('dialog', { name: /^Remove / })).toBeVisible();
+      await scan(page, theme, '22-dialog-remove-file');
+      await page.getByRole('button', { name: 'Remove file' }).click();
+      await expect(page.getByText(/ removed[.] Rankings updated[.]/)).toBeVisible();
+      await scan(page, theme, '23-toast-undo');
+    });
+
     test('Leave-sample dialog and storage warning', async ({ page }) => {
       await page.addInitScript(() => {
         Object.defineProperty(window, 'indexedDB', {

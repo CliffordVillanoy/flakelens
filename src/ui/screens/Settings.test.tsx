@@ -10,7 +10,7 @@ import { getPref, setPref } from '../lib/prefs';
 import { applyTheme } from '../lib/theme';
 import { DEFAULT_CONFIG } from '@/engine/config';
 import { App } from '../App';
-import pkg from '../../../package.json';
+import { version } from '../../../package.json';
 
 vi.mock('../data/parser', () => ({
   workerParser: () => ({ parseFiles: async (...a: Parameters<typeof parseFiles>) => parseFiles(...a), terminate: () => {} }),
@@ -141,7 +141,7 @@ it('Your data shows the summary and Clear all data opens the existing dialog', a
 
 it('About shows the version from package.json and four links that open a new tab safely', async () => {
   await open();
-  expect(screen.getByText(`FlakeLens ${pkg.version}`)).toBeInTheDocument();
+  expect(screen.getByText(`FlakeLens ${version}`)).toBeInTheDocument();
   const base = 'https://github.com/CliffordVillanoy/flakelens';
   const links: [string, string][] = [
     ['Source code', base],

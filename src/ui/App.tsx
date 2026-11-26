@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type DragEvent } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState, type DragEvent } from 'react';
 import type { ImportRecord } from '@/engine/types';
 import { Header, type DataMode } from './components/Header';
 import { filesFrom } from './components/DropZone';
@@ -8,14 +8,16 @@ import { navigate, useRoute } from './lib/router';
 import { shortcutsSheet, useShortcuts } from './lib/shortcuts';
 import { Start } from './screens/Start';
 import { t } from './copy';
-import { Settings } from './screens/Settings';
-import { LoadedData } from './screens/LoadedData';
 import { Tests } from './screens/Tests';
 import { ShortcutsSheet } from './components/ShortcutsSheet';
 import { StorageBanner } from './components/StorageBanner';
 import { Toasts } from './components/Toasts';
 
 // Info notices (no commit info) do not count: only a warning or an error asks the person to look.
+// Rarely opened, so it is its own chunk and the main bundle stays small.
+const LoadedData = lazy(() => import('./screens/LoadedData').then((m) => ({ default: m.LoadedData })));
+const Settings = lazy(() => import('./screens/Settings').then((m) => ({ default: m.Settings })));
+
 const needsLook = (rec?: ImportRecord) => !!rec?.notices.some((n) => n.severity === 'warning' || n.severity === 'error');
 const HEADER_MODE = { empty: 'none', sample: 'sample', user: 'own' } as const satisfies Record<string, DataMode>;
 
@@ -99,11 +101,15 @@ export function App() {
       />
       <main className="flex-1">
         {route.name === 'settings' ? (
-          <Settings />
+          <Suspense fallback={null}>
+            <Settings />
+          </Suspense>
         ) : s.mode === 'empty' ? (
           <Start onFiles={onFiles} onBrowse={openPicker} />
         ) : route.name === 'data' ? (
-          <LoadedData onExitSample={exitSample} />
+          <Suspense fallback={null}>
+            <LoadedData onExitSample={exitSample} />
+          </Suspense>
         ) : (
           <Tests onFiles={onFiles} onBrowse={openPicker} onExitSample={exitSample} />
         )}
