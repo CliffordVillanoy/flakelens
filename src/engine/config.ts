@@ -11,6 +11,10 @@ export const DEFAULT_CONFIG = {
   maxBadShare: 0.5,
   maxFileChars: 50_000_000,
   maxSuiteDepth: 50,
+  // Failure grouping (DEV-36): two failure templates merge at this shingle similarity; this many distinct tests with one
+  // fingerprint in one run make an environment event. Starting values, tuned on the flake lab.
+  groupMergeJaccard: 0.8,
+  envEventMinTests: 5,
 } as const;
 
 export type EngineConfig = { readonly [K in keyof typeof DEFAULT_CONFIG]: number };
