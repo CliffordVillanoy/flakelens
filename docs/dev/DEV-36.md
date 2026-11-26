@@ -1,6 +1,6 @@
 # DEV-36: Failure fingerprinting and grouping
 
-**Status:** To do
+**Status:** Done locally (2026-11-27, commit `e2d3081` on `feat/dev-36-failure-groups` from origin/main fb8875a, worktree `flakelens-dev36`; 481 unit tests, verified by planning). Not pushed or merged. Timing: 1 MB line 3 ms, 1 MB "a." 5 ms, 100k messages 246 ms, 5,000 x 50 grouping about 150 ms (input cut to 50,000 chars first). Lab: 13 groups from 145 failures; the infrastructure event is one group of 4 tests, so environmentEvent is false at the threshold of 5 (decision: keep 5, add a 5th infrastructure lab test in DEV-37). Known: the 503 external call and the order dependency tests normalise to one group (numbers masked), the classifier must tell them apart. Security chat re-review pending.
 
 **Goal:** 200 red tests become a handful of failure groups, and many tests failing the same way at once read as one environment event.
 
