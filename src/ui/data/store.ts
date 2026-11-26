@@ -1,5 +1,6 @@
 import { create } from 'zustand';
-import { emptyDataset, setCommitLabel } from '@/engine/dataset';
+import { emptyDataset, importSlice, removeImport, restoreImport, setCommitLabel } from '@/engine/dataset';
+import type { ImportResult } from '@/engine/types';
 import { rankTests } from '@/engine/score/rank';
 import { scoreTests } from '@/engine/score/score';
 import type { Dataset, TestScore } from '@/engine/types';
@@ -18,6 +19,13 @@ export type ImportError =
   | { code: 'import.fail.timeout'; file: string }
   | { code: 'import.fail.crash' }
   | { code: 'import.fail.tooMany' | 'import.fail.tooBig'; limit: string }; // the whole drop was refused
+/** What an undo needs to put a removed file back. */
+export interface RemovedFile {
+  fileName: string;
+  result: ImportResult;
+  index: number;
+  last: boolean; // it was the only file: removing it emptied the app
+}
 export interface LastImport extends ImportSummary {
   newRuns: number;
   wasEmpty: boolean; // nothing was loaded before this import: "Imported", not "Added"
@@ -36,6 +44,8 @@ interface State {
   labelFailed: string[]; // imports whose label is in memory only because storage refused it
   dismissBanner(kind: 'skipped' | 'off'): void;
   setCommitLabel(importId: string, label: string): Promise<'saved' | 'failed' | 'readonly'>;
+  removeImport(importId: string): Promise<RemovedFile | null>;
+  restoreRemoved(removed: RemovedFile): Promise<void>;
   restore(): Promise<void>;
   importFiles(files: File[], commitLabels?: Record<string, string>): Promise<void>;
   cancelImport(): void;
@@ -83,6 +93,44 @@ export const useStore = create<State>()((set, get) => ({
     }
     set((s) => ({ labelFailed: saved ? s.labelFailed.filter((id) => id !== importId) : [...new Set([...s.labelFailed, importId])] }));
     return saved ? 'saved' : 'failed';
+  },
+
+  async removeImport(importId) {
+    const { mode, dataset, storage } = get();
+    const slice = mode === 'user' ? importSlice(dataset, importId) : null;
+    if (!slice) return null;
+    const next = removeImport(dataset, importId);
+    // Memory first: the ranking is right at once, and the undo needs nothing from storage.
+    set({
+      ...withData(next.runs.length > 0 ? 'user' : 'empty', next),
+      labelFailed: get().labelFailed.filter((id) => id !== importId),
+      lastImport: null,
+    });
+    if (storage === 'ok') {
+      try {
+        await db.deleteImport(importId);
+      } catch {
+        set({ storage: 'failed' });
+      }
+    }
+    return { fileName: slice.result.record.fileName, result: slice.result, index: slice.index, last: dataset.imports.length === 1 };
+  },
+
+  async restoreRemoved(removed) {
+    const { dataset, storage } = get();
+    const next = restoreImport(dataset, removed.result, removed.index);
+    if (next === dataset) return;
+    set(withData('user', next));
+    if (storage !== 'ok') return;
+    try {
+      // Stored rows hold the file as parsed, without the label; the label is saved beside it.
+      const label = removed.result.record.commitLabel;
+      const bare = importSlice(setCommitLabel(restoreImport(emptyDataset(), removed.result, 0), removed.result.record.importId, ''), removed.result.record.importId)!;
+      await db.saveImport(bare.result);
+      if (label) await db.saveCommitLabel(removed.result.record.importId, label);
+    } catch {
+      set({ storage: 'failed' });
+    }
   },
 
   async restore() {

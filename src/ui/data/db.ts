@@ -91,6 +91,12 @@ export async function loadStored(): Promise<{ dataset: Dataset; skipped: number 
 
 export const loadDataset = async (): Promise<Dataset> => (await loadStored()).dataset;
 
+/** Deletes one stored import. A row that is not there is not an error. Throws when storage is blocked. */
+export async function deleteImport(importId: string): Promise<void> {
+  const d = getDb();
+  await d.transaction('rw', d.imports, () => d.imports.delete(importId));
+}
+
 export async function clearAll(): Promise<void> {
   await getDb().imports.clear();
 }
