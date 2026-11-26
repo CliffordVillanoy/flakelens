@@ -32,7 +32,7 @@ it('fills named params and keeps plain strings', () => {
   expect(t('import.fail.unreadable', { file: 'run.json' })).toBe(
     "run.json couldn't be read. It may be cut off. Try downloading it again.",
   );
-  expect(t('header.privacy')).toBe('Nothing leaves this browser');
+  expect(t('app.name')).toBe('FlakeLens');
 });
 
 it('throws on a missing param, so typos fail loudly', () => {
@@ -51,4 +51,9 @@ it('every catalog entry is a non-empty string', () => {
   const keys = Object.keys(catalog) as CopyKey[];
   expect(keys.length).toBeGreaterThan(100);
   for (const k of keys) expect([k, typeof catalog[k], catalog[k].trim().length > 0]).toEqual([k, 'string', true]);
+});
+
+it('the retired header privacy keys are gone (DEV-34); the privacy statement stays on Start', () => {
+  for (const key of ['header.privacy', 'header.privacy.hint', 'header.privacy.short']) expect(key in catalog, key).toBe(false);
+  expect(catalog['start.privacy']).toBe('Your files stay in this browser. Nothing is uploaded.');
 });

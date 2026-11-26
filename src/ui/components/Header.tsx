@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react';
-import { Database, Lock, Moon, Settings, Sun } from 'lucide-react';
+import { Database, Moon, Settings, Sun } from 'lucide-react';
 import { t } from '../copy';
 import { currentTheme, setTheme, subscribeTheme, type Theme } from '../lib/theme';
 
@@ -8,8 +8,8 @@ export type DataMode = 'none' | 'sample' | 'own';
 const iconButton =
   'inline-flex size-8 items-center justify-center rounded-md border border-control bg-secondary text-[13px] font-semibold hover:bg-surface-hover';
 
-// Boards 1 and 3: Start shows only the logo and the theme and help buttons; with data loaded the
-// privacy line and "Add your files" (sample) or "Add files" (own data) join them.
+// Boards 1 and 3: Start shows only the logo and the theme and help buttons; with data loaded "Add your files"
+// (sample) or "Add files" (own data) joins them. The privacy statement lives on Start, not here (DEV-34).
 export function Header({
   mode,
   onAddFiles,
@@ -37,16 +37,6 @@ export function Header({
           alt={t('app.name')}
           className="block h-7 w-auto"
         />
-        {mode !== 'none' && (
-          <span title={t('header.privacy.hint')} className="inline-flex items-center gap-1.5 text-xs text-status-stable">
-            <Lock size={14} aria-hidden="true" />
-            {/* Below 1000px the short line shows; the full line stays as the accessible name, and is the tooltip. */}
-            <span className="max-[999px]:sr-only">{t('header.privacy')}</span>
-            <span aria-hidden="true" title={t('header.privacy')} className="min-[1000px]:hidden">
-              {t('header.privacy.short')}
-            </span>
-          </span>
-        )}
       </div>
       <div className="ml-auto flex flex-wrap gap-2">
         {mode === 'own' && !onDataPage && (

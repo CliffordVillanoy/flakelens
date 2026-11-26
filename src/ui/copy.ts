@@ -4,10 +4,6 @@ export const catalog = {
   // Global header
   'app.name': 'FlakeLens',
   'header.sampleTag': 'Sample data',
-  'header.privacy': 'Nothing leaves this browser',
-  // Section 10 of docs/ux/04-ux-copy.md (decision 5): the phone-width line; the full line is its tooltip and name.
-  'header.privacy.short': 'Local only',
-  'header.privacy.hint': 'FlakeLens makes 0 network requests unless you turn on a cloud provider.',
   'header.addFiles.sample': 'Add your files',
   'header.addFiles': 'Add files',
   'header.clearAll': 'Clear all data',
