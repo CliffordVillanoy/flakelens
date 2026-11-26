@@ -162,3 +162,76 @@ it('a drop of more than 200 files is refused: nothing changes and the drop zone 
   expect(useStore.getState().importError).toEqual({ code: 'import.fail.tooMany', limit: '200' });
   expect(useStore.getState().importing).toBeNull();
 });
+
+// ---- commit label (DEV-32) ----
+const importTwo = async () => {
+  await useStore.getState().restore();
+  await useStore.getState().importFiles([file('run-00.json'), file('run-01.json')]);
+  return useStore.getState().dataset.imports.map((i) => i.importId) as [string, string];
+};
+const commits = () => useStore.getState().dataset.runs.map((r) => r.commit);
+
+it('setCommitLabel changes the runs, the ranking and storage at once, and reports saved', async () => {
+  const [a] = await importTwo();
+  const before = useStore.getState().ranked;
+  expect(await useStore.getState().setCommitLabel(a, 'c0')).toBe('saved');
+  const s = useStore.getState();
+  expect(commits()).toContain('c0');
+  expect(s.ranked).toEqual(rankTests(scoreTests(s.dataset), s.dataset.tests));
+  expect(s.ranked).not.toBe(before);
+  expect(s.labelFailed).toEqual([]);
+  expect((await loadDataset()).imports[0]!.commitLabel).toBe('c0');
+});
+
+it('a label survives a reload and Clear all data removes it', async () => {
+  const [a] = await importTwo();
+  await useStore.getState().setCommitLabel(a, 'c0');
+  const labelled = useStore.getState().dataset;
+  useStore.setState(initial, true);
+  await useStore.getState().restore();
+  expect(useStore.getState().dataset).toEqual(labelled);
+  await useStore.getState().clearAll();
+  expect(useStore.getState().dataset).toEqual(emptyDataset());
+  expect((await loadStored()).dataset).toEqual(emptyDataset());
+});
+
+it('when storage blocks the save the label stays in memory, the import is marked failed, and Try again can succeed', async () => {
+  const [a] = await importTwo();
+  const put = vi.spyOn(Dexie.prototype, 'transaction').mockRejectedValueOnce(new Error('blocked'));
+  expect(await useStore.getState().setCommitLabel(a, 'c0')).toBe('failed');
+  expect(commits()).toContain('c0');
+  expect(useStore.getState().labelFailed).toEqual([a]);
+  put.mockRestore();
+  expect(await useStore.getState().setCommitLabel(a, 'c0')).toBe('saved');
+  expect(useStore.getState().labelFailed).toEqual([]);
+});
+
+it('with storage off the label is kept for the session and reported failed', async () => {
+  vi.spyOn(Dexie.prototype, 'open').mockRejectedValue(new Error('blocked'));
+  await useStore.getState().restore();
+  await useStore.getState().importFiles([file('run-00.json')]);
+  const a = useStore.getState().dataset.imports[0]!.importId;
+  expect(await useStore.getState().setCommitLabel(a, 'c0')).toBe('failed');
+  expect(commits()).toEqual(['c0']);
+});
+
+it('sample data cannot be labelled', async () => {
+  await useStore.getState().startSample();
+  const before = useStore.getState().dataset;
+  expect(await useStore.getState().setCommitLabel(before.imports[0]!.importId, 'zzz')).toBe('readonly');
+  expect(useStore.getState().dataset).toBe(before);
+});
+
+it('labelling run-00 and run-01 both c0 gives the same scores as importing them with commit c0', async () => {
+  const [a, b] = await importTwo();
+  await useStore.getState().setCommitLabel(a, 'c0');
+  await useStore.getState().setCommitLabel(b, 'c0');
+  const labelled = useStore.getState().ranked;
+  useStore.setState(initial, true);
+  await clearDb();
+  await useStore.getState().restore();
+  await useStore.getState().importFiles([file('run-00.json'), file('run-01.json')], { 'run-00.json': 'c0', 'run-01.json': 'c0' });
+  expect(useStore.getState().ranked.map((r) => [r.testId, r.label, r.mixedCommits, r.repeatedCommits])).toEqual(
+    labelled.map((r) => [r.testId, r.label, r.mixedCommits, r.repeatedCommits]),
+  );
+});

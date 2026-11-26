@@ -2,6 +2,7 @@ import { CircleAlert, CircleCheck, X } from 'lucide-react';
 import type { NoticeCode } from '@/engine/types';
 import { t, type CopyKey } from '../copy';
 import type { LastImport } from '../data/store';
+import { focusFirstNoCommit } from '../lib/focusCommit';
 import { DownloadList } from './DownloadList';
 
 const MAX_EXAMPLES = 3; // spec 9.1: counts first, then up to three example problems
@@ -64,6 +65,18 @@ export function ImportBanner({
               <li key={text}>{text}</li>
             ))}
           </ul>
+        )}
+        {noCommit.length > 0 && (
+          <a
+            href="#/data"
+            className="self-start"
+            onClick={(e) => {
+              e.preventDefault();
+              focusFirstNoCommit();
+            }}
+          >
+            {t('import.noCommit.link')}
+          </a>
         )}
         {(warned || notImported > 0) && (
           <div className="flex flex-wrap items-center gap-3">

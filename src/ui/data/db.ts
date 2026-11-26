@@ -1,5 +1,5 @@
 import Dexie, { type Table } from 'dexie';
-import { addImport, emptyDataset } from '@/engine/dataset';
+import { addImport, cleanLabel, emptyDataset, setCommitLabel } from '@/engine/dataset';
 import { hashString } from '@/engine/hash';
 import type { Dataset, ImportResult } from '@/engine/types';
 import { importResultSchema } from './stored';
@@ -15,6 +15,7 @@ interface StoredImport {
   importId: string;
   seq: number;
   schemaVersion?: number;
+  commitLabel?: string; // optional, added in DEV-32; rows without it are unchanged version 1 rows
   result: ImportResult;
 }
 
@@ -48,6 +49,19 @@ export async function saveImport(res: ImportResult): Promise<void> {
   });
 }
 
+/** Saves (or, empty, removes) the label of one stored import. Throws when the row is missing or storage is blocked. */
+export async function saveCommitLabel(importId: string, label: string): Promise<void> {
+  const clean = cleanLabel(label);
+  const d = getDb();
+  await d.transaction('rw', d.imports, async () => {
+    const row = await d.imports.get(importId);
+    if (!row) throw new Error('import not stored');
+    const next = { ...row };
+    delete next.commitLabel;
+    await d.imports.put(clean === '' ? next : { ...next, commitLabel: clean });
+  });
+}
+
 /** The one place a stored row of an older version is brought to the current shape. Null: not readable by this app. */
 function migrate(row: unknown): unknown {
   if (typeof row !== 'object' || row === null) return null;
@@ -66,6 +80,8 @@ export async function loadStored(): Promise<{ dataset: Dataset; skipped: number 
     try {
       if (!parsed.success) throw new Error('unreadable row');
       dataset = addImport(dataset, parsed.data);
+      const label = (row as { commitLabel?: unknown }).commitLabel;
+      if (typeof label === 'string') dataset = setCommitLabel(dataset, parsed.data.record.importId, label);
     } catch {
       skipped++;
     }

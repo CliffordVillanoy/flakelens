@@ -5,6 +5,7 @@ import { ArrowLeft, CircleAlert, CircleCheck, CircleX, Info } from 'lucide-react
 import { t } from '../copy';
 import { useStore } from '../data/store';
 import { fileRows, loadedSummary, noticeRows, runRows, type FileRow } from '../data/loaded';
+import { CommitField } from '../components/CommitField';
 import { ClearDataDialog } from '../components/ClearDataDialog';
 import { DownloadList } from '../components/DownloadList';
 import { toast } from '../components/Toasts';
@@ -28,7 +29,7 @@ const SEVERITY_ICON = {
   info: <Info size={16} className="mt-0.5 shrink-0 text-link" aria-hidden="true" />,
 } as const;
 
-function FileItem({ f }: { f: FileRow }) {
+function FileItem({ f, sample }: { f: FileRow; sample: boolean }) {
   const { key, tone, Icon } = RESULT[f.result];
   const meta = { runs: f.runs, tests: f.tests };
   return (
@@ -43,6 +44,7 @@ function FileItem({ f }: { f: FileRow }) {
         <Icon size={14} aria-hidden="true" />
         {t(key)}
       </span>
+      {f.runs > 0 && <CommitField f={f} readOnly={sample} />}
     </li>
   );
 }
@@ -94,7 +96,7 @@ export function LoadedData({ onExitSample }: { onExitSample: () => void }) {
         </h2>
         <ul className="m-0 list-none overflow-hidden rounded-lg border border-border bg-card p-0">
           {files.map((f) => (
-            <FileItem key={f.importId} f={f} />
+            <FileItem key={f.importId} f={f} sample={sample} />
           ))}
         </ul>
       </section>
@@ -137,7 +139,10 @@ export function LoadedData({ onExitSample }: { onExitSample: () => void }) {
             {shownRuns.map((r) => (
               <div key={r.runId} role="row" className="grid grid-cols-6 items-center border-t border-border-muted first:border-t-0">
                 <div role="cell" className="px-4 py-3 text-center tabular-nums">{r.number}</div>
-                <div role="cell" className="min-w-0 px-4 py-3 text-center font-mono">{r.commit}</div>
+                <div role="cell" className="min-w-0 px-4 py-3 text-center font-mono">
+                  <span className={r.labelled ? 'break-all' : undefined}>{r.commit}</span>
+                  {r.labelled && <span className="ml-1.5 rounded-sm border border-border px-1 text-[11px] font-sans text-muted-foreground">{t('runs.commit.labelTag')}</span>}
+                </div>
                 <div role="cell" className="px-4 py-3 text-center">{r.branch}</div>
                 <div role="cell" className="px-4 py-3 text-center">{r.browser}</div>
                 <div role="cell" className="px-4 py-3 text-center tabular-nums">{r.time ? dateTime.format(new Date(r.time)) : t('wasted.none')}</div>

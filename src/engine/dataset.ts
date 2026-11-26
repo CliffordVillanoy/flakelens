@@ -1,4 +1,4 @@
-import type { Dataset, ImportResult, Notice } from './types';
+import type { Dataset, ImportResult, Notice, Run } from './types';
 
 export const emptyDataset = (): Dataset => ({ imports: [], runs: [], tests: [], attempts: [], failures: [] });
 
@@ -32,4 +32,38 @@ export function addImport(ds: Dataset, res: ImportResult): Dataset {
     attempts: [...ds.attempts, ...attempts],
     failures: [...ds.failures, ...res.failures.filter((f) => attemptIds.has(f.attemptId))],
   };
+}
+
+export const MAX_LABEL = 100;
+
+// Plain text: control characters dropped (a loop, so cost stays linear), trimmed, cut to MAX_LABEL.
+export function cleanLabel(raw: string): string {
+  let out = '';
+  for (const ch of raw.slice(0, 10_000)) {
+    const c = ch.codePointAt(0)!;
+    if (c < 32 || (c >= 127 && c <= 159)) continue;
+    out += ch;
+  }
+  return out.trim().slice(0, MAX_LABEL);
+}
+
+// Pure. A label stands in for the commit of every run in that import; the commit from the report is kept in
+// reportCommit, so removing the label gives it back. Empty label: removes it. Unknown import: same dataset.
+export function setCommitLabel(ds: Dataset, importId: string, label: string): Dataset {
+  if (!ds.imports.some((i) => i.importId === importId)) return ds;
+  const clean = cleanLabel(label);
+  const runs = ds.runs.map((r): Run => {
+    if (r.importId !== importId) return r;
+    const { reportCommit, ...rest } = r;
+    const original = reportCommit !== undefined ? reportCommit : r.commit;
+    if (clean === '') return { ...rest, commit: original };
+    return { ...rest, commit: clean, reportCommit: original };
+  });
+  const imports = ds.imports.map((i) => {
+    if (i.importId !== importId) return i;
+    const next = { ...i };
+    delete next.commitLabel;
+    return clean === '' ? next : { ...next, commitLabel: clean };
+  });
+  return { ...ds, runs, imports };
 }

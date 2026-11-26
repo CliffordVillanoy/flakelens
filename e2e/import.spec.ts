@@ -219,3 +219,28 @@ test('files dropped on Loaded data show the result there, and the page stays on 
   await expect(page).toHaveURL(/#[/]data$/);
   await expect(page.getByRole('heading', { name: 'Files · 2' })).toBeVisible();
 });
+
+test('two files labelled with the same commit give same-commit evidence: a cross-run test becomes Flaky, and a reload keeps it', async ({ page }) => {
+  await openApp(page);
+  await addFiles(page, [sampleFile('run-00.json'), sampleFile('run-01.json')]);
+  await expect(page.locator('.ranked-row').first()).toBeVisible();
+  await page.goto('./#/tests?status=flaky');
+  await expect(page.locator('.ranked-row').filter({ hasText: 'cross-run only' })).toHaveCount(0); // each file is its own commit
+
+  await page.goto('./#/data');
+  await expect(page.getByRole('heading', { level: 1, name: 'Loaded data' })).toBeVisible();
+  const fields = page.getByRole('textbox', { name: 'Commit or label' });
+  await expect(fields).toHaveCount(2);
+  for (let i = 0; i < 2; i++) {
+    await fields.nth(i).fill('c0');
+    await fields.nth(i).press('Enter');
+    await expect(page.getByText('Label saved. Rankings updated.')).toHaveCount(i + 1);
+  }
+  await page.goto('./#/tests?status=flaky');
+  await expect(page.locator('.ranked-row').filter({ hasText: 'cross-run only' })).toHaveCount(1);
+
+  await page.reload();
+  await expect(page.locator('.ranked-row').filter({ hasText: 'cross-run only' })).toHaveCount(1);
+  await page.goto('./#/data');
+  await expect(page.getByRole('textbox', { name: 'Commit or label' }).first()).toHaveValue('c0');
+});

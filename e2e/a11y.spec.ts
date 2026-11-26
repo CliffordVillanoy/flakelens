@@ -45,6 +45,12 @@ for (const theme of ['dark', 'light'] as const) {
       await expect(page.locator('.ranked-row').first()).toBeVisible();
       await scan(page, theme, '03-tests-sample');
 
+      await page.evaluate(() => (window.location.hash = '#/data')); // memory only: a hash change keeps the sample
+      await expect(page.getByRole('textbox', { name: 'Commit or label' }).first()).toHaveAttribute('readonly', '');
+      await scan(page, theme, '19-commit-label-readonly');
+      await page.evaluate(() => (window.location.hash = '#/tests'));
+      await expect(page.locator('.ranked-row').first()).toBeVisible();
+
       await page.getByRole('button', { name: 'Columns' }).click();
       await scan(page, theme, '04-tests-columns-open');
       await page.keyboard.press('Escape');
@@ -98,6 +104,15 @@ for (const theme of ['dark', 'light'] as const) {
       await page.evaluate(() => (window.location.hash = '#/data'));
       await expect(page.getByRole('heading', { level: 1, name: 'Loaded data' })).toBeVisible();
       await scan(page, theme, '11-loaded-data');
+
+      // Commit or label field: editing (counter, Save label, Cancel), then saved (status line, Remove label).
+      const field = page.getByRole('textbox', { name: 'Commit or label' }).first();
+      await field.fill('release-2026-11-25');
+      await expect(page.getByRole('button', { name: 'Save label' }).first()).toBeVisible();
+      await scan(page, theme, '17-commit-label-editing');
+      await field.press('Enter');
+      await expect(page.getByText('Label saved. Rankings updated.')).toBeVisible();
+      await scan(page, theme, '18-commit-label-saved');
 
       await page.getByRole('main').getByRole('button', { name: 'Clear all data' }).click();
       await expect(page.getByRole('dialog', { name: 'Clear all data?' })).toBeVisible();
