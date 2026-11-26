@@ -20,3 +20,9 @@ it('cause classifier thresholds live in the config with their starting values (D
   expect(DEFAULT_CONFIG.causeMediumAgreement).toBe(0.5);
   expect(DEFAULT_CONFIG.causeMediumAgreement).toBeLessThan(DEFAULT_CONFIG.causeHighAgreement);
 });
+
+it('a group needs this share of its failures to match a rule before a cause tip is shown (DEV-37 follow-up)', () => {
+  expect(DEFAULT_CONFIG.causeMinMatched).toBe(0.5);
+  expect(DEFAULT_CONFIG.causeMinMatched).toBeGreaterThan(0);
+  expect(DEFAULT_CONFIG.causeMinMatched).toBeLessThanOrEqual(1);
+});

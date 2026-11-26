@@ -39,6 +39,7 @@ export interface GroupResult {
   predicted: CauseId;
   confidence: string;
   agreement: number;
+  matchedShare: number;
   environmentEvent: boolean;
   truths: CauseId[];
 }
@@ -85,6 +86,7 @@ export function evaluateCauses(ds: Dataset, labels: Record<string, LabelEntry>):
       predicted: c.category,
       confidence: c.confidence,
       agreement: c.agreement,
+      matchedShare: c.matchedShare,
       environmentEvent: g.environmentEvent,
       truths: [...new Set(names.map((n) => labels[n]?.cause).filter((x): x is NonNullable<typeof x> => !!x).map((x) => CAUSE_ID[x]!))],
     };
@@ -107,7 +109,7 @@ export function buildReport(result: CauseEval): string {
   });
   const detail = tests.map((t) => `| ${t.title} | ${t.truth} | ${t.predicted} | ${t.truth === t.predicted ? 'right' : t.predicted === 'unknown' ? 'unknown (wrong)' : 'wrong'} | ${Object.entries(t.votes).map(([k, v]) => `${k} ${v}`).join(', ')} |`);
   const groupRows = groups.map(
-    (g) => `| ${g.tests.join('<br>')} | ${g.failures} | ${g.environmentEvent ? 'yes' : 'no'} | ${g.truths.join(' / ') || 'n/a'} | ${g.predicted} | ${g.confidence} | ${g.agreement.toFixed(2)} |`,
+    (g) => `| ${g.tests.join('<br>')} | ${g.failures} | ${g.environmentEvent ? 'yes' : 'no'} | ${g.truths.join(' / ') || 'n/a'} | ${g.predicted} | ${g.confidence} | ${g.agreement.toFixed(2)} | ${g.matchedShare.toFixed(2)} |`,
   );
 
   return [
@@ -142,10 +144,10 @@ export function buildReport(result: CauseEval): string {
     '',
     '## Failure groups (what the Groups screen would show)',
     '',
-    'DEV-36 groups, classified by `classifyGroup` with the starting thresholds (sample of 20 failures, high at 0.8 agreement with a high-weight rule, medium at 0.5).',
+    'DEV-36 groups, classified by `classifyGroup` with the starting thresholds (sample of the latest 20 failures; high at 0.8 agreement with a high-weight rule, medium at 0.5; confidence capped at low when under 0.5 of the sampled failures matched a rule). Only failures where a rule fired vote: **agreement** is the share of those that voted for the winning cause, **matched share** is how many of the sampled failures matched at all (the rest carry no information).',
     '',
-    '| Tests | Failures | Environment event | Injected cause | Classified as | Confidence | Agreement |',
-    '| --- | --- | --- | --- | --- | --- | --- |',
+    '| Tests | Failures | Environment event | Injected cause | Classified as | Confidence | Agreement | Matched share |',
+    '| --- | --- | --- | --- | --- | --- | --- | --- |',
     ...groupRows,
     '',
     '## Limits',

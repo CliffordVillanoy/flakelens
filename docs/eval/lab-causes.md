@@ -51,23 +51,23 @@ Rows: the injected cause. Columns: what the classifier said (`.` is zero).
 
 ## Failure groups (what the Groups screen would show)
 
-DEV-36 groups, classified by `classifyGroup` with the starting thresholds (sample of 20 failures, high at 0.8 agreement with a high-weight rule, medium at 0.5).
+DEV-36 groups, classified by `classifyGroup` with the starting thresholds (sample of the latest 20 failures; high at 0.8 agreement with a high-weight rule, medium at 0.5; confidence capped at low when under 0.5 of the sampled failures matched a rule). Only failures where a rule fired vote: **agreement** is the share of those that voted for the winning cause, **matched share** is how many of the sampled failures matched at all (the rest carry no information).
 
-| Tests | Failures | Environment event | Injected cause | Classified as | Confidence | Agreement |
-| --- | --- | --- | --- | --- | --- | --- |
-| responsive: menu button [chromium-mobile] | 24 | no | locator | locator | medium | 1.00 |
-| failing: wrong heading | 24 | no | n/a | locator | medium | 1.00 |
-| infra: cart api<br>infra: checkout<br>infra: login page<br>infra: profile<br>infra: search | 20 | yes | infrastructure | infrastructure | medium | 1.00 |
-| unproven: regression | 12 | no | n/a | locator | medium | 1.00 |
-| flaky: cross-run only | 12 | no | sharedState | unknown | low | 1.00 |
-| flaky: timing | 10 | no | timing | unknown | low | 1.00 |
-| flaky: external call<br>flaky: order dependency | 10 | no | network / order | unknown | low | 0.80 |
-| flaky: random data | 10 | no | time | locator | medium | 1.00 |
-| flaky: low memory | 9 | no | environment | environment | high | 1.00 |
-| flaky: lost update | 6 | no | concurrency | unknown | low | 1.00 |
-| flaky: stale data | 5 | no | sharedState | unknown | low | 1.00 |
-| flaky: strict locator | 4 | no | locator | locator | high | 1.00 |
-| flaky: external call | 3 | no | network | network | high | 1.00 |
+| Tests | Failures | Environment event | Injected cause | Classified as | Confidence | Agreement | Matched share |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| responsive: menu button [chromium-mobile] | 24 | no | locator | locator | medium | 1.00 | 1.00 |
+| failing: wrong heading | 24 | no | n/a | locator | medium | 1.00 | 1.00 |
+| infra: cart api<br>infra: checkout<br>infra: login page<br>infra: profile<br>infra: search | 20 | yes | infrastructure | infrastructure | medium | 1.00 | 1.00 |
+| unproven: regression | 12 | no | n/a | locator | medium | 1.00 | 1.00 |
+| flaky: cross-run only | 12 | no | sharedState | unknown | low | 0.00 | 0.00 |
+| flaky: timing | 10 | no | timing | unknown | low | 0.00 | 0.00 |
+| flaky: external call<br>flaky: order dependency | 10 | no | network / order | network | low | 1.00 | 0.20 |
+| flaky: random data | 10 | no | time | locator | medium | 1.00 | 1.00 |
+| flaky: low memory | 9 | no | environment | environment | high | 1.00 | 1.00 |
+| flaky: lost update | 6 | no | concurrency | unknown | low | 0.00 | 0.00 |
+| flaky: stale data | 5 | no | sharedState | unknown | low | 0.00 | 0.00 |
+| flaky: strict locator | 4 | no | locator | locator | high | 1.00 | 1.00 |
+| flaky: external call | 3 | no | network | network | high | 1.00 | 1.00 |
 
 ## Limits
 

@@ -20,6 +20,9 @@ export const DEFAULT_CONFIG = {
   causeSampleSize: 20,
   causeHighAgreement: 0.8,
   causeMediumAgreement: 0.5,
+  // Failures where no rule fired carry no information. A group needs at least this share of its sampled failures to
+  // match a rule; below it the confidence is capped at low, so the UI shows no cause tip.
+  causeMinMatched: 0.5,
 } as const;
 
 export type EngineConfig = { readonly [K in keyof typeof DEFAULT_CONFIG]: number };
