@@ -1,6 +1,6 @@
 # DEV-35: Flake lab: one test per cause
 
-**Status:** To do
+**Status:** Done locally (2026-11-26, commit `d84dea8` on `feat/dev-35-lab-causes` from origin/main 080d046, worktree `flakelens-dev35`; 444 unit + 51 e2e pass, verified by planning). Not pushed or merged. 21 lab tests, all 9 causes covered, engine labels all correct (precision and recall 1.00); Flaky total 13.30 min, top test 4.33 min; lab runtime 8 min 41 s (6 at a time, must stay under 10); sample 963,880 bytes (3.6 % margin to 1 MB: watch it); Playwright baseline recall 0.67/0.67/0.78. Only `src/ui/data/loaded.test.ts` changed outside the lab (tests: 8 to 20).
 
 **Goal:** Ground truth for the cause classifier: one lab test per cause in the spec's list, with realistic failure text.
 
