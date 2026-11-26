@@ -85,6 +85,19 @@ export interface Dataset {
   failures: Failure[];
 }
 
+// One kind of failure (DEV-36): messages with the same fingerprint, plus near-duplicates merged by shingle similarity.
+export interface FailureGroup {
+  fingerprint: string;
+  template: string; // the first 300 characters of the normalised message, for display
+  normalized: string; // the full normalised message (board 12 shows it on request)
+  count: number; // failed attempts in the group
+  testIds: string[];
+  runIds: string[]; // oldest first
+  firstRunId: string;
+  lastRunId: string;
+  environmentEvent: boolean; // enough distinct tests failed this way in one run to point at the environment
+}
+
 // Internal values; display names (Flaky, Unproven, Failing, Stable, Not enough data) live in the UI.
 export type Label = 'flaky' | 'suspect' | 'failing' | 'stable' | 'insufficient';
 
