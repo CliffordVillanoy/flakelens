@@ -15,10 +15,12 @@ export function Header({
   onAddFiles,
   onHelp,
   attention = false,
+  onDataPage = false,
 }: {
   mode: DataMode;
   onAddFiles?: () => void;
   onHelp?: () => void;
+  onDataPage?: boolean; // already on Loaded data: its own heading says so, the link would repeat it
   attention?: boolean; // the last import has a warning or error notice: an amber dot on Loaded data
 }) {
   const [theme, setThemeState] = useState<Theme>(currentTheme);
@@ -45,7 +47,7 @@ export function Header({
         )}
       </div>
       <div className="ml-auto flex flex-wrap gap-2">
-        {mode === 'own' && (
+        {mode === 'own' && !onDataPage && (
           // The one always-visible way to Loaded data, where Clear all data lives (SPEC: always one click away).
           <a
             href="#/data"

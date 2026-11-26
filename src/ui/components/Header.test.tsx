@@ -83,3 +83,9 @@ it('below 1000px the header says "Local only"; the full line stays as the access
   expect(short).toHaveAttribute('title', 'Nothing leaves this browser');
   expect(screen.getByText('Nothing leaves this browser')).toHaveClass('max-[999px]:sr-only');
 });
+
+it('on the Loaded data page itself the link to it is not shown', () => {
+  render(<Header mode="own" onDataPage />);
+  expect(screen.queryByRole('link', { name: 'Loaded data' })).toBeNull();
+  expect(screen.getByRole('button', { name: 'Add files' })).toBeInTheDocument();
+});
