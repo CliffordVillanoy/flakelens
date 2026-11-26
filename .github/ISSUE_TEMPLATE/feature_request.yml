@@ -1,0 +1,34 @@
+name: Feature request
+description: Suggest something FlakeLens should do.
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        FlakeLens is local-first: no backend, no account, nothing leaves the browser. Ideas that keep that promise fit best. Please do not attach real test reports or secrets.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      description: Describe the situation and the problem, not only the solution.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help
+      description: How you imagine it working. A sketch or a made-up example is fine.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What you do today instead
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Before you send
+      options:
+        - label: I did not attach real reports, secrets or personal data.
+          required: true
