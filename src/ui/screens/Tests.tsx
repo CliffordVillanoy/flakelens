@@ -24,15 +24,28 @@ import { navigate, useRoute } from '../lib/router';
 
 export { HEADER_PX, BAND_PX } from '../components/RankedTable';
 
+// The address bar uses the name the app shows (unproven); the engine label stays 'suspect', and old links with it still work.
+const urlStatus = (status: string) => (status === 'suspect' ? 'unproven' : status);
 const hashFor = (status: string, q: string) => {
   const p = new URLSearchParams();
-  if (status !== 'all') p.set('status', status);
+  if (status !== 'all') p.set('status', urlStatus(status));
   if (q) p.set('q', q);
   const s = p.toString();
   return `#/tests${s ? `?${s}` : ''}`;
 };
 
 // Board 3 Tests: sample banner, import results, Test health, status tabs, search, legend, ranked table.
+const ANNOUNCE_DELAY_MS = 500;
+/** The value, once it has stayed the same for `ms`. The first value is returned at once. */
+function useSettled<T>(value: T, ms: number): T {
+  const [settled, setSettled] = useState(value);
+  useEffect(() => {
+    const id = setTimeout(() => setSettled(value), ms);
+    return () => clearTimeout(id);
+  }, [value, ms]);
+  return settled;
+}
+
 export function Tests({
   onFiles = () => {},
   onBrowse = () => {},
@@ -44,7 +57,8 @@ export function Tests({
 }) {
   const route = useRoute();
   const s = useStore();
-  const status = route.query.get('status') ?? 'all';
+  const rawStatus = route.query.get('status') ?? 'all';
+  const status = rawStatus === 'unproven' ? 'suspect' : rawStatus;
   const [q, setQ] = useState(route.query.get('q') ?? '');
   const [sampleHidden, setSampleHidden] = useState(false);
   // Per-browser preferences (DESIGN.md "Table controls"); sorting is per visit.
@@ -70,6 +84,10 @@ export function Tests({
     const c = health(searched).counts;
     return { all: searched.length, ...c };
   }, [searched]);
+
+  // The live count is read out once typing has settled, not on every keystroke.
+  const countText = countLine(shown.length, isLabel(status) ? status : 'all', q, sort);
+  const announced = useSettled(countText, ANNOUNCE_DELAY_MS);
 
   const failed = s.lastImport?.records.filter((r) => r.result === 'failed') ?? [];
 
@@ -180,7 +198,7 @@ export function Tests({
           onCopyTop={() => copyText(topFlakyMarkdown(rows), t('panel.copySummary.done'))}
         />
         <div role="status" aria-live="polite" className="sr-only">
-          {countLine(shown.length, isLabel(status) ? status : 'all', q, sort)}
+          {announced}
         </div>
       </div>
 

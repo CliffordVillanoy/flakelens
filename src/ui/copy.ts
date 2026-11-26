@@ -35,6 +35,9 @@ export const catalog = {
   'start.drop.hint': 'More runs give better results.',
   'start.browse': 'Browse files',
   'start.sample': 'Try sample data',
+  // Interim (DEV-31), to be confirmed by the UI/UX chat: the sample files could not be fetched or read.
+  'sample.fail': "The sample data couldn't be loaded.",
+  'sample.retry': 'Retry',
   'start.privacy': 'Your files stay in this browser. Nothing is uploaded.',
   'start.help.title': 'How do I get a Playwright JSON report?',
   'start.help.step1': 'In CI, run your tests with the JSON reporter and save the file as an artifact:',

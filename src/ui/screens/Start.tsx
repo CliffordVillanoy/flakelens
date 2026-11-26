@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Lock } from 'lucide-react';
+import { CircleX, Lock } from 'lucide-react';
 import { t } from '../copy';
 import { useStore } from '../data/store';
 import { DropZone } from '../components/DropZone';
@@ -16,14 +16,18 @@ export function Start({ onFiles, onBrowse }: { onFiles: (files: File[]) => void;
   const cancelImport = useStore((s) => s.cancelImport);
   const startSample = useStore((s) => s.startSample);
   const [loadingSample, setLoadingSample] = useState(false);
+  const [sampleFailed, setSampleFailed] = useState(false);
   const help = useRef<HTMLDetailsElement>(null);
 
   const failed = lastImport?.records.filter((r) => r.result === 'failed') ?? [];
   const trySample = async () => {
     setLoadingSample(true);
+    setSampleFailed(false);
     try {
       await startSample();
       navigate('#/tests');
+    } catch {
+      setSampleFailed(true); // network error, bad manifest or a missing file: say so and offer Retry
     } finally {
       setLoadingSample(false);
     }
@@ -63,6 +67,16 @@ export function Start({ onFiles, onBrowse }: { onFiles: (files: File[]) => void;
               </button>
             }
           />
+        )}
+
+        {sampleFailed && (
+          <div role="alert" className="flex flex-wrap items-center gap-2.5 rounded-md border border-danger-border bg-diff-del p-3 text-sm">
+            <CircleX size={18} className="shrink-0 text-status-failing-text" aria-hidden="true" />
+            <span className="min-w-0 flex-1">{t('sample.fail')}</span>
+            <button type="button" className={`${secondaryButton} h-8 px-3 text-[13px]`} onClick={trySample}>
+              {t('sample.retry')}
+            </button>
+          </div>
         )}
 
         <div className="flex items-center gap-2 text-sm text-status-stable">
