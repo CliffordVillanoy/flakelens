@@ -57,3 +57,29 @@ it('restores a saved light theme on start', () => {
   applyTheme();
   expect(document.documentElement.dataset.theme).toBe('light');
 });
+
+it('Loaded data is a ghost link with a data icon, placed before "Add files"', () => {
+  render(<Header mode="own" />);
+  const link = screen.getByRole('link', { name: 'Loaded data' });
+  expect(link.querySelector('svg[aria-hidden="true"]')).not.toBeNull();
+  expect(link).toHaveClass('bg-transparent');
+  const add = screen.getByRole('button', { name: 'Add files' });
+  expect(link.compareDocumentPosition(add) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+});
+
+it('an amber dot shows on Loaded data only when the last import needs a look, and is described for screen readers', () => {
+  const { rerender } = render(<Header mode="own" />);
+  expect(document.querySelector('[data-attention]')).toBeNull();
+  rerender(<Header mode="own" attention />);
+  expect(document.querySelector('[data-attention]')).not.toBeNull();
+  expect(screen.getByRole('link', { name: 'Loaded data' })).toHaveAccessibleDescription('View all notices');
+});
+
+it('below 1000px the header says "Local only"; the full line stays as the accessible name and the tooltip', () => {
+  render(<Header mode="own" />);
+  const short = screen.getByText('Local only');
+  expect(short).toHaveClass('min-[1000px]:hidden');
+  expect(short).toHaveAttribute('aria-hidden', 'true');
+  expect(short).toHaveAttribute('title', 'Nothing leaves this browser');
+  expect(screen.getByText('Nothing leaves this browser')).toHaveClass('max-[999px]:sr-only');
+});

@@ -62,3 +62,38 @@ it('no rank-change link when nothing turned Flaky, and nothing at all when every
   );
   expect(container).toBeEmptyDOMElement();
 });
+
+it('the file being read says "Reading…" (no percent); finished and waiting files keep Done and Waiting', () => {
+  render(<ImportProgress files={['a.json', 'b.json', 'c.json']} done={1} onCancel={() => {}} />);
+  const rows = screen.getAllByRole('listitem');
+  expect(rows[0]).toHaveTextContent('a.jsonDone');
+  expect(rows[1]).toHaveTextContent('b.jsonReading…');
+  expect(rows[2]).toHaveTextContent('c.jsonWaiting');
+  expect(document.body.textContent).not.toMatch(/\d+ ?%/);
+});
+
+const noCommit = (file: string): ImportRecord =>
+  record({
+    fileName: file,
+    notices: [{ code: 'import.noCommit', severity: 'info', params: { file } }],
+  });
+
+it('files without commit info get one note per import, not one line per file', () => {
+  render(
+    <ImportBanner
+      summary={{ records: [noCommit('a.json'), noCommit('b.json'), noCommit('c.json')], newFlaky: 0, newRuns: 3, wasEmpty: true }}
+      totals={{ tests: 5, runs: 3 }}
+      onDismiss={() => {}}
+    />,
+  );
+  const lines = screen.getAllByText(/No commit info found/);
+  expect(lines).toHaveLength(1);
+  expect(lines[0]).toHaveTextContent('No commit info found in 3 files. Evidence across commits will be limited.');
+});
+
+it('a single file without commit info keeps its own name in the note', () => {
+  render(
+    <ImportBanner summary={{ records: [noCommit('only.json')], newFlaky: 0, newRuns: 1, wasEmpty: true }} totals={{ tests: 5, runs: 1 }} onDismiss={() => {}} />,
+  );
+  expect(screen.getByText('No commit info found in only.json. Evidence across commits will be limited.')).toBeInTheDocument();
+});

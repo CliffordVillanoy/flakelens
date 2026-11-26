@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Lock, Moon, Sun } from 'lucide-react';
+import { Database, Lock, Moon, Sun } from 'lucide-react';
 import { t } from '../copy';
 import { currentTheme, setTheme, type Theme } from '../lib/theme';
 
@@ -10,7 +10,17 @@ const iconButton =
 
 // Boards 1 and 3: Start shows only the logo and the theme and help buttons; with data loaded the
 // privacy line and "Add your files" (sample) or "Add files" (own data) join them.
-export function Header({ mode, onAddFiles, onHelp }: { mode: DataMode; onAddFiles?: () => void; onHelp?: () => void }) {
+export function Header({
+  mode,
+  onAddFiles,
+  onHelp,
+  attention = false,
+}: {
+  mode: DataMode;
+  onAddFiles?: () => void;
+  onHelp?: () => void;
+  attention?: boolean; // the last import has a warning or error notice: an amber dot on Loaded data
+}) {
   const [theme, setThemeState] = useState<Theme>(currentTheme);
   const next: Theme = theme === 'dark' ? 'light' : 'dark';
   const toggleLabel = t(next === 'light' ? 'header.theme.toLight' : 'header.theme.toDark');
@@ -26,15 +36,32 @@ export function Header({ mode, onAddFiles, onHelp }: { mode: DataMode; onAddFile
         {mode !== 'none' && (
           <span title={t('header.privacy.hint')} className="inline-flex items-center gap-1.5 text-xs text-status-stable">
             <Lock size={14} aria-hidden="true" />
-            <span>{t('header.privacy')}</span>
+            {/* Below 1000px the short line shows; the full line stays as the accessible name, and is the tooltip. */}
+            <span className="max-[999px]:sr-only">{t('header.privacy')}</span>
+            <span aria-hidden="true" title={t('header.privacy')} className="min-[1000px]:hidden">
+              {t('header.privacy.short')}
+            </span>
           </span>
         )}
       </div>
       <div className="ml-auto flex flex-wrap gap-2">
         {mode === 'own' && (
           // The one always-visible way to Loaded data, where Clear all data lives (SPEC: always one click away).
-          <a href="#/data" className={`${iconButton} px-3 no-underline text-foreground`}>
+          <a
+            href="#/data"
+            aria-describedby={attention ? 'data-attention-note' : undefined}
+            className="relative inline-flex h-8 items-center gap-1.5 rounded-md bg-transparent px-2.5 text-[13px] font-semibold text-foreground no-underline hover:bg-surface-hover"
+          >
+            <Database size={14} aria-hidden="true" />
             {t('data.title')}
+            {attention && (
+              <>
+                <span data-attention aria-hidden="true" className="absolute right-1 top-1 size-2 rounded-full bg-status-flaky" />
+                <span id="data-attention-note" hidden>
+                  {t('import.viewNotices')}
+                </span>
+              </>
+            )}
           </a>
         )}
         {mode !== 'none' && (

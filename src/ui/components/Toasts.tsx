@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { X } from 'lucide-react';
 import { create } from 'zustand';
 import { t } from '../copy';
@@ -9,37 +9,63 @@ interface ToastState {
   push(text: string, kind: Kind): void;
   remove(id: number): void;
 }
+const MAX_TOASTS = 2;
 let next = 0;
+// Oldest first, so the newest sits at the bottom; at most 2 at a time (the oldest makes room).
 const useToasts = create<ToastState>()((set) => ({
   items: [],
-  push: (text, kind) => set((s) => ({ items: [{ id: next++, text, kind }, ...s.items] })),
+  push: (text, kind) => set((s) => ({ items: [...s.items, { id: next++, text, kind }].slice(-MAX_TOASTS) })),
   remove: (id) => set((s) => ({ items: s.items.filter((x) => x.id !== id) })),
 }));
 
-/** Success and info toast (DESIGN.md "Component states"): bottom right, newest on top, closes after 5 s. */
+/** Success and info toast (DESIGN.md "System banners and toasts"): bottom left, newest at the bottom, closes after 5 s. */
 export const toast = (text: string) => useToasts.getState().push(text, 'info');
 /** Error toast: role alert, stays until dismissed. */
 export const toastError = (text: string) => useToasts.getState().push(text, 'error');
 
 const CLOSE_MS = 5000;
+const FADE_MS = 150;
+const reducedMotion = () => typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-function InfoToast({ id, text }: { id: number; text: string }) {
-  const remove = useToasts((s) => s.remove);
+// Esc on the focused toast closes it; the page's own Esc (closing the panel) must not also fire.
+const closeOnEsc = (close: () => void) => (e: React.KeyboardEvent) => {
+  if (e.key !== 'Escape') return;
+  e.stopPropagation();
+  close();
+};
+
+function DismissButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      aria-label={t('banner.dismiss')}
+      className="inline-flex size-7 shrink-0 items-center justify-center rounded-md hover:bg-surface-hover"
+      onClick={onClick}
+    >
+      <X size={16} aria-hidden="true" />
+    </button>
+  );
+}
+
+function InfoToast({ text, leaving, close }: { text: string; leaving: boolean; close: () => void }) {
   const held = useRef(false);
   useEffect(() => {
     // Closes after 5 s, but never while hovered or focused.
-    const timer = setInterval(() => !held.current && remove(id), CLOSE_MS);
+    const timer = setInterval(() => !held.current && close(), CLOSE_MS);
     return () => clearInterval(timer);
-  }, [id, remove]);
+  }, [close]);
   return (
     <div
+      data-toast
       onMouseEnter={() => (held.current = true)}
       onMouseLeave={() => (held.current = false)}
       onFocus={() => (held.current = true)}
       onBlur={() => (held.current = false)}
-      className="rounded-lg border border-border bg-card px-4 py-3 text-sm"
+      onKeyDown={closeOnEsc(close)}
+      className={`pointer-events-auto flex items-center gap-3 rounded-lg border border-border bg-card px-4 py-3 text-sm ${leaving ? 'motion-safe:animate-[toast-out_150ms_ease-in_forwards]' : 'motion-safe:animate-[toast-in_150ms_ease-out]'}`}
     >
-      {text}
+      <span className="min-w-0 flex-1">{text}</span>
+      <DismissButton onClick={close} />
     </div>
   );
 }
@@ -47,37 +73,30 @@ function InfoToast({ id, text }: { id: number; text: string }) {
 export function Toasts() {
   const items = useToasts((s) => s.items);
   const remove = useToasts((s) => s.remove);
+  const [leaving, setLeaving] = useState<number[]>([]);
+  const dismiss = (id: number) => {
+    if (reducedMotion()) return remove(id);
+    setLeaving((l) => [...l, id]);
+    setTimeout(() => {
+      remove(id);
+      setLeaving((l) => l.filter((x) => x !== id));
+    }, FADE_MS);
+  };
+  // Bottom left on desktop, full width on phones. The box lets clicks through; each toast takes them back.
   return (
-    <div className="fixed right-4 bottom-4 z-50 flex flex-col gap-2">
-      {items.some((x) => x.kind === 'error') && (
-        <div role="alert" className="flex flex-col gap-2">
-          {items
-            .filter((x) => x.kind === 'error')
-            .map((x) => (
-              <div
-                key={x.id}
-                className="flex items-center gap-3 rounded-lg border border-danger-border bg-diff-del px-4 py-3 text-sm"
-              >
-                <span className="flex-1">{x.text}</span>
-                <button
-                  type="button"
-                  aria-label={t('banner.dismiss')}
-                  className="inline-flex size-7 shrink-0 items-center justify-center rounded-md hover:bg-surface-hover"
-                  onClick={() => remove(x.id)}
-                >
-                  <X size={16} aria-hidden="true" />
-                </button>
-              </div>
-            ))}
-        </div>
+    <div data-toasts className="pointer-events-none fixed bottom-4 left-4 z-50 flex w-[480px] max-w-[calc(100%-32px)] flex-col gap-2 max-sm:inset-x-4 max-sm:w-auto max-sm:max-w-none">
+      {items.map((x) =>
+        x.kind === 'error' ? (
+          <div key={x.id} role="alert" onKeyDown={closeOnEsc(() => dismiss(x.id))} className="pointer-events-auto flex items-center gap-3 rounded-lg border border-danger-border bg-diff-del px-4 py-3 text-sm motion-safe:animate-[toast-in_150ms_ease-out]">
+            <span className="min-w-0 flex-1">{x.text}</span>
+            <DismissButton onClick={() => dismiss(x.id)} />
+          </div>
+        ) : (
+          <div key={x.id} role="status" aria-live="polite">
+            <InfoToast text={x.text} leaving={leaving.includes(x.id)} close={() => dismiss(x.id)} />
+          </div>
+        ),
       )}
-      <div role="status" aria-live="polite" className="flex flex-col gap-2">
-        {items
-          .filter((x) => x.kind === 'info')
-          .map((x) => (
-            <InfoToast key={x.id} id={x.id} text={x.text} />
-          ))}
-      </div>
     </div>
   );
 }

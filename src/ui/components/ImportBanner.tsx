@@ -28,12 +28,22 @@ export function ImportBanner({
       : summary.wasEmpty
         ? t('import.success', totals)
         : t('import.added', { ...totals, newRuns: summary.newRuns });
+  // One note per import for files without commit info (a list of the same line per file reads as noise).
+  const noCommit = records.filter((r) => r.notices.some((n) => n.code === 'import.noCommit'));
+  const others = notices.filter((n) => n.code !== 'import.noCommit');
+  const noCommitLine =
+    noCommit.length > 1
+      ? t('import.noCommit.many', { count: noCommit.length })
+      : noCommit.length === 1
+        ? t('import.noCommit', { file: noCommit[0]!.fileName })
+        : null;
   const examples = [
     ...new Set(
-      [...notices]
+      [...others]
         .sort((a, b) => Number(b.severity === 'warning') - Number(a.severity === 'warning'))
         .map((n) => t(n.code as NoticeCode & CopyKey, n.params)),
     ),
+    ...(noCommitLine ? [noCommitLine] : []),
   ].slice(0, MAX_EXAMPLES);
 
   return (

@@ -98,7 +98,7 @@ it('same run twice and missing commit info show their notices', async () => {
   await onTests();
   const b = await banner();
   expect(b).toHaveTextContent("This run was already loaded, so it wasn't counted twice.");
-  expect(b).toHaveTextContent('No commit info found in valid-basic.json. Evidence across commits will be limited.');
+  expect(b).toHaveTextContent('No commit info found in 2 files. Evidence across commits will be limited.');
 });
 
 it('duplicate test IDs and an unreadable start date show their notices', async () => {
@@ -161,7 +161,7 @@ it('timeout and crash keep the drop zone active', async () => {
   hasSentences(await screen.findByRole('alert'), "valid-basic.json took too long to read and wasn't imported. Try a smaller file or fewer runs.");
   parserMode.current = 'crash';
   await upload(pw('valid-basic.json'));
-  await waitFor(() => hasSentences(screen.getByRole('alert'), 'Something went wrong while reading your files. Nothing was changed. Try again.'));
+  await waitFor(() => hasSentences(screen.getByRole('alert'), "FlakeLens couldn't finish reading your files, and nothing was changed. Try again, or try fewer files."));
   expect(screen.getByRole('button', { name: 'Browse files' })).toBeEnabled();
   expect(useStore.getState().mode).toBe('empty');
 });

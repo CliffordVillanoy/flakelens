@@ -22,6 +22,8 @@ export function TestHealth({ summary, h }: { summary: ReturnType<typeof datasetS
             {t('health.title')}
           </h2>
           <span className="text-[13px] text-muted-foreground">{t('health.subtitle', summary)}</span>
+          {/* The tabs follow the search; this box does not. */}
+          <span className="text-xs text-muted-foreground">{t('tests.health.scope', { n: h.total })}</span>
           {summary.notImported > 0 && (
             <a href="#/data" className="inline-flex items-center gap-[5px] text-[13px] text-status-flaky-text">
               <CircleAlert size={14} aria-hidden="true" />

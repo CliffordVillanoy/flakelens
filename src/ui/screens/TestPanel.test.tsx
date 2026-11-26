@@ -72,7 +72,7 @@ it('run history: one column per run from runHistory, with its spoken label and t
   expect(columns).toHaveLength(runHistory(ds, 'flaky').length);
   expect(columns.map((c) => c.getAttribute('aria-label'))).toEqual([
     'Run 1, commit aaaaaaa: pass',
-    'Run 2, commit bbbbbbb, mixed commit: fail, pass after retry',
+    'Run 2, commit bbbbbbb, mixed commit: fail, passed on retry',
     'Run 3, commit bbbbbbb, mixed commit: pass',
     'Run 4, commit ccccccc: fail, fail',
   ]);
@@ -172,7 +172,7 @@ it('j and k move through the shown tests, in the panel and in the list', async (
   render(<Tests />);
   const order = screen
     .getAllByRole('link')
-    .filter((a) => a.getAttribute('href')?.startsWith('#/tests/') && !a.textContent?.startsWith('why?'))
+    .filter((a) => a.getAttribute('href')?.startsWith('#/tests/') && !a.textContent?.startsWith('see evidence'))
     .map((a) => a.textContent!);
   screen.getByRole('link', { name: order[0] }).focus();
   await userEvent.keyboard('j');
@@ -240,10 +240,10 @@ it('Copy summary copies the plain-text template; a blocked clipboard shows an er
   writeText.mockRejectedValue(new Error('NotAllowedError'));
   await userEvent.click(within(panel).getByRole('button', { name: 'Copy error message' }));
   const alert = await screen.findByRole('alert');
-  expect(alert).toHaveTextContent("Couldn't copy. Your browser blocked the clipboard.");
+  expect(alert).toHaveTextContent("Couldn't copy. Your browser blocked clipboard access. Select the text and copy it yourself.");
   await act(() => new Promise((r) => setTimeout(r, 50)));
   await userEvent.click(within(alert).getByRole('button', { name: 'Dismiss' }));
-  expect(screen.queryByText("Couldn't copy. Your browser blocked the clipboard.")).toBeNull();
+  await waitFor(() => expect(screen.queryByText("Couldn't copy. Your browser blocked clipboard access. Select the text and copy it yourself.")).toBeNull());
 });
 
 it('the Export copy shows the same error toast when the clipboard is blocked', async () => {
@@ -256,7 +256,7 @@ it('the Export copy shows the same error toast when the clipboard is blocked', a
   );
   await userEvent.click(screen.getByRole('button', { name: 'Export' }));
   await userEvent.click(screen.getByRole('menuitem', { name: /Copy top Flaky tests/ }));
-  expect(await screen.findByRole('alert')).toHaveTextContent("Couldn't copy. Your browser blocked the clipboard.");
+  expect(await screen.findByRole('alert')).toHaveTextContent("Couldn't copy. Your browser blocked clipboard access. Select the text and copy it yourself.");
 });
 
 it('Esc that closes the shortcuts sheet leaves the panel open', async () => {

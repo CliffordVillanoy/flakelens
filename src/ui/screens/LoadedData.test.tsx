@@ -1,7 +1,7 @@
 import 'fake-indexeddb/auto';
 import { it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { act, render, screen, waitFor, within } from '@testing-library/react';
+import { act, cleanup, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Dexie from 'dexie';
 import { emptyDataset } from '@/engine/dataset';
@@ -327,4 +327,16 @@ it('one skipped stored row is said in the singular', async () => {
   await corruptRows(1);
   render(<App />);
   expect(await screen.findByText("1 saved import couldn't be read and was skipped. Clear all data to remove it.")).toBeInTheDocument();
+});
+
+it('the amber dot on the header\'s Loaded data link follows the last import: a warning shows it, "no commit info" alone does not', async () => {
+  await open('#/tests', [lab('run-00.json')]); // no commit label: an info notice only
+  const link = await screen.findByRole('link', { name: 'Loaded data' });
+  expect(link.querySelector('[data-attention]')).toBeNull();
+  cleanup();
+  await useStore.getState().clearAll();
+  useStore.setState(initial, true);
+  await open('#/tests', [pw('partial-no-status.json')]); // results left out: a warning
+  const warned = await screen.findByRole('link', { name: 'Loaded data' });
+  expect(warned.querySelector('[data-attention]')).not.toBeNull();
 });
