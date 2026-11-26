@@ -26,3 +26,16 @@ it('mean is near 0.5', () => {
   expect(mean).toBeGreaterThan(0.48);
   expect(mean).toBeLessThan(0.52);
 });
+
+// ---- simulated durations (DEV-34) ----
+import { labMs } from './prng';
+
+it('labMs is seeded, inside its range, and does not touch the outcome stream', () => {
+  expect(labMs(3, 'flaky: timing', 0, 3000, 40000)).toBe(labMs(3, 'flaky: timing', 0, 3000, 40000));
+  const xs = Array.from({ length: 500 }, (_, i) => labMs(i % 12, `t${i}`, i % 2, 500, 3000));
+  expect(xs.every((x) => x >= 500 && x <= 3000)).toBe(true);
+  expect(new Set(xs).size).toBeGreaterThan(100);
+  const before = labRandom(5, 'flaky: random data', 1)();
+  labMs(5, 'flaky: random data', 1, 3000, 40000);
+  expect(labRandom(5, 'flaky: random data', 1)()).toBe(before); // outcomes never change
+});
