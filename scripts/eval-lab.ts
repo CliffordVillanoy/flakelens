@@ -119,7 +119,7 @@ export function buildReport(rows: Row[]): string {
       : []),
     '## Limits',
     '',
-    'This is a synthetic lab with 9 tests, one browser (Chromium) and 12 runs over 6 commits, with causes we injected ourselves. It shows the engine gives the known answers; it is not a real-world benchmark. The check against public real-world data (spec section 11.1, item 5) is a v1 item, because that dataset needs the JUnit importer.',
+    'This is a synthetic lab with 9 tests, one browser (Chromium) and 12 runs over 6 commits, with causes we injected ourselves. The test durations are simulated (seeded waits in the lab app, see `flake-lab/README.md`), so the wasted-time figures shown in the demo are realistic in size but are not measurements of a real suite. It shows the engine gives the known answers; it is not a real-world benchmark. The check against public real-world data (spec section 11.1, item 5) is a v1 item, because that dataset needs the JUnit importer.',
     '',
   ].join('\n');
 }

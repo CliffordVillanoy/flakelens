@@ -636,7 +636,7 @@ Every status carries a short note with two parts: what it means, and what to che
 
 | Status | What it means | What to check next |
 | --- | --- | --- |
-| Flaky | This test gave different results on the same code. | Waits and timing. Data or state shared between tests. Test order. Slow or unavailable services the test needs. Tip: while you investigate, quarantine it in CI so it can't block merges. |
+| Flaky | This test gave different results on the same code. | Waits and timing. Shared data or state. Test order. Slow or unavailable services the test needs. Tip: while you investigate, quarantine it in CI so it can't block merges. |
 | Unproven | Results are mixed, but not on the same commit, so it could be flaky or a real bug. | Code changes near the first failure. Rerun on one commit to confirm. |
 | Failing | It fails nearly every time, so it is likely a real bug or a broken test, not flakiness. If it also shows "was flaky earlier", it gave mixed results on the same code before it started failing. | The first commit where it started failing. Recent changes to the feature or the test. |
 | Stable | No sign of flakiness in the loaded runs. | Nothing needed. If the history is short, confidence is low. |

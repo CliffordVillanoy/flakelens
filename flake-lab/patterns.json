@@ -1,0 +1,354 @@
+{
+ "run-00.json": {
+  "stable: shows heading": [
+   "passed"
+  ],
+  "stable: adds item": [
+   "passed"
+  ],
+  "stable: shows footer": [
+   "passed"
+  ],
+  "flaky: timing": [
+   "failed",
+   "passed"
+  ],
+  "flaky: random data": [
+   "failed",
+   "passed"
+  ],
+  "failing: wrong heading": [
+   "failed",
+   "failed"
+  ],
+  "unproven: regression": [
+   "passed"
+  ],
+  "flaky: cross-run only": [
+   "failed",
+   "failed"
+  ]
+ },
+ "run-01.json": {
+  "stable: shows heading": [
+   "passed"
+  ],
+  "stable: adds item": [
+   "passed"
+  ],
+  "stable: shows footer": [
+   "passed"
+  ],
+  "flaky: timing": [
+   "failed",
+   "failed"
+  ],
+  "flaky: random data": [
+   "failed",
+   "failed"
+  ],
+  "failing: wrong heading": [
+   "failed",
+   "failed"
+  ],
+  "unproven: regression": [
+   "passed"
+  ],
+  "flaky: cross-run only": [
+   "passed"
+  ]
+ },
+ "run-02.json": {
+  "stable: shows heading": [
+   "passed"
+  ],
+  "stable: adds item": [
+   "passed"
+  ],
+  "stable: shows footer": [
+   "passed"
+  ],
+  "flaky: timing": [
+   "failed",
+   "failed"
+  ],
+  "flaky: random data": [
+   "passed"
+  ],
+  "failing: wrong heading": [
+   "failed",
+   "failed"
+  ],
+  "unproven: regression": [
+   "failed",
+   "failed"
+  ],
+  "flaky: cross-run only": [
+   "failed",
+   "failed"
+  ]
+ },
+ "run-03.json": {
+  "stable: shows heading": [
+   "passed"
+  ],
+  "stable: adds item": [
+   "passed"
+  ],
+  "stable: shows footer": [
+   "passed"
+  ],
+  "flaky: timing": [
+   "failed",
+   "passed"
+  ],
+  "flaky: random data": [
+   "passed"
+  ],
+  "failing: wrong heading": [
+   "failed",
+   "failed"
+  ],
+  "unproven: regression": [
+   "failed",
+   "failed"
+  ],
+  "flaky: cross-run only": [
+   "passed"
+  ]
+ },
+ "run-04.json": {
+  "stable: shows heading": [
+   "passed"
+  ],
+  "stable: adds item": [
+   "passed"
+  ],
+  "stable: shows footer": [
+   "passed"
+  ],
+  "flaky: timing": [
+   "failed",
+   "passed"
+  ],
+  "flaky: random data": [
+   "failed",
+   "failed"
+  ],
+  "failing: wrong heading": [
+   "failed",
+   "failed"
+  ],
+  "unproven: regression": [
+   "passed"
+  ],
+  "flaky: cross-run only": [
+   "failed",
+   "failed"
+  ]
+ },
+ "run-05.json": {
+  "stable: shows heading": [
+   "passed"
+  ],
+  "stable: adds item": [
+   "passed"
+  ],
+  "stable: shows footer": [
+   "passed"
+  ],
+  "flaky: timing": [
+   "failed",
+   "failed"
+  ],
+  "flaky: random data": [
+   "failed",
+   "passed"
+  ],
+  "failing: wrong heading": [
+   "failed",
+   "failed"
+  ],
+  "unproven: regression": [
+   "passed"
+  ],
+  "flaky: cross-run only": [
+   "passed"
+  ]
+ },
+ "run-06.json": {
+  "stable: shows heading": [
+   "passed"
+  ],
+  "stable: adds item": [
+   "passed"
+  ],
+  "stable: shows footer": [
+   "passed"
+  ],
+  "flaky: timing": [
+   "failed",
+   "passed"
+  ],
+  "flaky: random data": [
+   "passed"
+  ],
+  "failing: wrong heading": [
+   "failed",
+   "failed"
+  ],
+  "unproven: regression": [
+   "failed",
+   "failed"
+  ],
+  "flaky: cross-run only": [
+   "failed",
+   "failed"
+  ]
+ },
+ "run-07.json": {
+  "stable: shows heading": [
+   "passed"
+  ],
+  "stable: adds item": [
+   "passed"
+  ],
+  "stable: shows footer": [
+   "passed"
+  ],
+  "flaky: timing": [
+   "passed"
+  ],
+  "flaky: random data": [
+   "failed",
+   "failed"
+  ],
+  "failing: wrong heading": [
+   "failed",
+   "failed"
+  ],
+  "unproven: regression": [
+   "failed",
+   "failed"
+  ],
+  "flaky: cross-run only": [
+   "passed"
+  ]
+ },
+ "run-08.json": {
+  "stable: shows heading": [
+   "passed"
+  ],
+  "stable: adds item": [
+   "passed"
+  ],
+  "stable: shows footer": [
+   "passed"
+  ],
+  "flaky: timing": [
+   "passed"
+  ],
+  "flaky: random data": [
+   "passed"
+  ],
+  "failing: wrong heading": [
+   "failed",
+   "failed"
+  ],
+  "unproven: regression": [
+   "passed"
+  ],
+  "flaky: cross-run only": [
+   "failed",
+   "failed"
+  ]
+ },
+ "run-09.json": {
+  "stable: shows heading": [
+   "passed"
+  ],
+  "stable: adds item": [
+   "passed"
+  ],
+  "stable: shows footer": [
+   "passed"
+  ],
+  "flaky: timing": [
+   "passed"
+  ],
+  "flaky: random data": [
+   "failed",
+   "failed"
+  ],
+  "failing: wrong heading": [
+   "failed",
+   "failed"
+  ],
+  "unproven: regression": [
+   "passed"
+  ],
+  "flaky: cross-run only": [
+   "passed"
+  ]
+ },
+ "run-10.json": {
+  "stable: shows heading": [
+   "passed"
+  ],
+  "stable: adds item": [
+   "passed"
+  ],
+  "stable: shows footer": [
+   "passed"
+  ],
+  "flaky: timing": [
+   "passed"
+  ],
+  "flaky: random data": [
+   "passed"
+  ],
+  "failing: wrong heading": [
+   "failed",
+   "failed"
+  ],
+  "unproven: regression": [
+   "failed",
+   "failed"
+  ],
+  "flaky: cross-run only": [
+   "failed",
+   "failed"
+  ]
+ },
+ "run-11.json": {
+  "stable: shows heading": [
+   "passed"
+  ],
+  "stable: adds item": [
+   "passed"
+  ],
+  "stable: shows footer": [
+   "passed"
+  ],
+  "flaky: timing": [
+   "passed"
+  ],
+  "flaky: random data": [
+   "passed"
+  ],
+  "failing: wrong heading": [
+   "failed",
+   "failed"
+  ],
+  "unproven: regression": [
+   "failed",
+   "failed"
+  ],
+  "flaky: cross-run only": [
+   "passed"
+  ],
+  "new: added last run": [
+   "passed"
+  ]
+ }
+}

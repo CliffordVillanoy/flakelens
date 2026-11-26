@@ -4,10 +4,6 @@ export const catalog = {
   // Global header
   'app.name': 'FlakeLens',
   'header.sampleTag': 'Sample data',
-  'header.privacy': 'Nothing leaves this browser',
-  // Section 10 of docs/ux/04-ux-copy.md (decision 5): the phone-width line; the full line is its tooltip and name.
-  'header.privacy.short': 'Local only',
-  'header.privacy.hint': 'FlakeLens makes 0 network requests unless you turn on a cloud provider.',
   'header.addFiles.sample': 'Add your files',
   'header.addFiles': 'Add files',
   'header.clearAll': 'Clear all data',
@@ -229,7 +225,7 @@ export const catalog = {
   'panel.failure.hunk': 'Run {n} · attempt {a} failed, attempt {b} passed · same commit',
   'panel.failure.sign.fail': 'fail',
   'panel.failure.sign.pass': 'pass',
-  'panel.failure.passedAfter': 'Attempt {a} passed in {s} s on the same commit.',
+  'panel.failure.passedAfter': 'Attempt {a} passed in {s} s.',
   'panel.failure.prev': 'Show previous failure',
   'panel.failure.copy': 'Copy error message',
   'panel.score.title': 'How the score is built',
@@ -243,7 +239,7 @@ export const catalog = {
   // One sentence (Test detail board, docs/ux/12 rule 2); pinned in copy-sync.test.ts BOARD_WINS.
   'note.flaky.means': 'This test gave different results on the same code.',
   'note.flaky.next':
-    "Waits and timing · Data or state shared between tests · Test order · Slow or unavailable services the test needs. Tip: while you investigate, quarantine it in CI so it can't block merges.",
+    "Waits and timing · Shared data or state · Test order · Slow or unavailable services the test needs. Tip: while you investigate, quarantine it in CI so it can't block merges.",
   'note.suspect.means': 'Results are mixed but never on the same commit, so it could be flaky or a real bug.',
   'note.suspect.next': 'Code changes near the first failure · Run it again several times on one commit to confirm.',
   'note.failing.means': 'It fails almost every run, so it is likely a real bug or a broken test.',

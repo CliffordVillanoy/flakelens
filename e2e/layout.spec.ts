@@ -38,17 +38,18 @@ test('the test panel is 600px wide and its headings are weight 600', async ({ pa
   expect([...new Set(weights)]).toEqual(['600']);
 });
 
-test('the header says "Local only" below 1000px and the full line from 1000px up', async ({ page }) => {
+test('the header has no privacy line or lock, and the logo keeps the page gutter (24px desktop, 16px phone)', async ({ page }) => {
   await openApp(page);
   await trySample(page);
-  const full = page.getByText('Nothing leaves this browser');
-  const short = page.getByText('Local only');
-  await page.setViewportSize({ width: 800, height: 900 });
-  await expect(short).toBeVisible();
-  expect(await full.evaluate((e) => Math.round(e.getBoundingClientRect().width))).toBeLessThanOrEqual(1); // visually hidden, kept as the accessible name
-  await page.setViewportSize({ width: 1200, height: 900 });
-  await expect(full).toBeVisible();
-  expect(await short.evaluate((e) => Math.round(e.getBoundingClientRect().width))).toBe(0);
+  await expect(page.getByText('Nothing leaves this browser')).toHaveCount(0);
+  await expect(page.getByText('Local only')).toHaveCount(0);
+  await expect(page.locator('header svg.lucide-lock')).toHaveCount(0);
+  const logo = page.locator('header img');
+  for (const [width, gutter] of [[1440, 24], [800, 24], [375, 16]] as const) {
+    await page.setViewportSize({ width, height: 900 });
+    const x = await logo.evaluate((e) => Math.round(e.getBoundingClientRect().left));
+    expect(x, `logo left at ${width}px`).toBeGreaterThanOrEqual(gutter);
+  }
 });
 
 // DEV-29 (docs/ux/12-simplification-pass.md): less text, checked in a real browser.

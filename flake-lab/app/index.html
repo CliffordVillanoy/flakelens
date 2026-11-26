@@ -8,6 +8,7 @@
     <h1>Flake Lab Shop</h1>
     <ul id="cart"></ul>
     <button id="add">Add item</button>
+    <p id="status">Loading…</p>
     <p id="total"></p>
     <button id="ready" hidden>Checkout</button>
     <label>Username <input id="username" /></label>
@@ -16,6 +17,8 @@
     <footer>Flake Lab footer</footer>
     <script>
       const q = new URLSearchParams(location.search);
+      // Slow-page simulation (DEV-34): the page keeps loading for a seeded time, so the tests take realistic time.
+      setTimeout(() => (document.getElementById('status').textContent = 'Ready'), Number(q.get('slow') ?? 0));
       // Injected cause (timing): the button appears after a delay the test does not wait for.
       setTimeout(() => (document.getElementById('ready').hidden = false), Number(q.get('delay') ?? 0));
       // Injected cause (regression): odd commits ship a wrong total.

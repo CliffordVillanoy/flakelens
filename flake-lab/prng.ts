@@ -15,3 +15,8 @@ export function mulberry32(seed: number): () => number {
 // Seed per lab run, test title and retry, so a rerun of the lab reproduces every outcome.
 export const labRandom = (run: number, title: string, retry: number) =>
   mulberry32(parseInt(hashString(`${run}:${title}:${retry}`).slice(-8), 16));
+
+// Simulated duration in ms between minMs and maxMs. Seeded like the outcomes but from its own stream (the title gets
+// a suffix), so adding or changing a duration can never change a pass or fail. `skew` below 1 leans towards maxMs.
+export const labMs = (run: number, title: string, retry: number, minMs: number, maxMs: number, skew = 1) =>
+  Math.round(minMs + labRandom(run, `${title}:ms`, retry)() ** skew * (maxMs - minMs));

@@ -5,13 +5,11 @@ import { Header } from './Header';
 import { getPref } from '../lib/prefs';
 import { applyTheme, setTheme } from '../lib/theme';
 
-it('shows logo, privacy line, add files, theme and help (data loaded, board 3)', () => {
+it('shows logo, add files, theme and help, and no privacy line (data loaded, board 3)', () => {
   render(<Header mode="sample" />);
   expect(screen.getByRole('img', { name: 'FlakeLens' })).toBeInTheDocument();
-  expect(screen.getByText('Nothing leaves this browser').closest('[title]')).toHaveAttribute(
-    'title',
-    'FlakeLens makes 0 network requests unless you turn on a cloud provider.',
-  );
+  expect(screen.queryByText('Nothing leaves this browser')).toBeNull();
+  expect(document.querySelector('header svg.lucide-lock')).toBeNull();
   expect(screen.getByRole('button', { name: 'Add your files' })).toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'Switch to light theme' })).toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'Keyboard shortcuts and help' })).toBeInTheDocument();
@@ -75,13 +73,13 @@ it('an amber dot shows on Loaded data only when the last import needs a look, an
   expect(screen.getByRole('link', { name: 'Loaded data' })).toHaveAccessibleDescription('View all notices');
 });
 
-it('below 1000px the header says "Local only"; the full line stays as the accessible name and the tooltip', () => {
-  render(<Header mode="own" />);
-  const short = screen.getByText('Local only');
-  expect(short).toHaveClass('min-[1000px]:hidden');
-  expect(short).toHaveAttribute('aria-hidden', 'true');
-  expect(short).toHaveAttribute('title', 'Nothing leaves this browser');
-  expect(screen.getByText('Nothing leaves this browser')).toHaveClass('max-[999px]:sr-only');
+it('no mode shows a privacy line, a lock or "Local only" in the header (the statement stays on Start)', () => {
+  for (const mode of ['none', 'sample', 'own'] as const) {
+    const { unmount } = render(<Header mode={mode} />);
+    expect(screen.queryByText(/Nothing leaves this browser|Local only/)).toBeNull();
+    expect(document.querySelector('header svg.lucide-lock')).toBeNull();
+    unmount();
+  }
 });
 
 it('on the Loaded data page itself the link to it is not shown', () => {

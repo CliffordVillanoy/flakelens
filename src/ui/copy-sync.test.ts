@@ -26,7 +26,7 @@ const BOARD_WINS: Record<string, string> = {
 };
 
 // Doc rows for keys the app no longer has, because nothing shows them any more (DEV-29). The doc rows can go.
-const RETIRED = ['tests.legend.title', 'tests.banner.sample.seeWhy', 'data.file.meta.notImported'];
+const RETIRED = ['tests.legend.title', 'tests.banner.sample.seeWhy', 'data.file.meta.notImported', 'header.privacy', 'header.privacy.hint', 'header.privacy.short']; // the last three: DEV-34
 
 it('every row of sections 9 and 10 can be parsed', () => {
   expect(parsed.filter((p) => !('key' in p)).map((p) => p.line)).toEqual([]);
