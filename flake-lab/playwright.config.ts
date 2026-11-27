@@ -6,6 +6,8 @@ export default defineConfig({
   timeout: 90_000, // simulated slow pages: an attempt can take up to 40 s
   retries: 1,
   workers: 1,
+  // DEV-39: LAB_GIT=1 asks Playwright to record the git commit and branch in the report (off for the 12-run lab, so its fixtures stay as they are).
+  captureGitInfo: process.env.LAB_GIT ? { commit: true, diff: false } : undefined,
   reporter: 'json', // path comes from PLAYWRIGHT_JSON_OUTPUT_FILE
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },

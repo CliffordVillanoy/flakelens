@@ -39,7 +39,19 @@ export const importResultSchema = z.object({
     runIds: z.array(z.string()),
   }),
   runs: z.array(
-    z.object({ runId: z.string(), importId: z.string(), commit: z.nullable(z.string()), startedAt: z.nullable(z.string()), order: z.number() }),
+    z.object({
+      runId: z.string(),
+      importId: z.string(),
+      commit: z.nullable(z.string()),
+      reportCommit: z.optional(z.nullable(z.string())),
+      // DEV-39: optional, so a run saved before they existed still loads
+      branch: z.optional(z.nullable(z.string())),
+      browser: z.optional(z.nullable(z.string())),
+      shard: z.optional(z.nullable(z.object({ current: z.int().check(z.minimum(1)), total: z.int().check(z.minimum(1)) }))),
+      os: z.optional(z.nullable(z.string())),
+      startedAt: z.nullable(z.string()),
+      order: z.number(),
+    }),
   ),
   tests: z.array(
     z.object({ testId: z.string(), testKey: z.string(), file: z.string(), suitePath: z.array(z.string()), title: z.string(), project: z.string() }),

@@ -102,12 +102,21 @@ it('Loaded data lists the files with their result, the notices and the runs tabl
 
   const table = screen.getByRole('table', { name: 'Runs' });
   const headers = within(table).getAllByRole('columnheader').map((h) => h.textContent);
-  expect(headers).toEqual(['Run', 'Commit', 'Branch', 'Browser', 'Time', 'Tests']);
+  expect(headers).toEqual(['Run', 'Commit', 'Branch', 'Browser', 'Shard', 'Time', 'Tests']);
   const first = within(table).getAllByRole('row')[1]!;
   const cells = within(first).getAllByRole('cell').map((c) => c.textContent);
-  expect(cells[2]).toBe('—'); // branch is not read from reports in v0
-  expect(cells[3]).toBe('—'); // browser too
+  expect(cells.slice(2, 5)).toEqual(['—', 'chromium', '—']); // the lab report names its browser; it holds no branch or shard
   expect(screen.getByRole('heading', { name: 'Runs · 3' })).toBeInTheDocument();
+});
+
+it('the runs table shows branch, browser and shard from a real report, and a dash for the missing ones', async () => {
+  const real = (f: string) => new File([readFileSync(`fixtures/playwright/real/${f}.json`, 'utf8')], `${f}.json`);
+  await open('#/data', [real('shard-2-of-2'), real('no-git')]);
+  const table = await screen.findByRole('table', { name: 'Runs' });
+  const rows = within(table).getAllByRole('row').slice(1).map((r) => within(r).getAllByRole('cell').map((c) => c.textContent));
+  const byShard = Object.fromEntries(rows.map((c) => [c[4], c]));
+  expect(byShard['2 of 2']!.slice(2, 5)).toEqual(['feat/dev-39-run-metadata', 'chromium', '2 of 2']);
+  expect(byShard['—']!.slice(1, 5)).toEqual(['—', '—', 'chromium', '—']);
 });
 
 it('the runs table shows the newest 5 and "Show all N runs" shows the rest', async () => {

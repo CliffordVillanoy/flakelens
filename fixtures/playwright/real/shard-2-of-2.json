@@ -1,0 +1,365 @@
+{
+  "config": {
+    "argv": [
+      "node",
+      "/repo/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "flake-lab/playwright.config.ts",
+      "--grep",
+      "responsive",
+      "--shard=2/2"
+    ],
+    "configFile": "/repo/flake-lab/playwright.config.ts",
+    "rootDir": "/repo/flake-lab/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "gitCommit": {
+        "shortHash": "4b3c815",
+        "hash": "4b3c81526450dcf70892657b90f515037b30d45f",
+        "subject": "DEV-38: failure groups on the screens (#16)",
+        "body": "DEV-38: failure groups on the screens (#16)",
+        "author": {
+          "name": "Lab Author",
+          "email": "lab@example.invalid",
+          "time": 1795781934000
+        },
+        "committer": {
+          "name": "Lab Author",
+          "email": "lab@example.invalid",
+          "time": 1795781934000
+        },
+        "branch": "feat/dev-39-run-metadata"
+      },
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/repo/flake-lab/out/cap",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "gitCommit": {
+            "shortHash": "4b3c815",
+            "hash": "4b3c81526450dcf70892657b90f515037b30d45f",
+            "subject": "DEV-38: failure groups on the screens (#16)",
+            "body": "DEV-38: failure groups on the screens (#16)",
+            "author": {
+              "name": "Lab Author",
+              "email": "lab@example.invalid",
+              "time": 1795781934000
+            },
+            "committer": {
+              "name": "Lab Author",
+              "email": "lab@example.invalid",
+              "time": 1795781934000
+            },
+            "branch": "feat/dev-39-run-metadata"
+          },
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/repo/flake-lab/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/repo/flake-lab/out/cap",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "gitCommit": {
+            "shortHash": "4b3c815",
+            "hash": "4b3c81526450dcf70892657b90f515037b30d45f",
+            "subject": "DEV-38: failure groups on the screens (#16)",
+            "body": "DEV-38: failure groups on the screens (#16)",
+            "author": {
+              "name": "Lab Author",
+              "email": "lab@example.invalid",
+              "time": 1795781934000
+            },
+            "committer": {
+              "name": "Lab Author",
+              "email": "lab@example.invalid",
+              "time": 1795781934000
+            },
+            "branch": "feat/dev-39-run-metadata"
+          },
+          "actualWorkers": 1
+        },
+        "id": "chromium-mobile",
+        "name": "chromium-mobile",
+        "testDir": "/repo/flake-lab/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/responsive\\.spec\\.ts/"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/repo/flake-lab/out/cap",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "gitCommit": {
+            "shortHash": "4b3c815",
+            "hash": "4b3c81526450dcf70892657b90f515037b30d45f",
+            "subject": "DEV-38: failure groups on the screens (#16)",
+            "body": "DEV-38: failure groups on the screens (#16)",
+            "author": {
+              "name": "Lab Author",
+              "email": "lab@example.invalid",
+              "time": 1795781934000
+            },
+            "committer": {
+              "name": "Lab Author",
+              "email": "lab@example.invalid",
+              "time": 1795781934000
+            },
+            "branch": "feat/dev-39-run-metadata"
+          },
+          "actualWorkers": 1
+        },
+        "name": "chromium",
+        "testDir": "/repo/flake-lab/tests",
+        "snapshotDir": "/repo/flake-lab/tests",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 90000,
+        "use": {
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36",
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": false,
+          "hasTouch": false,
+          "defaultBrowserType": "chromium"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "chromium"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/repo/flake-lab/out/cap",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "gitCommit": {
+            "shortHash": "4b3c815",
+            "hash": "4b3c81526450dcf70892657b90f515037b30d45f",
+            "subject": "DEV-38: failure groups on the screens (#16)",
+            "body": "DEV-38: failure groups on the screens (#16)",
+            "author": {
+              "name": "Lab Author",
+              "email": "lab@example.invalid",
+              "time": 1795781934000
+            },
+            "committer": {
+              "name": "Lab Author",
+              "email": "lab@example.invalid",
+              "time": 1795781934000
+            },
+            "branch": "feat/dev-39-run-metadata"
+          },
+          "actualWorkers": 1
+        },
+        "name": "chromium-mobile",
+        "testDir": "/repo/flake-lab/tests",
+        "snapshotDir": "/repo/flake-lab/tests",
+        "testIgnore": [],
+        "testMatch": {},
+        "timeout": 90000,
+        "use": {
+          "userAgent": "Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Mobile Safari/537.36",
+          "viewport": {
+            "width": 393,
+            "height": 727
+          },
+          "screen": {
+            "width": 393,
+            "height": 851
+          },
+          "deviceScaleFactor": 2.75,
+          "isMobile": true,
+          "hasTouch": true,
+          "defaultBrowserType": "chromium"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "chromium-mobile"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": {
+      "current": 2,
+      "total": 2
+    },
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.65.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "responsive.spec.ts",
+      "file": "responsive.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "responsive: menu button",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-mobile",
+              "projectName": "chromium-mobile",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 6936,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('link', { name: 'Cart' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('link', { name: 'Cart' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('link', { name: 'Cart' })\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('link', { name: 'Cart' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('link', { name: 'Cart' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('link', { name: 'Cart' })\u001b[22m\n\n    at /repo/flake-lab/tests/responsive.spec.ts:15:58",
+                    "location": {
+                      "file": "/repo/flake-lab/tests/responsive.spec.ts",
+                      "column": 58,
+                      "line": 15
+                    },
+                    "snippet": " \u001b[90m 13 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${appUrl}?slow=${slow}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 14 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'#status'\u001b[39m))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Ready'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m slow \u001b[33m+\u001b[39m \u001b[35m10_000\u001b[39m })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 15 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'link'\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m'Cart'\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 16 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 17 |\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/repo/flake-lab/tests/responsive.spec.ts",
+                        "column": 58,
+                        "line": 15
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('link', { name: 'Cart' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('link', { name: 'Cart' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('link', { name: 'Cart' })\u001b[22m\n\n\n  13 |   await page.goto(`${appUrl}?slow=${slow}`);\n  14 |   await expect(page.locator('#status')).toHaveText('Ready', { timeout: slow + 10_000 });\n> 15 |   await expect(page.getByRole('link', { name: 'Cart' })).toBeVisible({ timeout: 5000 });\n     |                                                          ^\n  16 | });\n  17 |\n    at /repo/flake-lab/tests/responsive.spec.ts:15:58"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-27T12:23:57.936Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/repo/flake-lab/out/cap/responsive-responsive-menu-button-chromium-mobile/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/repo/flake-lab/tests/responsive.spec.ts",
+                    "column": 58,
+                    "line": 15
+                  }
+                },
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5930,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('link', { name: 'Cart' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('link', { name: 'Cart' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('link', { name: 'Cart' })\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('link', { name: 'Cart' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('link', { name: 'Cart' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('link', { name: 'Cart' })\u001b[22m\n\n    at /repo/flake-lab/tests/responsive.spec.ts:15:58",
+                    "location": {
+                      "file": "/repo/flake-lab/tests/responsive.spec.ts",
+                      "column": 58,
+                      "line": 15
+                    },
+                    "snippet": " \u001b[90m 13 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${appUrl}?slow=${slow}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 14 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'#status'\u001b[39m))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Ready'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m slow \u001b[33m+\u001b[39m \u001b[35m10_000\u001b[39m })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 15 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'link'\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m'Cart'\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 16 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 17 |\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/repo/flake-lab/tests/responsive.spec.ts",
+                        "column": 58,
+                        "line": 15
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('link', { name: 'Cart' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('link', { name: 'Cart' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('link', { name: 'Cart' })\u001b[22m\n\n\n  13 |   await page.goto(`${appUrl}?slow=${slow}`);\n  14 |   await expect(page.locator('#status')).toHaveText('Ready', { timeout: slow + 10_000 });\n> 15 |   await expect(page.getByRole('link', { name: 'Cart' })).toBeVisible({ timeout: 5000 });\n     |                                                          ^\n  16 | });\n  17 |\n    at /repo/flake-lab/tests/responsive.spec.ts:15:58"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 1,
+                  "startTime": "2026-11-27T12:24:05.275Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/repo/flake-lab/out/cap/responsive-responsive-menu-button-chromium-mobile-retry1/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/repo/flake-lab/tests/responsive.spec.ts",
+                    "column": 58,
+                    "line": 15
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-71158e573f732dfa539d",
+          "file": "responsive.spec.ts",
+          "line": 11,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-27T12:23:57.447Z",
+    "duration": 13882.686,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

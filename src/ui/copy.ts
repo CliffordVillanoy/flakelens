@@ -271,6 +271,8 @@ export const catalog = {
   'data.runs.col.commit': 'Commit',
   'data.runs.col.branch': 'Branch',
   'data.runs.col.browser': 'Browser',
+  'data.runs.col.shard': 'Shard', // interim (DEV-39)
+  'data.runs.shard': '{current} of {total}', // interim (DEV-39)
   'data.runs.col.time': 'Time',
   'data.runs.col.tests': 'Tests',
   'data.runs.showAll': 'Show all {count} runs',
