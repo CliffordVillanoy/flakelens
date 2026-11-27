@@ -105,9 +105,46 @@ it('Loaded data lists the files with their result, the notices and the runs tabl
   expect(headers).toEqual(['Run', 'Commit', 'Branch', 'Browser', 'Time', 'Tests']);
   const first = within(table).getAllByRole('row')[1]!;
   const cells = within(first).getAllByRole('cell').map((c) => c.textContent);
-  expect(cells[2]).toBe('—'); // branch is not read from reports in v0
-  expect(cells[3]).toBe('—'); // browser too
+  expect(cells.slice(2, 4)).toEqual(['—', 'chromium']); // the lab report names its browser; it holds no branch
   expect(screen.getByRole('heading', { name: 'Runs · 3' })).toBeInTheDocument();
+});
+
+it('no run was sharded: the table has no Shard column', async () => {
+  await open('#/data');
+  const table = await screen.findByRole('table', { name: 'Runs' });
+  expect(within(table).queryByRole('columnheader', { name: 'Shard' })).toBeNull();
+  expect(within(table).getAllByRole('row').every((r) => within(r).queryAllByRole('cell').length === 0 || within(r).getAllByRole('cell').length === 6)).toBe(true);
+});
+
+it('sample data has no sharded run: no Shard column', async () => {
+  await withData([lab('run-00.json')]);
+  window.location.hash = '#/tests';
+  render(<App />);
+  await screen.findByRole('heading', { level: 1, name: 'Tests ranked by fix priority' });
+  await act(() => useStore.getState().startSample());
+  act(() => {
+    window.location.hash = '#/data';
+  });
+  const table = await screen.findByRole('table', { name: 'Runs' });
+  expect(within(table).queryByRole('columnheader', { name: 'Shard' })).toBeNull();
+});
+
+it('one sharded run: the Shard column shows, with 1 of 2 on that run', async () => {
+  const real = (f: string) => new File([readFileSync(`fixtures/playwright/real/${f}.json`, 'utf8')], `${f}.json`);
+  await open('#/data', [real('shard-1-of-2')]);
+  const table = await screen.findByRole('table', { name: 'Runs' });
+  expect(within(table).getByRole('columnheader', { name: 'Shard' })).toBeInTheDocument();
+  expect(within(table).getAllByRole('cell').map((c) => c.textContent)).toContain('1 of 2');
+});
+
+it('the runs table shows branch, browser and shard from a real report, and a dash for the missing ones', async () => {
+  const real = (f: string) => new File([readFileSync(`fixtures/playwright/real/${f}.json`, 'utf8')], `${f}.json`);
+  await open('#/data', [real('shard-2-of-2'), real('no-git')]);
+  const table = await screen.findByRole('table', { name: 'Runs' });
+  const rows = within(table).getAllByRole('row').slice(1).map((r) => within(r).getAllByRole('cell').map((c) => c.textContent));
+  const byShard = Object.fromEntries(rows.map((c) => [c[4], c]));
+  expect(byShard['2 of 2']!.slice(2, 5)).toEqual(['feat/dev-39-run-metadata', 'chromium', '2 of 2']);
+  expect(byShard['—']!.slice(1, 5)).toEqual(['—', '—', 'chromium', '—']);
 });
 
 it('the runs table shows the newest 5 and "Show all N runs" shows the rest', async () => {

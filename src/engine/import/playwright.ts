@@ -2,6 +2,7 @@ import { DEFAULT_CONFIG, type EngineConfig } from '../config';
 import { hashString } from '../hash';
 import { failedImport } from './failed';
 import type { Attempt, AttemptStatus, Failure, ImportResult, Notice, NoticeCode, Run, Test } from '../types';
+import { readRunMetadata } from './metadata';
 import { reportSchema, resultSchema, specSchema, suiteSchema, testSchema } from './schema';
 
 export interface ParseOptions {
@@ -62,7 +63,10 @@ function parse(text: string, opts: ParseOptions): ImportResult {
   const startedAt = Number.isNaN(startMs) ? null : new Date(startMs).toISOString();
   const runId = hashString((startedAt ?? '') + SEP + body);
   const importId = hashString(opts.fileName + SEP + opts.importedAt + SEP + runId);
-  const commit = opts.commitLabel?.trim() || null;
+  // A typed label wins over the commit in the report; the report's commit is kept so removing the label gives it back.
+  const { commit: reportCommit, ...meta } = readRunMetadata(report.data.config);
+  const label = opts.commitLabel?.trim() || null;
+  const commit = label ?? reportCommit;
   const notices: Notice[] = [];
   if (commit === null) notices.push({ code: 'import.noCommit', severity: 'info', params: { file: opts.fileName } });
   // Present but unreadable: the run keeps its import order; info only, so the import stays a success.
@@ -160,7 +164,7 @@ function parse(text: string, opts: ParseOptions): ImportResult {
   const notImported = found - attempts.length;
   if (found > 0 && notImported / found > config.maxBadShare) return failedImport(opts, 'import.fail.tooBad');
 
-  const run: Run = { runId, importId, commit, startedAt, order: opts.order };
+  const run: Run = { runId, importId, commit, ...(label !== null && reportCommit !== null ? { reportCommit } : {}), ...meta, startedAt, order: opts.order };
   const partial = notImported > 0 || notices.some((n) => n.severity === 'warning');
   return {
     record: {

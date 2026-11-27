@@ -127,11 +127,12 @@ export interface RunRow {
   labelled: boolean; // a typed label, not a commit from the report
   branch: string;
   browser: string;
+  shard: string;
   time: string | null;
   tests: number;
 }
 
-/** Newest first. Branch and browser are not read from reports in v0, so they show a dash and nothing is invented. */
+/** Newest first. Branch, browser and shard come from the report; what it does not hold shows a dash and nothing is invented. */
 export function runRows(ds: Dataset): RunRow[] {
   const byRun = testsByRun(ds);
   const dash = t('wasted.none');
@@ -141,8 +142,9 @@ export function runRows(ds: Dataset): RunRow[] {
       runId: run.runId,
       commit: run.reportCommit !== undefined && run.commit ? run.commit : run.commit ? run.commit.slice(0, 7) : dash,
       labelled: run.reportCommit !== undefined,
-      branch: dash,
-      browser: dash,
+      branch: run.branch || dash,
+      browser: run.browser || dash,
+      shard: run.shard ? t('data.runs.shard', run.shard) : dash,
       time: run.startedAt,
       tests: byRun.get(run.runId)?.size ?? 0,
     }))

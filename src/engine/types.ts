@@ -40,6 +40,11 @@ export interface Run {
   importId: string;
   commit: string | null;
   reportCommit?: string | null; // set only while a label replaces the commit from the report
+  // DEV-39: read from the report when it holds them, else null. Optional so a run saved before they existed still loads.
+  branch?: string | null;
+  browser?: string | null;
+  shard?: { current: number; total: number } | null;
+  os?: string | null;
   startedAt: string | null;
   order: number;
 }

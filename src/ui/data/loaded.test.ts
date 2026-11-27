@@ -94,12 +94,34 @@ it('hostile names stay formula-safe in the CSV', () => {
   expect(csv.split('\r\n')).toHaveLength(3); // the newline in the name did not add a row
 });
 
-it('run rows: newest first, number, short commit, dashes for what v0 does not parse, tests per run', () => {
+it('run rows: newest first, number, short commit, dashes for what the report does not hold, tests per run', () => {
   const rows = runRows(loaded());
   expect(rows.map((r) => r.number)).toEqual([3, 2, 1]);
   const first = rows.find((r) => r.commit === 'c0')!;
-  expect(first).toMatchObject({ branch: '—', browser: '—', tests: 21 });
-  expect(rows.every((r) => r.branch === '—' && r.browser === '—')).toBe(true);
+  expect(first).toMatchObject({ branch: '—', browser: 'chromium', shard: '—', tests: 21 }); // the lab report names its browser, nothing else
+  expect(rows.filter((r) => r !== first).every((r) => r.branch === '—' && r.browser === '—' && r.shard === '—')).toBe(true); // reports with no config
+  expect(rows.every((r) => r.branch === '—' && r.shard === '—')).toBe(true);
+});
+
+it('run rows show branch, browser and shard from the report, the commit as 7 characters, and a dash where the report has nothing', () => {
+  const real = (f: string) => readFileSync(`fixtures/playwright/real/${f}.json`, 'utf8');
+  let ds = add(emptyDataset(), 'git.json', real('git-two-projects'), 0);
+  ds = add(ds, 'shard.json', real('shard-2-of-2'), 1);
+  ds = add(ds, 'plain.json', real('no-git'), 2);
+  const rows = runRows(ds);
+  const git = rows.find((r) => r.branch !== '—' && r.shard === '—')!;
+  const shard = rows.find((r) => r.shard !== '—')!;
+  const plain = rows.find((r) => r.branch === '—')!;
+  expect(git).toMatchObject({ branch: 'feat/dev-39-run-metadata', browser: 'chromium', shard: '—' });
+  expect(git.commit).toMatch(/^[0-9a-f]{7}$/);
+  expect(shard).toMatchObject({ shard: '2 of 2' });
+  expect(plain).toMatchObject({ commit: '—', branch: '—', browser: 'chromium', shard: '—' });
+});
+
+it('a typed label shows in full and wins over the commit in the report', () => {
+  const real = readFileSync('fixtures/playwright/real/git-two-projects.json', 'utf8');
+  const [row] = runRows(add(emptyDataset(), 'git.json', real, 0, 'release-candidate-1'));
+  expect(row).toMatchObject({ commit: 'release-candidate-1', labelled: true });
 });
 
 it('suggests a close word from test and file names for a misspelt search', () => {

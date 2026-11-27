@@ -1,0 +1,292 @@
+{
+  "config": {
+    "argv": [
+      "node",
+      "/repo/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "flake-lab/playwright.config.ts",
+      "--grep",
+      "responsive",
+      "--shard=1/2"
+    ],
+    "configFile": "/repo/flake-lab/playwright.config.ts",
+    "rootDir": "/repo/flake-lab/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "gitCommit": {
+        "shortHash": "4b3c815",
+        "hash": "4b3c81526450dcf70892657b90f515037b30d45f",
+        "subject": "DEV-38: failure groups on the screens (#16)",
+        "body": "DEV-38: failure groups on the screens (#16)",
+        "author": {
+          "name": "Lab Author",
+          "email": "lab@example.invalid",
+          "time": 1795781934000
+        },
+        "committer": {
+          "name": "Lab Author",
+          "email": "lab@example.invalid",
+          "time": 1795781934000
+        },
+        "branch": "feat/dev-39-run-metadata"
+      },
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/repo/flake-lab/out/cap",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "gitCommit": {
+            "shortHash": "4b3c815",
+            "hash": "4b3c81526450dcf70892657b90f515037b30d45f",
+            "subject": "DEV-38: failure groups on the screens (#16)",
+            "body": "DEV-38: failure groups on the screens (#16)",
+            "author": {
+              "name": "Lab Author",
+              "email": "lab@example.invalid",
+              "time": 1795781934000
+            },
+            "committer": {
+              "name": "Lab Author",
+              "email": "lab@example.invalid",
+              "time": 1795781934000
+            },
+            "branch": "feat/dev-39-run-metadata"
+          },
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/repo/flake-lab/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/repo/flake-lab/out/cap",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "gitCommit": {
+            "shortHash": "4b3c815",
+            "hash": "4b3c81526450dcf70892657b90f515037b30d45f",
+            "subject": "DEV-38: failure groups on the screens (#16)",
+            "body": "DEV-38: failure groups on the screens (#16)",
+            "author": {
+              "name": "Lab Author",
+              "email": "lab@example.invalid",
+              "time": 1795781934000
+            },
+            "committer": {
+              "name": "Lab Author",
+              "email": "lab@example.invalid",
+              "time": 1795781934000
+            },
+            "branch": "feat/dev-39-run-metadata"
+          },
+          "actualWorkers": 1
+        },
+        "id": "chromium-mobile",
+        "name": "chromium-mobile",
+        "testDir": "/repo/flake-lab/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/responsive\\.spec\\.ts/"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/repo/flake-lab/out/cap",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "gitCommit": {
+            "shortHash": "4b3c815",
+            "hash": "4b3c81526450dcf70892657b90f515037b30d45f",
+            "subject": "DEV-38: failure groups on the screens (#16)",
+            "body": "DEV-38: failure groups on the screens (#16)",
+            "author": {
+              "name": "Lab Author",
+              "email": "lab@example.invalid",
+              "time": 1795781934000
+            },
+            "committer": {
+              "name": "Lab Author",
+              "email": "lab@example.invalid",
+              "time": 1795781934000
+            },
+            "branch": "feat/dev-39-run-metadata"
+          },
+          "actualWorkers": 1
+        },
+        "name": "chromium",
+        "testDir": "/repo/flake-lab/tests",
+        "snapshotDir": "/repo/flake-lab/tests",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 90000,
+        "use": {
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36",
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": false,
+          "hasTouch": false,
+          "defaultBrowserType": "chromium"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "chromium"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/repo/flake-lab/out/cap",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "gitCommit": {
+            "shortHash": "4b3c815",
+            "hash": "4b3c81526450dcf70892657b90f515037b30d45f",
+            "subject": "DEV-38: failure groups on the screens (#16)",
+            "body": "DEV-38: failure groups on the screens (#16)",
+            "author": {
+              "name": "Lab Author",
+              "email": "lab@example.invalid",
+              "time": 1795781934000
+            },
+            "committer": {
+              "name": "Lab Author",
+              "email": "lab@example.invalid",
+              "time": 1795781934000
+            },
+            "branch": "feat/dev-39-run-metadata"
+          },
+          "actualWorkers": 1
+        },
+        "name": "chromium-mobile",
+        "testDir": "/repo/flake-lab/tests",
+        "snapshotDir": "/repo/flake-lab/tests",
+        "testIgnore": [],
+        "testMatch": {},
+        "timeout": 90000,
+        "use": {
+          "userAgent": "Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Mobile Safari/537.36",
+          "viewport": {
+            "width": 393,
+            "height": 727
+          },
+          "screen": {
+            "width": 393,
+            "height": 851
+          },
+          "deviceScaleFactor": 2.75,
+          "isMobile": true,
+          "hasTouch": true,
+          "defaultBrowserType": "chromium"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "chromium-mobile"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": {
+      "current": 1,
+      "total": 2
+    },
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.65.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "responsive.spec.ts",
+      "file": "responsive.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "responsive: menu button",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1944,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-27T12:23:54.144Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-d91537471fffc73005fa",
+          "file": "responsive.spec.ts",
+          "line": 11,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-27T12:23:53.656Z",
+    "duration": 2550.553,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

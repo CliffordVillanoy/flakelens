@@ -4,6 +4,8 @@ import { readFileSync } from 'node:fs';
 import Dexie from 'dexie';
 import { parsePlaywrightReport } from '@/engine/import/playwright';
 import { addImport, emptyDataset, setCommitLabel } from '@/engine/dataset';
+import { rankTests } from '@/engine/score/rank';
+import { scoreTests } from '@/engine/score/score';
 import { clearAll, deleteImport, loadDataset, loadStored, saveCommitLabel, saveImport, storageAvailable } from './db';
 
 const read = (f: string) => readFileSync(`fixtures/lab/${f}`, 'utf8');
@@ -137,6 +139,44 @@ it('a row saved before labels existed (v0, no commitLabel) still loads unchanged
   const { dataset, skipped } = await loadStored();
   expect(skipped).toBe(0);
   expect(dataset).toEqual(addImport(emptyDataset(), a));
+  w.close();
+});
+
+// ---- run metadata (DEV-39) ----
+const realReport = (f: string, order: number) =>
+  parsePlaywrightReport(readFileSync(`fixtures/playwright/real/${f}.json`, 'utf8'), { fileName: f, importedAt: '2026-11-21T10:00:00.000Z', order });
+
+it('a v0 row (runs without branch, browser, shard or os) still loads and scores the same', async () => {
+  const a = bare('run-00.json', 0);
+  const v0 = structuredClone(a);
+  for (const r of v0.runs) for (const k of ['branch', 'browser', 'shard', 'os'] as const) delete r[k];
+  const w = await raw([{ importId: a.record.importId, seq: 0, schemaVersion: 1, result: v0 }]);
+  const { dataset, skipped } = await loadStored();
+  expect(skipped).toBe(0);
+  expect(dataset).toEqual(addImport(emptyDataset(), v0));
+  const full = addImport(emptyDataset(), a);
+  expect(rankTests(scoreTests(dataset), dataset.tests)).toEqual(rankTests(scoreTests(full), full.tests));
+  w.close();
+});
+
+it('run metadata is saved with schemaVersion 1 and comes back on reload', async () => {
+  const a = realReport('shard-2-of-2', 0);
+  await saveImport(a);
+  const ds = await loadDataset();
+  expect(ds.runs[0]).toMatchObject({ branch: 'feat/dev-39-run-metadata', browser: 'chromium', shard: { current: 2, total: 2 }, os: null });
+  const w = await raw([]);
+  expect((await w.all()).map((r) => r.schemaVersion)).toEqual([1]);
+  w.close();
+});
+
+it('a stored row with metadata of the wrong kind is skipped, not fatal', async () => {
+  const a = realReport('git-two-projects', 0);
+  const bad = structuredClone(a);
+  (bad.runs[0] as unknown as Record<string, unknown>).shard = { current: 'x', total: -1 };
+  const w = await raw([{ importId: 'bad', seq: 0, schemaVersion: 1, result: bad }]);
+  const { dataset, skipped } = await loadStored();
+  expect(skipped).toBe(1);
+  expect(dataset).toEqual(emptyDataset());
   w.close();
 });
 
