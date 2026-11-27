@@ -491,7 +491,7 @@ export const catalog = {
   'corr.strength.weak': 'Weak',
   'corr.finding': 'Fails more on {value}: {a} of {b} attempts, against {c} of {d} elsewhere. A clue, not proof.',
   'corr.none': 'No clear link ({list}).',
-  'corr.none.item': '{value} {failed} of {attempts}',
+  'corr.none.item': '{value}: {failed} of {attempts}', // interim: the board wrote no colon, but shard values read "1 of 2"
   'corr.notEnough': 'Not enough data yet. Needs {minAttempts} attempts and {minFails} failures; you have {attempts} and {fails}.',
   'corr.notEnough.group': 'Not enough data yet. Each group needs {minGroup} attempts; the smallest has {smallest}.', // interim
   'corr.missing.browser': 'No browser in your files.', // interim

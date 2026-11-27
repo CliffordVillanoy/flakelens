@@ -113,7 +113,7 @@ it('only the strongest finding is open; the other findings are closed', () => {
 
 it('no clear link lists what was seen; not enough data gives the numbers; a missing dimension says what is missing', () => {
   const none = base('os', { status: 'none', values: [val('Linux', 6, 20), val('Windows', 3, 8)], adjustedP: 1 });
-  expect(corrBoxes([none])[0]!.text).toBe('No clear link (Linux 6 of 20, Windows 3 of 8).');
+  expect(corrBoxes([none])[0]!.text).toBe('No clear link (Linux: 6 of 20, Windows: 3 of 8).');
   const notEnough = base('shard', { status: 'notEnough', values: [val('1 of 2', 1, 5), val('2 of 2', 1, 4)], reason: { minAttempts: 10, minFails: 3, minGroup: 3, attempts: 9, fails: 2, smallestGroup: 4 } });
   expect(corrBoxes([notEnough])[0]!.text).toBe('Not enough data yet. Needs 10 attempts and 3 failures; you have 9 and 2.');
   const smallGroup = base('shard', { status: 'notEnough', values: [val('a', 5, 18), val('b', 2, 2)], reason: { minAttempts: 10, minFails: 3, minGroup: 3, attempts: 20, fails: 7, smallestGroup: 2 } });

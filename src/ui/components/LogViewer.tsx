@@ -294,7 +294,7 @@ export function LogViewer({ raw, test, run, evidence, jump }: Props) {
         tabIndex={0}
         onScroll={(e) => setScrollTop(e.currentTarget.scrollTop)}
         onKeyDown={onKey}
-        style={{ height: VIEW_H }}
+        style={{ height: Math.min(VIEW_H, Math.max(LINE_H, heights.total)) }}
         className="overflow-auto bg-background font-mono text-xs"
       >
         <div style={{ paddingTop: heights.starts[win.from], paddingBottom: heights.total - heights.starts[win.to]!, minWidth: wrap ? undefined : 'max-content' }}>{rows}</div>

@@ -48,7 +48,7 @@ it('quiet boxes: no clear link, not enough data (a calm edge) and missing data; 
     base('shard', { status: 'notEnough', reason: { minAttempts: 10, minFails: 3, minGroup: 3, attempts: 9, fails: 2, smallestGroup: 4 } }),
     base('hour'),
   ]);
-  expect(container).toHaveTextContent('No clear link (Linux 6 of 20, Windows 3 of 8).');
+  expect(container).toHaveTextContent('No clear link (Linux: 6 of 20, Windows: 3 of 8).');
   expect(container).toHaveTextContent('Not enough data yet. Needs 10 attempts and 3 failures; you have 9 and 2.');
   expect(container).toHaveTextContent('No start times in your files.');
   expect(screen.queryByText(/Strong|Moderate|Weak/)).toBeNull();
