@@ -441,6 +441,7 @@ export const catalog = {
   'full.copyName': 'Copy test name',
   'full.copyName.done': 'Test name copied', // interim
   'full.last12': 'Last 12 runs', // interim
+  'full.stats.label': 'Stats', // interim
   'full.stat.failed': '{failed} of {total}',
   'full.stat.failed.label': 'attempts failed',
   'full.stat.retry.label': 'passed on retry',
@@ -458,6 +459,7 @@ export const catalog = {
   'full.result.failedMany': 'Failed {n} times', // interim
   'log.title': 'Failure log',
   'log.run': 'Run {run}, attempt {n}',
+  'log.pick': 'Choose a run', // interim
   'log.search': 'Search the log',
   'log.matches': '{current} of {total}',
   'log.matches.capped': '{current} of {total}+', // interim

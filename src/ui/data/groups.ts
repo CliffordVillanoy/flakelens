@@ -2,7 +2,7 @@ import { DEFAULT_CONFIG } from '@/engine/config';
 import { classifyFailure } from '@/engine/cause/classify';
 import { classifyGroup, type GroupCause } from '@/engine/cause/group';
 import { groupFailures } from '@/engine/group/group';
-import type { Attempt, Dataset, FailureGroup } from '@/engine/types';
+import type { Attempt, Dataset, EvidenceLine, FailureGroup } from '@/engine/types';
 import { orderRuns } from '@/engine/view';
 import { cleanText } from '../lib/safeText';
 
@@ -138,6 +138,15 @@ export function groupForTest(ds: Dataset, testId: string): FailureGroup | null {
 export function evidenceTexts(failure: { message: string; stack: string }, group: FailureGroup, category: string): string[] {
   const r = classifyFailure({ message: failure.message, stack: failure.stack, environmentEvent: group.environmentEvent });
   return r.category === category ? r.evidence.map((e) => e.text) : [];
+}
+
+/**
+ * The quoted evidence lines of one failure text (the text the log viewer shows), with their line numbers, when the failure
+ * reads as the group's cause. Line numbers are those of the raw text; the chip and the viewer check them with verifyEvidence.
+ */
+export function evidenceLines(raw: string, group: FailureGroup, category: string): EvidenceLine[] {
+  const r = classifyFailure({ message: raw, stack: '', environmentEvent: group.environmentEvent });
+  return r.category === category ? r.evidence : [];
 }
 
 export const parseSort = (s: string | null): GroupSort => (s === 'tests' || s === 'latest' ? s : 'failures');

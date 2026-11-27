@@ -22,6 +22,7 @@ import { copyText } from '../lib/clipboard';
 import { shortcutsSheet, useShortcuts } from '../lib/shortcuts';
 import { MissingTest, TestPanel } from './TestPanel';
 import { getPref, setPref } from '../lib/prefs';
+import { takeList } from '../lib/listScroll';
 import { navigate, useRoute } from '../lib/router';
 
 export { HEADER_PX, BAND_PX } from '../components/RankedTable';
@@ -121,6 +122,17 @@ export function Tests({
     }
     lastOpen.current = route.name === 'test' ? route.testId : undefined;
   }, [route.name, route.testId]);
+
+  // Back from the full test page: the list returns to the scroll place it was left at, with focus on the row.
+  useEffect(() => {
+    const back = takeList();
+    if (!back) return;
+    const id = setTimeout(() => {
+      window.scrollTo(0, back.y);
+      [...document.querySelectorAll<HTMLElement>('[data-test-id]')].find((a) => a.dataset.testId === back.testId)?.focus({ preventScroll: true });
+    }, 0);
+    return () => clearTimeout(id);
+  }, []);
 
   // Single-key shortcuts (IA section 5): never in text fields, switchable off. "?" is a hook DEV-17 fills.
   const move = (step: 1 | -1) => {
@@ -261,6 +273,7 @@ export function Tests({
                     }
               }
               closeHref={closeHref}
+              fullHref={`#/tests/${encodeURIComponent(openRow.score.testId)}/full${listQuery}`}
             />
           ) : (
             <MissingTest listHref="#/tests" />

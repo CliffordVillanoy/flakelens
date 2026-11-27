@@ -58,3 +58,13 @@ it('parses the groups route with its search and sort in the URL (DEV-38)', () =>
   expect(r.query.get('g')).toBe('abc');
   expect(parseRoute('#/groups/x')).toMatchObject({ name: 'start' });
 });
+
+it('parses the full test page route and keeps the list filters in its query (DEV-41)', () => {
+  const r = parseRoute('#/tests/abc/full?status=flaky&q=login');
+  expect(r).toMatchObject({ name: 'full', testId: 'abc' });
+  expect(r.query.get('status')).toBe('flaky');
+  expect(r.query.get('q')).toBe('login');
+  expect(parseRoute('#/tests/a%20b%2Fc/full')).toMatchObject({ name: 'full', testId: 'a b/c' });
+  for (const h of ['#/tests/abc/ful', '#/tests/abc/full/x', '#/tests/%E0%A4%A/full', '#/data/abc/full'])
+    expect([h, parseRoute(h).name]).toEqual([h, 'start']);
+});

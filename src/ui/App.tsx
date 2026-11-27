@@ -16,6 +16,7 @@ import { Toasts } from './components/Toasts';
 // Info notices (no commit info) do not count: only a warning or an error asks the person to look.
 // Rarely opened, so it is its own chunk and the main bundle stays small.
 const LoadedData = lazy(() => import('./screens/LoadedData').then((m) => ({ default: m.LoadedData })));
+const FullTest = lazy(() => import('./screens/FullTest').then((m) => ({ default: m.FullTest })));
 const Groups = lazy(() => import('./screens/Groups').then((m) => ({ default: m.Groups })));
 const Settings = lazy(() => import('./screens/Settings').then((m) => ({ default: m.Settings })));
 
@@ -69,7 +70,7 @@ export function App() {
   if (!ready) return null;
   return (
     <div className="flex min-h-screen flex-col" {...dropAnywhere}>
-      {s.mode !== 'empty' && route.name !== 'data' && (
+      {s.mode !== 'empty' && route.name !== 'data' && route.name !== 'full' && (
         // A button, not a #link: hash links would change the route.
         <button
           type="button"
@@ -110,6 +111,10 @@ export function App() {
         ) : route.name === 'groups' ? (
           <Suspense fallback={null}>
             <Groups />
+          </Suspense>
+        ) : route.name === 'full' ? (
+          <Suspense fallback={null}>
+            <FullTest testId={route.testId!} query={route.query} />
           </Suspense>
         ) : route.name === 'data' ? (
           <Suspense fallback={null}>
