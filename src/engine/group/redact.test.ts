@@ -88,3 +88,13 @@ describe('redactSecrets timing: 15 hostile 1 MB strings, each under 500 ms', () 
     expect(performance.now() - t0).toBeLessThan(500);
   });
 });
+
+describe('redactSecrets keeps the line numbers of a log (evidence is numbered on the raw text)', () => {
+  it('never joins or splits lines, whatever stands next to a key word or Bearer', () => {
+    const text = ['Authorization: Bearer', 'FAKE-TOKEN-NOT-A-SECRET-000000', 'token', '= abc', 'password:', 'hunter2', 'x'].join('\n');
+    const out = redactSecrets(text);
+    expect(out.split('\n')).toHaveLength(7);
+    expect(out.split('\n')[6]).toBe('x');
+    expect(out).not.toContain('FAKE-TOKEN');
+  });
+});

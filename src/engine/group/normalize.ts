@@ -128,13 +128,16 @@ export function normalizeMessage(input: string): string {
 
 export const REDACTED = '[redacted]';
 
+// Same as BEARER, but never across a line break: evidence lines are numbered on the raw text, so redaction must keep the lines.
+const BEARER_SAME_LINE = /\bBearer[ \t]{1,10}[A-Za-z0-9._~+/=-]{1,2000}/gi;
+
 const SECRET_URL = /\b([a-z][a-z0-9+.-]{1,15}:\/\/)[^\s/@:'"]{1,100}:[^\s/@'"]{1,200}@/gi;
 const SECRET_KEY =
-  /\b((?:access[_-]?key|api[_-]?key|apikey|auth(?:orization)?|client[_-]?secret|passwd|password|private[_-]?key|pwd|secret|token)\b["']?\s{0,3}[:=]\s{0,3})(?!Bearer\b|\[redacted\])(?:"[^"\n]{1,500}"|'[^'\n]{1,500}'|[^\s,;&"']{1,500})/gi;
+  /\b((?:access[_-]?key|api[_-]?key|apikey|auth(?:orization)?|client[_-]?secret|passwd|password|private[_-]?key|pwd|secret|token)\b["']?[ \t]{0,3}[:=][ \t]{0,3})(?!Bearer\b|\[redacted\])(?:"[^"\n]{1,500}"|'[^'\n]{1,500}'|[^\s,;&"']{1,500})/gi;
 
 export function redactSecrets(input: string): string {
   let t = input.length > MAX_INPUT_CHARS ? input.slice(0, MAX_INPUT_CHARS) : input;
-  t = t.replace(BEARER, `Bearer ${REDACTED}`);
+  t = t.replace(BEARER_SAME_LINE, `Bearer ${REDACTED}`);
   if (t.includes('://')) t = t.replace(SECRET_URL, `$1${REDACTED}@`);
   t = t.replace(SECRET_KEY, `$1${REDACTED}`);
   return maskRuns(t, REDACTED, false);

@@ -1,6 +1,6 @@
 import { useMemo, useSyncExternalStore } from 'react';
 
-export type RouteName = 'start' | 'tests' | 'test' | 'data' | 'settings';
+export type RouteName = 'start' | 'tests' | 'test' | 'data' | 'settings' | 'groups';
 export interface Route {
   name: RouteName;
   testId?: string;
@@ -18,6 +18,7 @@ export function parseRoute(hash: string): Route {
   if (parts.length === 1 && parts[0] === 'tests') return { name: 'tests', query };
   if (parts.length === 1 && parts[0] === 'data') return { name: 'data', query };
   if (parts.length === 1 && parts[0] === 'settings') return { name: 'settings', query };
+  if (parts.length === 1 && parts[0] === 'groups') return { name: 'groups', query };
   if (parts.length === 2 && parts[0] === 'tests') {
     try {
       return { name: 'test', testId: decodeURIComponent(parts[1]!), query };
