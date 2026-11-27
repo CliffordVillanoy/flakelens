@@ -506,6 +506,7 @@ export const catalog = {
   'corr.bar': '{failed} of {attempts} · {pct}%',
   'corr.how': 'How this was worked out',
   'corr.how.fisher': "Compared {value} with the rest using Fisher's exact test. Odds ratio {or}, adjusted p {p} (corrected for {n} comparisons). Strength: {strength}.",
+  'corr.how.best': "Compared {value} with the rest using Fisher's exact test, corrected for {k} values. Odds ratio {or}, adjusted p {p} (corrected for {n} comparisons). Strength: {strength}.", // interim
   'corr.how.chi': 'Compared the values using a chi-square test. {value} against the rest: odds ratio {or}, adjusted p {p} (corrected for {n} comparisons). Strength: {strength}.', // interim
 } as const satisfies Record<string, string>;
 

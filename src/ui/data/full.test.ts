@@ -170,3 +170,8 @@ it('the missing sentence is one pattern with the thing that is missing', () => {
   expect(corrBoxes([base('hour')])[0]!.text).toBe('No start times in your files.');
   expect(corrBoxes([base('os')])[0]!.text).toBe('No operating system in your files.');
 });
+
+it('a best-of-values finding says Fisher, corrected for the number of values', () => {
+  const r = finding('browser', 0.003, { method: 'fisherBest' });
+  expect(corrBoxes([r])[0]!.how).toBe("Compared webkit with the rest using Fisher's exact test, corrected for 3 values. Odds ratio 42, adjusted p 0.003 (corrected for 3 comparisons). Strength: Strong.");
+});

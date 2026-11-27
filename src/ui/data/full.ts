@@ -1,5 +1,5 @@
 import { failureText } from '@/engine/cause/classify';
-import type { CorrelationResult, Dimension, Strength } from '@/engine/correlate/correlate';
+import type { CorrelationResult, Dimension, Method, Strength } from '@/engine/correlate/correlate';
 import type { Attempt, Dataset } from '@/engine/types';
 import { orderRuns, runHistory } from '@/engine/view';
 import { t, type CopyKey } from '../copy';
@@ -167,6 +167,7 @@ const MAX_BARS = 6;
 const STRENGTH_KEY: Record<Strength, CopyKey> = { Strong: 'corr.strength.strong', Moderate: 'corr.strength.moderate', Weak: 'corr.strength.weak' };
 const shown = (dimension: Dimension, value: string) =>
   dimension === 'hour' ? t('corr.hour.value', { hour: value }) : cleanText(value).slice(0, SHOWN_VALUE);
+const HOW: Record<Method, CopyKey> = { fisher: 'corr.how.fisher', chiSquare: 'corr.how.chi', fisherBest: 'corr.how.best' };
 const pctOf = (rate: number) => Math.round(rate * 100);
 const formatP = (p: number) => (p < 0.001 ? '<0.001' : p.toFixed(3));
 const formatOdds = (or: number) => (or >= 10 ? String(Math.round(or)) : or.toFixed(1));
@@ -223,7 +224,7 @@ export function corrBoxes(all: CorrelationResult[]): CorrBox[] {
       strength: r.strength,
       strengthLabel: t(STRENGTH_KEY[r.strength]),
       bars,
-      how: t(r.values.length === 2 ? 'corr.how.fisher' : 'corr.how.chi', params),
+      how: t(HOW[r.method ?? (r.values.length === 2 ? 'fisher' : 'chiSquare')], { ...params, k: r.values.length }),
       open: i === strongest,
     };
   });
