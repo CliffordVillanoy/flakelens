@@ -146,7 +146,14 @@ export function RunHistory({ ds, testId }: { ds: Dataset; testId: string }) {
 // "What this means" and "What to check next", split into a list; a trailing "Tip: …" sentence stays separate.
 const SHOWN_CHECKS = 2;
 
-export function StatusNote({ row }: { row: Row }) {
+export interface CauseTip {
+  category: string; // cause id
+  level: 'medium' | 'high';
+  fingerprint: string;
+  count: number;
+}
+
+export function StatusNote({ row, cause }: { row: Row; cause?: CauseTip | null }) {
   const id = useId();
   const note = noteFor(row);
   const next = t(note.next.key, note.next.params);
@@ -181,6 +188,18 @@ export function StatusNote({ row }: { row: Row }) {
           {tipAt !== -1 && <div className="mt-1.5 text-[13px] text-muted-foreground">{next.slice(tipAt + 1)}</div>}
         </details>
       )}
+      {cause && (
+        <div data-cause-tip className="mt-1 flex flex-col gap-1 border-t border-border pt-3">
+          <div className="text-sm">
+            <strong>{t('panel.cause.title', { cause: t(`cause.${cause.category}` as CopyKey) })}</strong>{' '}
+            <span className="text-muted-foreground">· {t('groups.chip.confidence', { level: t(`groups.level.${cause.level}` as CopyKey) })}</span>
+          </div>
+          <p className="m-0 text-sm">{t(`cause.${cause.category}.tip` as CopyKey)}</p>
+          <a href={`#/groups?g=${cause.fingerprint}`} className="text-sm">
+            {t('panel.cause.group', { count: cause.count })}
+          </a>
+        </div>
+      )}
     </section>
   );
 }
@@ -189,13 +208,28 @@ const dateTime = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'shor
 const MAX_LINES = 30;
 
 // DESIGN.md "Diff hunk": the failed attempt as removed lines and the retry that passed as an added line.
-export function LatestFailure({ failures }: { failures: FailureEntry[] }) {
+// A line with the quoted evidence marked: the selection fill plus a dotted underline, so it does not depend on colour.
+function Marked({ line, marks }: { line: string; marks: string[] }) {
+  const hit = marks.find((m) => m !== '' && line.includes(m));
+  if (!hit) return <>{line}</>;
+  const at = line.indexOf(hit);
+  return (
+    <>
+      {line.slice(0, at)}
+      <mark className="bg-selection text-foreground underline decoration-dotted underline-offset-2">{hit}</mark>
+      {line.slice(at + hit.length)}
+    </>
+  );
+}
+
+export function LatestFailure({ failures, highlight }: { failures: FailureEntry[]; highlight?: (f: FailureEntry) => string[] }) {
   const id = useId();
   const [index, setIndex] = useState(failures.length - 1);
   const f = failures[index];
   if (!f) return null;
   const meta = { n: f.runNumber, sha: f.commit, a: f.attempt, total: f.total };
   const lines = [...f.message.split('\n'), ...f.stack.split('\n')].filter((l) => l.trim() !== '').slice(0, MAX_LINES);
+  const marks = useMemo(() => (highlight ? highlight(f) : []), [highlight, f]);
   const secs = f.passedAfter?.durationMs == null ? null : (f.passedAfter.durationMs / 1000).toFixed(1);
   return (
     <section aria-labelledby={`${id}-title`} data-latest-failure className="flex flex-col gap-2">
@@ -220,7 +254,9 @@ export function LatestFailure({ failures }: { failures: FailureEntry[] }) {
           <div key={i} className="grid grid-cols-[36px_40px_1fr] bg-diff-del font-mono text-xs leading-5">
             <span className="bg-diff-del-gutter pr-2 pl-1.5 text-right text-fg-secondary">{i + 1}</span>
             <span className="text-center text-[11px] text-status-failing">{t('panel.failure.sign.fail')}</span>
-            <span className="pr-2 break-words whitespace-pre-wrap text-foreground">{line}</span>
+            <span className="pr-2 break-words whitespace-pre-wrap text-foreground">
+              <Marked line={line} marks={marks} />
+            </span>
           </div>
         ))}
         {f.passedAfter && secs !== null && (

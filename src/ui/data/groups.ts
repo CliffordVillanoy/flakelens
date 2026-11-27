@@ -1,4 +1,5 @@
 import { DEFAULT_CONFIG } from '@/engine/config';
+import { classifyFailure } from '@/engine/cause/classify';
 import { classifyGroup, type GroupCause } from '@/engine/cause/group';
 import { groupFailures } from '@/engine/group/group';
 import type { Attempt, Dataset, FailureGroup } from '@/engine/types';
@@ -130,4 +131,40 @@ export function groupForTest(ds: Dataset, testId: string): FailureGroup | null {
   return (best as { group: FailureGroup } | null)?.group ?? null;
 }
 
+/**
+ * The quoted lines to highlight in the hunk of one failure: what the classifier quotes from that failure, when it agrees
+ * with the group's cause. The text is already redacted (the hunk is), so the match is on the same text.
+ */
+export function evidenceTexts(failure: { message: string; stack: string }, group: FailureGroup, category: string): string[] {
+  const r = classifyFailure({ message: failure.message, stack: failure.stack, environmentEvent: group.environmentEvent });
+  return r.category === category ? r.evidence.map((e) => e.text) : [];
+}
+
 export const parseSort = (s: string | null): GroupSort => (s === 'tests' || s === 'latest' ? s : 'failures');
+
+// Splits a masked template at its tags (the four marks of PLACEHOLDER), so the screen can draw each as a small chip.
+// One pass with indexOf, so a hostile megabyte costs the same as any other text.
+const OPEN = String.fromCharCode(0x2039);
+const CLOSE = String.fromCharCode(0x203a);
+const TAGS = ['n', 'id', 'path', 'time'] as const;
+export type TemplatePart = { text: string; tag?: (typeof TAGS)[number] };
+export function splitTemplate(text: string): TemplatePart[] {
+  const parts: TemplatePart[] = [];
+  let at = 0;
+  let from = 0;
+  while (from < text.length) {
+    const open = text.indexOf(OPEN, from);
+    if (open === -1) break;
+    const close = text.indexOf(CLOSE, open + 1);
+    if (close === -1) break;
+    const name = text.slice(open + 1, close);
+    if ((TAGS as readonly string[]).includes(name)) {
+      if (open > at) parts.push({ text: text.slice(at, open) });
+      parts.push({ text: text.slice(open, close + 1), tag: name as TemplatePart['tag'] });
+      at = close + 1;
+    }
+    from = close + 1;
+  }
+  if (at < text.length) parts.push({ text: text.slice(at) });
+  return parts;
+}

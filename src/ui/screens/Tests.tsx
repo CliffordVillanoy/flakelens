@@ -13,6 +13,8 @@ import { RunLegend } from '../components/RunStrip';
 import { secondaryButton } from '../components/buttons';
 import { suggestSearch } from '../data/loaded';
 import { SampleBanner } from '../components/SampleBanner';
+import { ViewTabs } from '../components/ViewTabs';
+import { useGroupsModule } from '../lib/useGroups';
 import { StatusTabs } from '../components/StatusTabs';
 import { TestHealth } from '../components/TestHealth';
 import { ColumnsMenu, ExportMenu, FilterChips, type Density } from '../components/TableControls';
@@ -90,6 +92,10 @@ export function Tests({
   const countText = countLine(shown.length, isLabel(status) ? status : 'all', q, sort);
   const announced = useSettled(countText, ANNOUNCE_DELAY_MS);
 
+  // The group count waits for the groups code to load (its own chunk), so the tab shows it a moment after the screen.
+  const groupsModule = useGroupsModule();
+  const groupCount = useMemo(() => (groupsModule ? groupsModule.groupsView(s.dataset).cards.length : null), [groupsModule, s.dataset]);
+
   const failed = s.lastImport?.records.filter((r) => r.result === 'failed') ?? [];
 
   // Detail panel (board 4). The list's filters travel in the links, so opening a test keeps them.
@@ -159,6 +165,8 @@ export function Tests({
           onDismiss={s.dismissImport}
         />
       )}
+
+      <ViewTabs active="tests" tests={rows.length} groups={groupCount} />
 
       <TestHealth summary={summary} h={h} />
 

@@ -1,9 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { ChevronDown, ChevronUp, Copy, X } from 'lucide-react';
 import type { Dataset } from '@/engine/types';
 import { t } from '../copy';
 import { failuresFor, summaryText, wastedText, type Row } from '../data/selectors';
-import { FileHeaderBar, LatestFailure, RunHistory, ScoreDetails, StatusNote } from '../components/PanelParts';
+import { FileHeaderBar, LatestFailure, RunHistory, ScoreDetails, StatusNote, type CauseTip } from '../components/PanelParts';
+import { useGroupsModule } from '../lib/useGroups';
 import { StatusPill } from '../components/StatusPill';
 import { secondaryButton } from '../components/buttons';
 import { copyText } from '../lib/clipboard';
@@ -29,6 +30,24 @@ export function TestPanel({ row, ds, position, closeHref }: Props) {
   const passed = attempts.filter((a) => a.status === 'pass').length;
   const failed = attempts.filter((a) => a.status === 'fail').length;
   const wasted = wastedText(score);
+
+  // The likely cause of the group this test's latest failure belongs to (DEV-37). A tip only at medium or high confidence;
+  // low and unknown add nothing, and nothing is highlighted.
+  const groups = useGroupsModule();
+  const cause = useMemo(() => {
+    if (!groups || failures.length === 0) return null;
+    const group = groups.groupForTest(ds, score.testId);
+    if (!group) return null;
+    const c = groups.causeOf(ds, group);
+    if (c.category === 'unknown' || c.confidence === 'low') return null;
+    return { group, category: c.category, level: c.confidence };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [groups, ds, score.testId]);
+  const tip: CauseTip | null = cause ? { category: cause.category, level: cause.level, fingerprint: cause.group.fingerprint, count: cause.group.count } : null;
+  const highlight = useMemo(
+    () => (groups && cause ? (f: { message: string; stack: string }) => groups.evidenceTexts(f, cause.group, cause.category) : undefined),
+    [groups, cause],
+  );
 
   useEffect(() => {
     title.current?.focus({ preventScroll: true });
@@ -103,8 +122,8 @@ export function TestPanel({ row, ds, position, closeHref }: Props) {
       </div>
 
       <RunHistory ds={ds} testId={score.testId} />
-      <StatusNote row={row} />
-      {failures.length > 0 && <LatestFailure key={score.testId} failures={failures} />}
+      <StatusNote row={row} cause={tip} />
+      {failures.length > 0 && <LatestFailure key={score.testId} failures={failures} highlight={highlight} />}
       <ScoreDetails row={row} ds={ds} />
     </aside>
   );

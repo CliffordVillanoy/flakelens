@@ -1,43 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { DEFAULT_CONFIG } from '@/engine/config';
-import type { Attempt, Dataset, Failure, ImportRecord, Run, Test } from '@/engine/types';
 import { causeOf, filterGroupCards, groupForTest, groupsView, sortGroupCards } from './groups';
+import { buildGroups as build } from './groupsFixture';
 
-interface F {
-  run: number;
-  test: string;
-  message: string;
-  retry?: number;
-  stack?: string;
-}
-// Runs r0..r(n-1) from one file each ("run-0.json" ...), oldest first, with start times one day apart.
-function build(fails: F[], runCount = 8): Dataset {
-  const imports: ImportRecord[] = Array.from({ length: runCount }, (_, i) => ({
-    importId: `i${i}`,
-    fileName: `run-${i}.json`,
-    importedAt: '2026-11-20T00:00:00.000Z',
-    result: 'success',
-    counts: { found: 1, imported: 1, notImported: 0 },
-    notices: [],
-    runIds: [`r${i}`],
-  }));
-  const runs: Run[] = Array.from({ length: runCount }, (_, i) => ({
-    runId: `r${i}`,
-    importId: `i${i}`,
-    commit: `c${i}`,
-    startedAt: `2026-11-${String(10 + i).padStart(2, '0')}T10:00:00.000Z`,
-    order: i,
-  }));
-  const tests = new Map<string, Test>();
-  const attempts: Attempt[] = [];
-  const failures: Failure[] = [];
-  fails.forEach((f, i) => {
-    if (!tests.has(f.test)) tests.set(f.test, { testId: f.test, testKey: f.test, file: 'a.spec.ts', suitePath: ['checkout'], title: f.test, project: '' });
-    attempts.push({ attemptId: `a${i}`, runId: `r${f.run}`, testId: f.test, repeatIndex: 0, retryIndex: f.retry ?? 0, status: 'fail', durationMs: 1000 });
-    failures.push({ attemptId: `a${i}`, message: f.message, stack: f.stack ?? '' });
-  });
-  return { imports, runs, tests: [...tests.values()], attempts, failures };
-}
 const REFUSED = (n: number) => `page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:${40000 + n}/api/x${n}`;
 const ENV = (n: number) => `Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log: ${n}`;
 const PLAIN = (n: number) => `Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: ${n}\nReceived: ${n + 1}`;
