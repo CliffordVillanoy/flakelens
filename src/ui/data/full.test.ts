@@ -153,3 +153,20 @@ it('at most six bars are listed, the highest rates first', () => {
   expect(box.bars).toHaveLength(6);
   expect(box.bars.map((b) => b.pct)).toEqual([...box.bars.map((b) => b.pct)].sort((a, b) => b - a));
 });
+
+it('cards read Browser, Project, Shard, Operating system, Time of day; a missing Project card is left out', () => {
+  const all = ['browser', 'shard', 'os', 'hour', 'project'] as const;
+  expect(corrBoxes(all.map((d) => base(d))).map((b) => b.label)).toEqual(['Browser', 'Shard', 'Operating system', 'Time of day']);
+  const withProject = corrBoxes(all.map((d) => (d === 'project' ? base(d, { status: 'none', values: [val('a', 1, 10), val('b', 1, 10)] }) : base(d))));
+  expect(withProject.map((b) => b.label)).toEqual(['Browser', 'Project', 'Shard', 'Operating system', 'Time of day']);
+});
+
+it('a project finding names the project and says the other projects', () => {
+  const r = finding('project', 0.001, { highlightedValue: 'chromium-mobile', values: [val('chromium', 0, 10), val('chromium-mobile', 9, 10)], others: { failed: 0, attempts: 10, rate: 0 } });
+  expect(corrBoxes([r])[0]!.text).toBe('Fails more on chromium-mobile: 9 of 10 attempts, against 0 of 10 on the other projects. A clue, not proof.');
+});
+
+it('the missing sentence is one pattern with the thing that is missing', () => {
+  expect(corrBoxes([base('hour')])[0]!.text).toBe('No start times in your files.');
+  expect(corrBoxes([base('os')])[0]!.text).toBe('No operating system in your files.');
+});

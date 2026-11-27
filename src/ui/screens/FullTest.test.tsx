@@ -120,7 +120,7 @@ it('correlations: a dataset with no browser, shard, OS or start-time spread show
   expect(within(section).getByText('No browser in your files.')).toBeInTheDocument();
   expect(within(section).getByText('No shard in your files.')).toBeInTheDocument();
   expect(within(section).getByText('No operating system in your files.')).toBeInTheDocument();
-  expect(within(section).getByText('Only one project in your files.')).toBeInTheDocument();
+  expect(within(section).queryByText('Project')).toBeNull(); // one project: no comparison, so no card
   expect(section).not.toHaveTextContent(/Fails more on|Strong|Moderate|Weak/);
   expect(section.textContent).not.toMatch(/corr\.|lead/i);
 });

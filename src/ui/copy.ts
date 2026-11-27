@@ -485,20 +485,23 @@ export const catalog = {
   'corr.dim.shard': 'Shard',
   'corr.dim.os': 'Operating system',
   'corr.dim.hour': 'Time of day',
-  'corr.dim.project': 'Project', // interim
+  'corr.dim.project': 'Project', // confirmed (DEV-40)
+  'corr.others.project': 'the other projects', // interim
   'corr.strength.strong': 'Strong',
   'corr.strength.moderate': 'Moderate',
   'corr.strength.weak': 'Weak',
   'corr.finding': 'Fails more on {value}: {a} of {b} attempts, against {c} of {d} elsewhere. A clue, not proof.',
+  'corr.finding.project': 'Fails more on {value}: {a} of {b} attempts, against {c} of {d} on {others}. A clue, not proof.', // interim
   'corr.none': 'No clear link ({list}).',
   'corr.none.item': '{value}: {failed} of {attempts}', // interim: the board wrote no colon, but shard values read "1 of 2"
   'corr.notEnough': 'Not enough data yet. Needs {minAttempts} attempts and {minFails} failures; you have {attempts} and {fails}.',
   'corr.notEnough.group': 'Not enough data yet. Each group needs {minGroup} attempts; the smallest has {smallest}.', // interim
-  'corr.missing.browser': 'No browser in your files.', // interim
-  'corr.missing.shard': 'No shard in your files.', // interim
-  'corr.missing.os': 'No operating system in your files.', // interim
-  'corr.missing.hour': 'No start times in your files.',
-  'corr.missing.project': 'Only one project in your files.', // interim
+  'corr.missing': 'No {dimension} in your files.',
+  'corr.missing.browser': 'browser', // interim
+  'corr.missing.shard': 'shard', // interim
+  'corr.missing.os': 'operating system', // interim
+  'corr.missing.hour': 'start times',
+  'corr.missing.project': 'project names', // interim: fills {dimension}
   'corr.hour.value': '{hour}:00 UTC', // interim
   'corr.bar': '{failed} of {attempts} · {pct}%',
   'corr.how': 'How this was worked out',

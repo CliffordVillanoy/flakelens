@@ -173,7 +173,7 @@ const formatOdds = (or: number) => (or >= 10 ? String(Math.round(or)) : or.toFix
 
 function sentence(r: CorrelationResult): string {
   const { dimension: d } = r;
-  if (r.status === 'missing') return t(`corr.missing.${d}` as CopyKey);
+  if (r.status === 'missing') return t('corr.missing', { dimension: t(`corr.missing.${d}` as CopyKey) });
   if (r.status === 'notEnough') {
     const x = r.reason!;
     return x.attempts >= x.minAttempts && x.fails >= x.minFails
@@ -188,11 +188,17 @@ function sentence(r: CorrelationResult): string {
     return t('corr.none', { list: list.join(', ') });
   }
   const hl = r.values.find((v) => v.value === r.highlightedValue)!;
-  return t('corr.finding', { value: shown(d, hl.value), a: hl.failed, b: hl.attempts, c: r.others.failed, d: r.others.attempts });
+  const params = { value: shown(d, hl.value), a: hl.failed, b: hl.attempts, c: r.others.failed, d: r.others.attempts };
+  return d === 'project' ? t('corr.finding.project', { ...params, others: t('corr.others.project') }) : t('corr.finding', params);
 }
 
-/** The boxes of the Correlations section, one per dimension in the order the engine returns them. Missing and not-enough boxes never print numbers from the result. */
-export function corrBoxes(results: CorrelationResult[]): CorrBox[] {
+// The cards read Browser, Project, Shard, Operating system, Time of day (UI/UX). A suite with one project has no project
+// comparison to show, so that card is left out instead of saying so on almost every page.
+const CARD_ORDER: Dimension[] = ['browser', 'project', 'shard', 'os', 'hour'];
+
+/** The boxes of the Correlations section. Missing and not-enough boxes never print numbers from the result. */
+export function corrBoxes(all: CorrelationResult[]): CorrBox[] {
+  const results = all.filter((r) => !(r.dimension === 'project' && r.status === 'missing')).sort((a, b) => CARD_ORDER.indexOf(a.dimension) - CARD_ORDER.indexOf(b.dimension));
   let strongest = -1;
   results.forEach((r, i) => {
     if (r.status !== 'finding') return;
