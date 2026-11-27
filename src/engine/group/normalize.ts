@@ -46,8 +46,8 @@ const isHex = (c: number) => isDigit(c) || (c >= 65 && c <= 70) || (c >= 97 && c
 // the characters of base64, base64url and "KEY-LIKE-THIS" tokens
 const isTokenChar = (c: number) => isAlnum(c) || c === 43 || c === 47 || c === 95 || c === 61 || c === 45; // + / _ = -
 
-/** Masks long key-like runs and hex runs. One pass over the text, no regex. */
-function maskRuns(text: string): string {
+/** Masks long key-like runs (and, when asked, hex runs) with `tag`. One pass over the text, no regex. */
+function maskRuns(text: string, tag: string = PLACEHOLDER.id, hexRuns = true): string {
   const out: string[] = [];
   let copied = 0; // text before this index is already in `out`
   let i = 0;
@@ -69,9 +69,9 @@ function maskRuns(text: string): string {
       j++;
     }
     if (j - i >= LONG_TOKEN && digits && letters) {
-      out.push(text.slice(copied, i), PLACEHOLDER.id);
+      out.push(text.slice(copied, i), tag);
       copied = j;
-    } else {
+    } else if (hexRuns) {
       // hex runs inside the run, split at - _ + / =
       let k = i;
       while (k < j) {
@@ -90,7 +90,7 @@ function maskRuns(text: string): string {
         }
         // a run of only digits is a number, not a hash
         if (allHex && hexLetter && m - k >= HEX_RUN) {
-          out.push(text.slice(copied, k), PLACEHOLDER.id);
+          out.push(text.slice(copied, k), tag);
           copied = m;
         }
         k = m;
@@ -119,4 +119,23 @@ export function normalizeMessage(input: string): string {
   t = t.replace(NUMBER, PLACEHOLDER.n);
   t = t.replace(SPACE, ' ').trim();
   return t.length > MAX_NORMALISED_CHARS ? t.slice(0, MAX_NORMALISED_CHARS) : t;
+}
+
+// ---- Secrets (DEV-37 follow-up) -------------------------------------------------------------------------------------
+// Evidence lines and log text are quoted raw, so anything that shows or exports them passes through redactSecrets first.
+// It keeps the rest of the line readable. Same rules as above: input cut to MAX_INPUT_CHARS, bounded regexes, a plain loop
+// for key-like runs. verifyEvidence works on the raw text, never on this output.
+
+export const REDACTED = '[redacted]';
+
+const SECRET_URL = /\b([a-z][a-z0-9+.-]{1,15}:\/\/)[^\s/@:'"]{1,100}:[^\s/@'"]{1,200}@/gi;
+const SECRET_KEY =
+  /\b((?:access[_-]?key|api[_-]?key|apikey|auth(?:orization)?|client[_-]?secret|passwd|password|private[_-]?key|pwd|secret|token)\b["']?\s{0,3}[:=]\s{0,3})(?!Bearer\b|\[redacted\])(?:"[^"\n]{1,500}"|'[^'\n]{1,500}'|[^\s,;&"']{1,500})/gi;
+
+export function redactSecrets(input: string): string {
+  let t = input.length > MAX_INPUT_CHARS ? input.slice(0, MAX_INPUT_CHARS) : input;
+  t = t.replace(BEARER, `Bearer ${REDACTED}`);
+  if (t.includes('://')) t = t.replace(SECRET_URL, `$1${REDACTED}@`);
+  t = t.replace(SECRET_KEY, `$1${REDACTED}`);
+  return maskRuns(t, REDACTED, false);
 }

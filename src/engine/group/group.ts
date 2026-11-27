@@ -20,6 +20,7 @@ interface Bucket {
   tests: Set<string>;
   runs: Set<string>;
   perRun: Map<string, Set<string>>;
+  attemptIds: string[];
   shingles: Uint32Array; // sorted, unique
 }
 
@@ -108,10 +109,11 @@ export function groupFailures(ds: Dataset, config: EngineConfig = DEFAULT_CONFIG
     const fp = fingerprint(text);
     let b = byHash.get(fp.fingerprint);
     if (!b) {
-      b = { fp, count: 0, tests: new Set(), runs: new Set(), perRun: new Map(), shingles: new Uint32Array(0) };
+      b = { fp, count: 0, tests: new Set(), runs: new Set(), perRun: new Map(), attemptIds: [], shingles: new Uint32Array(0) };
       byHash.set(fp.fingerprint, b);
     }
     b.count++;
+    b.attemptIds.push(f.attemptId);
     b.tests.add(a.testId);
     b.runs.add(a.runId);
     const inRun = b.perRun.get(a.runId);
@@ -164,8 +166,10 @@ export function groupFailures(ds: Dataset, config: EngineConfig = DEFAULT_CONFIG
     const runs = new Set<string>();
     const perRun = new Map<string, Set<string>>();
     let count = 0;
+    const attemptIds: string[] = [];
     for (const b of list) {
       count += b.count;
+      for (const id of b.attemptIds) attemptIds.push(id);
       b.tests.forEach((t) => tests.add(t));
       b.runs.forEach((r) => runs.add(r));
       for (const [run, set] of b.perRun) {
@@ -182,6 +186,7 @@ export function groupFailures(ds: Dataset, config: EngineConfig = DEFAULT_CONFIG
       count,
       testIds: [...tests].sort(),
       runIds,
+      attemptIds,
       firstRunId: runIds[0]!,
       lastRunId: runIds[runIds.length - 1]!,
       environmentEvent: [...perRun.values()].some((set) => set.size >= config.envEventMinTests),

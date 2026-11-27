@@ -16,17 +16,17 @@ it('the lab gives 13 failure groups (14 distinct injected messages; two are the 
   expect(groups.reduce((n, g) => n + g.count, 0)).toBe(ds.failures.length);
 });
 
-it('the infrastructure event is ONE group: 4 tests, 2 runs, the same ECONNRESET message although the port differs', () => {
+it('the infrastructure event is ONE group: 5 tests, 2 runs, the same ECONNRESET message although the port differs', () => {
   const infra = groups.filter((g) => titlesOf(g).some((t) => t.startsWith('infra:')));
   expect(infra).toHaveLength(1);
   const g = infra[0]!;
-  expect(titlesOf(g)).toEqual(['infra: cart api', 'infra: login page', 'infra: profile', 'infra: search']);
+  expect(titlesOf(g)).toEqual(['infra: cart api', 'infra: checkout', 'infra: login page', 'infra: profile', 'infra: search']);
   expect(g.runIds).toHaveLength(2);
-  expect(g.count).toBe(16); // 4 tests x 2 runs x 2 attempts
+  expect(g.count).toBe(20); // 5 tests x 2 runs x 2 attempts
   expect(g.template).toContain('apiRequestContext.get: socket hang up (ECONNRESET)');
-  // 4 tests are under the starting threshold of 5, so this event is not flagged yet; at 4 it is
-  expect(g.environmentEvent).toBe(false);
-  expect(groupFailures(ds, { ...DEFAULT_CONFIG, envEventMinTests: 4 }).find((x) => x.fingerprint === g.fingerprint)!.environmentEvent).toBe(true);
+  // 5 distinct tests in one run reach the starting threshold of 5; at 6 it would not be flagged
+  expect(g.environmentEvent).toBe(true);
+  expect(groupFailures(ds, { ...DEFAULT_CONFIG, envEventMinTests: 6 }).find((x) => x.fingerprint === g.fingerprint)!.environmentEvent).toBe(false);
 });
 
 it('the other injected causes have their own groups', () => {
@@ -51,8 +51,8 @@ it('the other injected causes have their own groups', () => {
   expect(kinds.some((k) => k.join('|') === 'flaky: external call|flaky: order dependency')).toBe(true);
 });
 
-it('no group is an environment event except by threshold, and no template holds the fake token', () => {
-  expect(groups.filter((g) => g.environmentEvent)).toHaveLength(0);
+it('only the infrastructure group is an environment event, and no template holds the fake token', () => {
+  expect(groups.filter((g) => g.environmentEvent).map(titlesOf)).toEqual([['infra: cart api', 'infra: checkout', 'infra: login page', 'infra: profile', 'infra: search']]);
   for (const g of groups) {
     expect(g.template).not.toContain('FAKE-TOKEN');
     expect(g.normalized).not.toContain('FAKE-TOKEN');

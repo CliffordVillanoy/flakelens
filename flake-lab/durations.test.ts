@@ -61,6 +61,12 @@ it('the sample is the same 12 reports, and the sample folder stays under 1 MB', 
   expect(bytes).toBeLessThan(1_000_000);
 });
 
+it('the sample keeps a 5 % margin under 1 MB: code-frame snippets are trimmed from the reports', () => {
+  const bytes = readdirSync('public/sample').reduce((n, f) => n + statSync(`public/sample/${f}`).size, 0);
+  expect(bytes).toBeLessThan(950_000);
+  for (const { file } of manifest) expect(readFileSync(`fixtures/lab/${file}`, 'utf8'), file).not.toContain('"snippet"');
+});
+
 it('the README says the durations are simulated and lists the ranges', () => {
   const text = readFileSync('flake-lab/README.md', 'utf8');
   expect(text).toMatch(/simulated/i);

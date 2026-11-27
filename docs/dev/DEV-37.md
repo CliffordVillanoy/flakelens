@@ -1,6 +1,6 @@
 # DEV-37: Rule-based cause classifier
 
-**Status:** To do
+**Status:** Done locally (2026-11-27, commits `d946b8c` lab, `cf48eac` classifier and `d478ce0` follow-up (matched-only vote, `matchedShare`, `unknownShare`, `causeMinMatched` 0.5, `redactSecrets`) on `feat/dev-37-cause-classifier` from origin/main 783903b, worktree `flakelens-dev37`; 1017 unit + 51 e2e pass, verified by planning). Not pushed or merged. Lab causes: 9 of 15 right (60 %), 5 unknown, 1 wrong; likely optimistic on real data. Infra event is now 5 tests (environmentEvent true); sample trimmed to 824,777 bytes (code-frame snippets dropped).
 
 **Goal:** Each failure group gets a likely cause with quoted evidence, from rules only, no model.
 

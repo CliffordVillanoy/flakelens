@@ -160,7 +160,7 @@ test('flaky: strict locator', async ({ page }, info) => {
   await page.getByRole('button', { name: 'Add item' }).click();
 });
 
-// Infrastructure event: in runs 6 and 7 (one commit) the service behind these four tests resets every connection. All four
+// Infrastructure event: in runs 6 and 7 (one commit) the service behind these five tests resets every connection. All five
 // fail with the same message in both attempts of both runs, then pass again from run 8. Real ECONNRESET, from a local server.
 const INFRA_RUNS = [6, 7];
 for (const [title, path] of [
@@ -168,6 +168,7 @@ for (const [title, path] of [
   ['infra: search', '/search?q=shoes'],
   ['infra: cart api', '/api/cart'],
   ['infra: profile', '/api/profile'],
+  ['infra: checkout', '/api/checkout'],
 ] as const) {
   test(title, async ({ page, request }, info) => {
     const slow = STABLE_MS(info.title, info.retry);

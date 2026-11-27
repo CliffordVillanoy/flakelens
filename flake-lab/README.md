@@ -1,6 +1,6 @@
 # Flake lab
 
-A tiny static app (`app/index.html`) and 21 Playwright tests (`tests/lab.spec.ts`, `tests/responsive.spec.ts`) with known answers. Running it produces real Playwright JSON reports for the engine's tests and for the "Try sample data" button. Ground truth is in `labels.json` (internal labels).
+A tiny static app (`app/index.html`) and 22 Playwright tests (`tests/lab.spec.ts`, `tests/responsive.spec.ts`) with known answers. Running it produces real Playwright JSON reports for the engine's tests and for the "Try sample data" button. Ground truth is in `labels.json` (internal labels).
 
 ## Injected causes
 
@@ -35,12 +35,12 @@ With these values both seeded flaky tests (timing, random data) show a mixed com
 | `flaky: low memory` | The machine runs out of a resource (environment or resources) | `Error: ENOSPC: no space left on device, write` |
 | `flaky: lost update` | Two overlapping saves lose one update (concurrency) | `expect(received).toBe(expected)`, `Expected: "Total: 12"`, `Received: "Total: 11"` |
 | `flaky: strict locator` | A promotion adds a second "Add item" button (locator or UI) | `locator.click: Error: strict mode violation: getByRole('button', { name: 'Add item' }) resolved to 2 elements` |
-| `infra: login page`, `infra: search`, `infra: cart api`, `infra: profile` | Infrastructure event, see below (infrastructure) | `Error: apiRequestContext.get: socket hang up (ECONNRESET)` |
+| `infra: login page`, `infra: search`, `infra: cart api`, `infra: profile`, `infra: checkout` | Infrastructure event, see below (infrastructure) | `Error: apiRequestContext.get: socket hang up (ECONNRESET)` |
 | `responsive: menu button` | Fails only in the `chromium-mobile` project, see below (locator or UI) | `expect(locator).toBeVisible() failed`, `Locator: getByRole('link', { name: 'Cart' })`, 5 s timeout |
 
 The existing tests have causes too: `flaky: timing` is timing and waits, `flaky: random data` is time and randomness, `flaky: cross-run only` is shared state or data. Stable tests, `failing: wrong heading`, `unproven: regression` and `new: added last run` are not flakes, so their cause is `null`.
 
-**Infrastructure event.** In runs 6 and 7 (one commit) the four `infra:` tests call a local server that resets every connection, so all four fail with the same message in both attempts of both runs (the port number differs, so a classifier has to normalise it), then pass again from run 8. They are labelled `stable` with cause `infrastructure`: the failures are an event, not flakiness.
+**Infrastructure event.** In runs 6 and 7 (one commit) the five `infra:` tests call a local server that resets every connection, so all five fail with the same message in both attempts of both runs (the port number differs, so a classifier has to normalise it), then pass again from run 8. They are labelled `stable` with cause `infrastructure`: the failures are an event, not flakiness.
 
 **Two projects.** `responsive: menu button` (`tests/responsive.spec.ts`) runs in `chromium` and in `chromium-mobile` (Pixel 5 viewport). On the phone the navigation is behind the Menu button, so the check fails; on the desktop it passes. This is the fixture for DEV-40.
 

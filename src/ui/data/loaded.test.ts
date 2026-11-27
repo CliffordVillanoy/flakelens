@@ -38,7 +38,7 @@ it('file rows: counts per file, the result, and failed files listed too', () => 
     ['no-name.json', 'partial'],
     ['wrong.json', 'failed'],
   ]);
-  expect(rows[0]).toMatchObject({ runs: 1, tests: 20, notImported: 0 });
+  expect(rows[0]).toMatchObject({ runs: 1, tests: 21, notImported: 0 });
   expect(rows[1]).toMatchObject({ runs: 1, notImported: 1 });
   expect(rows[3]).toMatchObject({ runs: 0, tests: 0 });
 });
@@ -98,7 +98,7 @@ it('run rows: newest first, number, short commit, dashes for what v0 does not pa
   const rows = runRows(loaded());
   expect(rows.map((r) => r.number)).toEqual([3, 2, 1]);
   const first = rows.find((r) => r.commit === 'c0')!;
-  expect(first).toMatchObject({ branch: '—', browser: '—', tests: 20 });
+  expect(first).toMatchObject({ branch: '—', browser: '—', tests: 21 });
   expect(rows.every((r) => r.branch === '—' && r.browser === '—')).toBe(true);
 });
 

@@ -168,12 +168,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 947,
+                  "duration": 906,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:07:32.079Z",
+                  "startTime": "2026-11-26T16:39:41.354Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -202,12 +202,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 927,
+                  "duration": 907,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:07:33.101Z",
+                  "startTime": "2026-11-26T16:39:42.335Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -236,12 +236,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 892,
+                  "duration": 871,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:07:34.034Z",
+                  "startTime": "2026-11-26T16:39:43.247Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -270,12 +270,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 25656,
+                  "duration": 25360,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:07:34.931Z",
+                  "startTime": "2026-11-26T16:39:44.124Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -304,12 +304,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 38259,
+                  "duration": 38430,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:08:00.593Z",
+                  "startTime": "2026-11-26T16:40:09.492Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -346,8 +346,7 @@
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 57,
                       "line": 68
-                    },
-                    "snippet": " \u001b[90m 66 |\u001b[39m test(\u001b[32m'failing: wrong heading'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }\u001b[33m,\u001b[39m info) \u001b[33m=>\u001b[39m {\n \u001b[90m 67 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(appUrl)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 68 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'heading'\u001b[39m\u001b[33m,\u001b[39m { level\u001b[33m:\u001b[39m \u001b[35m1\u001b[39m }))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Welcome to Flake Lab'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[33mTIMEOUT_MS\u001b[39m(info\u001b[33m.\u001b[39mtitle\u001b[33m,\u001b[39m info\u001b[33m.\u001b[39mretry) })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 69 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 70 |\u001b[39m\n \u001b[90m 71 |\u001b[39m test(\u001b[32m'unproven: regression'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }\u001b[33m,\u001b[39m info) \u001b[33m=>\u001b[39m {"
+                    }
                   },
                   "errors": [
                     {
@@ -362,7 +361,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:08:38.860Z",
+                  "startTime": "2026-11-26T16:40:47.928Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -381,7 +380,7 @@
                   "workerIndex": 1,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 20428,
+                  "duration": 20441,
                   "error": {
                     "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { level: 1 })\nExpected: \u001b[32m\"\u001b[7mWelcome to \u001b[27mFlake Lab\"\u001b[39m\nReceived: \u001b[31m\"Flake Lab\u001b[7m Shop\u001b[27m\"\u001b[39m\nTimeout:  20358ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" getByRole('heading', { level: 1 }) with timeout 20358ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\u001b[2m    44 × locator resolved to <h1>Flake Lab Shop</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Flake Lab Shop\"\u001b[22m\n",
                     "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { level: 1 })\nExpected: \u001b[32m\"\u001b[7mWelcome to \u001b[27mFlake Lab\"\u001b[39m\nReceived: \u001b[31m\"Flake Lab\u001b[7m Shop\u001b[27m\"\u001b[39m\nTimeout:  20358ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" getByRole('heading', { level: 1 }) with timeout 20358ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\u001b[2m    44 × locator resolved to <h1>Flake Lab Shop</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Flake Lab Shop\"\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:68:57",
@@ -389,8 +388,7 @@
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 57,
                       "line": 68
-                    },
-                    "snippet": " \u001b[90m 66 |\u001b[39m test(\u001b[32m'failing: wrong heading'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }\u001b[33m,\u001b[39m info) \u001b[33m=>\u001b[39m {\n \u001b[90m 67 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(appUrl)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 68 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'heading'\u001b[39m\u001b[33m,\u001b[39m { level\u001b[33m:\u001b[39m \u001b[35m1\u001b[39m }))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Welcome to Flake Lab'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[33mTIMEOUT_MS\u001b[39m(info\u001b[33m.\u001b[39mtitle\u001b[33m,\u001b[39m info\u001b[33m.\u001b[39mretry) })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 69 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 70 |\u001b[39m\n \u001b[90m 71 |\u001b[39m test(\u001b[32m'unproven: regression'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }\u001b[33m,\u001b[39m info) \u001b[33m=>\u001b[39m {"
+                    }
                   },
                   "errors": [
                     {
@@ -405,7 +403,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 1,
-                  "startTime": "2026-11-26T15:08:49.555Z",
+                  "startTime": "2026-11-26T16:40:58.640Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -445,7 +443,7 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 8990,
+                  "duration": 8959,
                   "error": {
                     "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#total')\nExpected: \u001b[32m\"Total: 1\u001b[7m0\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"Total: 1\u001b[7m1\u001b[27m\"\u001b[39m\nTimeout:  5512ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" locator('#total') with timeout 5512ms\u001b[22m\n\u001b[2m  - waiting for locator('#total')\u001b[22m\n\u001b[2m    15 × locator resolved to <p id=\"total\">Total: 11</p>\u001b[22m\n\u001b[2m       - unexpected value \"Total: 11\"\u001b[22m\n",
                     "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#total')\nExpected: \u001b[32m\"Total: 1\u001b[7m0\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"Total: 1\u001b[7m1\u001b[27m\"\u001b[39m\nTimeout:  5512ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" locator('#total') with timeout 5512ms\u001b[22m\n\u001b[2m  - waiting for locator('#total')\u001b[22m\n\u001b[2m    15 × locator resolved to <p id=\"total\">Total: 11</p>\u001b[22m\n\u001b[2m       - unexpected value \"Total: 11\"\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:75:40",
@@ -453,8 +451,7 @@
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 40,
                       "line": 75
-                    },
-                    "snippet": " \u001b[90m 73 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${appUrl}?commit=${commit}&slow=${slow}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 74 |\u001b[39m   \u001b[36mawait\u001b[39m settled(page\u001b[33m,\u001b[39m slow)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 75 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'#total'\u001b[39m))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Total: 10'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m labMs(run\u001b[33m,\u001b[39m \u001b[32m`${info.title}:timeout`\u001b[39m\u001b[33m,\u001b[39m info\u001b[33m.\u001b[39mretry\u001b[33m,\u001b[39m \u001b[35m5000\u001b[39m\u001b[33m,\u001b[39m \u001b[35m12000\u001b[39m) })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 76 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 77 |\u001b[39m\n \u001b[90m 78 |\u001b[39m test(\u001b[32m'flaky: cross-run only'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }\u001b[33m,\u001b[39m info) \u001b[33m=>\u001b[39m {"
+                    }
                   },
                   "errors": [
                     {
@@ -469,7 +466,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:09:10.410Z",
+                  "startTime": "2026-11-26T16:41:19.523Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -488,7 +485,7 @@
                   "workerIndex": 3,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 17328,
+                  "duration": 17201,
                   "error": {
                     "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#total')\nExpected: \u001b[32m\"Total: 1\u001b[7m0\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"Total: 1\u001b[7m1\u001b[27m\"\u001b[39m\nTimeout:  9200ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" locator('#total') with timeout 9200ms\u001b[22m\n\u001b[2m  - waiting for locator('#total')\u001b[22m\n\u001b[2m    22 × locator resolved to <p id=\"total\">Total: 11</p>\u001b[22m\n\u001b[2m       - unexpected value \"Total: 11\"\u001b[22m\n",
                     "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#total')\nExpected: \u001b[32m\"Total: 1\u001b[7m0\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"Total: 1\u001b[7m1\u001b[27m\"\u001b[39m\nTimeout:  9200ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" locator('#total') with timeout 9200ms\u001b[22m\n\u001b[2m  - waiting for locator('#total')\u001b[22m\n\u001b[2m    22 × locator resolved to <p id=\"total\">Total: 11</p>\u001b[22m\n\u001b[2m       - unexpected value \"Total: 11\"\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:75:40",
@@ -496,8 +493,7 @@
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 40,
                       "line": 75
-                    },
-                    "snippet": " \u001b[90m 73 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${appUrl}?commit=${commit}&slow=${slow}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 74 |\u001b[39m   \u001b[36mawait\u001b[39m settled(page\u001b[33m,\u001b[39m slow)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 75 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'#total'\u001b[39m))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Total: 10'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m labMs(run\u001b[33m,\u001b[39m \u001b[32m`${info.title}:timeout`\u001b[39m\u001b[33m,\u001b[39m info\u001b[33m.\u001b[39mretry\u001b[33m,\u001b[39m \u001b[35m5000\u001b[39m\u001b[33m,\u001b[39m \u001b[35m12000\u001b[39m) })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 76 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 77 |\u001b[39m\n \u001b[90m 78 |\u001b[39m test(\u001b[32m'flaky: cross-run only'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }\u001b[33m,\u001b[39m info) \u001b[33m=>\u001b[39m {"
+                    }
                   },
                   "errors": [
                     {
@@ -512,7 +508,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 1,
-                  "startTime": "2026-11-26T15:09:19.825Z",
+                  "startTime": "2026-11-26T16:41:28.944Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -552,12 +548,12 @@
                   "workerIndex": 4,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 31081,
+                  "duration": 30810,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:09:37.603Z",
+                  "startTime": "2026-11-26T16:41:46.606Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -586,12 +582,12 @@
                   "workerIndex": 4,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 884,
+                  "duration": 868,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:10:08.758Z",
+                  "startTime": "2026-11-26T16:42:17.492Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -620,12 +616,12 @@
                   "workerIndex": 4,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 6005,
+                  "duration": 5961,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:10:09.652Z",
+                  "startTime": "2026-11-26T16:42:18.370Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -654,7 +650,7 @@
                   "workerIndex": 4,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 3943,
+                  "duration": 3951,
                   "error": {
                     "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"Order #100\u001b[7m1\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"Order #100\u001b[7m0\u001b[27m\"\u001b[39m",
                     "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"Order #100\u001b[7m1\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"Order #100\u001b[7m0\u001b[27m\"\u001b[39m\n    at /repo/flake-lab/tests/lab.spec.ts:116:52",
@@ -662,8 +658,7 @@
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 52,
                       "line": 116
-                    },
-                    "snippet": " \u001b[90m 114 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${appUrl}?order=${fails(info.title, info.retry) ? 1000 : 1001}&slow=${slow}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 115 |\u001b[39m   \u001b[36mawait\u001b[39m settled(page\u001b[33m,\u001b[39m slow)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 116 |\u001b[39m   expect(\u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'#order'\u001b[39m)\u001b[33m.\u001b[39minnerText())\u001b[33m.\u001b[39mtoBe(\u001b[32m'Order #1001'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                    \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 117 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 118 |\u001b[39m\n \u001b[90m 119 |\u001b[39m test(\u001b[32m'flaky: external call'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }\u001b[33m,\u001b[39m info) \u001b[33m=>\u001b[39m {"
+                    }
                   },
                   "errors": [
                     {
@@ -678,7 +673,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:10:15.666Z",
+                  "startTime": "2026-11-26T16:42:24.340Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -697,7 +692,7 @@
                   "workerIndex": 5,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 5527,
+                  "duration": 5475,
                   "error": {
                     "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"Order #100\u001b[7m1\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"Order #100\u001b[7m0\u001b[27m\"\u001b[39m",
                     "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"Order #100\u001b[7m1\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"Order #100\u001b[7m0\u001b[27m\"\u001b[39m\n    at /repo/flake-lab/tests/lab.spec.ts:116:52",
@@ -705,8 +700,7 @@
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 52,
                       "line": 116
-                    },
-                    "snippet": " \u001b[90m 114 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${appUrl}?order=${fails(info.title, info.retry) ? 1000 : 1001}&slow=${slow}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 115 |\u001b[39m   \u001b[36mawait\u001b[39m settled(page\u001b[33m,\u001b[39m slow)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 116 |\u001b[39m   expect(\u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'#order'\u001b[39m)\u001b[33m.\u001b[39minnerText())\u001b[33m.\u001b[39mtoBe(\u001b[32m'Order #1001'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                    \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 117 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 118 |\u001b[39m\n \u001b[90m 119 |\u001b[39m test(\u001b[32m'flaky: external call'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }\u001b[33m,\u001b[39m info) \u001b[33m=>\u001b[39m {"
+                    }
                   },
                   "errors": [
                     {
@@ -721,7 +715,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 1,
-                  "startTime": "2026-11-26T15:10:20.008Z",
+                  "startTime": "2026-11-26T16:42:28.692Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -761,7 +755,7 @@
                   "workerIndex": 6,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 4507,
+                  "duration": 4508,
                   "error": {
                     "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m503\u001b[39m",
                     "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m503\u001b[39m\n    at /repo/flake-lab/tests/lab.spec.ts:133:32",
@@ -769,8 +763,7 @@
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 32,
                       "line": 133
-                    },
-                    "snippet": " \u001b[90m 131 |\u001b[39m     )\u001b[33m;\u001b[39m\n \u001b[90m 132 |\u001b[39m     \u001b[36mconst\u001b[39m response \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'http://flake.test/api/orders'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 133 |\u001b[39m     expect(response\u001b[33m!\u001b[39m\u001b[33m.\u001b[39mstatus())\u001b[33m.\u001b[39mtoBe(\u001b[35m200\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 134 |\u001b[39m   }\n \u001b[90m 135 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 136 |\u001b[39m"
+                    }
                   },
                   "errors": [
                     {
@@ -789,7 +782,7 @@
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:10:25.979Z",
+                  "startTime": "2026-11-26T16:42:34.603Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -808,7 +801,7 @@
                   "workerIndex": 7,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 6035,
+                  "duration": 6012,
                   "error": {
                     "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:47123/api/orders\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:47123/api/orders\", waiting until \"load\"\u001b[22m\n",
                     "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:47123/api/orders\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:47123/api/orders\", waiting until \"load\"\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:127:16",
@@ -816,8 +809,7 @@
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 16,
                       "line": 127
-                    },
-                    "snippet": " \u001b[90m 125 |\u001b[39m   logRequest(\u001b[32m'http://127.0.0.1:47123/api/orders'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 126 |\u001b[39m   \u001b[36mif\u001b[39m (r \u001b[33m<\u001b[39m \u001b[35m0.25\u001b[39m) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 127 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'http://127.0.0.1:47123/api/orders'\u001b[39m)\u001b[33m;\u001b[39m \u001b[90m// real net::ERR_CONNECTION_REFUSED, nothing leaves the machine\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 128 |\u001b[39m   } \u001b[36melse\u001b[39m {\n \u001b[90m 129 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mroute(\u001b[32m'http://flake.test/**'\u001b[39m\u001b[33m,\u001b[39m (route) \u001b[33m=>\u001b[39m\n \u001b[90m 130 |\u001b[39m       route\u001b[33m.\u001b[39mfulfill({ status\u001b[33m:\u001b[39m r \u001b[33m<\u001b[39m \u001b[33mFAIL_P\u001b[39m \u001b[33m?\u001b[39m \u001b[35m503\u001b[39m \u001b[33m:\u001b[39m \u001b[35m200\u001b[39m\u001b[33m,\u001b[39m contentType\u001b[33m:\u001b[39m \u001b[32m'text/plain'\u001b[39m\u001b[33m,\u001b[39m body\u001b[33m:\u001b[39m r \u001b[33m<\u001b[39m \u001b[33mFAIL_P\u001b[39m \u001b[33m?\u001b[39m \u001b[32m'Service Unavailable'\u001b[39m \u001b[33m:\u001b[39m \u001b[32m'ok'\u001b[39m })\u001b[33m,\u001b[39m"
+                    }
                   },
                   "errors": [
                     {
@@ -836,7 +828,7 @@
                   ],
                   "stderr": [],
                   "retry": 1,
-                  "startTime": "2026-11-26T15:10:30.902Z",
+                  "startTime": "2026-11-26T16:42:39.547Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -876,12 +868,12 @@
                   "workerIndex": 8,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 5965,
+                  "duration": 5949,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:10:37.363Z",
+                  "startTime": "2026-11-26T16:42:46.013Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -910,12 +902,12 @@
                   "workerIndex": 8,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 6395,
+                  "duration": 6363,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:10:43.400Z",
+                  "startTime": "2026-11-26T16:42:52.038Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -944,12 +936,12 @@
                   "workerIndex": 8,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 4464,
+                  "duration": 4472,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:10:49.802Z",
+                  "startTime": "2026-11-26T16:42:58.407Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -978,12 +970,12 @@
                   "workerIndex": 8,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1922,
+                  "duration": 1906,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:10:54.274Z",
+                  "startTime": "2026-11-26T16:43:02.886Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -993,7 +985,7 @@
           ],
           "id": "d60a0d352cedb73bd581-155a0e2fd35eb3da1936",
           "file": "lab.spec.ts",
-          "line": 172,
+          "line": 173,
           "column": 3
         },
         {
@@ -1012,12 +1004,12 @@
                   "workerIndex": 8,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 899,
+                  "duration": 882,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:10:56.205Z",
+                  "startTime": "2026-11-26T16:43:04.799Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1027,7 +1019,7 @@
           ],
           "id": "d60a0d352cedb73bd581-2e114d3bc1af1e56533c",
           "file": "lab.spec.ts",
-          "line": 172,
+          "line": 173,
           "column": 3
         },
         {
@@ -1046,12 +1038,12 @@
                   "workerIndex": 8,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2409,
+                  "duration": 2404,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:10:57.111Z",
+                  "startTime": "2026-11-26T16:43:05.687Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1061,7 +1053,7 @@
           ],
           "id": "d60a0d352cedb73bd581-5b5cc731b11a02bb1f55",
           "file": "lab.spec.ts",
-          "line": 172,
+          "line": 173,
           "column": 3
         },
         {
@@ -1080,12 +1072,12 @@
                   "workerIndex": 8,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2420,
+                  "duration": 2414,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:10:59.527Z",
+                  "startTime": "2026-11-26T16:43:08.099Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1095,7 +1087,41 @@
           ],
           "id": "d60a0d352cedb73bd581-49baf92b908c2fb69a34",
           "file": "lab.spec.ts",
-          "line": 172,
+          "line": 173,
+          "column": 3
+        },
+        {
+          "title": "infra: checkout",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1906,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-26T16:43:10.519Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d60a0d352cedb73bd581-c9df34e552bc84a759a4",
+          "file": "lab.spec.ts",
+          "line": 173,
           "column": 3
         }
       ]
@@ -1122,12 +1148,12 @@
                   "workerIndex": 8,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2417,
+                  "duration": 2376,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:11:01.961Z",
+                  "startTime": "2026-11-26T16:43:12.440Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1145,7 +1171,7 @@
                   "workerIndex": 9,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 7469,
+                  "duration": 7425,
                   "error": {
                     "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('link', { name: 'Cart' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('link', { name: 'Cart' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('link', { name: 'Cart' })\u001b[22m\n",
                     "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('link', { name: 'Cart' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('link', { name: 'Cart' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('link', { name: 'Cart' })\u001b[22m\n\n    at /repo/flake-lab/tests/responsive.spec.ts:15:58",
@@ -1153,8 +1179,7 @@
                       "file": "/repo/flake-lab/tests/responsive.spec.ts",
                       "column": 58,
                       "line": 15
-                    },
-                    "snippet": " \u001b[90m 13 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${appUrl}?slow=${slow}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 14 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'#status'\u001b[39m))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Ready'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m slow \u001b[33m+\u001b[39m \u001b[35m10_000\u001b[39m })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 15 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'link'\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m'Cart'\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 16 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 17 |\u001b[39m"
+                    }
                   },
                   "errors": [
                     {
@@ -1169,7 +1194,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:11:04.671Z",
+                  "startTime": "2026-11-26T16:43:15.129Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -1188,7 +1213,7 @@
                   "workerIndex": 10,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 6941,
+                  "duration": 6919,
                   "error": {
                     "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('link', { name: 'Cart' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('link', { name: 'Cart' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('link', { name: 'Cart' })\u001b[22m\n",
                     "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('link', { name: 'Cart' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('link', { name: 'Cart' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('link', { name: 'Cart' })\u001b[22m\n\n    at /repo/flake-lab/tests/responsive.spec.ts:15:58",
@@ -1196,8 +1221,7 @@
                       "file": "/repo/flake-lab/tests/responsive.spec.ts",
                       "column": 58,
                       "line": 15
-                    },
-                    "snippet": " \u001b[90m 13 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${appUrl}?slow=${slow}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 14 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'#status'\u001b[39m))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Ready'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m slow \u001b[33m+\u001b[39m \u001b[35m10_000\u001b[39m })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 15 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'link'\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m'Cart'\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 16 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 17 |\u001b[39m"
+                    }
                   },
                   "errors": [
                     {
@@ -1212,7 +1236,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 1,
-                  "startTime": "2026-11-26T15:11:12.493Z",
+                  "startTime": "2026-11-26T16:43:22.922Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -1241,9 +1265,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-11-26T15:07:31.640Z",
-    "duration": 227895.57499999998,
-    "expected": 16,
+    "startTime": "2026-11-26T16:39:40.931Z",
+    "duration": 229020.156,
+    "expected": 17,
     "skipped": 0,
     "unexpected": 5,
     "flaky": 0

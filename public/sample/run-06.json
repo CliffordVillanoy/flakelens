@@ -168,12 +168,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 900,
+                  "duration": 943,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:06:40.080Z",
+                  "startTime": "2026-11-26T16:38:49.798Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -202,12 +202,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2451,
+                  "duration": 2433,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:06:41.063Z",
+                  "startTime": "2026-11-26T16:38:50.828Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -236,12 +236,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1406,
+                  "duration": 1397,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:06:43.519Z",
+                  "startTime": "2026-11-26T16:38:53.266Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -270,7 +270,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 6247,
+                  "duration": 6173,
                   "error": {
                     "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
                     "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at /repo/flake-lab/tests/lab.spec.ts:52:19",
@@ -278,8 +278,7 @@
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 19,
                       "line": 52
-                    },
-                    "snippet": " \u001b[90m 50 |\u001b[39m   \u001b[36mconst\u001b[39m visible \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'#ready'\u001b[39m)\u001b[33m.\u001b[39misVisible()\u001b[33m;\u001b[39m \u001b[90m// no auto-wait: this is the bug\u001b[39m\n \u001b[90m 51 |\u001b[39m   \u001b[36mawait\u001b[39m settled(page\u001b[33m,\u001b[39m slow)\u001b[33m;\u001b[39m \u001b[90m// the slow page keeps the attempt busy either way\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 52 |\u001b[39m   expect(visible)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 53 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 54 |\u001b[39m\n \u001b[90m 55 |\u001b[39m test(\u001b[32m'flaky: random data'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }\u001b[33m,\u001b[39m info) \u001b[33m=>\u001b[39m {"
+                    }
                   },
                   "errors": [
                     {
@@ -294,7 +293,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:06:44.932Z",
+                  "startTime": "2026-11-26T16:38:54.669Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -313,12 +312,12 @@
                   "workerIndex": 1,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 27137,
+                  "duration": 26851,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 1,
-                  "startTime": "2026-11-26T15:06:51.566Z",
+                  "startTime": "2026-11-26T16:39:01.229Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -347,12 +346,12 @@
                   "workerIndex": 1,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 21344,
+                  "duration": 21251,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:07:18.779Z",
+                  "startTime": "2026-11-26T16:39:28.155Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -381,7 +380,7 @@
                   "workerIndex": 1,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 11828,
+                  "duration": 11827,
                   "error": {
                     "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { level: 1 })\nExpected: \u001b[32m\"\u001b[7mWelcome to \u001b[27mFlake Lab\"\u001b[39m\nReceived: \u001b[31m\"Flake Lab\u001b[7m Shop\u001b[27m\"\u001b[39m\nTimeout:  11761ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" getByRole('heading', { level: 1 }) with timeout 11761ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\u001b[2m    27 × locator resolved to <h1>Flake Lab Shop</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Flake Lab Shop\"\u001b[22m\n",
                     "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { level: 1 })\nExpected: \u001b[32m\"\u001b[7mWelcome to \u001b[27mFlake Lab\"\u001b[39m\nReceived: \u001b[31m\"Flake Lab\u001b[7m Shop\u001b[27m\"\u001b[39m\nTimeout:  11761ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" getByRole('heading', { level: 1 }) with timeout 11761ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\u001b[2m    27 × locator resolved to <h1>Flake Lab Shop</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Flake Lab Shop\"\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:68:57",
@@ -389,8 +388,7 @@
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 57,
                       "line": 68
-                    },
-                    "snippet": " \u001b[90m 66 |\u001b[39m test(\u001b[32m'failing: wrong heading'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }\u001b[33m,\u001b[39m info) \u001b[33m=>\u001b[39m {\n \u001b[90m 67 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(appUrl)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 68 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'heading'\u001b[39m\u001b[33m,\u001b[39m { level\u001b[33m:\u001b[39m \u001b[35m1\u001b[39m }))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Welcome to Flake Lab'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[33mTIMEOUT_MS\u001b[39m(info\u001b[33m.\u001b[39mtitle\u001b[33m,\u001b[39m info\u001b[33m.\u001b[39mretry) })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 69 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 70 |\u001b[39m\n \u001b[90m 71 |\u001b[39m test(\u001b[32m'unproven: regression'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }\u001b[33m,\u001b[39m info) \u001b[33m=>\u001b[39m {"
+                    }
                   },
                   "errors": [
                     {
@@ -405,7 +403,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:07:40.131Z",
+                  "startTime": "2026-11-26T16:39:49.414Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -424,16 +422,15 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 7568,
+                  "duration": 7567,
                   "error": {
-                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { level: 1 })\nExpected: \u001b[32m\"\u001b[7mWelcome to \u001b[27mFlake Lab\"\u001b[39m\nReceived: \u001b[31m\"Flake Lab\u001b[7m Shop\u001b[27m\"\u001b[39m\nTimeout:  7495ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" getByRole('heading', { level: 1 }) with timeout 7495ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\u001b[2m    18 × locator resolved to <h1>Flake Lab Shop</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Flake Lab Shop\"\u001b[22m\n",
-                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { level: 1 })\nExpected: \u001b[32m\"\u001b[7mWelcome to \u001b[27mFlake Lab\"\u001b[39m\nReceived: \u001b[31m\"Flake Lab\u001b[7m Shop\u001b[27m\"\u001b[39m\nTimeout:  7495ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" getByRole('heading', { level: 1 }) with timeout 7495ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\u001b[2m    18 × locator resolved to <h1>Flake Lab Shop</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Flake Lab Shop\"\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:68:57",
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { level: 1 })\nExpected: \u001b[32m\"\u001b[7mWelcome to \u001b[27mFlake Lab\"\u001b[39m\nReceived: \u001b[31m\"Flake Lab\u001b[7m Shop\u001b[27m\"\u001b[39m\nTimeout:  7495ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" getByRole('heading', { level: 1 }) with timeout 7495ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\u001b[2m    19 × locator resolved to <h1>Flake Lab Shop</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Flake Lab Shop\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { level: 1 })\nExpected: \u001b[32m\"\u001b[7mWelcome to \u001b[27mFlake Lab\"\u001b[39m\nReceived: \u001b[31m\"Flake Lab\u001b[7m Shop\u001b[27m\"\u001b[39m\nTimeout:  7495ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" getByRole('heading', { level: 1 }) with timeout 7495ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\u001b[2m    19 × locator resolved to <h1>Flake Lab Shop</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Flake Lab Shop\"\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:68:57",
                     "location": {
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 57,
                       "line": 68
-                    },
-                    "snippet": " \u001b[90m 66 |\u001b[39m test(\u001b[32m'failing: wrong heading'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }\u001b[33m,\u001b[39m info) \u001b[33m=>\u001b[39m {\n \u001b[90m 67 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(appUrl)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 68 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'heading'\u001b[39m\u001b[33m,\u001b[39m { level\u001b[33m:\u001b[39m \u001b[35m1\u001b[39m }))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Welcome to Flake Lab'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[33mTIMEOUT_MS\u001b[39m(info\u001b[33m.\u001b[39mtitle\u001b[33m,\u001b[39m info\u001b[33m.\u001b[39mretry) })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 69 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 70 |\u001b[39m\n \u001b[90m 71 |\u001b[39m test(\u001b[32m'unproven: regression'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }\u001b[33m,\u001b[39m info) \u001b[33m=>\u001b[39m {"
+                    }
                   },
                   "errors": [
                     {
@@ -442,13 +439,13 @@
                         "column": 57,
                         "line": 68
                       },
-                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { level: 1 })\nExpected: \u001b[32m\"\u001b[7mWelcome to \u001b[27mFlake Lab\"\u001b[39m\nReceived: \u001b[31m\"Flake Lab\u001b[7m Shop\u001b[27m\"\u001b[39m\nTimeout:  7495ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" getByRole('heading', { level: 1 }) with timeout 7495ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\u001b[2m    18 × locator resolved to <h1>Flake Lab Shop</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Flake Lab Shop\"\u001b[22m\n\n\n  66 | test('failing: wrong heading', async ({ page }, info) => {\n  67 |   await page.goto(appUrl);\n> 68 |   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Welcome to Flake Lab', { timeout: TIMEOUT_MS(info.title, info.retry) });\n     |                                                         ^\n  69 | });\n  70 |\n  71 | test('unproven: regression', async ({ page }, info) => {\n    at /repo/flake-lab/tests/lab.spec.ts:68:57"
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { level: 1 })\nExpected: \u001b[32m\"\u001b[7mWelcome to \u001b[27mFlake Lab\"\u001b[39m\nReceived: \u001b[31m\"Flake Lab\u001b[7m Shop\u001b[27m\"\u001b[39m\nTimeout:  7495ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" getByRole('heading', { level: 1 }) with timeout 7495ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\u001b[2m    19 × locator resolved to <h1>Flake Lab Shop</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Flake Lab Shop\"\u001b[22m\n\n\n  66 | test('failing: wrong heading', async ({ page }, info) => {\n  67 |   await page.goto(appUrl);\n> 68 |   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Welcome to Flake Lab', { timeout: TIMEOUT_MS(info.title, info.retry) });\n     |                                                         ^\n  69 | });\n  70 |\n  71 | test('unproven: regression', async ({ page }, info) => {\n    at /repo/flake-lab/tests/lab.spec.ts:68:57"
                     }
                   ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 1,
-                  "startTime": "2026-11-26T15:07:52.329Z",
+                  "startTime": "2026-11-26T16:40:01.617Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -488,7 +485,7 @@
                   "workerIndex": 3,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 20026,
+                  "duration": 19957,
                   "error": {
                     "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#total')\nExpected: \u001b[32m\"Total: 1\u001b[7m0\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"Total: 1\u001b[7m1\u001b[27m\"\u001b[39m\nTimeout:  7917ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" locator('#total') with timeout 7917ms\u001b[22m\n\u001b[2m  - waiting for locator('#total')\u001b[22m\n\u001b[2m    19 × locator resolved to <p id=\"total\">Total: 11</p>\u001b[22m\n\u001b[2m       - unexpected value \"Total: 11\"\u001b[22m\n",
                     "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#total')\nExpected: \u001b[32m\"Total: 1\u001b[7m0\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"Total: 1\u001b[7m1\u001b[27m\"\u001b[39m\nTimeout:  7917ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" locator('#total') with timeout 7917ms\u001b[22m\n\u001b[2m  - waiting for locator('#total')\u001b[22m\n\u001b[2m    19 × locator resolved to <p id=\"total\">Total: 11</p>\u001b[22m\n\u001b[2m       - unexpected value \"Total: 11\"\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:75:40",
@@ -496,8 +493,7 @@
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 40,
                       "line": 75
-                    },
-                    "snippet": " \u001b[90m 73 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${appUrl}?commit=${commit}&slow=${slow}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 74 |\u001b[39m   \u001b[36mawait\u001b[39m settled(page\u001b[33m,\u001b[39m slow)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 75 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'#total'\u001b[39m))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Total: 10'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m labMs(run\u001b[33m,\u001b[39m \u001b[32m`${info.title}:timeout`\u001b[39m\u001b[33m,\u001b[39m info\u001b[33m.\u001b[39mretry\u001b[33m,\u001b[39m \u001b[35m5000\u001b[39m\u001b[33m,\u001b[39m \u001b[35m12000\u001b[39m) })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 76 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 77 |\u001b[39m\n \u001b[90m 78 |\u001b[39m test(\u001b[32m'flaky: cross-run only'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }\u001b[33m,\u001b[39m info) \u001b[33m=>\u001b[39m {"
+                    }
                   },
                   "errors": [
                     {
@@ -512,7 +508,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:08:00.327Z",
+                  "startTime": "2026-11-26T16:40:09.628Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -531,7 +527,7 @@
                   "workerIndex": 4,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 16445,
+                  "duration": 16416,
                   "error": {
                     "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#total')\nExpected: \u001b[32m\"Total: 1\u001b[7m0\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"Total: 1\u001b[7m1\u001b[27m\"\u001b[39m\nTimeout:  9893ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" locator('#total') with timeout 9893ms\u001b[22m\n\u001b[2m  - waiting for locator('#total')\u001b[22m\n\u001b[2m    23 × locator resolved to <p id=\"total\">Total: 11</p>\u001b[22m\n\u001b[2m       - unexpected value \"Total: 11\"\u001b[22m\n",
                     "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#total')\nExpected: \u001b[32m\"Total: 1\u001b[7m0\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"Total: 1\u001b[7m1\u001b[27m\"\u001b[39m\nTimeout:  9893ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" locator('#total') with timeout 9893ms\u001b[22m\n\u001b[2m  - waiting for locator('#total')\u001b[22m\n\u001b[2m    23 × locator resolved to <p id=\"total\">Total: 11</p>\u001b[22m\n\u001b[2m       - unexpected value \"Total: 11\"\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:75:40",
@@ -539,8 +535,7 @@
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 40,
                       "line": 75
-                    },
-                    "snippet": " \u001b[90m 73 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${appUrl}?commit=${commit}&slow=${slow}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 74 |\u001b[39m   \u001b[36mawait\u001b[39m settled(page\u001b[33m,\u001b[39m slow)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 75 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'#total'\u001b[39m))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Total: 10'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m labMs(run\u001b[33m,\u001b[39m \u001b[32m`${info.title}:timeout`\u001b[39m\u001b[33m,\u001b[39m info\u001b[33m.\u001b[39mretry\u001b[33m,\u001b[39m \u001b[35m5000\u001b[39m\u001b[33m,\u001b[39m \u001b[35m12000\u001b[39m) })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 76 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 77 |\u001b[39m\n \u001b[90m 78 |\u001b[39m test(\u001b[32m'flaky: cross-run only'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }\u001b[33m,\u001b[39m info) \u001b[33m=>\u001b[39m {"
+                    }
                   },
                   "errors": [
                     {
@@ -555,7 +550,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 1,
-                  "startTime": "2026-11-26T15:08:20.797Z",
+                  "startTime": "2026-11-26T16:40:30.026Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -595,7 +590,7 @@
                   "workerIndex": 5,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 36124,
+                  "duration": 36368,
                   "error": {
                     "message": "Error: injected cross-run failure\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m1\u001b[39m\nReceived: \u001b[31m0\u001b[39m",
                     "stack": "Error: injected cross-run failure\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m1\u001b[39m\nReceived: \u001b[31m0\u001b[39m\n    at /repo/flake-lab/tests/lab.spec.ts:83:49",
@@ -603,8 +598,7 @@
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 49,
                       "line": 83
-                    },
-                    "snippet": " \u001b[90m 81 |\u001b[39m   \u001b[36mawait\u001b[39m settled(page\u001b[33m,\u001b[39m slow)\u001b[33m;\u001b[39m\n \u001b[90m 82 |\u001b[39m   \u001b[90m// Fails both attempts on even runs and passes on odd runs: each commit (2 runs) mixes, but no run passes on retry.\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 83 |\u001b[39m   expect(run \u001b[33m%\u001b[39m \u001b[35m2\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'injected cross-run failure'\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[35m1\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 84 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 85 |\u001b[39m\n \u001b[90m 86 |\u001b[39m \u001b[36mif\u001b[39m (run \u001b[33m===\u001b[39m \u001b[35m11\u001b[39m) {"
+                    }
                   },
                   "errors": [
                     {
@@ -619,7 +613,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:08:37.678Z",
+                  "startTime": "2026-11-26T16:40:46.889Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -638,7 +632,7 @@
                   "workerIndex": 6,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 16254,
+                  "duration": 16081,
                   "error": {
                     "message": "Error: injected cross-run failure\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m1\u001b[39m\nReceived: \u001b[31m0\u001b[39m",
                     "stack": "Error: injected cross-run failure\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m1\u001b[39m\nReceived: \u001b[31m0\u001b[39m\n    at /repo/flake-lab/tests/lab.spec.ts:83:49",
@@ -646,8 +640,7 @@
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 49,
                       "line": 83
-                    },
-                    "snippet": " \u001b[90m 81 |\u001b[39m   \u001b[36mawait\u001b[39m settled(page\u001b[33m,\u001b[39m slow)\u001b[33m;\u001b[39m\n \u001b[90m 82 |\u001b[39m   \u001b[90m// Fails both attempts on even runs and passes on odd runs: each commit (2 runs) mixes, but no run passes on retry.\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 83 |\u001b[39m   expect(run \u001b[33m%\u001b[39m \u001b[35m2\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'injected cross-run failure'\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[35m1\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 84 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 85 |\u001b[39m\n \u001b[90m 86 |\u001b[39m \u001b[36mif\u001b[39m (run \u001b[33m===\u001b[39m \u001b[35m11\u001b[39m) {"
+                    }
                   },
                   "errors": [
                     {
@@ -662,7 +655,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 1,
-                  "startTime": "2026-11-26T15:09:14.217Z",
+                  "startTime": "2026-11-26T16:41:23.695Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -702,7 +695,7 @@
                   "workerIndex": 7,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 5513,
+                  "duration": 5490,
                   "error": {
                     "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m1\u001b[39m",
                     "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m1\u001b[39m\n    at /repo/flake-lab/tests/lab.spec.ts:108:50",
@@ -710,8 +703,7 @@
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 50,
                       "line": 108
-                    },
-                    "snippet": " \u001b[90m 106 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${appUrl}?leftover=${fails(info.title, info.retry) ? 1 : 0}&slow=${slow}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 107 |\u001b[39m   \u001b[36mawait\u001b[39m settled(page\u001b[33m,\u001b[39m slow)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 108 |\u001b[39m   expect(\u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'#cart li'\u001b[39m)\u001b[33m.\u001b[39mcount())\u001b[33m.\u001b[39mtoBe(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 109 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 110 |\u001b[39m\n \u001b[90m 111 |\u001b[39m test(\u001b[32m'flaky: stale data'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }\u001b[33m,\u001b[39m info) \u001b[33m=>\u001b[39m {"
+                    }
                   },
                   "errors": [
                     {
@@ -726,7 +718,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:09:30.922Z",
+                  "startTime": "2026-11-26T16:41:40.212Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -745,7 +737,7 @@
                   "workerIndex": 8,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 3429,
+                  "duration": 3477,
                   "error": {
                     "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m1\u001b[39m",
                     "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m1\u001b[39m\n    at /repo/flake-lab/tests/lab.spec.ts:108:50",
@@ -753,8 +745,7 @@
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 50,
                       "line": 108
-                    },
-                    "snippet": " \u001b[90m 106 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${appUrl}?leftover=${fails(info.title, info.retry) ? 1 : 0}&slow=${slow}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 107 |\u001b[39m   \u001b[36mawait\u001b[39m settled(page\u001b[33m,\u001b[39m slow)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 108 |\u001b[39m   expect(\u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'#cart li'\u001b[39m)\u001b[33m.\u001b[39mcount())\u001b[33m.\u001b[39mtoBe(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 109 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 110 |\u001b[39m\n \u001b[90m 111 |\u001b[39m test(\u001b[32m'flaky: stale data'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }\u001b[33m,\u001b[39m info) \u001b[33m=>\u001b[39m {"
+                    }
                   },
                   "errors": [
                     {
@@ -769,7 +760,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 1,
-                  "startTime": "2026-11-26T15:09:36.848Z",
+                  "startTime": "2026-11-26T16:41:46.136Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -809,12 +800,12 @@
                   "workerIndex": 9,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 5530,
+                  "duration": 5420,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:09:40.725Z",
+                  "startTime": "2026-11-26T16:41:50.049Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -843,7 +834,7 @@
                   "workerIndex": 9,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 3993,
+                  "duration": 3954,
                   "errors": [],
                   "stdout": [
                     {
@@ -852,7 +843,7 @@
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:09:46.331Z",
+                  "startTime": "2026-11-26T16:41:55.546Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -881,7 +872,7 @@
                   "workerIndex": 9,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 6023,
+                  "duration": 5956,
                   "error": {
                     "message": "Error: ENOSPC: no space left on device, write",
                     "stack": "Error: ENOSPC: no space left on device, write\n    at Object.fn (/repo/flake-lab/lib/inject.ts:15:27)\n    at Internals.inst._zod.check (/repo/node_modules/zod/v4/core/schemas.js:2614:23)\n    at runChecks (/repo/node_modules/zod/v4/core/schemas.js:51:35)\n    at Internals.inst._zod.run (/repo/node_modules/zod/v4/core/schemas.js:118:20)\n    at Module.fn (/repo/node_modules/zod/v4/core/parse.js:11:36)\n    at ZodString.parse (/repo/node_modules/zod/v4/classic/schemas.js:135:22)\n    at failDiskFull (/repo/flake-lab/lib/inject.ts:17:5)\n    at /repo/flake-lab/tests/lab.spec.ts:142:38",
@@ -889,8 +880,7 @@
                       "file": "/repo/flake-lab/lib/inject.ts",
                       "column": 27,
                       "line": 15
-                    },
-                    "snippet": "\u001b[90m   at \u001b[39m..\\lib\\inject.ts:15\n\n \u001b[90m 13 |\u001b[39m   z\u001b[33m.\u001b[39mstring()\u001b[33m.\u001b[39mcheck(\n \u001b[90m 14 |\u001b[39m     z\u001b[33m.\u001b[39mrefine(() \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 15 |\u001b[39m       \u001b[36mthrow\u001b[39m \u001b[33mObject\u001b[39m\u001b[33m.\u001b[39massign(\u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m'ENOSPC: no space left on device, write'\u001b[39m)\u001b[33m,\u001b[39m { code\u001b[33m:\u001b[39m \u001b[32m'ENOSPC'\u001b[39m\u001b[33m,\u001b[39m errno\u001b[33m:\u001b[39m \u001b[33m-\u001b[39m\u001b[35m28\u001b[39m\u001b[33m,\u001b[39m syscall\u001b[33m:\u001b[39m \u001b[32m'write'\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 16 |\u001b[39m     })\u001b[33m,\u001b[39m\n \u001b[90m 17 |\u001b[39m   )\u001b[33m.\u001b[39mparse(\u001b[32m'payload'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m   \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m'unreachable'\u001b[39m)\u001b[33m;\u001b[39m"
+                    }
                   },
                   "errors": [
                     {
@@ -905,7 +895,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:09:50.331Z",
+                  "startTime": "2026-11-26T16:41:59.509Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -924,12 +914,12 @@
                   "workerIndex": 10,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 6040,
+                  "duration": 5962,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 1,
-                  "startTime": "2026-11-26T15:09:56.722Z",
+                  "startTime": "2026-11-26T16:42:05.867Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -958,12 +948,12 @@
                   "workerIndex": 10,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 5892,
+                  "duration": 5854,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:10:02.834Z",
+                  "startTime": "2026-11-26T16:42:11.903Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -992,12 +982,12 @@
                   "workerIndex": 10,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 5002,
+                  "duration": 4931,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:10:08.734Z",
+                  "startTime": "2026-11-26T16:42:17.767Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1026,31 +1016,30 @@
                   "workerIndex": 10,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 2450,
+                  "duration": 2431,
                   "error": {
-                    "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55475/login\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n",
-                    "stack": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55475/login\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:179:23",
+                    "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55793/login\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n",
+                    "stack": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55793/login\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:180:23",
                     "location": {
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 23,
-                      "line": 179
-                    },
-                    "snippet": " \u001b[90m 177 |\u001b[39m       \u001b[36mconst\u001b[39m server \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m resettingServer()\u001b[33m;\u001b[39m\n \u001b[90m 178 |\u001b[39m       \u001b[36mtry\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 179 |\u001b[39m         \u001b[36mawait\u001b[39m request\u001b[33m.\u001b[39mget(\u001b[32m`${server.url}${path}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 180 |\u001b[39m       } \u001b[36mfinally\u001b[39m {\n \u001b[90m 181 |\u001b[39m         server\u001b[33m.\u001b[39mclose()\u001b[33m;\u001b[39m\n \u001b[90m 182 |\u001b[39m       }"
+                      "line": 180
+                    }
                   },
                   "errors": [
                     {
                       "location": {
                         "file": "/repo/flake-lab/tests/lab.spec.ts",
                         "column": 23,
-                        "line": 179
+                        "line": 180
                       },
-                      "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55475/login\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n\n  177 |       const server = await resettingServer();\n  178 |       try {\n> 179 |         await request.get(`${server.url}${path}`);\n      |                       ^\n  180 |       } finally {\n  181 |         server.close();\n  182 |       }\n    at /repo/flake-lab/tests/lab.spec.ts:179:23"
+                      "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55793/login\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n\n  178 |       const server = await resettingServer();\n  179 |       try {\n> 180 |         await request.get(`${server.url}${path}`);\n      |                       ^\n  181 |       } finally {\n  182 |         server.close();\n  183 |       }\n    at /repo/flake-lab/tests/lab.spec.ts:180:23"
                     }
                   ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:10:13.743Z",
+                  "startTime": "2026-11-26T16:42:22.705Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -1062,38 +1051,37 @@
                   "errorLocation": {
                     "file": "/repo/flake-lab/tests/lab.spec.ts",
                     "column": 23,
-                    "line": 179
+                    "line": 180
                   }
                 },
                 {
                   "workerIndex": 11,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 2458,
+                  "duration": 2467,
                   "error": {
-                    "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55479/login\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n",
-                    "stack": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55479/login\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:179:23",
+                    "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55797/login\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n",
+                    "stack": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55797/login\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:180:23",
                     "location": {
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 23,
-                      "line": 179
-                    },
-                    "snippet": " \u001b[90m 177 |\u001b[39m       \u001b[36mconst\u001b[39m server \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m resettingServer()\u001b[33m;\u001b[39m\n \u001b[90m 178 |\u001b[39m       \u001b[36mtry\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 179 |\u001b[39m         \u001b[36mawait\u001b[39m request\u001b[33m.\u001b[39mget(\u001b[32m`${server.url}${path}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 180 |\u001b[39m       } \u001b[36mfinally\u001b[39m {\n \u001b[90m 181 |\u001b[39m         server\u001b[33m.\u001b[39mclose()\u001b[33m;\u001b[39m\n \u001b[90m 182 |\u001b[39m       }"
+                      "line": 180
+                    }
                   },
                   "errors": [
                     {
                       "location": {
                         "file": "/repo/flake-lab/tests/lab.spec.ts",
                         "column": 23,
-                        "line": 179
+                        "line": 180
                       },
-                      "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55479/login\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n\n  177 |       const server = await resettingServer();\n  178 |       try {\n> 179 |         await request.get(`${server.url}${path}`);\n      |                       ^\n  180 |       } finally {\n  181 |         server.close();\n  182 |       }\n    at /repo/flake-lab/tests/lab.spec.ts:179:23"
+                      "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55797/login\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n\n  178 |       const server = await resettingServer();\n  179 |       try {\n> 180 |         await request.get(`${server.url}${path}`);\n      |                       ^\n  181 |       } finally {\n  182 |         server.close();\n  183 |       }\n    at /repo/flake-lab/tests/lab.spec.ts:180:23"
                     }
                   ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 1,
-                  "startTime": "2026-11-26T15:10:16.564Z",
+                  "startTime": "2026-11-26T16:42:25.526Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -1105,7 +1093,7 @@
                   "errorLocation": {
                     "file": "/repo/flake-lab/tests/lab.spec.ts",
                     "column": 23,
-                    "line": 179
+                    "line": 180
                   }
                 }
               ],
@@ -1114,7 +1102,7 @@
           ],
           "id": "d60a0d352cedb73bd581-155a0e2fd35eb3da1936",
           "file": "lab.spec.ts",
-          "line": 172,
+          "line": 173,
           "column": 3
         },
         {
@@ -1133,31 +1121,30 @@
                   "workerIndex": 12,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 1465,
+                  "duration": 1425,
                   "error": {
-                    "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55481/search?q=shoes\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n",
-                    "stack": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55481/search?q=shoes\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:179:23",
+                    "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55801/search?q=shoes\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n",
+                    "stack": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55801/search?q=shoes\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:180:23",
                     "location": {
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 23,
-                      "line": 179
-                    },
-                    "snippet": " \u001b[90m 177 |\u001b[39m       \u001b[36mconst\u001b[39m server \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m resettingServer()\u001b[33m;\u001b[39m\n \u001b[90m 178 |\u001b[39m       \u001b[36mtry\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 179 |\u001b[39m         \u001b[36mawait\u001b[39m request\u001b[33m.\u001b[39mget(\u001b[32m`${server.url}${path}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 180 |\u001b[39m       } \u001b[36mfinally\u001b[39m {\n \u001b[90m 181 |\u001b[39m         server\u001b[33m.\u001b[39mclose()\u001b[33m;\u001b[39m\n \u001b[90m 182 |\u001b[39m       }"
+                      "line": 180
+                    }
                   },
                   "errors": [
                     {
                       "location": {
                         "file": "/repo/flake-lab/tests/lab.spec.ts",
                         "column": 23,
-                        "line": 179
+                        "line": 180
                       },
-                      "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55481/search?q=shoes\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n\n  177 |       const server = await resettingServer();\n  178 |       try {\n> 179 |         await request.get(`${server.url}${path}`);\n      |                       ^\n  180 |       } finally {\n  181 |         server.close();\n  182 |       }\n    at /repo/flake-lab/tests/lab.spec.ts:179:23"
+                      "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55801/search?q=shoes\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n\n  178 |       const server = await resettingServer();\n  179 |       try {\n> 180 |         await request.get(`${server.url}${path}`);\n      |                       ^\n  181 |       } finally {\n  182 |         server.close();\n  183 |       }\n    at /repo/flake-lab/tests/lab.spec.ts:180:23"
                     }
                   ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:10:19.473Z",
+                  "startTime": "2026-11-26T16:42:28.425Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -1169,7 +1156,7 @@
                   "errorLocation": {
                     "file": "/repo/flake-lab/tests/lab.spec.ts",
                     "column": 23,
-                    "line": 179
+                    "line": 180
                   }
                 },
                 {
@@ -1178,29 +1165,28 @@
                   "status": "failed",
                   "duration": 2462,
                   "error": {
-                    "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55483/search?q=shoes\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n",
-                    "stack": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55483/search?q=shoes\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:179:23",
+                    "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55805/search?q=shoes\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n",
+                    "stack": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55805/search?q=shoes\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:180:23",
                     "location": {
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 23,
-                      "line": 179
-                    },
-                    "snippet": " \u001b[90m 177 |\u001b[39m       \u001b[36mconst\u001b[39m server \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m resettingServer()\u001b[33m;\u001b[39m\n \u001b[90m 178 |\u001b[39m       \u001b[36mtry\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 179 |\u001b[39m         \u001b[36mawait\u001b[39m request\u001b[33m.\u001b[39mget(\u001b[32m`${server.url}${path}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 180 |\u001b[39m       } \u001b[36mfinally\u001b[39m {\n \u001b[90m 181 |\u001b[39m         server\u001b[33m.\u001b[39mclose()\u001b[33m;\u001b[39m\n \u001b[90m 182 |\u001b[39m       }"
+                      "line": 180
+                    }
                   },
                   "errors": [
                     {
                       "location": {
                         "file": "/repo/flake-lab/tests/lab.spec.ts",
                         "column": 23,
-                        "line": 179
+                        "line": 180
                       },
-                      "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55483/search?q=shoes\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n\n  177 |       const server = await resettingServer();\n  178 |       try {\n> 179 |         await request.get(`${server.url}${path}`);\n      |                       ^\n  180 |       } finally {\n  181 |         server.close();\n  182 |       }\n    at /repo/flake-lab/tests/lab.spec.ts:179:23"
+                      "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55805/search?q=shoes\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n\n  178 |       const server = await resettingServer();\n  179 |       try {\n> 180 |         await request.get(`${server.url}${path}`);\n      |                       ^\n  181 |       } finally {\n  182 |         server.close();\n  183 |       }\n    at /repo/flake-lab/tests/lab.spec.ts:180:23"
                     }
                   ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 1,
-                  "startTime": "2026-11-26T15:10:21.348Z",
+                  "startTime": "2026-11-26T16:42:30.333Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -1212,7 +1198,7 @@
                   "errorLocation": {
                     "file": "/repo/flake-lab/tests/lab.spec.ts",
                     "column": 23,
-                    "line": 179
+                    "line": 180
                   }
                 }
               ],
@@ -1221,7 +1207,7 @@
           ],
           "id": "d60a0d352cedb73bd581-2e114d3bc1af1e56533c",
           "file": "lab.spec.ts",
-          "line": 172,
+          "line": 173,
           "column": 3
         },
         {
@@ -1240,31 +1226,30 @@
                   "workerIndex": 14,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 1924,
+                  "duration": 1955,
                   "error": {
-                    "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55485/api/cart\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n",
-                    "stack": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55485/api/cart\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:179:23",
+                    "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55807/api/cart\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n",
+                    "stack": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55807/api/cart\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:180:23",
                     "location": {
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 23,
-                      "line": 179
-                    },
-                    "snippet": " \u001b[90m 177 |\u001b[39m       \u001b[36mconst\u001b[39m server \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m resettingServer()\u001b[33m;\u001b[39m\n \u001b[90m 178 |\u001b[39m       \u001b[36mtry\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 179 |\u001b[39m         \u001b[36mawait\u001b[39m request\u001b[33m.\u001b[39mget(\u001b[32m`${server.url}${path}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 180 |\u001b[39m       } \u001b[36mfinally\u001b[39m {\n \u001b[90m 181 |\u001b[39m         server\u001b[33m.\u001b[39mclose()\u001b[33m;\u001b[39m\n \u001b[90m 182 |\u001b[39m       }"
+                      "line": 180
+                    }
                   },
                   "errors": [
                     {
                       "location": {
                         "file": "/repo/flake-lab/tests/lab.spec.ts",
                         "column": 23,
-                        "line": 179
+                        "line": 180
                       },
-                      "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55485/api/cart\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n\n  177 |       const server = await resettingServer();\n  178 |       try {\n> 179 |         await request.get(`${server.url}${path}`);\n      |                       ^\n  180 |       } finally {\n  181 |         server.close();\n  182 |       }\n    at /repo/flake-lab/tests/lab.spec.ts:179:23"
+                      "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55807/api/cart\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n\n  178 |       const server = await resettingServer();\n  179 |       try {\n> 180 |         await request.get(`${server.url}${path}`);\n      |                       ^\n  181 |       } finally {\n  182 |         server.close();\n  183 |       }\n    at /repo/flake-lab/tests/lab.spec.ts:180:23"
                     }
                   ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:10:24.247Z",
+                  "startTime": "2026-11-26T16:42:33.258Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -1276,38 +1261,37 @@
                   "errorLocation": {
                     "file": "/repo/flake-lab/tests/lab.spec.ts",
                     "column": 23,
-                    "line": 179
+                    "line": 180
                   }
                 },
                 {
                   "workerIndex": 15,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 1970,
+                  "duration": 1924,
                   "error": {
-                    "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55487/api/cart\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n",
-                    "stack": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55487/api/cart\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:179:23",
+                    "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55809/api/cart\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n",
+                    "stack": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55809/api/cart\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:180:23",
                     "location": {
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 23,
-                      "line": 179
-                    },
-                    "snippet": " \u001b[90m 177 |\u001b[39m       \u001b[36mconst\u001b[39m server \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m resettingServer()\u001b[33m;\u001b[39m\n \u001b[90m 178 |\u001b[39m       \u001b[36mtry\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 179 |\u001b[39m         \u001b[36mawait\u001b[39m request\u001b[33m.\u001b[39mget(\u001b[32m`${server.url}${path}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 180 |\u001b[39m       } \u001b[36mfinally\u001b[39m {\n \u001b[90m 181 |\u001b[39m         server\u001b[33m.\u001b[39mclose()\u001b[33m;\u001b[39m\n \u001b[90m 182 |\u001b[39m       }"
+                      "line": 180
+                    }
                   },
                   "errors": [
                     {
                       "location": {
                         "file": "/repo/flake-lab/tests/lab.spec.ts",
                         "column": 23,
-                        "line": 179
+                        "line": 180
                       },
-                      "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55487/api/cart\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n\n  177 |       const server = await resettingServer();\n  178 |       try {\n> 179 |         await request.get(`${server.url}${path}`);\n      |                       ^\n  180 |       } finally {\n  181 |         server.close();\n  182 |       }\n    at /repo/flake-lab/tests/lab.spec.ts:179:23"
+                      "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55809/api/cart\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n\n  178 |       const server = await resettingServer();\n  179 |       try {\n> 180 |         await request.get(`${server.url}${path}`);\n      |                       ^\n  181 |       } finally {\n  182 |         server.close();\n  183 |       }\n    at /repo/flake-lab/tests/lab.spec.ts:180:23"
                     }
                   ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 1,
-                  "startTime": "2026-11-26T15:10:26.622Z",
+                  "startTime": "2026-11-26T16:42:35.683Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -1319,7 +1303,7 @@
                   "errorLocation": {
                     "file": "/repo/flake-lab/tests/lab.spec.ts",
                     "column": 23,
-                    "line": 179
+                    "line": 180
                   }
                 }
               ],
@@ -1328,7 +1312,7 @@
           ],
           "id": "d60a0d352cedb73bd581-5b5cc731b11a02bb1f55",
           "file": "lab.spec.ts",
-          "line": 172,
+          "line": 173,
           "column": 3
         },
         {
@@ -1347,31 +1331,30 @@
                   "workerIndex": 16,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 2427,
+                  "duration": 2429,
                   "error": {
-                    "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55489/api/profile\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n",
-                    "stack": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55489/api/profile\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:179:23",
+                    "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55811/api/profile\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n",
+                    "stack": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55811/api/profile\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:180:23",
                     "location": {
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 23,
-                      "line": 179
-                    },
-                    "snippet": " \u001b[90m 177 |\u001b[39m       \u001b[36mconst\u001b[39m server \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m resettingServer()\u001b[33m;\u001b[39m\n \u001b[90m 178 |\u001b[39m       \u001b[36mtry\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 179 |\u001b[39m         \u001b[36mawait\u001b[39m request\u001b[33m.\u001b[39mget(\u001b[32m`${server.url}${path}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 180 |\u001b[39m       } \u001b[36mfinally\u001b[39m {\n \u001b[90m 181 |\u001b[39m         server\u001b[33m.\u001b[39mclose()\u001b[33m;\u001b[39m\n \u001b[90m 182 |\u001b[39m       }"
+                      "line": 180
+                    }
                   },
                   "errors": [
                     {
                       "location": {
                         "file": "/repo/flake-lab/tests/lab.spec.ts",
                         "column": 23,
-                        "line": 179
+                        "line": 180
                       },
-                      "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55489/api/profile\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n\n  177 |       const server = await resettingServer();\n  178 |       try {\n> 179 |         await request.get(`${server.url}${path}`);\n      |                       ^\n  180 |       } finally {\n  181 |         server.close();\n  182 |       }\n    at /repo/flake-lab/tests/lab.spec.ts:179:23"
+                      "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55811/api/profile\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n\n  178 |       const server = await resettingServer();\n  179 |       try {\n> 180 |         await request.get(`${server.url}${path}`);\n      |                       ^\n  181 |       } finally {\n  182 |         server.close();\n  183 |       }\n    at /repo/flake-lab/tests/lab.spec.ts:180:23"
                     }
                   ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:10:29.028Z",
+                  "startTime": "2026-11-26T16:42:38.054Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -1383,38 +1366,37 @@
                   "errorLocation": {
                     "file": "/repo/flake-lab/tests/lab.spec.ts",
                     "column": 23,
-                    "line": 179
+                    "line": 180
                   }
                 },
                 {
                   "workerIndex": 17,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 1962,
+                  "duration": 1922,
                   "error": {
-                    "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55491/api/profile\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n",
-                    "stack": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55491/api/profile\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:179:23",
+                    "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55813/api/profile\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n",
+                    "stack": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55813/api/profile\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:180:23",
                     "location": {
                       "file": "/repo/flake-lab/tests/lab.spec.ts",
                       "column": 23,
-                      "line": 179
-                    },
-                    "snippet": " \u001b[90m 177 |\u001b[39m       \u001b[36mconst\u001b[39m server \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m resettingServer()\u001b[33m;\u001b[39m\n \u001b[90m 178 |\u001b[39m       \u001b[36mtry\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 179 |\u001b[39m         \u001b[36mawait\u001b[39m request\u001b[33m.\u001b[39mget(\u001b[32m`${server.url}${path}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 180 |\u001b[39m       } \u001b[36mfinally\u001b[39m {\n \u001b[90m 181 |\u001b[39m         server\u001b[33m.\u001b[39mclose()\u001b[33m;\u001b[39m\n \u001b[90m 182 |\u001b[39m       }"
+                      "line": 180
+                    }
                   },
                   "errors": [
                     {
                       "location": {
                         "file": "/repo/flake-lab/tests/lab.spec.ts",
                         "column": 23,
-                        "line": 179
+                        "line": 180
                       },
-                      "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55491/api/profile\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n\n  177 |       const server = await resettingServer();\n  178 |       try {\n> 179 |         await request.get(`${server.url}${path}`);\n      |                       ^\n  180 |       } finally {\n  181 |         server.close();\n  182 |       }\n    at /repo/flake-lab/tests/lab.spec.ts:179:23"
+                      "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55813/api/profile\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n\n  178 |       const server = await resettingServer();\n  179 |       try {\n> 180 |         await request.get(`${server.url}${path}`);\n      |                       ^\n  181 |       } finally {\n  182 |         server.close();\n  183 |       }\n    at /repo/flake-lab/tests/lab.spec.ts:180:23"
                     }
                   ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 1,
-                  "startTime": "2026-11-26T15:10:31.890Z",
+                  "startTime": "2026-11-26T16:42:40.927Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -1426,7 +1408,7 @@
                   "errorLocation": {
                     "file": "/repo/flake-lab/tests/lab.spec.ts",
                     "column": 23,
-                    "line": 179
+                    "line": 180
                   }
                 }
               ],
@@ -1435,7 +1417,112 @@
           ],
           "id": "d60a0d352cedb73bd581-49baf92b908c2fb69a34",
           "file": "lab.spec.ts",
-          "line": 172,
+          "line": 173,
+          "column": 3
+        },
+        {
+          "title": "infra: checkout",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 18,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 1912,
+                  "error": {
+                    "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55817/api/checkout\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n",
+                    "stack": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55817/api/checkout\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:180:23",
+                    "location": {
+                      "file": "/repo/flake-lab/tests/lab.spec.ts",
+                      "column": 23,
+                      "line": 180
+                    }
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/repo/flake-lab/tests/lab.spec.ts",
+                        "column": 23,
+                        "line": 180
+                      },
+                      "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55817/api/checkout\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n\n  178 |       const server = await resettingServer();\n  179 |       try {\n> 180 |         await request.get(`${server.url}${path}`);\n      |                       ^\n  181 |       } finally {\n  182 |         server.close();\n  183 |       }\n    at /repo/flake-lab/tests/lab.spec.ts:180:23"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-26T16:42:43.277Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/repo/flake-lab/out/run-6/lab-infra-checkout-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/repo/flake-lab/tests/lab.spec.ts",
+                    "column": 23,
+                    "line": 180
+                  }
+                },
+                {
+                  "workerIndex": 19,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 1422,
+                  "error": {
+                    "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55819/api/checkout\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n",
+                    "stack": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55819/api/checkout\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n    at /repo/flake-lab/tests/lab.spec.ts:180:23",
+                    "location": {
+                      "file": "/repo/flake-lab/tests/lab.spec.ts",
+                      "column": 23,
+                      "line": 180
+                    }
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/repo/flake-lab/tests/lab.spec.ts",
+                        "column": 23,
+                        "line": 180
+                      },
+                      "message": "Error: apiRequestContext.get: socket hang up (ECONNRESET)\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:55819/api/checkout\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\n\n  178 |       const server = await resettingServer();\n  179 |       try {\n> 180 |         await request.get(`${server.url}${path}`);\n      |                       ^\n  181 |       } finally {\n  182 |         server.close();\n  183 |       }\n    at /repo/flake-lab/tests/lab.spec.ts:180:23"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 1,
+                  "startTime": "2026-11-26T16:42:45.620Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/repo/flake-lab/out/run-6/lab-infra-checkout-chromium-retry1/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/repo/flake-lab/tests/lab.spec.ts",
+                    "column": 23,
+                    "line": 180
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "d60a0d352cedb73bd581-c9df34e552bc84a759a4",
+          "file": "lab.spec.ts",
+          "line": 173,
           "column": 3
         }
       ]
@@ -1459,15 +1546,15 @@
               "projectName": "chromium",
               "results": [
                 {
-                  "workerIndex": 18,
+                  "workerIndex": 20,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1925,
+                  "duration": 1904,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:10:34.225Z",
+                  "startTime": "2026-11-26T16:42:47.414Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1482,10 +1569,10 @@
               "projectName": "chromium-mobile",
               "results": [
                 {
-                  "workerIndex": 19,
+                  "workerIndex": 21,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 6937,
+                  "duration": 6932,
                   "error": {
                     "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('link', { name: 'Cart' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('link', { name: 'Cart' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('link', { name: 'Cart' })\u001b[22m\n",
                     "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('link', { name: 'Cart' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('link', { name: 'Cart' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('link', { name: 'Cart' })\u001b[22m\n\n    at /repo/flake-lab/tests/responsive.spec.ts:15:58",
@@ -1493,8 +1580,7 @@
                       "file": "/repo/flake-lab/tests/responsive.spec.ts",
                       "column": 58,
                       "line": 15
-                    },
-                    "snippet": " \u001b[90m 13 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${appUrl}?slow=${slow}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 14 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'#status'\u001b[39m))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Ready'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m slow \u001b[33m+\u001b[39m \u001b[35m10_000\u001b[39m })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 15 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'link'\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m'Cart'\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 16 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 17 |\u001b[39m"
+                    }
                   },
                   "errors": [
                     {
@@ -1509,7 +1595,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-26T15:10:36.508Z",
+                  "startTime": "2026-11-26T16:42:49.681Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -1525,10 +1611,10 @@
                   }
                 },
                 {
-                  "workerIndex": 20,
+                  "workerIndex": 22,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 7452,
+                  "duration": 7454,
                   "error": {
                     "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('link', { name: 'Cart' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('link', { name: 'Cart' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('link', { name: 'Cart' })\u001b[22m\n",
                     "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('link', { name: 'Cart' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('link', { name: 'Cart' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('link', { name: 'Cart' })\u001b[22m\n\n    at /repo/flake-lab/tests/responsive.spec.ts:15:58",
@@ -1536,8 +1622,7 @@
                       "file": "/repo/flake-lab/tests/responsive.spec.ts",
                       "column": 58,
                       "line": 15
-                    },
-                    "snippet": " \u001b[90m 13 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${appUrl}?slow=${slow}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 14 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'#status'\u001b[39m))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Ready'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m slow \u001b[33m+\u001b[39m \u001b[35m10_000\u001b[39m })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 15 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'link'\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m'Cart'\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 16 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 17 |\u001b[39m"
+                    }
                   },
                   "errors": [
                     {
@@ -1552,7 +1637,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 1,
-                  "startTime": "2026-11-26T15:10:43.814Z",
+                  "startTime": "2026-11-26T16:42:57.193Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -1581,11 +1666,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-11-26T15:06:39.640Z",
-    "duration": 251728.68999999997,
+    "startTime": "2026-11-26T16:38:49.348Z",
+    "duration": 255410.95799999998,
     "expected": 9,
     "skipped": 0,
-    "unexpected": 9,
+    "unexpected": 10,
     "flaky": 2
   }
 }

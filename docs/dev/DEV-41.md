@@ -18,6 +18,7 @@
 6. Keyboard operable; axe clean in both themes; hostile text renders as text.
 7. e2e: open a test from the sample, full view, jump to evidence, back.
 8. Rule 8 (`docs/ux/12-simplification-pass.md`, canvas v78): no grey helper line under a label; explanations go in a tooltip or a closed block; a helper stays only if it prevents a mistake. On the full test page: no lead sentences (`corr.lead` is retired), shorter correlation sentences as on board 13 at canvas v78, and the log footer follows the board (`log.range` wording). Explanations move into tooltips or the closed "How this was worked out" block.
+9. Secrets in quoted evidence (security, from DEV-37): evidence text is an exact log line, so a line holding a token would be shown or exported as is. Every place that shows or exports evidence or log text passes it through `redactSecrets` from `src/engine/group/normalize.ts` (added in the DEV-37 follow-up; masks Bearer values, token or key assignments and long key-like runs, leaves the rest of the line readable). `verifyEvidence` keeps checking the raw text; only the display and the export are redacted. Test with the lab's fake token (`FAKE-TOKEN-NOT-A-SECRET-000000`): it never appears in the DOM or in the file.
 
 **Details:**
 - Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: DEV-37, DEV-40 (the board is ready).

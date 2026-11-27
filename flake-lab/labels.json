@@ -18,6 +18,7 @@
   "infra: search": { "label": "stable", "cause": "infrastructure" },
   "infra: cart api": { "label": "stable", "cause": "infrastructure" },
   "infra: profile": { "label": "stable", "cause": "infrastructure" },
+  "infra: checkout": { "label": "stable", "cause": "infrastructure" },
   "responsive: menu button": { "label": "stable", "cause": null },
   "responsive: menu button [chromium-mobile]": { "label": "failing", "cause": "locator or UI" }
 }
