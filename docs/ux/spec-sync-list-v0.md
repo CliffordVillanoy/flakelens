@@ -142,7 +142,7 @@ Copy needed for v1 (no text yet): cause names and tips for the nine causes plus 
 | --- | --- |
 | `panel.next` | Next test |
 | `panel.history.legend.mixed` | Mixed commit: passed and failed on the same code |
-| `panel.failure.metaNoDate` | Run {n} · commit {sha} · attempt {a} of {total} |
+| `panel.failure.metaNoDate` | Run {n} · attempt {a} of {total} |
 | `panel.wasted.label` | Wasted CI time |
 | `panel.close.hint` | Close panel (Esc) |
 | `panel.history.filter.all` | All attempts |

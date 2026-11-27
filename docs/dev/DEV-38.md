@@ -1,6 +1,6 @@
 # DEV-38: Failure groups screen and cause tips
 
-**Status:** To do
+**Status:** Done locally (2026-11-27, commits `89bf5c1`, `1a1450d`, `17d026e`, `8d03b60` (redactSecrets keeps file paths readable) and `4ab12de` (one-sentence tips, shorter meta line, budgets 90 and 105 with a cause block) on `feat/dev-38-failure-groups-ui` from origin/main 238dc5f, worktree `flakelens-dev38`; 1056 unit (with the updated copy doc) + 55 e2e pass, axe 52 scans clean, verified by planning). Not pushed or merged. Interim keys: tests.tab, groups.tabs.label, groups.sort.label, groups.level.high/medium/low, groups.evidence.more/less, groups.hideTests, groups.long.hide, groups.list. Board wins: chip keeps "Likely cause:"; panel.latest not used. redactSecrets fixed to keep line breaks. Panel words: first test 75 of 90, low memory 102 and strict locator 96 of 105 (with a cause block). Needs the docs bundle in the same PR (copy-sync reads the updated copy doc). Not verified: real-browser 5,000 groups, light-theme panel tip by eye, user-imported data in e2e.
 
 **Goal:** Users see failures as groups with a likely cause, and each test's note gives cause-specific tips.
 

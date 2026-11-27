@@ -19,7 +19,7 @@
 
 1. **Say it once.** A number, a status or a hint appears in one place on a screen. If the tabs carry the counts, the legend does not.
 2. **One line of lead text at most**, and only when it says what to do next. No second sentence that repeats the heading.
-3. **Word budgets** (visible UI text above the first data row, excluding row content): Start 40, Tests 60, Loaded data 60, Test detail panel 90, any dialog 45, any banner or toast 20.
+3. **Word budgets** (visible UI text above the first data row, excluding row content): Start 40, Tests 60, Loaded data 60, Test detail panel 90 (105 with a cause block, see copy doc section 14), any dialog 45, any banner or toast 20.
 4. **Tooltips and "?" tips** hold explanations. Visible text holds names and numbers.
 5. **Settings hold rarely changed choices** (density, theme, shortcuts). They do not sit in the toolbar.
 6. **Board notes are not UI.** Design explanations on a board are labelled "Design note" and are not counted. UI text on a board is counted.
