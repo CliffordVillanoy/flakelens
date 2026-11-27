@@ -102,11 +102,39 @@ it('Loaded data lists the files with their result, the notices and the runs tabl
 
   const table = screen.getByRole('table', { name: 'Runs' });
   const headers = within(table).getAllByRole('columnheader').map((h) => h.textContent);
-  expect(headers).toEqual(['Run', 'Commit', 'Branch', 'Browser', 'Shard', 'Time', 'Tests']);
+  expect(headers).toEqual(['Run', 'Commit', 'Branch', 'Browser', 'Time', 'Tests']);
   const first = within(table).getAllByRole('row')[1]!;
   const cells = within(first).getAllByRole('cell').map((c) => c.textContent);
-  expect(cells.slice(2, 5)).toEqual(['—', 'chromium', '—']); // the lab report names its browser; it holds no branch or shard
+  expect(cells.slice(2, 4)).toEqual(['—', 'chromium']); // the lab report names its browser; it holds no branch
   expect(screen.getByRole('heading', { name: 'Runs · 3' })).toBeInTheDocument();
+});
+
+it('no run was sharded: the table has no Shard column', async () => {
+  await open('#/data');
+  const table = await screen.findByRole('table', { name: 'Runs' });
+  expect(within(table).queryByRole('columnheader', { name: 'Shard' })).toBeNull();
+  expect(within(table).getAllByRole('row').every((r) => within(r).queryAllByRole('cell').length === 0 || within(r).getAllByRole('cell').length === 6)).toBe(true);
+});
+
+it('sample data has no sharded run: no Shard column', async () => {
+  await withData([lab('run-00.json')]);
+  window.location.hash = '#/tests';
+  render(<App />);
+  await screen.findByRole('heading', { level: 1, name: 'Tests ranked by fix priority' });
+  await act(() => useStore.getState().startSample());
+  act(() => {
+    window.location.hash = '#/data';
+  });
+  const table = await screen.findByRole('table', { name: 'Runs' });
+  expect(within(table).queryByRole('columnheader', { name: 'Shard' })).toBeNull();
+});
+
+it('one sharded run: the Shard column shows, with 1 of 2 on that run', async () => {
+  const real = (f: string) => new File([readFileSync(`fixtures/playwright/real/${f}.json`, 'utf8')], `${f}.json`);
+  await open('#/data', [real('shard-1-of-2')]);
+  const table = await screen.findByRole('table', { name: 'Runs' });
+  expect(within(table).getByRole('columnheader', { name: 'Shard' })).toBeInTheDocument();
+  expect(within(table).getAllByRole('cell').map((c) => c.textContent)).toContain('1 of 2');
 });
 
 it('the runs table shows branch, browser and shard from a real report, and a dash for the missing ones', async () => {

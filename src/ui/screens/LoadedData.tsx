@@ -68,6 +68,8 @@ export function LoadedData({ onExitSample }: { onExitSample: () => void }) {
   const files = useMemo(() => fileRows(ds), [ds]);
   const notices = useMemo(() => noticeRows(ds), [ds]);
   const runs = useMemo(() => runRows(ds), [ds]);
+  const hasShard = useMemo(() => ds.runs.some((r) => r.shard), [ds]); // no column of dashes when no run was sharded
+  const cols = hasShard ? 'grid-cols-7' : 'grid-cols-6';
   const shownRuns = showAll ? runs : runs.slice(0, FIRST_RUNS);
   const sample = mode === 'sample';
 
@@ -150,16 +152,16 @@ export function LoadedData({ onExitSample }: { onExitSample: () => void }) {
           {t('data.runs', { count: runs.length })}
         </h2>
         <div className="overflow-x-auto rounded-lg border border-border bg-card">
-          <div role="table" aria-label={t('data.runs.label')} className="min-w-[760px] text-[13px]">
-            <div role="row" className="grid grid-cols-7 border-b border-border text-xs font-semibold text-muted-foreground">
-              {(['run', 'commit', 'branch', 'browser', 'shard', 'time', 'tests'] as const).map((c) => (
+          <div role="table" aria-label={t('data.runs.label')} className={`${hasShard ? 'min-w-[760px]' : 'min-w-[640px]'} text-[13px]`}>
+            <div role="row" className={`grid ${cols} border-b border-border text-xs font-semibold text-muted-foreground`}>
+              {(hasShard ? (['run', 'commit', 'branch', 'browser', 'shard', 'time', 'tests'] as const) : (['run', 'commit', 'branch', 'browser', 'time', 'tests'] as const)).map((c) => (
                 <div key={c} role="columnheader" className="min-w-0 px-4 py-3 text-center">
                   {t(`data.runs.col.${c}`)}
                 </div>
               ))}
             </div>
             {shownRuns.map((r) => (
-              <div key={r.runId} role="row" className="grid grid-cols-7 items-center border-t border-border-muted first:border-t-0">
+              <div key={r.runId} role="row" className={`grid ${cols} items-center border-t border-border-muted first:border-t-0`}>
                 <div role="cell" className="px-4 py-3 text-center tabular-nums">{r.number}</div>
                 <div role="cell" className="min-w-0 px-4 py-3 text-center font-mono">
                   <span className={r.labelled ? 'break-all' : undefined}>{r.commit}</span>
@@ -167,7 +169,7 @@ export function LoadedData({ onExitSample }: { onExitSample: () => void }) {
                 </div>
                 <div role="cell" className="min-w-0 px-4 py-3 text-center break-all">{r.branch}</div>
                 <div role="cell" className="min-w-0 px-4 py-3 text-center break-all">{r.browser}</div>
-                <div role="cell" className="px-4 py-3 text-center tabular-nums">{r.shard}</div>
+                {hasShard && <div role="cell" className="px-4 py-3 text-center tabular-nums">{r.shard}</div>}
                 <div role="cell" className="px-4 py-3 text-center tabular-nums">{r.time ? dateTime.format(new Date(r.time)) : t('wasted.none')}</div>
                 <div role="cell" className="px-4 py-3 text-center tabular-nums">{r.tests}</div>
               </div>
