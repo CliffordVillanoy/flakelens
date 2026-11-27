@@ -153,7 +153,8 @@ export function createCorrelator(ds: Dataset, config: EngineConfig = DEFAULT_CON
       return analyse(dimension, groups, config);
     });
 
-    // Bonferroni across the dimensions that were really tested for this test.
+    // Bonferroni across the dimensions that were really tested for this test. A dimension that is missing, has not enough
+    // data, or was skipped (chi-square) is not a comparison, so project counts only when the test has a sibling in another project.
     const comparisons = raws.filter((r) => r.p !== null).length;
     return raws.map(({ result, p, diff }) => {
       if (p === null) return { ...result, comparisons };

@@ -257,3 +257,27 @@ it('timing: 5,000 tests x 50 runs are correlated in under 2 seconds, eagerly', (
   expect(all.size).toBe(5000);
   expect(ms).toBeLessThan(2000);
 });
+
+it('project is symmetric: either sibling gets the same project table and result', () => {
+  const ds = build(Array.from({ length: 12 }, (_, i) => ({ browser: i % 2 ? 'a' : 'b' })), [
+    { id: 'desk', key: 'k', project: 'chromium', runs: Array.from({ length: 12 }, (_, i) => (i < 2 ? F : P)) },
+    { id: 'mob', key: 'k', project: 'phone', runs: Array.from({ length: 12 }, (_, i) => (i < 9 ? F : P)) },
+  ]);
+  // the table and effect are the same; the adjusted p can differ because each test has its own number of tested dimensions
+  const pick = ({ status, values, others, highlightedValue, pointsHigher, oddsRatio }: ReturnType<typeof dim>) => ({ status, values, others, highlightedValue, pointsHigher, oddsRatio });
+  expect(pick(dim(ds, 'desk', 'project'))).toEqual(pick(dim(ds, 'mob', 'project')));
+  expect(dim(ds, 'desk', 'project').values).toEqual(dim(ds, 'mob', 'project').values);
+  expect(dim(ds, 'desk', 'project').highlightedValue).toBe('phone');
+});
+
+it('Bonferroni counts project only when it is tested, not when it is missing', () => {
+  const runs: RunSpec[] = Array.from({ length: 20 }, (_, i) => ({ browser: i < 10 ? 'a' : 'b' }));
+  const seq = Array.from({ length: 20 }, (_, i): AttemptStatus[] => (i >= 10 ? F : P));
+  const alone = build(runs, [{ id: 't', key: 'k', project: 'p1', runs: seq }]);
+  expect(dim(alone, 't', 'browser').comparisons).toBe(1); // project missing: not counted
+  const withSibling = build(runs, [
+    { id: 't', key: 'k', project: 'p1', runs: seq },
+    { id: 's', key: 'k', project: 'p2', runs: Array(20).fill(P) },
+  ]);
+  expect(dim(withSibling, 't', 'browser').comparisons).toBe(2); // project tested: counted
+});
