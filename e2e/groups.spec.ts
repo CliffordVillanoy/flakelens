@@ -28,7 +28,7 @@ test('Groups tab: the environment event first, a card with its cause, its test, 
   await expect(page).toHaveURL(/#[/]tests[/]/);
   const panel = page.getByRole('complementary');
   await expect(panel.getByText('Likely cause: Environment or resources')).toBeVisible();
-  await expect(panel.getByText('The machine probably ran short of memory, disk or CPU. Check the runner during the failing run.')).toBeVisible();
+  await expect(panel.getByText("Check the runner's memory, disk and CPU during the failing run.")).toBeVisible();
   await expect(panel.locator('[data-latest-failure] mark').first()).toBeVisible();
   await panel.getByRole('link', { name: /^See the group of \d+ failures$/ }).click();
   await expect(page).toHaveURL(/#[/]groups[?]g=/);

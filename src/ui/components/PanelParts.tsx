@@ -204,7 +204,6 @@ export function StatusNote({ row, cause }: { row: Row; cause?: CauseTip | null }
   );
 }
 
-const dateTime = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false });
 const MAX_LINES = 30;
 
 // DESIGN.md "Diff hunk": the failed attempt as removed lines and the retry that passed as an added line.
@@ -239,9 +238,7 @@ export function LatestFailure({ failures, highlight }: { failures: FailureEntry[
       {/* With a passing retry the diff header names the run and the attempts; the line only stands in when there is none. */}
       {!f.passedAfter && (
         <div className="text-[13px] text-muted-foreground">
-          {f.startedAt
-            ? t('panel.failure.meta', { ...meta, date: dateTime.format(new Date(f.startedAt)) })
-            : t('panel.failure.metaNoDate', meta)}
+          {t('panel.failure.meta', meta)}
         </div>
       )}
       <div role="group" aria-label={t('panel.failure.diff')} className="overflow-hidden rounded-md border border-border">

@@ -143,14 +143,15 @@ it('latest failure: failed lines, the passing retry, previous failure, and it op
   const panel = await open('flaky');
   const failure = within(panel).getByRole('region', { name: 'Latest failure' });
   await waitFor(() => expect(scrolled).toContain(failure));
-  expect(failure).toHaveTextContent('Run 4 · commit ccccccc · attempt 2 of 2');
+  expect(failure).toHaveTextContent('Run 4 · attempt 2 of 2');
+  expect(failure).not.toHaveTextContent('commit ccccccc'); // the run history above shows the commit and the date
   expect(failure).toHaveTextContent('TimeoutError in run3');
   expect(failure).not.toHaveTextContent('passed in');
   await userEvent.click(within(failure).getByRole('button', { name: 'Show previous failure' }));
-  expect(failure).toHaveTextContent('Run 4 · commit ccccccc · attempt 1 of 2');
+  expect(failure).toHaveTextContent('Run 4 · attempt 1 of 2');
   await userEvent.click(within(failure).getByRole('button', { name: 'Show previous failure' }));
   // The diff header already names the run and the attempts, so the run, commit and attempt line above it is gone.
-  expect(failure).not.toHaveTextContent('commit bbbbbbb · attempt');
+  expect(failure).not.toHaveTextContent(/Run 2 · attempt [0-9] of/);
   expect(failure).toHaveTextContent('Run 2 · attempt 1 failed, attempt 2 passed · same commit');
   expect(failure).toHaveTextContent('Attempt 2 passed in 3.1 s.');
 });

@@ -49,7 +49,7 @@ it('medium or high confidence: the note gets the likely cause, the confidence, t
   const box = cause.closest('section')!;
   expect(within(box).getByRole('heading', { level: 3 })).toBeInTheDocument(); // it is inside the status note box
   expect(box).toHaveTextContent('High confidence');
-  expect(box).toHaveTextContent('A service it calls was probably slow or out of reach. Mock the call, or retry only that call.');
+  expect(box).toHaveTextContent('Mock the call, or retry only that call.');
   const link = within(box).getByRole('link', { name: 'See the group of 4 failures' });
   expect(link.getAttribute('href')).toMatch(/^#\/groups\?g=[0-9a-f]{14}$/);
   // a divider separates the tip from the note
