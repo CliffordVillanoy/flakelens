@@ -18,6 +18,7 @@
 5. Tests: names with a newline, leading `=`, commas and quotes; 5,000 tests export in under 1 s; e2e downloads and reads the files.
 6. No network; downloads use `downloadFile` (with the revoke delay from DEV-31).
 7. Rule 8 (`docs/ux/12-simplification-pass.md`, canvas v78): no grey helper line under a label; explanations go in a tooltip or a closed block; a helper stays only if it prevents a mistake. The report page has no lead sentence (`report.lead` is retired) and no scope hint line beyond the scope text itself. Do not add the retired keys.
+8. Secrets in quoted evidence (security, from DEV-37): evidence text is an exact log line, so a line holding a token would be shown or exported as is. Every place that shows or exports evidence or log text passes it through `redactSecrets` from `src/engine/group/normalize.ts` (added in the DEV-37 follow-up; masks Bearer values, token or key assignments and long key-like runs, leaves the rest of the line readable). `verifyEvidence` keeps checking the raw text; only the display and the export are redacted. Test with the lab's fake token (`FAKE-TOKEN-NOT-A-SECRET-000000`): it never appears in the DOM or in the file.
 
 **Details:**
 - Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: DEV-37 for the "Likely cause" lines (without it the report simply omits them); the board is ready.

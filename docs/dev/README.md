@@ -88,7 +88,7 @@ Written 2026-11-25. Build order is in "Build sequence from 2026-11-26" in the v1
 | [DEV-34](DEV-34.md) | Sample data: realistic lab durations | Enhancement (flake lab) | nothing | Done locally (not pushed) |
 | [DEV-35](DEV-35.md) | Flake lab: one test per cause | Enhancement (flake lab) | DEV-34 | Done locally (not pushed) |
 | [DEV-36](DEV-36.md) | Failure fingerprinting and grouping | Backend (engine) | DEV-35 | Done locally (not pushed) |
-| [DEV-37](DEV-37.md) | Rule-based cause classifier | Backend (engine, evaluation) | DEV-36 | To do |
+| [DEV-37](DEV-37.md) | Rule-based cause classifier | Backend (engine, evaluation) | DEV-36 | Done locally (not pushed) |
 | [DEV-38](DEV-38.md) | Failure groups screen and cause tips | Frontend | DEV-37; board from the UI/UX chat | To do |
 | [DEV-39](DEV-39.md) | Run metadata from Playwright reports | Backend (importer, storage) + small frontend | nothing | To do |
 | [DEV-40](DEV-40.md) | Correlation by browser, shard, OS and time | Backend (engine) | DEV-39, DEV-35 | To do |
