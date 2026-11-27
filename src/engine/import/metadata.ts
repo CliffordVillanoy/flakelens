@@ -9,6 +9,11 @@ import type { Run } from '../types';
 //   browser  config.filteredProjects[].use.defaultBrowserType
 //   shard    config.shard = { current, total }   (null without --shard)
 //   os       not in a Playwright report; only a custom config.metadata.os that the project set itself is read
+//
+// Browser and OS are not plain fields. A report names no browser, only projects; the browser is the project's
+// defaultBrowserType, so two projects on one browser give the same value and it cannot tell them apart. For that, the
+// per-test project is suites..specs[].tests[].projectName / projectId (read as Test.project). The only OS-like text is the
+// emulated device userAgent in filteredProjects[].use; it describes the page, not the machine, so it is never used.
 
 export const META_MAX = 200;
 const RAW_MAX = 10_000; // longer text is cut before it is scanned, so cost does not grow with a hostile string
