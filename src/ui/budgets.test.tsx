@@ -53,7 +53,8 @@ beforeAll(() => {
 
 // panel: 90 for a panel without a cause block, 105 for one with it (UI/UX, DEV-38 follow-up; the failure meta line is
 // "Run {n} · attempt {a} of {total}").
-const BUDGET = { start: 40, tests: 60, loaded: 60, panel: 90, panelWithCause: 105, dialog: 45, banner: 20 } as const;
+// full (proposed in DEV-41, to be confirmed by UI/UX): the full test page above the first timeline row, status note and cause block included; measured 77 to 78.
+const BUDGET = { start: 40, tests: 60, loaded: 60, panel: 90, panelWithCause: 105, full: 90, dialog: 45, banner: 20 } as const;
 const report: string[] = [];
 const check = (screenName: string, state: string, root: Element, budget: number, stopAt?: string) => {
   const n = words(root, { stopAt });
@@ -151,6 +152,24 @@ it.each(['flaky: low memory', 'flaky: strict locator'])('the detail panel of "%s
     if (!panel.querySelector('[data-cause-tip]')) throw new Error('no cause block yet');
   });
   check('Detail panel', `${title} (with a cause block)`, panel, BUDGET.panelWithCause);
+});
+
+it.each(['flaky: low memory', 'flaky: strict locator'])('the full test page of "%s" stays within its budget above the first timeline row', async (title) => {
+  await own();
+  await show('#/tests', () => screen.findByRole('table'));
+  const link = await vi.waitFor(() => {
+    const a = [...document.querySelectorAll<HTMLAnchorElement>('a[data-test-id]')].find((x) => x.textContent === title);
+    if (!a) throw new Error('no row yet');
+    return a;
+  });
+  cleanup();
+  window.location.hash = link.getAttribute('href')! + '/full';
+  render(<App />);
+  await screen.findByRole('table', { name: 'Run timeline' });
+  await vi.waitFor(() => {
+    if (!document.querySelector('[data-cause-tip]')) throw new Error('no cause block yet');
+  });
+  check('Full test page', title, document.querySelector('main')!, BUDGET.full, '[role=table] [role=row]:nth-child(2)');
 });
 
 it('every dialog stays within 45 words', async () => {

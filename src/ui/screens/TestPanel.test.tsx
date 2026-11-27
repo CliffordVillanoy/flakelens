@@ -311,3 +311,12 @@ it('the run-history caption is gone and the key says just "Mixed commit"', async
   expect(panel).toHaveTextContent('Mixed commit');
   expect(panel).not.toHaveTextContent('Mixed commit: passed and failed');
 });
+
+it('Open full view links to the full page of this test and carries the list filters (DEV-41)', async () => {
+  window.location.hash = '#/tests?status=flaky&q=fla';
+  render(<Tests />);
+  await userEvent.click(await screen.findByRole('link', { name: 'flaky' }));
+  const panel = await screen.findByRole('complementary');
+  const link = within(panel).getByRole('link', { name: 'Open full view' });
+  expect(link).toHaveAttribute('href', '#/tests/flaky/full?status=flaky&q=fla');
+});
