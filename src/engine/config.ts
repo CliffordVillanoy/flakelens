@@ -23,6 +23,16 @@ export const DEFAULT_CONFIG = {
   // Failures where no rule fired carry no information. A group needs at least this share of its sampled failures to
   // match a rule; below it the confidence is capped at low, so the UI shows no cause tip.
   causeMinMatched: 0.5,
+  // Correlation (DEV-40): a test needs this many attempts, failures, and attempts in each group before a link is reported;
+  // strength is Strong / Moderate at the adjusted p AND the fail-rate difference (0..1) below, Weak at the adjusted p alone.
+  corrMinAttempts: 10,
+  corrMinFails: 3,
+  corrMinGroup: 3,
+  corrStrongP: 0.01,
+  corrStrongDiff: 0.3,
+  corrModerateP: 0.05,
+  corrModerateDiff: 0.2,
+  corrWeakP: 0.1,
 } as const;
 
 export type EngineConfig = { readonly [K in keyof typeof DEFAULT_CONFIG]: number };

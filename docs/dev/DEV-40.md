@@ -1,6 +1,6 @@
 # DEV-40: Correlation by browser, shard, OS and time
 
-**Status:** To do
+**Status:** Done locally (2026-11-27, commits `b0afacc` stats, `bc14cc8` correlate and `1c843c9` (symmetry and Bonferroni tests, comment) on `feat/dev-40-correlation` from origin/main 951927a, worktree `flakelens-dev40`; 1115 unit, typecheck, lint, build clean, verified by planning). Not pushed or merged. Dimensions: browser, shard, os, hour (UTC), project (sibling tests sharing a testKey). Lab: only the two responsive tests flag Strong, highlighted chromium-mobile; 9 single-project flaky tests no finding. correlateAll 5,000 x 50 about 0.57 s (eager; lazy createCorrelator also). 2 values: Fisher; 3+ values: chi-square only when every expected >= 5, else none. comparisons count only tested dimensions. Risk: attempts treated as independent, p optimistic for heavy retriers. No UI change, no new copy keys.
 
 **Goal:** Show whether a test's failures depend on the browser, shard, OS or hour, with an effect size and honest small-sample handling.
 
@@ -18,6 +18,7 @@
 6. Lab: the lab test that fails only in one project (DEV-35) is flagged strongly; a uniformly flaky test is not.
 7. Timing: 5,000 tests x 50 runs correlated in under 2 s, or computed lazily per test (report which).
 8. No UI change, no new dependency.
+9. Project dimension (finding from DEV-39, 2026-11-27): real reports give browser only as `defaultBrowserType`, and both lab projects are "chromium", so browser cannot separate them. Add `project` (Playwright project name, per attempt from `tests[].projectName`) as a dimension next to browser, shard, os and hour, if the dataset can carry it per attempt; first check how the lab's one-project test is stored (one test per project, or one test with attempts in two projects) and report the choice. OS is always missing in real reports (not present in Playwright JSON): it returns `missing`, and the Lab check (criterion 6) must not depend on it. If `project` needs a type change in `src/engine/types.ts`, keep it optional and the stored schema at version 1.
 
 **Details:**
 - Plan: `docs/superpowers/plans/2026-11-25-v1.md`. Needs first: DEV-39, DEV-35.

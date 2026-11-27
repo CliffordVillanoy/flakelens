@@ -26,3 +26,12 @@ it('a group needs this share of its failures to match a rule before a cause tip 
   expect(DEFAULT_CONFIG.causeMinMatched).toBeGreaterThan(0);
   expect(DEFAULT_CONFIG.causeMinMatched).toBeLessThanOrEqual(1);
 });
+
+it('correlation thresholds live in the config with their starting values (DEV-40)', () => {
+  expect(DEFAULT_CONFIG).toMatchObject({
+    corrMinAttempts: 10, corrMinFails: 3, corrMinGroup: 3,
+    corrStrongP: 0.01, corrStrongDiff: 0.3, corrModerateP: 0.05, corrModerateDiff: 0.2, corrWeakP: 0.1,
+  });
+  expect(DEFAULT_CONFIG.corrStrongP).toBeLessThan(DEFAULT_CONFIG.corrModerateP);
+  expect(DEFAULT_CONFIG.corrModerateP).toBeLessThan(DEFAULT_CONFIG.corrWeakP);
+});
