@@ -125,6 +125,25 @@ for (const theme of ['dark', 'light'] as const) {
       await page.keyboard.press('Escape');
     });
 
+    test('Groups, its edge states and the cause tip in the panel', async ({ page }) => {
+      await openApp(page, theme);
+      await page.getByRole('button', { name: 'Try sample data' }).click();
+      await expect(page.locator('.ranked-row').first()).toBeVisible();
+      await page.getByRole('navigation', { name: 'Views' }).getByRole('link', { name: /^Groups/ }).click();
+      await expect(page.getByRole('heading', { level: 1, name: 'Failure groups' })).toBeVisible();
+      await expect(page.getByRole('listitem').first()).toBeVisible();
+      await scan(page, theme, '24-groups');
+
+      await page.getByRole('searchbox', { name: 'Search failure text' }).fill('ENOSPC');
+      await page.getByRole('listitem').filter({ hasText: 'ENOSPC' }).getByRole('link', { name: 'flaky: low memory' }).click();
+      await expect(page.getByRole('complementary').getByText('Likely cause: Environment or resources')).toBeVisible();
+      await scan(page, theme, '25-panel-cause-tip');
+
+      await page.goto('./#/groups?q=zzz-nothing'); // a hash change keeps the sample (memory only)
+      await expect(page.getByText('No groups match "zzz-nothing"')).toBeVisible();
+      await scan(page, theme, '26-groups-no-match');
+    });
+
     test('Settings, the remove dialog and the undo toast', async ({ page }) => {
       await openApp(page, theme);
       await importSampleFilesAsOwn(page);

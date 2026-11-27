@@ -41,7 +41,6 @@ export function TestPanel({ row, ds, position, closeHref }: Props) {
     const c = groups.causeOf(ds, group);
     if (c.category === 'unknown' || c.confidence === 'low') return null;
     return { group, category: c.category, level: c.confidence };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groups, ds, score.testId]);
   const tip: CauseTip | null = cause ? { category: cause.category, level: cause.level, fingerprint: cause.group.fingerprint, count: cause.group.count } : null;
   const highlight = useMemo(

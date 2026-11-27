@@ -188,7 +188,6 @@ export function Groups() {
     if (at === -1) return;
     v.scrollToIndex(at, { align: 'start' });
     setFocused(focusG);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [focusG, items]);
 
   const hasFailures = view.cards.length > 0;
