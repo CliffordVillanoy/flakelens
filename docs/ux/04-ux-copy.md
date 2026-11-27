@@ -351,6 +351,8 @@ Rule for the build: the visible text is exactly what is in the Text column. Word
 | `data.runs.col.browser` | Browser | ✓ |
 | `data.runs.col.time` | Time | ✓ |
 | `data.runs.col.tests` | Tests | ✓ |
+| `data.runs.col.shard` | Shard | ✓ |
+| `data.runs.shard` | {current} of {total} | ✓ |
 
 ### `glossary.*`
 

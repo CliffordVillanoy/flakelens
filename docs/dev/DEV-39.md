@@ -1,6 +1,6 @@
 # DEV-39: Run metadata from Playwright reports
 
-**Status:** To do
+**Status:** Done locally (2026-11-27, commits `28b8bf0`, `ccc6d4a` (importer comment) and `1807375` (Shard column hidden unless a run has a shard) on `feat/dev-39-run-metadata` from origin/main 4b3c815, worktree `flakelens-dev39`; 1082 unit + 55 e2e pass, verified by planning). Not pushed or merged. Paths in Playwright 1.65.1 JSON: commit `config.metadata.gitCommit.hash`, branch `config.metadata.gitCommit.branch` (both only with captureGitInfo), shard `config.shard`, project `config.projects[].name` and `tests[].projectName`, browser only via `config.filteredProjects[].use.defaultBrowserType` (distinct values joined), OS not present (Run.os stays null). New interim keys: data.runs.col.shard, data.runs.shard. Fixtures under fixtures/playwright/real/ are scrubbed.
 
 **Goal:** Runs carry commit, branch, browser, shard and OS when the report has them, so evidence across commits works for the user's own reports.
 
