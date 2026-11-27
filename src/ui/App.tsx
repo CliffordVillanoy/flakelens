@@ -16,6 +16,7 @@ import { Toasts } from './components/Toasts';
 // Info notices (no commit info) do not count: only a warning or an error asks the person to look.
 // Rarely opened, so it is its own chunk and the main bundle stays small.
 const LoadedData = lazy(() => import('./screens/LoadedData').then((m) => ({ default: m.LoadedData })));
+const Groups = lazy(() => import('./screens/Groups').then((m) => ({ default: m.Groups })));
 const Settings = lazy(() => import('./screens/Settings').then((m) => ({ default: m.Settings })));
 
 const needsLook = (rec?: ImportRecord) => !!rec?.notices.some((n) => n.severity === 'warning' || n.severity === 'error');
@@ -106,6 +107,10 @@ export function App() {
           </Suspense>
         ) : s.mode === 'empty' ? (
           <Start onFiles={onFiles} onBrowse={openPicker} />
+        ) : route.name === 'groups' ? (
+          <Suspense fallback={null}>
+            <Groups />
+          </Suspense>
         ) : route.name === 'data' ? (
           <Suspense fallback={null}>
             <LoadedData onExitSample={exitSample} />

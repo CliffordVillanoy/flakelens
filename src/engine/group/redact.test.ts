@@ -88,3 +88,64 @@ describe('redactSecrets timing: 15 hostile 1 MB strings, each under 500 ms', () 
     expect(performance.now() - t0).toBeLessThan(500);
   });
 });
+
+describe('redactSecrets keeps the line numbers of a log (evidence is numbered on the raw text)', () => {
+  it('never joins or splits lines, whatever stands next to a key word or Bearer', () => {
+    const text = ['Authorization: Bearer', 'FAKE-TOKEN-NOT-A-SECRET-000000', 'token', '= abc', 'password:', 'hunter2', 'x'].join('\n');
+    const out = redactSecrets(text);
+    expect(out.split('\n')).toHaveLength(7);
+    expect(out.split('\n')[6]).toBe('x');
+    expect(out).not.toContain('FAKE-TOKEN');
+  });
+});
+
+describe('redactSecrets keeps file paths readable, and still masks tokens that contain slashes', () => {
+  it('stack frames of project and library code stay as they are', () => {
+    for (const line of [
+      '    at Internals.inst._zod.check (/repo/node_modules/zod/v4/core/schemas.js:2614:23)',
+      '    at /repo/flake-lab/tests/lab.spec.ts:142:38',
+      '    at runChecks (/repo/node_modules/@playwright/test/lib/worker/testInfo.js:51:35)',
+      '    at Object.<anonymous> (/home/runner/work/app/app/tests/checkout.spec.ts:58:9)',
+      'Error: ENOENT: no such file or directory, open /var/lib/app/data/cache_v2/index.json',
+    ]) {
+      expect(redactSecrets(line), line).toBe(line);
+    }
+  });
+
+  it('mixed-case base64 with slashes is masked, in a path-like place or not', () => {
+    const b64 = 'Zm9vYmFyQmF6/cXV4QWJjMTIz+ZGVm/Z2hpSktMTU5PUA==';
+    expect(redactSecrets(`sig=${b64} rejected`)).not.toContain('Zm9vYmFy');
+    expect(redactSecrets(`at /api/v1/keys/${b64}`)).not.toContain('cXV4QWJj');
+    expect(redactSecrets('x a8f3k2/9d7s1l0/q4w5e6r7t8y9z0 y')).not.toContain('q4w5e6r7t8');
+    expect(redactSecrets(`header x-auth: ${FAKE}`)).not.toContain('FAKE-TOKEN');
+  });
+
+  it('property: a token with slashes never survives; a lowercase path never changes', () => {
+    const seg = fc.stringMatching(/^[A-Za-z0-9+]{6,24}$/);
+    const token = fc
+      .array(seg, { minLength: 2, maxLength: 5 })
+      .map((a) => a.join('/'))
+      .filter((s) => s.length >= 24 && /[A-Z]/.test(s) && /\d/.test(s) && /[a-z]/.test(s));
+    const word = fc.stringMatching(/^[a-z_]{2,12}$/);
+    fc.assert(
+      fc.property(token, fc.array(word, { minLength: 3, maxLength: 7 }), fc.stringMatching(/^[a-z ]{0,20}$/), (t, parts, before) => {
+        const out = redactSecrets(`${before} key ${t} end`);
+        expect(out).not.toContain(t);
+        for (const piece of t.split('/')) if (piece.length >= 12) expect(out).not.toContain(piece);
+        const path = `    at ${before.trim() || 'fn'} (/${parts.join('/')}.js:12:3)`;
+        expect(redactSecrets(path)).toBe(path);
+        expect(redactSecrets(`${before}\n${t}\nx`).split('\n')).toHaveLength(3);
+      }),
+      { numRuns: 300 },
+    );
+  });
+
+  it('hostile paths and slashes stay under 500 ms on 1 MB', () => {
+    const MB = 1_000_000;
+    for (const text of ['/a'.repeat(MB / 2), '/'.repeat(MB), 'a/'.repeat(MB / 2), '/repo/node_modules/zod/v4/'.repeat(MB / 26), `/${'x'.repeat(40)}`.repeat(MB / 41), 'A1/'.repeat(MB / 3)]) {
+      const t0 = performance.now();
+      redactSecrets(text);
+      expect(performance.now() - t0, text.slice(0, 10)).toBeLessThan(500);
+    }
+  });
+});

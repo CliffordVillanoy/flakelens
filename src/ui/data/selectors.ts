@@ -1,5 +1,6 @@
 // Pure view models for the Tests screen: evidence sentences, wasted time, health counts, groups, filter and search.
 import type { Attempt, AttemptStatus, Dataset, Label, Test, TestScore } from '@/engine/types';
+import { redactSecrets } from '@/engine/group/normalize';
 import { orderRuns, runHistories, type RunCell } from '@/engine/view';
 import { t, type CopyKey } from '../copy';
 import { cleanText, escapeMd } from '../lib/safeText';
@@ -229,8 +230,9 @@ export function failuresFor(ds: Dataset, testId: string): FailureEntry[] {
         startedAt: run.startedAt,
         attempt: k + 1,
         total: list.length,
-        message: stripAnsi(f?.message ?? ''),
-        stack: stripAnsi(f?.stack ?? ''),
+        // Shown and copied as is, so a token in a log line is masked here (DEV-38, security).
+        message: redactSecrets(stripAnsi(f?.message ?? '')),
+        stack: redactSecrets(stripAnsi(f?.stack ?? '')),
         passedAfter: later === -1 ? null : { attempt: later + 1, durationMs: list[later]!.durationMs },
       });
     });

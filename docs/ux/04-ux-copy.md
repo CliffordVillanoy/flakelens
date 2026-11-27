@@ -193,7 +193,7 @@ Hostile content needs no message. It is imported as plain text (spec 9.1).
 | `panel.note.title` | What this means |
 | `panel.note.next` | What to check next |
 | `panel.failure.title` | Latest failure |
-| `panel.failure.meta` | Run {n} · commit {sha} · attempt {a} of {total} · {date} |
+| `panel.failure.meta` | Run {n} · attempt {a} of {total} | Shortened 2026-11-27 (section 14): the run history above already shows the commit and date |
 | `panel.failure.passedAfter` | Attempt {a} passed in {s} s. | Shortened in DEV-34 (section 21): the hunk header above already says "same commit" |
 | `panel.failure.prev` | Show previous failure |
 | `panel.failure.copy` | Copy error message |
@@ -415,7 +415,7 @@ Rule for the build: the visible text is exactly what is in the Text column. Word
 |---|---|---|
 | `panel.next` | Next test | ✓ |
 | `panel.history.legend.mixed` | Mixed commit | ✓ |
-| `panel.failure.metaNoDate` | Run {n} · commit {sha} · attempt {a} of {total} | ✓ |
+| `panel.failure.metaNoDate` | Run {n} · attempt {a} of {total} | ✓ |
 | `panel.wasted.label` | Wasted CI time | ✓ |
 | `panel.close.hint` | Close panel (Esc) | ✓ |
 | `panel.history.filter.all` | All attempts | ✓ |
@@ -679,49 +679,62 @@ Existing keys confirmed as they are: `storage.off`, `storage.fail`, `storage.ski
 
 ## 14. Failure groups, cause chips and cause tips (board 12, DEV-38)
 
-Wording rule: a cause is always "likely" or "probably", never a fact. Tips are two short sentences (what probably happened, then one thing to do). Unknown adds no tip.
+Wording rule: a cause is always "likely" or "probably", never a fact. Tips are one short sentence: the one thing to do. The chip already says the cause and that it is likely, so the tip does not repeat it (trimmed 2026-11-27 to fit the panel word budget). Unknown adds no tip.
 
 | Key | Text | Note |
 |---|---|---|
-| `groups.tab` | Groups | Tab beside Tests, with the group count |
+| `groups.tab` | Groups | Tab beside Tests, with the count pill |
 | `groups.title` | Failure groups | |
-| `groups.lead` | {groups, plural, one {# group} other {# groups}} from {failures, plural, one {# failure} other {# failures}}. Failures that read the same once numbers and ids are masked are joined. | |
 | `groups.search` | Search failure text | Placeholder. `#/groups?q=` |
 | `groups.sort.failures` | Most failures | Also: `groups.sort.tests` "Most tests", `groups.sort.latest` "Latest" |
-| `groups.meta` | {failures, plural, one {# failure} other {# failures}} · {tests, plural, one {# test} other {# tests}} · {runs, plural, one {# run} other {# runs}} · first seen {first}, last seen {last} | |
-| `groups.meta.env` | {tests, plural, one {# test} other {# tests}} · 1 run · {when} | Environment event card |
+| `groups.meta` | {failures, plural, one {# failure} other {# failures}} · {tests, plural, one {# test} other {# tests}} · last seen {date} | Short form, as built |
 | `groups.env.title` | {count, plural, one {# test} other {# tests}} failed the same way in run {run} | Environment event card heading |
-| `groups.evidence` | Evidence from the logs | |
+| `groups.evidence` | Evidence from the logs | Screen reader only |
 | `groups.showTests` | {count, plural, one {Show the test} other {Show all # tests}} | Button, expands in place |
-| `groups.showing` | Showing {shown} of {total} groups. | |
-| `groups.chip` | Likely cause: {cause} | |
+| `groups.chip` | Likely cause: {cause} | With `groups.chip.confidence`, shown as "Likely cause: {name} · {level} confidence". No heading above the cards says it, so the chip does |
 | `groups.chip.confidence` | {level} confidence | level = High, Medium or Low |
 | `groups.chip.unknown` | Cause unknown | |
-| `groups.unknown.note` | The log has no sign of a known cause, so no tip is shown. | |
 | `groups.empty.title` | No failures to group | |
 | `groups.empty.body` | Every test passed in the loaded runs. Groups appear when a test fails. | |
 | `groups.noMatch.title` | No groups match "{q}" | |
 | `groups.noMatch.body` | Try a shorter word from the error message. | Action: `groups.noMatch.clear` "Clear search" |
 | `groups.long.note` | Long messages are cut at 300 characters. The full text stays one click away. | Action: `groups.long.show` "Show full message" |
-| `groups.virtual.note` | Only the cards on screen are drawn, so scrolling stays smooth. | Dev note, not shown to users. The visible line is `groups.showing` |
 | `panel.cause.title` | Likely cause: {cause} | Bold, then " · {level} confidence" muted |
 | `panel.cause.group` | See the group of {count, plural, one {# failure} other {# failures}} | Link to the card on #/groups |
-| `panel.latest` | Latest failure · run {run} | Caption over the highlighted log hunk |
+
+Interim keys confirmed (DEV-38, 2026-11-27):
+
+| Key | Text | Note |
+|---|---|---|
+| `tests.tab` | Tests | Tab on the Tests screen, with a count pill |
+| `groups.tabs.label` | Views | Name of the nav, screen reader only |
+| `groups.sort.label` | Sort groups | Name of the sort control |
+| `groups.level.high` / `medium` / `low` | High / Medium / Low | Confidence words |
+| `groups.evidence.more` / `less` | Show all {count} lines / Show fewer lines | |
+| `groups.hideTests` | Show fewer tests | Pair of `groups.showTests` |
+| `groups.long.hide` | Show less | Pair of `groups.long.show` |
+| `groups.list` | Failure groups | Name of the list, screen reader only |
+
+Retired in DEV-38 (not in the app): `groups.lead`, `groups.meta.env`, `groups.showing`, `groups.unknown.note`, `groups.virtual.note`, `panel.latest` (the existing "Latest failure" heading stays). Behaviour accepted: the highlight marks the whole quoted line, and search matches the masked template only, not the evidence.
 
 ### Cause names and tips
 
 | Key | Name | Tip |
 |---|---|---|
-| `cause.timing` / `cause.timing.tip` | Timing and waits | A wait is probably too short. Wait for something you can see on the page, not a fixed delay. |
-| `cause.order` / `cause.order.tip` | Order dependency | It probably needs another test to run first. Run it alone to check, and let it set up its own state. |
-| `cause.sharedState` / `cause.sharedState.tip` | Shared state or data | It probably shares data with another test. Give each test its own data and clean up after it. |
-| `cause.network` / `cause.network.tip` | Network or external service | A service it calls was probably slow or out of reach. Mock the call, or retry only that call. |
-| `cause.environment` / `cause.environment.tip` | Environment or resources | The machine probably ran short of memory, disk or CPU. Check the runner during the failing run. |
-| `cause.concurrency` / `cause.concurrency.tip` | Concurrency | Two things probably ran at once and raced. Wait for the first to finish before you check. |
-| `cause.locator` / `cause.locator.tip` | Locator or UI | The element probably changed or was not ready. Use a steady locator, such as a role or a test id. |
-| `cause.time` / `cause.time.tip` | Time and randomness | It probably depends on the clock or on random data. Fix the time and seed the random values. |
-| `cause.infrastructure` / `cause.infrastructure.tip` | Infrastructure | The CI service probably failed, not the test. Check the runner, then run it again. |
+| `cause.timing` / `cause.timing.tip` | Timing and waits | Wait for something you can see on the page, not a fixed delay. |
+| `cause.order` / `cause.order.tip` | Order dependency | Run it alone to check, and let it set up its own state. |
+| `cause.sharedState` / `cause.sharedState.tip` | Shared state or data | Give each test its own data and clean up after it. |
+| `cause.network` / `cause.network.tip` | Network or external service | Mock the call, or retry only that call. |
+| `cause.environment` / `cause.environment.tip` | Environment or resources | Check the runner's memory, disk and CPU during the failing run. |
+| `cause.concurrency` / `cause.concurrency.tip` | Concurrency | Wait for the first to finish before you check. |
+| `cause.locator` / `cause.locator.tip` | Locator or UI | Use a steady locator, such as a role or a test id. |
+| `cause.time` / `cause.time.tip` | Time and randomness | Fix the time and seed the random values. |
+| `cause.infrastructure` / `cause.infrastructure.tip` | Infrastructure | Check the runner, then run it again. |
 | `cause.unknown` | Cause unknown | (no tip) |
+
+### Panel word budget with a cause (decision 2026-11-27)
+
+The budget stays 90 for a panel without a cause block. A panel with a cause block (chip line plus one-sentence tip, about 19 words) may have up to 105. It was 100; "flaky: low memory" measured 109 because its latest failure has no passing retry, so the meta line counts. The meta line is now "Run {n} · attempt {a} of {total}" (-7 words, `panel.failure.meta` and `metaNoDate`), expected about 102. Reason: the block is the answer to "why", it replaces the guesswork the user would do, and one sentence is the floor. The tips were cut to the action sentence for this. The budget test checks the first sample test (90) and a test with a cause and no retry (105).
 
 ## 15. Full test page, log viewer and correlations (board 13, DEV-41)
 

@@ -48,3 +48,13 @@ it('useRoute returns the same route object until the hash really changes (so eff
   expect(result.current.query).not.toBe(first.query);
   expect(result.current.query.get('q')).toBe('a');
 });
+
+it('parses the groups route with its search and sort in the URL (DEV-38)', () => {
+  expect(parseRoute('#/groups')).toMatchObject({ name: 'groups' });
+  const r = parseRoute('#/groups?q=econnreset&sort=tests&g=abc');
+  expect(r.name).toBe('groups');
+  expect(r.query.get('q')).toBe('econnreset');
+  expect(r.query.get('sort')).toBe('tests');
+  expect(r.query.get('g')).toBe('abc');
+  expect(parseRoute('#/groups/x')).toMatchObject({ name: 'start' });
+});
