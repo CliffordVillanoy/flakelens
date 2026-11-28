@@ -59,7 +59,8 @@ it('Start shows the board 1 content', async () => {
   const zone = screen.getByRole('region', { name: 'Import reports' });
   expect(within(zone).getByText('Drop report files here')).toBeInTheDocument();
   expect(within(zone).getByRole('button', { name: 'Browse files' })).toBeInTheDocument();
-  expect(within(zone).getByRole('button', { name: 'Try sample data' })).toBeInTheDocument();
+  expect(within(zone).queryByRole('button', { name: 'Try sample data' })).toBeNull(); // the sample is a link under the box (DEV-48)
+  expect(screen.getByRole('button', { name: 'Try sample data' })).toBeInTheDocument();
   expect(screen.getByText('Your files stay in this browser. Nothing is uploaded.')).toBeInTheDocument();
   expect(screen.getByText('How do I get a report file?')).toBeInTheDocument();
   expect(screen.getByText('npx playwright test --reporter=json > results.json')).toBeInTheDocument();

@@ -54,3 +54,33 @@ it('a bad manifest or a missing sample file is the same inline error', async () 
   await userEvent.click(await screen.findByRole('button', { name: 'Try sample data' }));
   expect(await screen.findByRole('alert')).toHaveTextContent("The sample data couldn't be loaded.");
 });
+
+it('Try sample data is a plain centered link under the drop box, and Browse files is the only button in it (DEV-48)', async () => {
+  vi.stubGlobal('fetch', okFetch);
+  render(<App />);
+  const zone = await screen.findByRole('region', { name: 'Import reports' });
+  const sample = screen.getByRole('button', { name: 'Try sample data' }); // a <button> that looks like a link: it loads the sample, then navigates
+  expect(zone.contains(sample)).toBe(false);
+  expect(zone.compareDocumentPosition(sample) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy(); // after the box
+  expect(within(zone).getAllByRole('button').map((b) => b.textContent)).toEqual(['Browse files']);
+  expect(sample.className).toMatch(/text-sm/); // 14px
+  expect(sample.className).toMatch(/text-link/);
+  expect(sample.className).toMatch(/underline/);
+  expect(sample.className).toMatch(/underline-offset-2/);
+  expect(sample.className).toMatch(/min-h-6/); // a tap target of at least 24px
+  expect(sample.className).not.toMatch(/(border|bg-secondary)/); // not a button look
+  expect(sample.parentElement!.className).toMatch(/justify-center/);
+});
+
+it('the sample link is reached with Tab after Browse files, and Enter opens the sample', async () => {
+  vi.stubGlobal('fetch', okFetch);
+  render(<App />);
+  const sample = await screen.findByRole('button', { name: 'Try sample data' });
+  const browse = screen.getByRole('button', { name: 'Browse files' });
+  browse.focus();
+  await userEvent.tab();
+  expect(sample).toHaveFocus();
+  await userEvent.keyboard('{Enter}');
+  await waitFor(() => expect(window.location.hash).toBe('#/tests'));
+  expect(useStore.getState().mode).toBe('sample');
+});
