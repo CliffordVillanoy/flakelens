@@ -507,7 +507,6 @@ Rule for the build: the visible text is exactly what is in the Text column. Word
 | `tests.export.copyTop.hint` | Markdown list: rank, name, evidence, wasted minutes | ✓ |
 | `tests.export.csv` | Download CSV | ✓ |
 | `tests.export.json` | Download JSON | ✓ |
-| `tests.export.later` | Coming in v1 | ✓ |
 | `tests.count.all` | Showing all {count, plural, one {# test} other {# tests}}, grouped by status, {sort} | ✓ |
 | `tests.count.status` | Showing {count, plural, one {# {status} test} other {# {status} tests}}, grouped by status, {sort} | ✓ |
 | `tests.count.search` | Showing {count, plural, one {# test} other {# tests}} matching "{query}", grouped by status, {sort} | ✓ |
