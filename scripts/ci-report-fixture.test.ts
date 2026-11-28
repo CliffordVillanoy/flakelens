@@ -91,3 +91,22 @@ it('FlakeLens imports the scrubbed real report and shows its commit, branch and 
   expect(r.tests.length).toBeGreaterThan(5);
   expect(r.attempts.length).toBeGreaterThanOrEqual(r.tests.length);
 });
+
+// The incident shape (DEV-49): Playwright put the commit author and committer, and the whole source diff, under
+// config.metadata, and repeated the commit metadata under config.projects[] and config.filteredProjects[]. The real report
+// is dirtied the same way here; the scrub must give back exactly the clean fixture, and the verifier must accept it.
+it('the incident shape goes through the scrub and the verifier clean: author, committer and gitDiff under metadata, and the copies in projects and filteredProjects', () => {
+  const real = fixture() as unknown as { config: { metadata: Record<string, unknown>; projects: Record<string, unknown>[]; filteredProjects: Record<string, unknown>[] } };
+  const incident = structuredClone(real);
+  const gitCommit = real.config.metadata.gitCommit as Record<string, unknown>;
+  const dirtyCommit = () => ({ ...gitCommit, body: 'private body', author: { name: 'Ada Example', email: 'ada@example.com', time: 1 }, committer: { name: 'GitHub', email: 'noreply@github.com', time: 1 } });
+  const diff = ['diff --git a/src/secret.ts b/src/secret.ts', '+const key = "FAKE-TOKEN-NOT-A-SECRET-000000"', ''].join(String.fromCharCode(10));
+  incident.config.metadata = { gitCommit: dirtyCommit(), gitDiff: diff, actualWorkers: 2 };
+  for (const p of [...incident.config.projects, ...incident.config.filteredProjects]) p.metadata = { gitCommit: dirtyCommit(), gitDiff: diff };
+  expect(verifyReport(incident as never, 20_000).map((p) => p.kind)).toEqual(expect.arrayContaining(['forbidden-key', 'email']));
+  const out = scrubReport(incident as never);
+  expect(out).toEqual(fixture());
+  expect(verifyReport(out, JSON.stringify(out).length)).toEqual([]);
+  const text = JSON.stringify(out);
+  for (const gone of ['Ada Example', 'ada@example.com', 'noreply@github.com', 'private body', 'FAKE-TOKEN', 'gitDiff', 'secret.ts', 'author', 'committer']) expect(text, gone).not.toContain(gone);
+});

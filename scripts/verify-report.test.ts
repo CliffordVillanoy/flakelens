@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { MAX_BYTES, verifyReport } from './verify-report';
+import { ALLOWED_KEYS, MAX_BYTES, verifyReport } from './verify-report';
 
 type Json = Parameters<typeof verifyReport>[0];
 const FAKE = 'FAKE-TOKEN-NOT-A-SECRET-000000';
@@ -67,4 +67,24 @@ it('reads a very deeply nested report without overflowing the stack, and a huge 
   const t0 = performance.now();
   verifyReport(withSuite('@'.repeat(5_000_000) + ' ' + '/home/'.repeat(500_000)), 1000);
   expect(performance.now() - t0).toBeLessThan(1500);
+});
+
+it('rejects a key name the scrub does not emit, at any depth: committerName and actor (security review, criterion 10)', () => {
+  const commit = (extra: { [k: string]: Json }): Json => ({ ...base(), config: { metadata: { gitCommit: { hash: 'abcdef1', ...extra } } } });
+  expect(verifyReport(commit({ committerName: 'Jane Doe' }), 1000)).toEqual([{ kind: 'unknown-key', at: 'config.metadata.gitCommit.committerName' }]);
+  expect(verifyReport({ ...base(), config: { metadata: { actor: 'janedoe' } } }, 1000)).toEqual([{ kind: 'unknown-key', at: 'config.metadata.actor' }]);
+  expect(kinds({ ...base(), suites: [{ specs: [{ tests: [{ results: [{ workerIndex: 0 }] }] }] }] })).toEqual(['unknown-key']);
+  expect(kinds({ ...base(), config: { projects: [{ use: { userAgent: 'x' } }] } })).toEqual(['unknown-key']);
+});
+
+it('every key name the scrub can emit is allowed: the real scrubbed report and the scrubbed dirty fixture have no unknown key', () => {
+  for (const file of ['fixtures/ci-report/report.json']) expect(verifyReport(JSON.parse(readFileSync(file, 'utf8')) as Json, 1000).filter((p) => p.kind === 'unknown-key')).toEqual([]);
+  expect(ALLOWED_KEYS.has('config') && ALLOWED_KEYS.has('suites') && ALLOWED_KEYS.has('errors') && ALLOWED_KEYS.has('stats')).toBe(true);
+});
+
+it('a report full of unknown keys stops being read after a bounded number of problems', () => {
+  const many: { [k: string]: Json } = {};
+  for (let i = 0; i < 100_000; i++) many['k' + i] = 1;
+  const problems = verifyReport({ ...base(), config: many }, 1000);
+  expect(problems.length).toBeLessThanOrEqual(1_010);
 });

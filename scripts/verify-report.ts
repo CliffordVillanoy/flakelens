@@ -6,7 +6,8 @@ import { redactSecrets } from '../src/engine/group/normalize.ts';
 // It rejects:
 //   - a file over 2 MB (or one that is not a JSON object)
 //   - a top-level key other than config, suites, errors, stats (a new Playwright field the allowlist does not know)
-//   - the keys gitDiff, author or committer anywhere
+//   - the keys gitDiff, author or committer anywhere, and any key NAME that the scrub does not emit, at any depth
+//     (ALLOWED_KEYS below equals what scrub-report.ts writes; a field such as committerName or actor is refused)
 //   - any email-like text, even a noreply address, in a value or a key
 //   - an absolute path: /home/, /Users/, /root/, /__w/ (runner), or a drive path such as C:\ or D:/
 //   - secret-like text in a free-text value (title, message, stack, subject, branch, name): the same patterns the app's
@@ -18,6 +19,17 @@ type Json = null | boolean | number | string | Json[] | { [key: string]: Json };
 export const MAX_BYTES = 2_000_000;
 export const ALLOWED_TOP = ['config', 'suites', 'errors', 'stats'];
 const FORBIDDEN_KEYS = new Set(['gitDiff', 'author', 'committer']);
+// Every key name the scrub can emit, at any depth. Keep it equal to scripts/scrub-report.ts: a key outside it is a field the
+// allowlist never produced, so something other than the scrub touched the report (or the two scripts drifted apart).
+export const ALLOWED_KEYS = new Set([
+  ...ALLOWED_TOP,
+  'version', 'shard', 'current', 'total', 'metadata', 'gitCommit', 'hash', 'shortHash', 'subject', 'branch', 'os',
+  'projects', 'filteredProjects', 'id', 'name', 'use', 'defaultBrowserType',
+  'title', 'file', 'line', 'column', 'specs', 'tests', 'tags', 'ok', 'projectId', 'projectName', 'expectedStatus', 'status',
+  'results', 'duration', 'retry', 'startTime', 'error', 'message', 'stack',
+  'expected', 'skipped', 'unexpected', 'flaky',
+]);
+const MAX_PROBLEMS = 1_000; // a report full of unknown keys stops being read after this many
 const FREE_TEXT_KEYS = new Set(['title', 'message', 'stack', 'subject', 'branch', 'name']);
 const TEXT_CAP = 50_000;
 
@@ -26,7 +38,7 @@ const DRIVE_PATH = /(?<![A-Za-z0-9])[A-Za-z]:[\\/]/;
 const UNIX_PATH = /(?<![\w:.-])\/(?:home|Users|root|__w)\//;
 
 export interface Problem {
-  kind: 'size' | 'not-an-object' | 'unknown-top-level-key' | 'forbidden-key' | 'email' | 'absolute-path' | 'secret-like';
+  kind: 'size' | 'not-an-object' | 'unknown-top-level-key' | 'unknown-key' | 'forbidden-key' | 'email' | 'absolute-path' | 'secret-like';
   at: string; // a key path such as suites[0].specs[2].title, never the value
 }
 
@@ -48,14 +60,16 @@ export function verifyReport(report: Json, bytes: number): Problem[] {
   for (const k of Object.keys(report)) if (!ALLOWED_TOP.includes(k)) out.push({ kind: 'unknown-top-level-key', at: k });
   // An explicit stack, not recursion: a deeply nested report cannot overflow the call stack.
   const stack: { value: Json; at: string; key: string }[] = [{ value: report, at: '$', key: '' }];
-  while (stack.length > 0) {
+  while (stack.length > 0 && out.length < MAX_PROBLEMS) {
     const { value, at, key } = stack.pop()!;
     if (typeof value === 'string') textProblems(value, key, at, out);
     else if (Array.isArray(value)) value.forEach((v, i) => stack.push({ value: v, at: `${at}[${i}]`, key }));
     else if (typeof value === 'object' && value !== null) {
       for (const [k, v] of Object.entries(value)) {
+        if (out.length >= MAX_PROBLEMS) break;
         const here = at === '$' ? k : `${at}.${k}`;
         if (FORBIDDEN_KEYS.has(k)) out.push({ kind: 'forbidden-key', at: here });
+        else if (!ALLOWED_KEYS.has(k) && !(at === '$' && !ALLOWED_TOP.includes(k))) out.push({ kind: 'unknown-key', at: here }); // top-level strangers are reported once, above
         textProblems(k, '', here, out); // a key can carry an email or a path too
         stack.push({ value: v, at: here, key: k });
       }
@@ -76,8 +90,8 @@ if (process.argv[1]?.endsWith('verify-report.ts')) {
       problems = [{ kind: 'not-an-object', at: 'file is not valid JSON' }];
     }
     if (problems.length > 0) {
-      for (const p of problems.slice(0, 50)) console.error(`verify-report: ${p.kind} at ${p.at}`);
-      if (problems.length > 50) console.error(`verify-report: and ${problems.length - 50} more`);
+      for (const p of problems.slice(0, 200)) console.error(`verify-report: ${p.kind} at ${p.at}`);
+      if (problems.length > 200) console.error(`verify-report: and ${problems.length - 200} more`);
       process.exit(1);
     }
     console.log('verify-report: clean');
