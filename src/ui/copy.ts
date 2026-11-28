@@ -40,6 +40,8 @@ export const catalog = {
   'start.help.command': 'npx playwright test --reporter=json > results.json',
   'start.help.step2': 'Then download that file from your last 5 to 10 CI runs and drop them all here at once.',
   // Backticks mark inline code; rendered by <WithCode>.
+  // Interim (DEV-43), to be confirmed by the UI/UX chat.
+  'start.help.junit': 'Using JUnit XML? Drop the XML files the same way. Maven writes them to target/surefire-reports.',
   'start.help.oneRun': 'Only one run? Turn on retries, or add `--repeat-each=5` once, so a single run already shows flakiness.',
 
   // Import progress and results (spec 9.1)
@@ -63,7 +65,9 @@ export const catalog = {
   'import.progress.reading': 'Reading…',
   'import.noCommit': 'No commit info found in {file}. Evidence across commits will be limited.',
   'import.fail.format':
-    "{file} wasn't imported. It isn't a Playwright JSON report. JUnit XML support is planned for a later version.",
+    "{file} wasn't imported. It isn't a Playwright JSON or JUnit XML report.",
+  // Interim (DEV-43), to be confirmed by the UI/UX chat: an XML file with a document type that defines entities.
+  'import.fail.unsafe': "{file} wasn't imported. It defines XML entities, which FlakeLens never reads.",
   'import.fail.unreadable': "{file} couldn't be read. It may be cut off. Try downloading it again.",
   'import.fail.tooBad': "{file} wasn't imported. Too much of it was unclear to rank tests reliably.",
   'import.fail.tooLarge': '{file} is larger than the {limit} limit. Try a file with fewer runs.',

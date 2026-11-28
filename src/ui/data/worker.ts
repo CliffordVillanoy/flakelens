@@ -1,6 +1,6 @@
 import { expose } from 'comlink';
 import { z } from 'zod';
-import { parsePlaywrightReport } from '@/engine/import/playwright';
+import { parseReport } from '@/engine/import/report';
 import type { ImportResult } from '@/engine/types';
 
 // The page CSP does not cover workers; this keeps zod from compiling parsers with Function() so none is needed.
@@ -15,7 +15,7 @@ export interface ParseInput {
 /** Parses files in order and reports progress after each one. `order` is set by the importer afterwards. */
 export function parseFiles(files: ParseInput[], importedAt: string, onProgress: (i: number) => void): ImportResult[] {
   return files.map((f, i) => {
-    const res = parsePlaywrightReport(f.text, { fileName: f.name, importedAt, order: i, commitLabel: f.commitLabel });
+    const res = parseReport(f.text, { fileName: f.name, importedAt, order: i, commitLabel: f.commitLabel });
     onProgress(i + 1);
     return res;
   });

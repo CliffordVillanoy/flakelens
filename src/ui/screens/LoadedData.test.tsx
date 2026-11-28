@@ -98,7 +98,7 @@ it('Loaded data lists the files with their result, the notices and the runs tabl
 
   const notices = screen.getByRole('region', { name: /^Notices · \d+$/ });
   expect(notices).toHaveTextContent('1 result had no status: "adds item" (run no-status.json)');
-  expect(notices).toHaveTextContent("wrong-format.json wasn't imported. It isn't a Playwright JSON report.");
+  expect(notices).toHaveTextContent("wrong-format.json wasn't imported. It isn't a Playwright JSON or JUnit XML report.");
 
   const table = screen.getByRole('table', { name: 'Runs' });
   const headers = within(table).getAllByRole('columnheader').map((h) => h.textContent);

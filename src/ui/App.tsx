@@ -93,7 +93,7 @@ export function App() {
       <input
         ref={picker}
         type="file"
-        accept=".json,application/json"
+        accept=".json,.xml,application/json,application/xml,text/xml"
         multiple
         hidden
         onChange={(e) => {

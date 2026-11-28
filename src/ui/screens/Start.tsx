@@ -92,6 +92,7 @@ export function Start({ onFiles, onBrowse }: { onFiles: (files: File[]) => void;
               <code>{t('start.help.command')}</code>
             </div>
             <div>{t('start.help.step2')}</div>
+            <div>{t('start.help.junit')}</div>
             <div>
               <WithCode text={t('start.help.oneRun')} />
             </div>

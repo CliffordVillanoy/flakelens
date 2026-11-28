@@ -120,7 +120,7 @@ it('hostile names render as text', async () => {
 });
 
 it.each([
-  ['wrong-format.json', "wrong-format.json wasn't imported. It isn't a Playwright JSON report."],
+  ['wrong-format.json', "wrong-format.json wasn't imported. It isn't a Playwright JSON or JUnit XML report."],
   ['empty.json', "empty.json couldn't be read. It may be cut off. Try downloading it again."],
   ['truncated.json', "truncated.json couldn't be read."],
   ['mostly-bad.json', "mostly-bad.json wasn't imported. Too much of it was unclear to rank tests reliably."],
