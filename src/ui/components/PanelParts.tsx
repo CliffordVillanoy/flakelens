@@ -47,7 +47,7 @@ export function FileHeaderBar({ file, project, passed, failed }: { file: string;
             i < green ? (
               <span key={i} className="size-2 rounded-xs bg-status-stable" />
             ) : (
-              <span key={i} className="box-border size-2 rounded-xs border-2 border-status-failing" />
+              <span key={i} className="size-2 rounded-xs bg-status-failing" />
             ),
           )}
         </span>

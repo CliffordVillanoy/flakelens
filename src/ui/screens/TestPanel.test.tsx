@@ -334,3 +334,15 @@ it('the opened "More to check" is indented: bullets 20px deeper than "What to ch
   expect(tip.className).toMatch(/ml-5/);
   expect(more.querySelector('summary')!.className).not.toMatch(/\b(pl|ml|ps|ms)-/); // the summary and its triangle are not moved
 });
+
+it('the diffstat squares are all solid: green for passed, red for failed, no outline (DEV-47)', async () => {
+  render(<Tests />);
+  const panel = await open('flaky');
+  const squares = [...within(panel).getByRole('img', { name: '3 passed · 3 failed attempts' }).querySelectorAll('[aria-hidden] > span')];
+  expect(squares).toHaveLength(5);
+  const failed = squares.filter((s) => s.className.includes('status-failing'));
+  expect(failed.length).toBeGreaterThan(0);
+  for (const s of failed) expect(s.className).toMatch(/\bbg-status-failing\b/);
+  for (const s of squares) expect(s.className).not.toMatch(/\bborder(-\d)?\b/);
+  expect(squares.every((s) => /\bbg-status-(stable|failing)\b/.test(s.className))).toBe(true);
+});
