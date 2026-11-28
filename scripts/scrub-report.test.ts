@@ -44,3 +44,15 @@ it('also handles Windows separators and leaves a report without a root alone', (
   expect(JSON.stringify(scrubReport(win))).not.toContain('D:');
   expect(scrubReport({ suites: [] })).toEqual({ suites: [] });
 });
+
+it('scrubs the copies Playwright keeps under projects and filteredProjects, and drops the source diff', () => {
+  const r = report() as unknown as { config: { metadata: Record<string, unknown>; projects?: unknown[]; filteredProjects?: unknown[] } };
+  const diff = 'diff --git a/x b/x\n+secret change';
+  const copy = () => ({ metadata: { gitCommit: structuredClone(r.config.metadata.gitCommit), gitDiff: diff } });
+  r.config.metadata.gitDiff = diff;
+  r.config.projects = [copy()];
+  r.config.filteredProjects = [copy()];
+  const out = JSON.stringify(scrubReport(r as never));
+  for (const gone of ['A Person', 'a@example.com', 'noreply@github.com', 'private body text', 'secret change', 'gitDiff']) expect(out).not.toContain(gone);
+  expect(out.match(/4e06c97aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/g)).toHaveLength(3);
+});

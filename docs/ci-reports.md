@@ -27,7 +27,7 @@ Then drop `report.json` into FlakeLens (Start page, Browse files).
 
 This repository is public, so the artifacts are public: anyone with a GitHub account can download them. A report holds test titles, file paths inside the repository, durations, error text and the git commit (hash, short hash, subject and branch). It holds no secrets, tokens or environment values. Do not put anything private into an e2e test title or error message.
 
-Playwright also writes the commit author and committer (name and email), the full commit message body and absolute runner paths into the raw report. On a pull request the commit is a merge commit, so that would be a contributor's name and email in a public file. `scripts/scrub-report.ts` therefore removes author, committer and body, and turns absolute paths into repository-relative ones, before the upload. If the scrub fails, nothing is uploaded. FlakeLens needs only the hash, so it still shows the commit.
+Playwright also writes the commit author and committer (name and email), the full commit message body, the full source diff of the change (`gitDiff`, repeated under every project) and absolute runner paths into the raw report. On a pull request the commit is a merge commit, so that would be a contributor's name and email in a public file. `scripts/scrub-report.ts` therefore removes author, committer, body and the diff everywhere in the report, and turns absolute paths into repository-relative ones, before the upload. If the scrub fails, nothing is uploaded. FlakeLens needs only the hash, so it still shows the commit.
 
 ## Keeping them
 
