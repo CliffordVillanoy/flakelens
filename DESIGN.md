@@ -741,3 +741,7 @@ The content of a closed block (checks and the quarantine tip) is indented 20px f
 ### Diffstat squares are filled too (decided 2026-11-28)
 
 The five 8px squares in the file-header diffstat (rx 2) are solid: green for passed attempts, red for failed attempts. No hollow red square remains in the app. The boards already drew them filled.
+
+## Start: the sample is a link (decided 2026-11-28)
+
+On Start, "Try sample data" is a plain text link centered under the drop area, in the link colour (`--link`), 14px, not a button. Browse files is the only button, so there is one clear action. The link adds no counted words (control name), so the Start budget of 40 stays. It opens the same read-only sample as before. Reason: the drop area is the main task; the sample is the way out for people who have no reports yet.
