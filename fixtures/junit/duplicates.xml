@@ -1,0 +1,6 @@
+<testsuite name="dupes" timestamp="2026-11-22T08:00:00">
+  <testcase classname="d.Suite" name="same" time="0.1"/>
+  <testcase classname="d.Suite" name="same" time="0.2"><failure message="x"/></testcase>
+  <testcase classname="d.Suite" name="same" time="0.3"/>
+  <testcase classname="d.Suite" name="other" time="0.1"/>
+</testsuite>

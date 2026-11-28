@@ -57,11 +57,11 @@ it('Start shows the board 1 content', async () => {
   await start();
   expect(screen.getByText(/A flaky test passes and fails on the same code/)).toBeInTheDocument();
   const zone = screen.getByRole('region', { name: 'Import reports' });
-  expect(within(zone).getByText('Drop Playwright JSON reports here')).toBeInTheDocument();
+  expect(within(zone).getByText('Drop report files here')).toBeInTheDocument();
   expect(within(zone).getByRole('button', { name: 'Browse files' })).toBeInTheDocument();
   expect(within(zone).getByRole('button', { name: 'Try sample data' })).toBeInTheDocument();
   expect(screen.getByText('Your files stay in this browser. Nothing is uploaded.')).toBeInTheDocument();
-  expect(screen.getByText('How do I get a Playwright JSON report?')).toBeInTheDocument();
+  expect(screen.getByText('How do I get a report file?')).toBeInTheDocument();
   expect(screen.getByText('npx playwright test --reporter=json > results.json')).toBeInTheDocument();
   expect(screen.getByText('--repeat-each=5').tagName).toBe('CODE');
   const input = document.querySelector<HTMLInputElement>('input[type=file]')!;
@@ -120,7 +120,7 @@ it('hostile names render as text', async () => {
 });
 
 it.each([
-  ['wrong-format.json', "wrong-format.json wasn't imported. It isn't a Playwright JSON report."],
+  ['wrong-format.json', "wrong-format.json wasn't imported. It isn't a Playwright JSON or JUnit XML report."],
   ['empty.json', "empty.json couldn't be read. It may be cut off. Try downloading it again."],
   ['truncated.json', "truncated.json couldn't be read."],
   ['mostly-bad.json', "mostly-bad.json wasn't imported. Too much of it was unclear to rank tests reliably."],
@@ -151,7 +151,7 @@ it('format failure offers format help on Start', async () => {
   await start();
   await upload(pw('wrong-format.json'));
   await userEvent.click(await screen.findByRole('button', { name: 'Which format do I need?' }));
-  expect(screen.getByText('How do I get a Playwright JSON report?').closest('details')).toHaveAttribute('open');
+  expect(screen.getByText('How do I get a report file?').closest('details')).toHaveAttribute('open');
 });
 
 it('timeout and crash keep the drop zone active', async () => {

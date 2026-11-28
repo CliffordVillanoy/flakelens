@@ -1,0 +1,3 @@
+<?xml version="1.0"?>
+<!DOCTYPE foo [<!ENTITY % remote SYSTEM "http://127.0.0.1:9/evil.dtd"> %remote;]>
+<testsuite name="xxe"><testcase classname="x.Y" name="&remote;" time="0.1"/></testsuite>

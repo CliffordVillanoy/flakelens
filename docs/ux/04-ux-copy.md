@@ -86,16 +86,17 @@ Drafted 2026-11-19 in the UI/UX chat. Covers every string on the 6 MVP wireframe
 |---|---|
 | `start.title` | Find your flaky tests |
 | `start.lead` | A flaky test passes and fails on the same code. Drop your test reports to rank them. | Updated 2026-11-26 (simplification pass) |
-| `start.drop.title` | Drop Playwright JSON reports here |
+| `start.drop.title` | Drop report files here | Changed 2026-11-28 (DEV-43): JSON and XML both work, so the title names neither. One word shorter |
 | `start.drop.hint` | More runs give better results. | Updated 2026-11-26 (simplification pass) |
 | `start.browse` | Browse files |
 | `start.sample` | Try sample data |
 | `start.privacy` | Your files stay in this browser. Nothing is uploaded. |
-| `start.help.title` | How do I get a Playwright JSON report? |
+| `start.help.title` | How do I get a report file? | Changed 2026-11-28 (DEV-43). Closed block, so not counted in the Start budget |
 | `start.help.step1` | In CI, run your tests with the JSON reporter and save the file as an artifact: |
 | `start.help.command` | `npx playwright test --reporter=json > results.json` |
 | `start.help.step2` | Then download that file from your last 5 to 10 CI runs and drop them all here at once. |
 | `start.help.oneRun` | Only one run? Turn on retries, or add `--repeat-each=5` once, so a single run already shows flakiness. |
+| `start.help.junit` | Using JUnit XML? Drop the XML files the same way. Maven writes them to target/surefire-reports. | Confirmed (DEV-43). Sits inside the closed help block, after `start.help.oneRun`, so it does not count toward the Start budget of 40 |
 
 ### Import progress and results (spec 9.1, every case)
 
@@ -114,7 +115,8 @@ Drafted 2026-11-19 in the UI/UX chat. Covers every string on the 6 MVP wireframe
 | `import.dupeIds` | Duplicate IDs | {count} tests shared a name. They were told apart by project name and position. |
 | `import.dupeRun` | Same run twice | This run was already loaded, so it wasn't counted twice. |
 | `import.noCommit` | Missing metadata | No commit info found in {file}. Evidence across commits will be limited. |
-| `import.fail.format` | Wrong format | {file} wasn't imported. It isn't a Playwright JSON report. JUnit XML support is planned for a later version. |
+| `import.fail.format` | Wrong format | {file} wasn't imported. It isn't a Playwright JSON or JUnit XML report. |
+| `import.fail.unsafe` | Unsafe file | {file} wasn't imported. It defines XML entities, which FlakeLens never reads. | Confirmed (DEV-43). Same pattern as the other import failures (title, then message) |
 | `import.fail.unreadable` | Empty or truncated | {file} couldn't be read. It may be cut off. Try downloading it again. |
 | `import.fail.tooBad` | More than half bad | {file} wasn't imported. Too much of it was unclear to rank tests reliably. |
 | `import.fail.tooLarge` | Too large or deep | {file} is larger than the {limit} limit. Try a file with fewer runs. |
@@ -507,7 +509,7 @@ Rule for the build: the visible text is exactly what is in the Text column. Word
 | `tests.export.copyTop.hint` | Markdown list: rank, name, evidence, wasted minutes | ✓ |
 | `tests.export.csv` | Download CSV | ✓ |
 | `tests.export.json` | Download JSON | ✓ |
-| `tests.export.later` | Retired in DEV-42 (2026-11-28). Was "Coming in v1" |
+| `tests.export.later` | Retired in DEV-42 (2026-11-28). Was "Coming in v1" | ✓ |
 | `tests.count.all` | Showing all {count, plural, one {# test} other {# tests}}, grouped by status, {sort} | ✓ |
 | `tests.count.status` | Showing {count, plural, one {# {status} test} other {# {status} tests}}, grouped by status, {sort} | ✓ |
 | `tests.count.search` | Showing {count, plural, one {# test} other {# tests}} matching "{query}", grouped by status, {sort} | ✓ |

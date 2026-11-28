@@ -156,3 +156,23 @@ it('a cancel between two reads stops before the next read', async () => {
   await expect(run([first, second], emptyDataset(), { signal: ctrl.signal })).rejects.toMatchObject({ name: 'AbortError' });
   expect(second.text).not.toHaveBeenCalled();
 });
+
+// ---- JUnit XML (DEV-43): the worker picks the importer by content ----
+const xml = (f: string) => new File([readFileSync(`fixtures/junit/${f}`, 'utf8')], f);
+
+it('a JUnit file, a Playwright file and an unknown file in one drop are each read by the right importer', async () => {
+  const r = await run([xml('valid.xml'), file('run-00.json'), xml('wrong-format.xml'), xml('xxe-file.xml')]);
+  expect(r.records.map((x) => x.result)).toEqual(['success', 'success', 'failed', 'failed']);
+  expect(r.records[2]!.notices.map((n) => n.code)).toEqual(['import.fail.format']);
+  expect(r.records[3]!.notices.map((n) => n.code)).toEqual(['import.fail.unsafe']);
+  expect(r.dataset.runs).toHaveLength(2);
+  const junit = r.dataset.runs.find((x) => x.os === 'Linux')!;
+  expect(junit.commit).toBe('a1b2c3d4e5f6a7b8');
+  expect(r.dataset.tests.some((t) => t.title === 'rejectsExpiredCoupon' && t.file === 'com.acme.CheckoutTest')).toBe(true);
+  expect(scoreTests(r.dataset).length).toBe(r.dataset.tests.length);
+});
+
+it('JUnit runs can be saved and loaded again like any other', async () => {
+  const r = await run([xml('surefire-rerun.xml')], emptyDataset(), { persist: true });
+  expect(await loadDataset()).toEqual(r.dataset);
+});

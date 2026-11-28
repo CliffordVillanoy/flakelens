@@ -13,6 +13,7 @@ const NOTICE_CODES = {
   'import.dupeRun': 1,
   'import.noCommit': 1,
   'import.fail.format': 1,
+  'import.fail.unsafe': 1,
   'import.fail.unreadable': 1,
   'import.fail.tooBad': 1,
   'import.fail.tooLarge': 1,

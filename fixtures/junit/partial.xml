@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="partial" timestamp="2026-11-22T08:00:00">
+  <testcase classname="p.Suite" name="goodOne" time="0.5"/>
+  <testcase classname="p.Suite" name="badTime" time="soon"/>
+  <testcase classname="p.Suite" name="negativeTime" time="-3"/>
+  <testcase classname="p.Suite" name="noTime"/>
+  <testcase classname="p.Suite" time="0.1"/>
+  <testcase classname="p.Suite" name="   " time="0.1"/>
+  <testcase classname="p.Suite" name="fails" time="0.2"><failure message="no"/></testcase>
+</testsuite>

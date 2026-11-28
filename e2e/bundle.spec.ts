@@ -24,6 +24,9 @@ test('dist holds no test helpers, and the report parser is only in the worker', 
   // zod/mini checks stored rows on the page; the Playwright report parser (full zod) stays in the worker.
   expect(readFileSync(main[0]!, 'utf8')).not.toContain('projectName');
   expect(readFileSync(worker[0]!, 'utf8')).toContain('projectName');
+  // The JUnit reader (DEV-43) is parsing code too: it lives in the worker only, never in the page bundle.
+  expect(readFileSync(main[0]!, 'utf8')).not.toContain('flakyFailure');
+  expect(readFileSync(worker[0]!, 'utf8')).toContain('flakyFailure');
   const kb = Math.round(statSync(main[0]!).size / 1000);
   console.log(`bundle: main ${kb} kB, worker ${Math.round(statSync(worker[0]!).size / 1000)} kB`);
   expect(kb).toBeLessThan(500); // below Vite's chunk warning

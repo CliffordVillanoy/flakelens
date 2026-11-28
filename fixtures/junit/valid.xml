@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="checkout" tests="4" failures="1" errors="0" skipped="1" time="3.250">
+  <testsuite name="com.acme.CheckoutTest" tests="3" failures="1" errors="0" skipped="1" time="2.500" timestamp="2026-11-20T10:00:00">
+    <properties>
+      <property name="git.commit" value="a1b2c3d4e5f6a7b8"/>
+      <property name="git.branch" value="feat/coupons"/>
+      <property name="os.name" value="Linux"/>
+      <property name="browser" value="chromium"/>
+      <property name="java.version" value="21.0.1"/>
+    </properties>
+    <testcase classname="com.acme.CheckoutTest" name="appliesCouponCode" time="0.750"/>
+    <testcase classname="com.acme.CheckoutTest" name="rejectsExpiredCoupon" time="1.250">
+      <failure message="expected:&lt;1&gt; but was:&lt;0&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;1&gt; but was:&lt;0&gt;
+	at com.acme.CheckoutTest.rejectsExpiredCoupon(CheckoutTest.java:42)</failure>
+    </testcase>
+    <testcase classname="com.acme.CheckoutTest" name="pendingFeature" time="0">
+      <skipped message="not ready"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="com.acme.CartTest" tests="1" failures="0" errors="0" skipped="0" time="0.750" timestamp="2026-11-20T10:00:05">
+    <testcase classname="com.acme.CartTest" name="addsItem" time="0.750"/>
+  </testsuite>
+</testsuites>

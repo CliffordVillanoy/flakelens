@@ -38,26 +38,30 @@ code{font-family:'JetBrains Mono',monospace;font-size:13px}
 
       <section aria-label="Import reports" style="display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 40px 24px; background: #FFFFFF; border: 2px dashed #0969DA; border-radius: 8px; text-align: center">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#0969DA" stroke-width="1.5" aria-hidden="true"><path d="M12 16V4"></path><path d="M7 9l5-5 5 5"></path><path d="M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3"></path></svg>
-        <div style="font-size: 17px; font-weight: 600">Drop Playwright JSON reports here</div>
+        <div style="font-size: 17px; font-weight: 600">Drop report files here</div>
         <div style="font-size: 14px; color: #4F5A65">More runs give better results.</div>
         <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 6px">
           <button type="button" style="height: 40px; padding: 0 18px; border: 1px solid #C3CCD5; border-radius: 6px; background: #EFF2F5; color: #1F2328; font: inherit; font-weight: 600; font-size: 14px">Browse files</button>
-          <button type="button" style="height: 40px; padding: 0 18px; border: 1px solid #C3CCD5; border-radius: 6px; background: #EFF2F5; color: #1F2328; font: inherit; font-weight: 600; font-size: 14px">Try sample data</button>
         </div>
       </section>
+
+      <a href="#" style="align-self: center; font-size: 14px; color: #0860CA; text-underline-offset: 2px">Try sample data</a>
 
       <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #1A7F37">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 018 0v3"></path></svg>
         Your files stay in this browser. Nothing is uploaded.
       </div>
 
+      <details style="font-size: 12px"><summary style="cursor: pointer; width: fit-content">Design note</summary><p style="margin: 6px 0 0">Decided 2026-11-28. The sample is a plain link under the drop area, so Browse files is the only button and the one clear action. No new words: the link is a control name.</p></details>
+
       <details style="padding: 4px 0" open="">
-        <summary style="font-size: 14px; font-weight: 600; cursor: pointer">How do I get a Playwright JSON report?</summary>
+        <summary style="font-size: 14px; font-weight: 600; cursor: pointer">How do I get a report file?</summary>
         <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 12px; font-size: 14px; color: #393F46">
           <div>In CI, run your tests with the JSON reporter and save the file as an artifact:</div>
           <div style="background: #F6F8FA; border: 1px solid #D1D9E0; border-radius: 6px; padding: 10px 12px"><code>npx playwright test --reporter=json &gt; results.json</code></div>
           <div>Then download that file from your last 5 to 10 CI runs and drop them all here at once.</div>
           <div>Only one run? Turn on retries, or add <code>--repeat-each=5</code> once, so a single run already shows flakiness.</div>
+          <div>Using JUnit XML? Drop the XML files the same way. Maven writes them to target/surefire-reports.</div>
         </div>
       </details>
     </div>

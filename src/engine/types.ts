@@ -13,6 +13,7 @@ export type NoticeCode =
   | 'import.dupeRun'
   | 'import.noCommit'
   | 'import.fail.format'
+  | 'import.fail.unsafe'
   | 'import.fail.unreadable'
   | 'import.fail.tooBad'
   | 'import.fail.tooLarge';
