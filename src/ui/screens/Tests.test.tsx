@@ -67,15 +67,16 @@ it('rows show the pill word only, the evidence sentence and wasted time; the nam
   expect(failing).toHaveTextContent('—');
 });
 
-it('the run strip has one spoken label and the failed square is hollow', () => {
+it('the run strip has one spoken label and the failed square is filled like the others', () => {
   render(<Tests />);
   const row = screen.getByRole('link', { name: 'flaky' }).closest<HTMLElement>('[role=row]')!;
   const strip = within(row).getByRole('img');
   expect(strip).toHaveAccessibleName('Last 4 runs, oldest first: Passed on retry, Passed, Passed, Failed');
   const rects = strip.querySelectorAll('rect');
   expect(rects).toHaveLength(4);
-  expect(rects[3]).toHaveAttribute('fill', 'none'); // failed: 2px outline, empty centre
-  expect(rects[0]).not.toHaveAttribute('fill', 'none');
+  expect(rects[3]).toHaveAttribute('fill', 'var(--status-failing)'); // failed: solid red (DEV-47)
+  expect(rects[3]).not.toHaveAttribute('stroke');
+  expect(rects[0]).toHaveAttribute('fill', 'var(--status-flaky)');
 });
 
 it.each<[string, string]>([
