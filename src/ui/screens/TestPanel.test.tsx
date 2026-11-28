@@ -320,3 +320,17 @@ it('Open full view links to the full page of this test and carries the list filt
   const link = within(panel).getByRole('link', { name: 'Open full view' });
   expect(link).toHaveAttribute('href', '#/tests/flaky/full?status=flaky&q=fla');
 });
+
+it('the opened "More to check" is indented: bullets 20px deeper than "What to check next", the Tip 20px in; the summary stays put (DEV-47)', async () => {
+  render(<Tests />);
+  const panel = await open('flaky');
+  const note = within(panel).getByRole('region', { name: 'What this means' });
+  const more = note.querySelector('details')!;
+  const outer = [...note.querySelectorAll('ul')].find((u) => !more.contains(u))!;
+  const inner = more.querySelector('ul')!;
+  expect(outer.className).toMatch(/pl-\[18px\]/);
+  expect(inner.className).toMatch(/pl-\[38px\]/); // the outer 18px plus 20px more
+  const tip = [...more.querySelectorAll('div')].find((d) => d.textContent!.startsWith('Tip:'))!;
+  expect(tip.className).toMatch(/ml-5/);
+  expect(more.querySelector('summary')!.className).not.toMatch(/\b(pl|ml|ps|ms)-/); // the summary and its triangle are not moved
+});
