@@ -1,6 +1,6 @@
 # DEV-44: Real-data check of the flaky detector
 
-**Status:** To do
+**Status:** In progress (sent to dev chat 2026-11-28 after DEV-48 merged as PR #23, main 4e06c97; go/no-go note to planning before any download)
 
 **Goal:** Finish the flaky detector's definition of done (spec 11.1 item 5): check it on messier real-world data and publish the result, even if modest.
 

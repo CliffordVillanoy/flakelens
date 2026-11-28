@@ -1,6 +1,6 @@
 # DEV-48: Start: "Try sample data" is a link under the drop area
 
-**Status:** Done locally (2026-11-28, commit `7a4c0cf` on `feat/dev-48-sample-link` from origin/main 14a609c, worktree `flakelens-dev48`; dev chat reports 1291 unit + 74 e2e, typecheck, lint, build clean, axe Start both themes). Not pushed or merged. It stays a `<button>` styled as a link (it loads the sample first, which can fail with Try again, then navigates); Enter and Space work; text-sm, link colour, underline, offset 2px, min-h-6. No new copy.
+**Status:** Merged (2026-11-28, PR #23 squashed, main 4e06c97; check and e2e green; commit 7a4c0cf). It stays a `<button>` styled as a link (it loads the sample first, which can fail with Try again, then navigates); Enter and Space work; text-sm, link colour, underline, offset 2px, min-h-6. No new copy.
 
 **Goal:** Start has one clear action: Browse files is the only button, and the sample is a quiet link.
 
