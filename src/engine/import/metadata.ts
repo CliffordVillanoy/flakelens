@@ -38,6 +38,12 @@ export function cleanMeta(raw: unknown): string | null {
   return text === '' ? null : text;
 }
 
+/** A commit from a report: a hex id of 7 to 64 characters, else null (a name that looks like markup never becomes a commit). */
+export function cleanCommit(raw: unknown): string | null {
+  const hash = cleanMeta(raw);
+  return hash !== null && HASH.test(hash) ? hash : null;
+}
+
 const positiveInt = (v: unknown): v is number => typeof v === 'number' && Number.isSafeInteger(v) && v >= 1;
 
 export function readRunMetadata(config: unknown): RunMetadata {

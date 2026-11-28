@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.acme.FlakyTest" tests="3" failures="1" errors="0" skipped="0" time="4.0" timestamp="2026-11-21T09:30:00">
+  <properties>
+    <property name="os.name" value="Mac OS X"/>
+  </properties>
+  <testcase classname="com.acme.FlakyTest" name="passesAfterRetry" time="1.2">
+    <flakyFailure message="timeout 1" type="java.lang.AssertionError" time="0.4">
+      <stackTrace>java.lang.AssertionError: timeout 1
+	at com.acme.FlakyTest.passesAfterRetry(FlakyTest.java:10)</stackTrace>
+      <system-out>retry output</system-out>
+    </flakyFailure>
+    <flakyError message="boom 2" type="java.io.IOException" time="0.3">java.io.IOException: boom 2</flakyError>
+  </testcase>
+  <testcase classname="com.acme.FlakyTest" name="alwaysFails" time="0.9">
+    <failure message="still red" type="java.lang.AssertionError">first failure</failure>
+    <rerunFailure message="red again" type="java.lang.AssertionError" time="0.3">second</rerunFailure>
+    <rerunError message="red error" type="java.lang.IllegalStateException" time="0.2">third</rerunError>
+  </testcase>
+  <testcase classname="com.acme.FlakyTest" name="stable" time="0.2"/>
+</testsuite>
