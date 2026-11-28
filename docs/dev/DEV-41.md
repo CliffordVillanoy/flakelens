@@ -1,6 +1,6 @@
 # DEV-41: Full test page with log viewer
 
-**Status:** To do
+**Status:** Done locally (2026-11-28, 8 commits c7a5bf8..c6a4176 (incl. `27103b7` DEV-40 follow-up engine fix and `c6a4176` how-text) on `feat/dev-41-full-test-page` from origin/main 803a989, worktree `flakelens-dev41`; 1186 unit + 62 e2e pass, typecheck, lint, build clean, verified by planning). Not pushed or merged. Own windowing (no dependency), max 150 rows, 5 MB log opens under 0.5 s; redactSecrets on every shown or copied line and chip quote, cut after masking; verifyEvidence on raw text. Project card hidden when missing (one-project suites). Word budget: full page 90 (measured 77 and 78). Copy: log.range, corr.finding, corr.none, corr.notEnough shorter than the doc; many interim keys pending UI/UX. DEV-40 follow-up shipped in this branch (new optional result field `method`; interim key corr.how.best). Accepted: search runs on the raw log; wrapped line heights estimated.
 
 **Goal:** A test's whole story on one page: run timeline, failure log with highlighted evidence, and correlations.
 
