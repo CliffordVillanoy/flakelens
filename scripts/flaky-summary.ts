@@ -20,9 +20,14 @@ export function summary(report: { suites?: Suite[] } | null): string {
   return flaky.length ? `### Flaky e2e tests (passed on retry)\n${flaky.map((f) => `- ${f}`).join('\n')}` : 'No flaky e2e tests in this run.';
 }
 
+// One GitHub warning annotation per flaky test: shown on the run page and the PR checks, not only in the summary.
+export const annotations = (report: { suites?: Suite[] }): string[] => flakyTests(report).map((f) => `::warning title=Flaky e2e test::${f}`);
+
 if (process.argv[1]?.endsWith('flaky-summary.ts')) {
   const file = process.argv[2] ?? 'test-results/report.json';
-  const text = summary(existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : null);
+  const report = existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : null;
+  const text = summary(report);
+  if (report && process.env.GITHUB_ACTIONS) for (const line of annotations(report)) console.log(line);
   if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${text}\n`);
   else console.log(text);
 }

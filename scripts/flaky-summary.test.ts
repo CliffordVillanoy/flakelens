@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { flakyTests, summary } from './flaky-summary';
+import { annotations, flakyTests, summary } from './flaky-summary';
 
 const spec = (title: string, status: string) => ({ title, file: 'a.spec.ts', tests: [{ status }] });
 
@@ -14,4 +14,8 @@ it('says so when nothing is flaky or no report was written', () => {
   expect(summary({ suites: [{ specs: [spec('one', 'expected')] }] })).toBe('No flaky e2e tests in this run.');
   expect(summary({})).toBe('No flaky e2e tests in this run.');
   expect(summary(null)).toBe('No e2e report was written.');
+});
+
+it('makes one warning annotation per flaky test', () => {
+  expect(annotations({ suites: [{ specs: [spec('one', 'flaky'), spec('two', 'unexpected')] }] })).toEqual(['::warning title=Flaky e2e test::a.spec.ts: one']);
 });
