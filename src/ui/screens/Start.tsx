@@ -55,18 +55,22 @@ export function Start({ onFiles, onBrowse }: { onFiles: (files: File[]) => void;
               help.current!.scrollIntoView?.({ block: 'nearest' });
               help.current!.querySelector('summary')?.focus();
             }}
-            extra={
-              <button
-                type="button"
-                className={`${secondaryButton} h-10 px-[18px] text-sm font-semibold`}
-                onClick={trySample}
-                disabled={loadingSample}
-                aria-busy={loadingSample}
-              >
-                {t('start.sample')}
-              </button>
-            }
           />
+        )}
+
+        {/* The sample is the way out for people with no reports: a quiet link under the box, not a second button (DEV-48). */}
+        {!importing && failed.length === 0 && !importError && (
+          <div className="flex justify-center">
+            <button
+              type="button"
+              className="inline-flex min-h-6 items-center rounded-sm px-1.5 py-1 text-sm text-link underline underline-offset-2 hover:text-link-hover disabled:cursor-wait disabled:opacity-70"
+              onClick={trySample}
+              disabled={loadingSample}
+              aria-busy={loadingSample}
+            >
+              {t('start.sample')}
+            </button>
+          </div>
         )}
 
         {sampleFailed && (

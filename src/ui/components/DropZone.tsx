@@ -1,4 +1,4 @@
-import { useState, type DragEvent, type ReactNode } from 'react';
+import { useState, type DragEvent } from 'react';
 import { CircleX, Upload } from 'lucide-react';
 import type { ImportRecord } from '@/engine/types';
 import { t, type CopyKey } from '../copy';
@@ -39,10 +39,9 @@ interface Props {
   others?: number;
   error?: ImportError | null;
   onFormatHelp?: () => void;
-  extra?: ReactNode; // e.g. "Try sample data" on Start
 }
 
-export function DropZone({ onFiles, onBrowse, failed = [], others = 0, error, onFormatHelp, extra }: Props) {
+export function DropZone({ onFiles, onBrowse, failed = [], others = 0, error, onFormatHelp }: Props) {
   const [over, setOver] = useState(false);
   const feedback = failed.length > 0 || !!error;
   const handlers = {
@@ -90,7 +89,6 @@ export function DropZone({ onFiles, onBrowse, failed = [], others = 0, error, on
             <button type="button" className={`${secondaryButton} h-10 px-[18px] text-sm font-semibold`} onClick={onBrowse}>
               {t('start.browse')}
             </button>
-            {extra}
           </div>
         </>
       )}
