@@ -3,24 +3,21 @@ import { t, type CopyKey } from '../copy';
 
 const WORD: Record<RunCell['outcome'], CopyKey> = { pass: 'run.pass', retryPass: 'run.retryPass', fail: 'run.fail', skip: 'run.skip' };
 
-// One run square (DESIGN.md "Run squares: shape cue"): passed solid green, failed hollow red (2px outline),
-// passed on retry solid amber, skipped solid gray.
+// One run square (DESIGN.md "Run squares: failed is filled", 2026-11-27): all four are solid, the same 16-unit box with rx 3 and no
+// inner mark. Passed green, failed red, passed on retry amber, skipped gray. Colour is not the only carrier of meaning:
+// the tooltip below, the accessible name of the strip or column, and the Evidence text on the same row say it too.
+const FILL: Record<RunCell['outcome'], string> = {
+  pass: 'var(--status-stable)',
+  fail: 'var(--status-failing)',
+  retryPass: 'var(--status-flaky)',
+  skip: 'var(--status-skip)',
+};
+
 export function RunSquare({ outcome, size = 12 }: { outcome: RunCell['outcome']; size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 16 16" aria-hidden="true">
       <title>{t(WORD[outcome])}</title>
-      {outcome === 'fail' ? (
-        <rect x="1.5" y="1.5" width="13" height="13" rx="3" fill="none" stroke="var(--status-failing)" strokeWidth="2" />
-      ) : (
-        <rect
-          x="0.5"
-          y="0.5"
-          width="15"
-          height="15"
-          rx="3"
-          fill={outcome === 'pass' ? 'var(--status-stable)' : outcome === 'retryPass' ? 'var(--status-flaky)' : 'var(--status-skip)'}
-        />
-      )}
+      <rect x="0.5" y="0.5" width="15" height="15" rx="3" fill={FILL[outcome]} />
     </svg>
   );
 }

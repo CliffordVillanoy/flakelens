@@ -733,3 +733,11 @@ The build measured Comfortable rows at 62 to 66px (name line 20px, path line 16p
 ## Run squares: failed is filled (decided 2026-11-27, replaces the hollow failed square)
 
 The owner asked for the failed run square to be filled red, like the other squares, so the strip reads as one consistent set. All four squares are now solid, 16-unit viewBox, rx 3, no inner mark: passed green, failed red, passed on retry amber, skipped gray. Known trade-off: passed and failed are close under deuteranopia (the reason for the 2026-11-20 shape cue). The meaning now rests on colour plus the per-square accessible name ("Run 6, commit c4: failed"), the tooltip, and the Evidence text on the same row. Accepted by the owner.
+
+## "More to check" is indented (decided 2026-11-28)
+
+The content of a closed block (checks and the quarantine tip) is indented 20px from the summary text, so an opened block reads as nested and the user can see what the toggle revealed. The summary keeps its place and its triangle. Applies to the panel and the full test page. Bullets start at about 38px, the tip line at 20px, in the same muted tones as before.
+
+### Diffstat squares are filled too (decided 2026-11-28)
+
+The five 8px squares in the file-header diffstat (rx 2) are solid: green for passed attempts, red for failed attempts. No hollow red square remains in the app. The boards already drew them filled.

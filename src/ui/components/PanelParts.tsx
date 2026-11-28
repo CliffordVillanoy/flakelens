@@ -47,7 +47,7 @@ export function FileHeaderBar({ file, project, passed, failed }: { file: string;
             i < green ? (
               <span key={i} className="size-2 rounded-xs bg-status-stable" />
             ) : (
-              <span key={i} className="box-border size-2 rounded-xs border-2 border-status-failing" />
+              <span key={i} className="size-2 rounded-xs bg-status-failing" />
             ),
           )}
         </span>
@@ -176,16 +176,16 @@ export function StatusNote({ row, cause }: { row: Row; cause?: CauseTip | null }
       ) : (
         <p className="m-0 text-sm text-fg-secondary">{list}.</p>
       )}
-      {/* Two checks show; the rest and the quarantine tip wait behind "More to check". */}
+      {/* Two checks show; the rest and the quarantine tip wait behind "More to check", indented one step under the summary (DEV-47). */}
       {(items.length > SHOWN_CHECKS || tipAt !== -1) && (
         <details className="text-sm">
           <summary className="cursor-pointer font-semibold">{t('panel.note.more')}</summary>
-          <ul className="m-0 mt-1 flex list-disc flex-col gap-[3px] pl-[18px] text-fg-secondary">
+          <ul className="m-0 mt-1 flex list-disc flex-col gap-[3px] pl-[38px] text-fg-secondary">
             {items.slice(SHOWN_CHECKS).map((x) => (
               <li key={x}>{x}</li>
             ))}
           </ul>
-          {tipAt !== -1 && <div className="mt-1.5 text-[13px] text-muted-foreground">{next.slice(tipAt + 1)}</div>}
+          {tipAt !== -1 && <div className="mt-1.5 ml-5 text-[13px] text-muted-foreground">{next.slice(tipAt + 1)}</div>}
         </details>
       )}
       {cause && (
