@@ -232,7 +232,7 @@ export function Tests({
           onScope={(scope) => useExportScope.setState({ scope })}
           viewCount={order.length}
           allCount={allOrdered.length}
-          tab={t(isLabel(status) ? `tests.filter.${status}` as 'tests.filter.flaky' : 'tests.filter.all')}
+          tab={t(isLabel(status) ? `status.${status}` : 'tests.filter.all')}
           q={q}
           onCopyTop={() => copyText(topFlakyMarkdown(scopeRows(allOrdered, order, exportScope)), t('panel.copySummary.done'))}
           onCsv={() => {

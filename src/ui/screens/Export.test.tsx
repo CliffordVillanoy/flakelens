@@ -161,3 +161,14 @@ it('arrows move through the scope choices and the actions in order, Escape close
   expect(screen.queryByRole('menu')).toBeNull();
   expect(screen.getByRole('button', { name: 'Export' })).toHaveFocus();
 });
+
+it('every status tab works with the menu, including the ones with no tests (the tooltip names the tab)', async () => {
+  for (const [status, name] of [['insufficient', 'Not enough data'], ['stable', 'Stable'], ['unproven', 'Unproven'], ['failing', 'Failing']] as const) {
+    const { unmount } = render(<Tests />);
+    window.location.hash = `#/tests?status=${status}`;
+    await userEvent.click(await screen.findByRole('button', { name: 'Export' }));
+    const view = within(screen.getByRole('menu')).getAllByRole('menuitemradio')[0]!;
+    expect(view).toHaveAttribute('title', `${name} tab`);
+    unmount();
+  }
+});
