@@ -27,7 +27,7 @@ export const catalog = {
   // Start (no data)
   'start.title': 'Find your flaky tests',
   'start.lead': 'A flaky test passes and fails on the same code. Drop your test reports to rank them.',
-  'start.drop.title': 'Drop Playwright JSON reports here',
+  'start.drop.title': 'Drop report files here',
   'start.drop.hint': 'More runs give better results.',
   'start.browse': 'Browse files',
   'start.sample': 'Try sample data',
@@ -35,7 +35,7 @@ export const catalog = {
   'sample.fail': "The sample data couldn't be loaded.",
   'sample.retry': 'Try again',
   'start.privacy': 'Your files stay in this browser. Nothing is uploaded.',
-  'start.help.title': 'How do I get a Playwright JSON report?',
+  'start.help.title': 'How do I get a report file?',
   'start.help.step1': 'In CI, run your tests with the JSON reporter and save the file as an artifact:',
   'start.help.command': 'npx playwright test --reporter=json > results.json',
   'start.help.step2': 'Then download that file from your last 5 to 10 CI runs and drop them all here at once.',
