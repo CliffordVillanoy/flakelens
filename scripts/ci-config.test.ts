@@ -130,6 +130,7 @@ describe('ci.yml e2e report upload', () => {
 
   it('uploads nothing from fork pull requests and keeps the report 30 days', () => {
     expect(step('scrub')).toContain("github.event.pull_request.head.repo.full_name == github.repository");
+    expect(step('scrub')).toContain("github.actor != 'dependabot[bot]'");
     expect(e2e).toMatch(/retention-days: 30\b/);
     expect(e2e.match(/upload-artifact/g)).toHaveLength(1);
   });

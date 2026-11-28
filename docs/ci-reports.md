@@ -13,6 +13,12 @@ Every trusted CI run of the `e2e` job writes a Playwright JSON report, scrubs an
 
 - A pull request from a fork gets no scrub, no verify and no upload: a fork can change the tests and so fake the report. Runs on pushes, on manual runs and on pull requests from branches of this repository upload.
 - Use only artifacts from `main` or from the owner's own branches for any analysis. Never analyse a report from anywhere else.
+- Dependabot runs (`github.actor` is `dependabot[bot]`) upload nothing.
+- Never trust `gitCommit.branch` inside the file: whoever controls a branch name controls it. Before using any artifact, check where it came from, and take only `main` or the owner's branches:
+
+  ```powershell
+  gh run view <run-id> --json headBranch,event,headSha,conclusion
+  ```
 - No workflow uses `pull_request_target` or secrets, the workflows have `contents: read` and nothing wider (Pages deploy has its own job-level `pages` and `id-token` permissions), and every third-party action is pinned to a commit SHA. `scripts/ci-config.test.ts` checks these.
 
 ## Where, and for how long
@@ -37,6 +43,13 @@ Then drop `report.json` into FlakeLens (Start page, Browse files).
 This repository is public, so the artifacts are public: anyone with a GitHub account can download them. The scrub is an allowlist: the output holds only the test tree (titles, repository-relative file paths, project names, ids), per attempt the status, duration, retry index, start time and error text, the config fields FlakeLens reads, and the commit hash, short hash, subject and branch. Everything else is dropped, including fields a later Playwright version might add. Free text is also passed through a secrets filter (tokens, key assignments, URLs with credentials) and emails and absolute paths are removed.
 
 What the raw Playwright report holds, and the scrub removes: commit author and committer (name and email), the commit message body, the full source diff of the change (`gitDiff`, repeated under every project), absolute runner paths and the rest of the config. On a pull request the commit is a merge commit, so the raw report would carry a contributor's name and email. Do not put anything private into an e2e test title or error message.
+
+### Limits and what stays public
+
+- The report may not exceed 2 MB. When the suite grows past it, the verify step fails the job: that is the signal to raise the cap in `scripts/verify-report.ts` on purpose, not to bypass the check.
+- The verify step also fails on any key name outside the allowlist, at any depth, so a new field from a Playwright update stops the upload until someone looks at it.
+- The Playwright list-reporter output in the public job log is not scrubbed. It holds test names and error text only, but the log is public too.
+- The kept commit subject and branch name can show a GitHub handle (a merge commit subject is "Merge <sha> into <sha>", a branch name is whatever the author chose). A handle is already public in a public repository. Accepted.
 
 ### Playwright upgrades
 

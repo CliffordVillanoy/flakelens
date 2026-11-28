@@ -78,7 +78,7 @@ jobs:
       # Trusted runs only: a pull request from a fork can change the tests and so fake the report, so it uploads nothing.
       - run: npm run e2e
       - id: scrub
-        if: always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+        if: always() && github.actor != 'dependabot[bot]' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
         run: node scripts/scrub-report.ts
       - id: verify
         if: always() && steps.scrub.outcome == 'success'
