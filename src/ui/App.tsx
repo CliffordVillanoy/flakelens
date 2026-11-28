@@ -18,6 +18,7 @@ import { Toasts } from './components/Toasts';
 const LoadedData = lazy(() => import('./screens/LoadedData').then((m) => ({ default: m.LoadedData })));
 const FullTest = lazy(() => import('./screens/FullTest').then((m) => ({ default: m.FullTest })));
 const Groups = lazy(() => import('./screens/Groups').then((m) => ({ default: m.Groups })));
+const Report = lazy(() => import('./screens/Report').then((m) => ({ default: m.Report })));
 const Settings = lazy(() => import('./screens/Settings').then((m) => ({ default: m.Settings })));
 
 const needsLook = (rec?: ImportRecord) => !!rec?.notices.some((n) => n.severity === 'warning' || n.severity === 'error');
@@ -70,7 +71,7 @@ export function App() {
   if (!ready) return null;
   return (
     <div className="flex min-h-screen flex-col" {...dropAnywhere}>
-      {s.mode !== 'empty' && route.name !== 'data' && route.name !== 'full' && (
+      {s.mode !== 'empty' && route.name !== 'data' && route.name !== 'full' && route.name !== 'report' && (
         // A button, not a #link: hash links would change the route.
         <button
           type="button"
@@ -102,7 +103,11 @@ export function App() {
         }}
       />
       <main className="flex-1">
-        {route.name === 'settings' ? (
+        {route.name === 'report' ? (
+          <Suspense fallback={null}>
+            <Report query={route.query} onBrowse={openPicker} />
+          </Suspense>
+        ) : route.name === 'settings' ? (
           <Suspense fallback={null}>
             <Settings />
           </Suspense>

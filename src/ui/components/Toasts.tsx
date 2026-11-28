@@ -10,10 +10,11 @@ interface Item {
   text: string;
   kind: Kind;
   undo?: () => void;
+  action?: { label: string; run: () => void }; // an error toast can offer one other way to get the result
 }
 interface ToastState {
   items: Item[];
-  push(text: string, kind: Kind, undo?: () => void): void;
+  push(text: string, kind: Kind, undo?: () => void, action?: Item['action']): void;
   remove(id: number): void;
 }
 const MAX_TOASTS = 2;
@@ -21,14 +22,14 @@ let next = 0;
 // Oldest first, so the newest sits at the bottom; at most 2 at a time (the oldest makes room).
 const useToasts = create<ToastState>()((set) => ({
   items: [],
-  push: (text, kind, undo) => set((s) => ({ items: [...s.items, { id: next++, text, kind, undo }].slice(-MAX_TOASTS) })),
+  push: (text, kind, undo, action) => set((s) => ({ items: [...s.items, { id: next++, text, kind, undo, action }].slice(-MAX_TOASTS) })),
   remove: (id) => set((s) => ({ items: s.items.filter((x) => x.id !== id) })),
 }));
 
 /** Success and info toast (DESIGN.md "System banners and toasts"): bottom left, newest at the bottom, closes after 5 s. */
 export const toast = (text: string) => useToasts.getState().push(text, 'info');
-/** Error toast: role alert, stays until dismissed. */
-export const toastError = (text: string) => useToasts.getState().push(text, 'error');
+/** Error toast: role alert, stays until dismissed. It may carry one action (for example "Download .md" when a copy is blocked). */
+export const toastError = (text: string, action?: { label: string; run: () => void }) => useToasts.getState().push(text, 'error', undefined, action);
 
 /** Toast with an Undo action: stays 10 seconds (a timer bar shows the time left) and pauses while hovered or focused. */
 export const toastUndo = (text: string, onUndo: () => void) => useToasts.getState().push(text, 'undo', onUndo);
@@ -145,6 +146,18 @@ export function Toasts() {
         x.kind === 'error' ? (
           <div key={x.id} role="alert" onKeyDown={closeOnEsc(() => dismiss(x.id))} className="pointer-events-auto flex items-center gap-3 rounded-lg border border-danger-border bg-diff-del px-4 py-3 text-sm motion-safe:animate-[toast-in_150ms_ease-out]">
             <span className="min-w-0 flex-1">{x.text}</span>
+            {x.action && (
+              <button
+                type="button"
+                className={`${secondaryButton} h-7 px-2.5 text-[13px]`}
+                onClick={() => {
+                  x.action!.run();
+                  dismiss(x.id);
+                }}
+              >
+                {x.action.label}
+              </button>
+            )}
             <DismissButton onClick={() => dismiss(x.id)} />
           </div>
         ) : x.kind === 'undo' ? (
