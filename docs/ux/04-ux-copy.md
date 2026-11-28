@@ -507,6 +507,7 @@ Rule for the build: the visible text is exactly what is in the Text column. Word
 | `tests.export.copyTop.hint` | Markdown list: rank, name, evidence, wasted minutes | ✓ |
 | `tests.export.csv` | Download CSV | ✓ |
 | `tests.export.json` | Download JSON | ✓ |
+| `tests.export.later` | Coming in v1 | ✓ |
 | `tests.count.all` | Showing all {count, plural, one {# test} other {# tests}}, grouped by status, {sort} | ✓ |
 | `tests.count.status` | Showing {count, plural, one {# {status} test} other {# {status} tests}}, grouped by status, {sort} | ✓ |
 | `tests.count.search` | Showing {count, plural, one {# test} other {# tests}} matching "{query}", grouped by status, {sort} | ✓ |
@@ -798,38 +799,47 @@ Retired in DEV-41 (not in the app): `full.stat.confidence.label`, `corr.lead`, `
 
 ## 16. Export menu and report (board 14, DEV-42)
 
-Existing keys kept: `tests.export` "Export", `tests.export.copyTop`, `tests.export.copyTop.hint`, `tests.export.csv` "Download CSV", `tests.export.json` "Download JSON". Retire `tests.export.later` ("Coming in v1") when DEV-42 lands.
+Existing keys kept: `tests.export` "Export", `tests.export.copyTop`, `tests.export.copyTop.hint`, `tests.export.csv` "Download CSV", `tests.export.json` "Download JSON". `tests.export.later` ("Coming in v1") is retired: the app removed the key (DEV-42). `report.lead` and `report.scope` are retired too (rule 8). All hints below are tooltips only. Synced to the built app 2026-11-28.
 
 | Key | Text | Note |
 |---|---|---|
-| `export.scope` | What to export | Group label, radiogroup |
-| `export.scope.view` | Current view ({count, plural, one {# test} other {# tests}}) | Hint: `export.scope.view.hint` "{tab} tab, search \"{q}\"" or "{tab} tab" when no search |
+| `export.scope` | What to export | Group name. The choices are menu radio items (menuitemradio) in a group inside the menu, not a separate radiogroup |
+| `export.scope.view` | Current view ({count, plural, one {# test} other {# tests}}) | Tooltip: `export.scope.view.hint` "{tab} tab, search \"{q}\"" or `export.scope.view.hint.noSearch` "{tab} tab" (confirmed) |
 | `export.scope.all` | All tests ({count}) | Hint: "Ignores the tab and the search" |
 | `export.csv.hint` | One row per test, opens in a spreadsheet | |
 | `export.json.hint` | All fields, for scripts and other tools | |
 | `export.report` | Open report | Hint: "Preview a Markdown report to paste into a ticket" |
 | `export.empty.title` | Nothing to export in this view | |
-| `export.empty.body` | No tests match the search "{q}". Choose All tests, or clear the search. | Action: `export.empty.all` "Export all tests". File actions are disabled, the reason is written beside them |
+| `export.empty.body` | No tests match the search "{q}". Choose All tests, or clear the search. | With no search: `export.empty.bodyNoSearch` "No tests are in this view. Choose All tests." (confirmed). Action: `export.empty.all` "Export all tests". File actions are disabled, the reason is written beside them |
 | `report.title` | Report | |
-| `report.lead` | A Markdown summary you can paste into a ticket or a pull request. Nothing is uploaded. | |
+| `report.back` | Back to tests | Confirmed. Same words as `full.back` |
 | `report.copy` | Copy Markdown | Primary |
 | `report.download` | Download .md | |
 | `report.view` | View | Group label. Choices: `report.view.preview` "Preview", `report.view.source` "Markdown" |
-| `report.scope` | Scope: {scope} ({count}). Change it from the Export menu. | scope = "all tests" or "current view" |
 | `report.sample` | This report uses sample data. It says so inside the file. | status role |
 | `report.noData.title` | No results to report yet | |
-| `report.noData.body` | Add your files, or try the sample data, and the report appears here. | Action: "Add your files" |
+| `report.noData.body` | Add your files, or try the sample data, and the report appears here. | Action: `report.noData.action` "Add your files" (confirmed) |
 | `report.noFlaky` | No Flaky tests in this scope. The report lists the summary only. | |
 | `report.md.title` | FlakeLens report | First line of the file |
-| `report.md.meta` | {date} · {files} files · {runs} runs · {tests} tests · Scope: {scope} | |
-| `report.md.summary` | Summary | Lines: "{flaky} Flaky, {unproven} Unproven, {failing} Failing, {stable} Stable, {nodata} Not enough data" and "Wasted CI time: {flakyTime} from Flaky tests, up to {unprovenTime} more if the Unproven tests are flaky" |
+| `report.md.meta` | {date} · {files} files · {runs} runs · {tests} tests · Scope: {scope} | Scope values: `report.md.scope.all` "all tests", `report.md.scope.view` "current view" (confirmed) |
+| `report.md.summary` | Summary | Heading |
+| `report.md.counts` | {flaky} Flaky, {unproven} Unproven, {failing} Failing, {stable} Stable, {nodata} Not enough data | Confirmed |
+| `report.md.wasted` | Wasted CI time: {flakyTime} from Flaky tests, up to {unprovenTime} more if the Unproven tests are flaky | Variants (confirmed): `.flakyOnly` "Wasted CI time: {flakyTime} from Flaky tests", `.unprovenOnly` "Wasted CI time: up to {unprovenTime} if the Unproven tests are flaky", `.none` "Wasted CI time: none measured" |
+| `report.md.duration` | {hours} h {minutes} min | Confirmed. Under an hour: `report.md.duration.minutes` "{minutes} min" |
 | `report.md.top` | Top Flaky tests | |
-| `report.md.item` | Failed {failed} of {total} attempts, mixed results on {commits, plural, one {# commit} other {# commits}} · {minutes} min wasted | Then "Likely cause: {cause} ({level} confidence)" when the classifier has one |
+| `report.md.item` | Failed {failed} of {total} attempts, mixed results on {commits, plural, one {# commit} other {# commits}} · {minutes} min wasted | Then `report.md.cause` "Likely cause: {cause} ({level} confidence)" (confirmed) when the classifier has one |
 | `report.md.footer` | Generated by FlakeLens {version}. Rankings are starting values and are not calibrated. Causes are likely, not certain. | |
-| `toast.export.csv` | Downloaded flakelens-tests.csv. {count, plural, one {# test} other {# tests}}. | role status. Same pattern for JSON and `flakelens-report.md` |
+| `toast.export.csv` | Downloaded flakelens-tests.csv. {count, plural, one {# test} other {# tests}}. | role status |
+| `toast.export.json` | Downloaded flakelens-tests.json. {count, plural, one {# test} other {# tests}}. | Confirmed |
+| `toast.export.md` | Downloaded flakelens-report.md. {count, plural, one {# test} other {# tests}}. | Confirmed |
 | `toast.export.copied` | Copied the report. Paste it into your ticket. | |
 | `toast.export.copyFailed` | Couldn't copy. Your browser blocked clipboard access. Download the .md file instead. | role alert, action "Download .md". Replaces `toast.copyFailed` on the report page |
 
+Decisions confirmed (DEV-42, 2026-11-28):
+- The scope choices are `menuitemradio` items in a group named "What to export" inside the menu. That is valid ARIA for a menu.
+- In the Markdown, the test name is escaped plain text ("1. name"), not in backticks as board 14's source shows, because backslashes would show inside a code span. The preview shows the name in mono.
+- The sample CSV gets a last column "data" with the value "sample data".
+- The report footer prints the package version, which is 0.0.0 until Dev Ops sets one. The board's 0.1.0 is an example.
 
 ## 17. Keys confirmed or removed after DEV-29 (2026-11-26)
 

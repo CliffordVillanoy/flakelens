@@ -1,6 +1,6 @@
 # DEV-42: Export CSV and JSON, report preview
 
-**Status:** To do
+**Status:** Done locally (2026-11-28, 5 commits 06c1f9b, 5ad6ce5, 57e040e, 8794e32, c1d5a7a on `feat/dev-42-export-report` from origin/main 9633683, worktree `flakelens-dev42`; dev chat reports 1233 unit + 70 e2e, typecheck, lint, build clean, axe both themes). Not pushed or merged. Choices: sample CSV gets a last column `data` = "sample data" (real exports 13 columns); JSON `sample: true`; scope choices are menuitemradio in a group inside the menu (not a separate radiogroup); report test names are escaped plain text, not backticks; run metadata not exported. Word budgets: report 70 (measured 57), export menu 20. Needs the updated copy doc in the same PR (tests.export.later row removed, new interim keys). Footer prints version 0.0.0 until Dev Ops sets one. Security chat re-review pending.
 
 **Goal:** Take results to a ticket or a spreadsheet: CSV, JSON and a Markdown report.
 
