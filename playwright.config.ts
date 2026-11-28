@@ -10,7 +10,11 @@ export default defineConfig({
   timeout: 90_000,
   expect: { timeout: 10_000 },
   workers: 2,
-  reporter: [['list']],
+  // CI collects a JSON report (DEV-49) that FlakeLens itself can import: one retry, so a flaky test shows as flaky, and the git
+  // commit in the report. Locally nothing changes: the list reporter, no retries.
+  retries: process.env.CI ? 1 : 0,
+  reporter: process.env.CI ? [['list'], ['json', { outputFile: 'test-results/report.json' }]] : [['list']],
+  captureGitInfo: process.env.CI ? { commit: true } : undefined,
   use: { baseURL: BASE, trace: 'retain-on-failure' },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: {
