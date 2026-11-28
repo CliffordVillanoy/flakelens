@@ -93,7 +93,7 @@ Written 2026-11-25. Build order is in "Build sequence from 2026-11-26" in the v1
 | [DEV-39](DEV-39.md) | Run metadata from Playwright reports | Backend (importer, storage) + small frontend | nothing | Done locally (not pushed) |
 | [DEV-40](DEV-40.md) | Correlation by browser, shard, OS and time | Backend (engine) | DEV-39, DEV-35 | Done locally (not pushed) |
 | [DEV-41](DEV-41.md) | Full test page with log viewer | Frontend | DEV-37, DEV-40; board from the UI/UX chat | Done locally (not pushed) |
-| [DEV-42](DEV-42.md) | Export CSV and JSON, report preview | Frontend | DEV-36; board from the UI/UX chat | To do |
+| [DEV-42](DEV-42.md) | Export CSV and JSON, report preview | Frontend | DEV-36; board from the UI/UX chat | Done locally (not pushed) |
 | [DEV-43](DEV-43.md) | JUnit XML importer | Backend (importer) + small frontend | DEV-39 | To do |
 | [DEV-44](DEV-44.md) | Real-data check of the flaky detector | Backend (evaluation) | DEV-43 | To do |
 | [DEV-45](DEV-45.md) | Installable offline app (PWA) | Frontend (build, service worker) | DEV-33, DEV-38, DEV-40, DEV-41 and DEV-42 | To do |

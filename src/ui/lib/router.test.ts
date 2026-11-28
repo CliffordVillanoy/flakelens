@@ -68,3 +68,13 @@ it('parses the full test page route and keeps the list filters in its query (DEV
   for (const h of ['#/tests/abc/ful', '#/tests/abc/full/x', '#/tests/%E0%A4%A/full', '#/data/abc/full'])
     expect([h, parseRoute(h).name]).toEqual([h, 'start']);
 });
+
+it('parses the report route and keeps its scope and filters in the query (DEV-42)', () => {
+  const r = parseRoute('#/report?scope=view&status=flaky&q=a');
+  expect(r.name).toBe('report');
+  expect(r.query.get('scope')).toBe('view');
+  expect(r.query.get('status')).toBe('flaky');
+  expect(r.query.get('q')).toBe('a');
+  expect(parseRoute('#/report').name).toBe('report');
+  expect(parseRoute('#/report/x').name).toBe('start');
+});

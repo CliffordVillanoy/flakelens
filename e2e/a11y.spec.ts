@@ -125,6 +125,33 @@ for (const theme of ['dark', 'light'] as const) {
       await page.keyboard.press('Escape');
     });
 
+    test('Export menu and the report: scope, empty view, preview, Markdown, sample line, no data', async ({ page }) => {
+      await openApp(page, theme);
+      await page.evaluate(() => (window.location.hash = '#/report'));
+      await expect(page.getByText('No results to report yet')).toBeVisible();
+      await scan(page, theme, '29-report-no-data');
+
+      await page.goto('./');
+      await page.getByRole('button', { name: 'Try sample data' }).click();
+      await expect(page.locator('.ranked-row').first()).toBeVisible();
+      await page.getByRole('button', { name: 'Export' }).click();
+      await scan(page, theme, '30-export-menu');
+      await page.keyboard.press('Escape');
+
+      await page.evaluate(() => (window.location.hash = '#/tests?q=zzzz'));
+      await page.getByRole('button', { name: 'Export' }).click();
+      await expect(page.getByText('Nothing to export in this view')).toBeVisible();
+      await scan(page, theme, '31-export-menu-empty-view');
+      await page.keyboard.press('Escape');
+
+      await page.evaluate(() => (window.location.hash = '#/report?scope=all'));
+      await expect(page.getByRole('article', { name: 'FlakeLens report' })).toBeVisible();
+      await scan(page, theme, '32-report-preview');
+      await page.getByRole('button', { name: 'Markdown', exact: true }).click();
+      await expect(page.getByTestId('report-markdown')).toBeVisible();
+      await scan(page, theme, '33-report-markdown');
+    });
+
     test('Full test page: log, evidence, correlations and its edge states', async ({ page }) => {
       await openApp(page, theme);
       await page.getByRole('button', { name: 'Try sample data' }).click();

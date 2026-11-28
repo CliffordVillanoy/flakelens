@@ -1,5 +1,5 @@
 import { it, expect, vi, afterEach } from 'vitest';
-import { act, fireEvent, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Toasts, toast, toastError, toastUndo } from './Toasts';
 
@@ -125,4 +125,20 @@ it('Undo runs the action once and closes the toast; Esc closes it without undoin
   await userEvent.keyboard('{Escape}');
   await vi.waitFor(() => expect(undoToast()).toBeNull());
   expect(onUndo).toHaveBeenCalledTimes(1);
+});
+
+it('an error toast can carry one action: an alert with a button that runs it and closes the toast (DEV-42)', async () => {
+  const run = vi.fn();
+  render(<Toasts />);
+  act(() => toastError('toast blocked', { label: 'Download .md', run }));
+  const alert = screen.getByText('toast blocked').closest<HTMLElement>('[role=alert]')!;
+  await userEvent.click(within(alert).getByRole('button', { name: 'Download .md' }));
+  expect(run).toHaveBeenCalledTimes(1);
+  await waitFor(() => expect(screen.queryByText('toast blocked')).toBeNull()); // after its short fade
+});
+
+it('an error toast without an action is unchanged', () => {
+  render(<Toasts />);
+  act(() => toastError('toast plain'));
+  expect(within(screen.getByText('toast plain').closest<HTMLElement>('[role=alert]')!).queryAllByRole('button')).toHaveLength(1); // only Dismiss
 });

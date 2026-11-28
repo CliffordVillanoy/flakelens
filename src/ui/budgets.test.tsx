@@ -53,8 +53,9 @@ beforeAll(() => {
 
 // panel: 90 for a panel without a cause block, 105 for one with it (UI/UX, DEV-38 follow-up; the failure meta line is
 // "Run {n} · attempt {a} of {total}").
+// report and exportMenu (proposed in DEV-42, to be confirmed by UI/UX): the report preview above the first Top Flaky test (measured 57), and the open Export menu (3 words of text, 20 with the control names).
 // full (proposed in DEV-41, to be confirmed by UI/UX): the full test page above the first timeline row, status note and cause block included; measured 77 to 78.
-const BUDGET = { start: 40, tests: 60, loaded: 60, panel: 90, panelWithCause: 105, full: 90, dialog: 45, banner: 20 } as const;
+const BUDGET = { start: 40, tests: 60, loaded: 60, panel: 90, panelWithCause: 105, full: 90, report: 70, exportMenu: 20, dialog: 45, banner: 20 } as const;
 const report: string[] = [];
 const check = (screenName: string, state: string, root: Element, budget: number, stopAt?: string) => {
   const n = words(root, { stopAt });
@@ -170,6 +171,16 @@ it.each(['flaky: low memory', 'flaky: strict locator'])('the full test page of "
     if (!document.querySelector('[data-cause-tip]')) throw new Error('no cause block yet');
   });
   check('Full test page', title, document.querySelector('main')!, BUDGET.full, '[role=table] [role=row]:nth-child(2)');
+});
+
+it('the report page stays within its budget above the first Flaky test, and the Export menu within its own', async () => {
+  await own();
+  await show('#/report?scope=all', () => screen.findByRole('article', { name: 'FlakeLens report' }));
+  check('Report', 'preview, own data', document.querySelector('main')!, BUDGET.report, 'ol > li');
+  cleanup();
+  await show('#/tests', () => screen.findByRole('table'));
+  await userEvent.click(screen.getByRole('button', { name: 'Export' }));
+  check('Export menu', 'open, current view', await screen.findByRole('menu', { name: 'Export' }), BUDGET.exportMenu);
 });
 
 it('every dialog stays within 45 words', async () => {
