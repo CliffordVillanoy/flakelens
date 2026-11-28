@@ -8,3 +8,4 @@ flake-lab/out/
 .impeccable/hook.cache.json
 e2e/screenshots/
 e2e/fixtures/large/
+e2e/fixtures/biglog/

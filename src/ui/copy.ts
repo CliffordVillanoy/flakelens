@@ -433,6 +433,81 @@ export const catalog = {
   'skip.results': 'Skip to results',
   'keys.toggle': 'Single-key shortcuts',
   'keys.list': 'j / k: Next / previous test · Enter: Open details · Esc: Close details · /: Search · ?: This sheet',
+
+  // Full test page, log viewer and correlations (board 13, DEV-41). Wording follows the board at canvas v78; keys marked
+  // (interim) have no confirmed wording yet and wait for the UI/UX chat.
+  'full.open': 'Open full view',
+  'full.back': 'Back to tests',
+  'full.copyName': 'Copy test name',
+  'full.copyName.done': 'Test name copied', // interim
+  'full.last12': 'Last 12 runs', // interim
+  'full.stats.label': 'Stats', // interim
+  'full.stat.failed': '{failed} of {total}',
+  'full.stat.failed.label': 'attempts failed',
+  'full.stat.retry.label': 'passed on retry',
+  'full.stat.wasted.label': 'wasted time',
+  'full.timeline': 'Run timeline',
+  'full.timeline.col.run': 'Run',
+  'full.timeline.col.commit': 'Commit',
+  'full.timeline.col.when': 'When',
+  'full.timeline.col.result': 'Result',
+  'full.timeline.col.time': 'Time',
+  'full.timeline.showAll': 'Show all {count} runs',
+  'full.timeline.openLog': 'Show the log of {run}', // interim
+  'full.result.failedRetry': 'Failed, then passed on retry',
+  'full.result.failedTwice': 'Failed twice',
+  'full.result.failedMany': 'Failed {n} times', // interim
+  'log.title': 'Failure log',
+  'log.run': 'Run {run}, attempt {n}',
+  'log.pick': 'Choose a run', // interim
+  'log.search': 'Search the log',
+  'log.matches': '{current} of {total}',
+  'log.matches.capped': '{current} of {total}+', // interim
+  'log.matches.none': 'No matches',
+  'log.prev': 'Previous match',
+  'log.next': 'Next match',
+  'log.wrap': 'Wrap lines',
+  'log.copyLine': 'Copy line',
+  'log.copyLine.done': 'Line copied', // interim
+  'log.range': 'Lines {from} to {to} of {total}',
+  'log.large': 'Only the rows you can see are drawn, so scrolling stays smooth. Search covers the whole log.',
+  'log.showMore': 'Show more ({count} more characters)',
+  'log.showLess': 'Show less', // interim
+  'log.region': 'Log for {test}, {run}',
+  'log.none.title': 'This run has no log text',
+  'log.none.body': 'The report has no error message for this attempt, so there is nothing to show. Pick another run above.',
+  'log.noFailures.title': 'No failures in the loaded runs',
+  'log.noFailures.body': 'The failure log and its evidence appear when this test fails.',
+  'evidence.ok': 'Quoted from the log · line {n}',
+  'evidence.bad': 'Not found in the log · line {n}',
+  'corr.title': 'What it depends on',
+  'corr.dim.browser': 'Browser',
+  'corr.dim.shard': 'Shard',
+  'corr.dim.os': 'Operating system',
+  'corr.dim.hour': 'Time of day',
+  'corr.dim.project': 'Project', // confirmed (DEV-40)
+  'corr.others.project': 'the other projects', // interim
+  'corr.strength.strong': 'Strong',
+  'corr.strength.moderate': 'Moderate',
+  'corr.strength.weak': 'Weak',
+  'corr.finding': 'Fails more on {value}: {a} of {b} attempts, against {c} of {d} elsewhere. A clue, not proof.',
+  'corr.finding.project': 'Fails more on {value}: {a} of {b} attempts, against {c} of {d} on {others}. A clue, not proof.', // interim
+  'corr.none': 'No clear link ({list}).',
+  'corr.none.item': '{value}: {failed} of {attempts}', // interim: the board wrote no colon, but shard values read "1 of 2"
+  'corr.notEnough': 'Not enough data yet. Needs {minAttempts} attempts and {minFails} failures; you have {attempts} and {fails}.',
+  'corr.notEnough.group': 'Not enough data yet. Each group needs {minGroup} attempts; the smallest has {smallest}.', // interim
+  'corr.missing': 'No {dimension} in your files.',
+  'corr.missing.browser': 'browser', // interim
+  'corr.missing.shard': 'shard', // interim
+  'corr.missing.os': 'operating system', // interim
+  'corr.missing.hour': 'start times',
+  'corr.missing.project': 'project names', // interim: fills {dimension}
+  'corr.hour.value': '{hour}:00 UTC', // interim
+  'corr.bar': '{failed} of {attempts} · {pct}%',
+  'corr.how': 'How this was worked out',
+  'corr.how.fisher': "Compared {value} with the rest using Fisher's exact test. Odds ratio {or}, adjusted p {p} (corrected for {n} comparisons). Strength: {strength}.",
+  'corr.how.best': "Compared {value} with the rest using Fisher's exact test, corrected for {k} values. Odds ratio {or}, adjusted p {p} (corrected for {n} comparisons). Strength: {strength}.", // interim
+  'corr.how.chi': 'Compared the values using a chi-square test. {value} against the rest: odds ratio {or}, adjusted p {p} (corrected for {n} comparisons). Strength: {strength}.', // interim
 } as const satisfies Record<string, string>;
 
 export type CopyKey = keyof typeof catalog;

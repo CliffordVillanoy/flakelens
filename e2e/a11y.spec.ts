@@ -125,6 +125,27 @@ for (const theme of ['dark', 'light'] as const) {
       await page.keyboard.press('Escape');
     });
 
+    test('Full test page: log, evidence, correlations and its edge states', async ({ page }) => {
+      await openApp(page, theme);
+      await page.getByRole('button', { name: 'Try sample data' }).click();
+      await expect(page.locator('.ranked-row').first()).toBeVisible();
+      await page.evaluate(() => (window.location.hash = '#/tests?status=flaky'));
+      await page.locator('.ranked-row a[data-test-id]').first().click();
+      await page.getByRole('complementary').getByRole('link', { name: 'Open full view' }).click();
+      await expect(page.getByRole('region', { name: /^Log for / })).toBeVisible();
+      await scan(page, theme, '26-full-test');
+
+      await page.getByRole('searchbox', { name: 'Search the log' }).fill('timeout');
+      await expect(page.getByRole('status').filter({ hasText: /of|No matches/ })).toBeVisible();
+      await scan(page, theme, '27-full-test-search');
+
+      await page.evaluate(() => (window.location.hash = '#/tests?q=shows heading'));
+      await page.locator('.ranked-row a[data-test-id]').first().click();
+      await page.getByRole('complementary').getByRole('link', { name: 'Open full view' }).click();
+      await expect(page.getByText('No failures in the loaded runs')).toBeVisible();
+      await scan(page, theme, '28-full-test-no-failures');
+    });
+
     test('Groups, its edge states and the cause tip in the panel', async ({ page }) => {
       await openApp(page, theme);
       await page.getByRole('button', { name: 'Try sample data' }).click();

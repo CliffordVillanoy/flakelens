@@ -542,7 +542,7 @@ A calm, dense developer tool. Dark theme by default with a light option (both bu
 | New and mixed | Teal | Dot with ring | New |
 | Not enough data | Gray | None (label only) | Not enough data |
 
-In the run-history grid and the "Last 12 runs" strip, each attempt is a small rounded square with no inner mark: solid green for pass, solid amber for pass-after-retry, hollow red outline for fail, solid gray for skipped. Shape (hollow for fail) plus color carries the meaning. The status pills show the word only, with no icon.
+In the run-history grid and the "Last 12 runs" strip, each attempt is a small rounded square with no inner mark: solid green for pass, solid amber for pass-after-retry, solid red for fail, solid gray for skipped. Color plus each square's accessible name carries the meaning (the shape cue was dropped, owner decision 2026-11-27). The status pills show the word only, with no icon.
 
 **Core components**
 

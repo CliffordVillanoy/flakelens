@@ -14,6 +14,8 @@ export const DIMENSIONS = ['browser', 'shard', 'os', 'hour', 'project'] as const
 export type Dimension = (typeof DIMENSIONS)[number];
 export type CorrelationStatus = 'finding' | 'none' | 'notEnough' | 'missing';
 export type Strength = 'Strong' | 'Moderate' | 'Weak';
+/** How the p was worked out: Fisher for two values, chi-square when valid for three or more, else the best value against the rest. */
+export type Method = 'fisher' | 'chiSquare' | 'fisherBest';
 
 export interface RateRow {
   failed: number;
@@ -45,6 +47,7 @@ export interface CorrelationResult {
   adjustedP: number; // Bonferroni across the dimensions tested for this test, at most 1
   comparisons: number; // how many dimensions were tested for this test
   reason?: NotEnoughReason; // only when status is 'notEnough'
+  method?: Method; // set when the dimension was tested
 }
 
 /** Strong, Moderate or Weak from the adjusted p and the fail-rate difference (0..1); null is "no clear link". */
@@ -80,6 +83,7 @@ interface Raw {
   result: CorrelationResult;
   p: number | null; // set when the dimension was really tested
   diff: number; // 0..1
+  method?: Method;
 }
 
 function analyse(dimension: Dimension, groups: Map<string, { failed: number; attempts: number }>, c: EngineConfig): Raw {
@@ -102,11 +106,20 @@ function analyse(dimension: Dimension, groups: Map<string, { failed: number; att
   const diff = hl.rate - others.rate;
   const withNumbers = { ...base, others, pointsHigher: diff * 100, oddsRatio: oddsRatio(hl.failed, hl.attempts - hl.failed, others.failed, others.attempts - others.failed) };
 
-  let p: number | null;
-  if (values.length === 2) p = fisherExact(hl.failed, hl.attempts - hl.failed, others.failed, others.attempts - others.failed);
-  else p = chiSquareTable(values.map((v) => [v.failed, v.attempts - v.failed] as const))?.p ?? null; // null: an expected count is below 5, so not tested
-  if (p === null) return { result: { ...withNumbers, status: 'none' }, p: null, diff };
-  return { result: { ...withNumbers, status: 'none', highlightedValue: hl.value }, p, diff };
+  // Two values: Fisher. Three or more: chi-square when every expected count is at least 5 (DEV-40 follow-up); otherwise the
+  // highest-rate value against the rest with Fisher, times the number of values because the best of k was picked.
+  let p: number;
+  let method: Method;
+  const fisher = fisherExact(hl.failed, hl.attempts - hl.failed, others.failed, others.attempts - others.failed);
+  if (values.length === 2) {
+    p = fisher;
+    method = 'fisher';
+  } else {
+    const chi = chiSquareTable(values.map((v) => [v.failed, v.attempts - v.failed] as const));
+    p = chi ? chi.p : Math.min(1, fisher * values.length);
+    method = chi ? 'chiSquare' : 'fisherBest';
+  }
+  return { result: { ...withNumbers, status: 'none', highlightedValue: hl.value, method }, p, diff, method };
 }
 
 /** Builds the lookups once; the returned function correlates one test, so a screen can work lazily per test. */

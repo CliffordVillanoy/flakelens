@@ -740,46 +740,62 @@ The budget stays 90 for a panel without a cause block. A panel with a cause bloc
 
 ## 15. Full test page, log viewer and correlations (board 13, DEV-41)
 
-Wording rule for correlations: a link is a clue, never a cause. Say "fails more often on", never "is caused by". Strength is a word (Strong, Moderate, Weak), never a bare p-value.
+Wording rule for correlations: a link is a clue, never a cause. Say "fails more on", never "is caused by". Strength is a word (Strong, Moderate, Weak), never a bare p-value. Synced to the built app 2026-11-28.
 
 | Key | Text | Note |
 |---|---|---|
 | `full.open` | Open full view | Link in the panel |
 | `full.back` | Back to tests | Keeps filters and scroll place |
-| `full.copyName` | Copy test name | |
+| `full.copyName` | Copy test name |  |
+| `full.copyName.done` | Test name copied | Confirmed. Toast, role status |
+| `full.last12` | Last 12 runs | Confirmed. Name of the run strip |
+| `full.stats.label` | Stats | Confirmed. Screen reader name of the three tiles |
 | `full.stat.failed` | {failed} of {total} | Value. Label: `full.stat.failed.label` "attempts failed" |
 | `full.stat.retry.label` | passed on retry | Value is the count |
-| `full.stat.wasted.label` | wasted time | |
-| `full.stat.confidence.label` | confidence | Value: High, Medium or Low |
-| `full.timeline` | Run timeline | Columns: Run, Commit, When, Result, Time |
-| `full.timeline.showAll` | Show all {count} runs | |
-| `full.result.failedRetry` | Failed, then passed on retry | Also: "Failed twice", "Passed" |
-| `log.title` | Failure log | |
+| `full.stat.wasted.label` | wasted time |  |
+| `full.timeline` | Run timeline | Columns: `full.timeline.col.run` Run, `.commit` Commit, `.when` When, `.result` Result, `.time` Time |
+| `full.timeline.showAll` | Show all {count} runs |  |
+| `full.timeline.openLog` | Show the log of {run} | Confirmed. Accessible name of the row action |
+| `full.result.failedRetry` | Failed, then passed on retry | Also: `full.result.failedTwice` "Failed twice", `full.result.failedMany` "Failed {n} times" (both confirmed), "Passed" |
+| `log.title` | Failure log |  |
 | `log.run` | Run {run}, attempt {n} | Run picker button |
+| `log.pick` | Choose a run | Confirmed. Picker name |
 | `log.search` | Search the log | Placeholder |
-| `log.matches` | {current} of {total} | role status. Zero: "No matches" |
+| `log.matches` | {current} of {total} | role status |
+| `log.matches.capped` | {current} of {total}+ | Confirmed. When the count stops at the cap |
+| `log.matches.none` | No matches | Confirmed |
 | `log.prev` / `log.next` | Previous match / Next match | Accessible names for the icon buttons |
 | `log.wrap` | Wrap lines | Switch |
-| `log.copyLine` | Copy line | |
-| `log.range` | Lines {from} to {to} of {total}. Only the rows you can see are drawn. | |
+| `log.copyLine` | Copy line |  |
+| `log.copyLine.done` | Line copied | Confirmed. Toast, role status |
+| `log.range` | Lines {from} to {to} of {total} | Shortened (board v78, keep the app text). The long explanation is the footer tooltip, `log.large` |
+| `log.large` | Only the rows you can see are drawn, so scrolling stays smooth. Search covers the whole log. | Tooltip only, large logs |
 | `log.showMore` | Show more ({count} more characters) | Lines over 2,000 characters |
+| `log.showLess` | Show less | Confirmed |
 | `log.region` | Log for {test}, {run} | Accessible name of the scroll region |
-| `log.none.title` | This run has no log text | |
-| `log.none.body` | The report has no error message for this attempt, so there is nothing to show. Pick another run above. | |
-| `log.noFailures.title` | No failures in the loaded runs | |
-| `log.noFailures.body` | The failure log and its evidence appear when this test fails. | |
-| `log.large` | Lines {from} to {to} of {total}. Only the rows you can see are drawn, so scrolling stays smooth. Search covers the whole log. | Large logs |
+| `log.none.title` | This run has no log text |  |
+| `log.none.body` | The report has no error message for this attempt, so there is nothing to show. Pick another run above. |  |
+| `log.noFailures.title` | No failures in the loaded runs |  |
+| `log.noFailures.body` | The failure log and its evidence appear when this test fails. |  |
 | `evidence.ok` | Quoted from the log · line {n} | Chip label |
 | `evidence.bad` | Not found in the log · line {n} | Chip label. Hint only, not highlighted |
-| `corr.title` | What it depends on | |
-| `corr.lead` | Compares failures across browsers, shards, operating systems and hours. A link is a clue, not proof. | |
+| `corr.title` | What it depends on |  |
+| `corr.dim.browser` / `.project` / `.shard` / `.os` / `.hour` | Browser / Project / Shard / Operating system / Time of day | Card headings. Project (confirmed, DEV-40) is a Playwright project name such as chromium-mobile; two projects can share one browser |
 | `corr.strength.strong` / `.moderate` / `.weak` | Strong / Moderate / Weak | Pill after the dimension name |
-| `corr.finding` | It fails more often on {value}: {a} of {b} attempts, against {c} of {d} on the {others}. That is {points} points higher. This shows a link, not the cause. | Dimension labels: Browser, Shard, Operating system, Time of day |
-| `corr.none` | No clear link. It fails about as often on {a} ({x} of {y}) as on {b} ({u} of {v}). | |
-| `corr.notEnough` | Not enough data to compare yet. This needs at least {minAttempts} attempts, {minFails} failures, and {minGroup} attempts in each group. You have {attempts} attempts and {fails} failures. Load more runs to see it. | Calm note, never a finding |
-| `corr.missing` | Your files have no {dimension}, so this is not compared. | e.g. "start times" |
+| `corr.finding` | Fails more on {value}: {a} of {b} attempts, against {c} of {d} elsewhere. A clue, not proof. | Shortened, keep the app text. A clue, never a cause. `corr.finding.project`: same, with "on {others}" instead of "elsewhere" |
+| `corr.others.project` | the other projects | Confirmed. Fills {others} |
+| `corr.none` | No clear link ({list}). | `corr.none.item` "{value}: {failed} of {attempts}" (confirmed) per list item |
+| `corr.notEnough` | Not enough data yet. Needs {minAttempts} attempts and {minFails} failures; you have {attempts} and {fails}. | Calm note, never a finding |
+| `corr.notEnough.group` | Not enough data yet. Each group needs {minGroup} attempts; the smallest has {smallest}. | Confirmed |
+| `corr.missing` | No {dimension} in your files. | Shortened. {dimension}: `corr.missing.browser` "browser", `.shard` "shard", `.os` "operating system", `.hour` "start times", `.project` "project names" (all confirmed). The Project card is hidden for a one-project suite, so `.project` is kept in the catalog but not shown |
+| `corr.hour.value` | {hour}:00 UTC | Confirmed |
+| `corr.bar` | {failed} of {attempts} · {pct}% | Confirmed. Bar label |
 | `corr.how` | How this was worked out | Closed details |
-| `corr.how.body` | Compared {value} with the rest using Fisher's exact test. Odds ratio {or}, adjusted p {p} (corrected for {n} comparisons). Strength: {strength}. | |
+| `corr.how.fisher` | Compared {value} with the rest using Fisher's exact test. Odds ratio {or}, adjusted p {p} (corrected for {n} comparisons). Strength: {strength}. | Replaces `corr.how.body` |
+| `corr.how.best` | Compared {value} with the rest using Fisher's exact test, corrected for {k} values. Odds ratio {or}, adjusted p {p} (corrected for {n} comparisons). Strength: {strength}. | Confirmed. Shown when 3 or more values cannot use chi-square: the best of {k} values is compared |
+| `corr.how.chi` | Compared the values using a chi-square test. {value} against the rest: odds ratio {or}, adjusted p {p} (corrected for {n} comparisons). Strength: {strength}. | Confirmed. More than two values |
+
+Retired in DEV-41 (not in the app): `full.stat.confidence.label`, `corr.lead`, `corr.how.body` (now `corr.how.fisher`).
 
 ## 16. Export menu and report (board 14, DEV-42)
 

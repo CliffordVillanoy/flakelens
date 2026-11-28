@@ -28,7 +28,7 @@ Out of v0 (v1 and later): failure groups, full test page with log viewer, report
 3. **Gray status:** the label is **Not enough data** everywhere.
 4. **Sample data:** held in memory only, never mixed with real runs.
 5. **Default sort and density:** the table sorts by group (Flaky, Unproven, Failing, Stable, Not enough data); Comfortable (40px) is the default and Compact (32px) is the option.
-6. **Run squares:** passed solid green, failed hollow red, passed on retry solid amber, skipped solid gray. They replace the old filled square, triangle, diamond and circle.
+6. **Run squares:** passed solid green, failed solid red (was hollow until 2026-11-27), passed on retry solid amber, skipped solid gray. They replace the old filled square, triangle, diamond and circle.
 7. **Stack:** Tailwind with shadcn/ui, tokens as CSS variables, not Astryx.
 8. **Engine data:** it needs an import record (file name, counts, notices) linked to the runs it created.
 9. **Column "Why":** it is now called **Evidence**.

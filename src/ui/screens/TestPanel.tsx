@@ -3,8 +3,9 @@ import { ChevronDown, ChevronUp, Copy, X } from 'lucide-react';
 import type { Dataset } from '@/engine/types';
 import { t } from '../copy';
 import { failuresFor, summaryText, wastedText, type Row } from '../data/selectors';
-import { FileHeaderBar, LatestFailure, RunHistory, ScoreDetails, StatusNote, type CauseTip } from '../components/PanelParts';
-import { useGroupsModule } from '../lib/useGroups';
+import { FileHeaderBar, LatestFailure, RunHistory, ScoreDetails, StatusNote } from '../components/PanelParts';
+import { useCause } from '../lib/useCause';
+import { rememberList } from '../lib/listScroll';
 import { StatusPill } from '../components/StatusPill';
 import { secondaryButton } from '../components/buttons';
 import { copyText } from '../lib/clipboard';
@@ -17,11 +18,12 @@ interface Props {
   ds: Dataset;
   position: { index: number; count: number; prev?: string; next?: string } | null; // index is 1-based; hrefs of neighbours
   closeHref: string;
+  fullHref: string; // #/tests/:id/full, with the list filters
 }
 
 // Board 4 "Test detail": opens beside the list (full screen at 640px and below). Focus moves to the title on
 // open (IA section 5); the screen restores it to the row on close.
-export function TestPanel({ row, ds, position, closeHref }: Props) {
+export function TestPanel({ row, ds, position, closeHref, fullHref }: Props) {
   const { score, test } = row;
   const title = useRef<HTMLHeadingElement>(null);
   const failures = failuresFor(ds, score.testId);
@@ -31,18 +33,8 @@ export function TestPanel({ row, ds, position, closeHref }: Props) {
   const failed = attempts.filter((a) => a.status === 'fail').length;
   const wasted = wastedText(score);
 
-  // The likely cause of the group this test's latest failure belongs to (DEV-37). A tip only at medium or high confidence;
-  // low and unknown add nothing, and nothing is highlighted.
-  const groups = useGroupsModule();
-  const cause = useMemo(() => {
-    if (!groups || failures.length === 0) return null;
-    const group = groups.groupForTest(ds, score.testId);
-    if (!group) return null;
-    const c = groups.causeOf(ds, group);
-    if (c.category === 'unknown' || c.confidence === 'low') return null;
-    return { group, category: c.category, level: c.confidence };
-  }, [groups, ds, score.testId]);
-  const tip: CauseTip | null = cause ? { category: cause.category, level: cause.level, fingerprint: cause.group.fingerprint, count: cause.group.count } : null;
+  // The likely cause of the group this test's latest failure belongs to (DEV-37). A tip only at medium or high confidence.
+  const { groups, cause, tip } = useCause(ds, score.testId, failures.length > 0);
   const highlight = useMemo(
     () => (groups && cause ? (f: { message: string; stack: string }) => groups.evidenceTexts(f, cause.group, cause.category) : undefined),
     [groups, cause],
@@ -92,6 +84,9 @@ export function TestPanel({ row, ds, position, closeHref }: Props) {
             <Copy size={14} aria-hidden="true" />
             {t('panel.copySummary')}
           </button>
+          <a href={fullHref} className={`${secondaryButton} h-8 px-2.5 text-[13px] text-foreground no-underline`} onClick={() => rememberList(score.testId)}>
+            {t('full.open')}
+          </a>
           <a
             href={closeHref}
             aria-label={t('panel.close')}

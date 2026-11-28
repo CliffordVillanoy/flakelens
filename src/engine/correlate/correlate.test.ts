@@ -172,27 +172,76 @@ it('hour: the UTC hour of the run start; a run with no usable start time is left
   expect(r.status).toBe('finding');
 });
 
-it('three or more values: chi-square decides, only when every expected count is at least 5, otherwise the dimension is not tested', () => {
-  const shards = (fails: [number, number, number], n: number) => {
-    const runs: RunSpec[] = [];
-    const seq: AttemptStatus[][] = [];
-    fails.forEach((f, s) => {
-      for (let i = 0; i < n; i++) {
-        runs.push({ shard: { current: s + 1, total: 3 } });
-        seq.push(i < f ? F : P);
-      }
-    });
-    return build(runs, [{ id: 't', runs: seq }]);
-  };
-  const big = dim(shards([2, 4, 18], 20), 't', 'shard'); // expected counts all >= 5
+const shards3 = (fails: [number, number, number], n: number) => {
+  const runs: RunSpec[] = [];
+  const seq: AttemptStatus[][] = [];
+  fails.forEach((f, s) => {
+    for (let i = 0; i < n; i++) {
+      runs.push({ shard: { current: s + 1, total: 3 } });
+      seq.push(i < f ? F : P);
+    }
+  });
+  return build(runs, [{ id: 't', runs: seq }]);
+};
+const threeBrowsers = (fails: [number, number, number], runs: [number, number, number]) => {
+  const names = ['webkit', 'chromium', 'firefox'];
+  const specs: RunSpec[] = [];
+  const seq: AttemptStatus[][] = [];
+  fails.forEach((f, b) => {
+    for (let i = 0; i < runs[b]!; i++) {
+      specs.push({ browser: names[b] });
+      seq.push(i < f ? F : P);
+    }
+  });
+  return build(specs, [{ id: 't', runs: seq }]);
+};
+
+it('three or more values: chi-square decides when every expected count is at least 5', () => {
+  const big = dim(shards3([2, 4, 18], 20), 't', 'shard'); // expected counts all >= 5
   expect(big.status).toBe('finding');
   expect(big.highlightedValue).toBe('3 of 3');
   expect(big.strength).toBe('Strong');
+  expect(big.method).toBe('chiSquare');
   expect(big.others).toEqual({ failed: 6, attempts: 40, rate: 0.15 });
-  const small = dim(shards([0, 0, 4], 4), 't', 'shard'); // 12 attempts, 4 fails: expected 1.33 per cell, so skipped
-  expect(small.status).toBe('none');
-  expect(small.adjustedP).toBe(1);
-  expect(small.strength).toBeUndefined();
+});
+
+// DEV-40 follow-up: with 3+ values and a chi-square that is not valid, the highest-rate value is tested against the rest with
+// Fisher, and the p is multiplied by the number of values (capped at 1).
+it('3 values, chi-square not valid: the best value against the rest, times the number of values', () => {
+  const r = dim(threeBrowsers([8, 0, 0], [16, 8, 8]), 't', 'browser'); // webkit 8 of 16, chromium 0 of 8, firefox 0 of 8
+  expect(r.status).toBe('finding');
+  expect(r.highlightedValue).toBe('webkit');
+  expect(r.method).toBe('fisherBest');
+  expect(r.adjustedP).toBeCloseTo(Math.min(1, fisherExact(8, 8, 0, 16) * 3), 12);
+  expect(r.others).toEqual({ failed: 0, attempts: 16, rate: 0 });
+  expect(r.strength).toBe('Strong');
+  const small = dim(shards3([0, 0, 4], 4), 't', 'shard'); // 4 of 4 against 0 of 8
+  expect(small.status).toBe('finding');
+  expect(small.adjustedP).toBeCloseTo(Math.min(1, fisherExact(4, 0, 0, 8) * 3), 12);
+});
+
+it('3 values with the same rate everywhere stays none', () => {
+  expect(dim(threeBrowsers([5, 5, 5], [10, 10, 10]), 't', 'browser').status).toBe('none');
+  expect(dim(threeBrowsers([2, 2, 2], [4, 4, 4]), 't', 'browser').status).toBe('none'); // too sparse for chi-square, still equal
+});
+
+it('sparse 24-hour data does not make a false finding', () => {
+  const at = (h: number, d: number) => `2026-11-${String(d).padStart(2, '0')}T${String(h).padStart(2, '0')}:10:00.000Z`;
+  const runs: RunSpec[] = [];
+  const seq: AttemptStatus[][] = [];
+  for (let h = 0; h < 24; h++) {
+    for (let d = 1; d <= 3; d++) {
+      runs.push({ startedAt: at(h, d) });
+      seq.push((h * 5 + d * 3) % 7 < 2 ? F : P); // about a third fail, scattered
+    }
+  }
+  const r = dim(build(runs, [{ id: 't', runs: seq }]), 't', 'hour');
+  expect(r.values).toHaveLength(24);
+  expect(r.status).not.toBe('finding');
+});
+
+it('two values are unchanged: Fisher, method fisher', () => {
+  expect(dim(browsers(1, 9), 't', 'browser').method).toBe('fisher');
 });
 
 it('project: sibling tests with the same testKey are compared by project; a test with no sibling is missing', () => {

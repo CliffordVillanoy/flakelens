@@ -21,7 +21,7 @@ Checked 2026-11-20 against the earlier standalone spec file (`Flaky Test Triage 
 
 | # | Spec location | Says now | Change to |
 |---|---|---|---|
-| 7 | L474 run-history glyphs | filled square pass, triangle fail, diamond retry, hollow circle skipped | **Squares:** passed solid green, passed on retry solid amber, failed hollow red outline, skipped solid gray. Shape plus colour, no inner marks |
+| 7 | L474 run-history glyphs | filled square pass, triangle fail, diamond retry, hollow circle skipped | **Squares:** passed solid green, passed on retry solid amber, failed solid red, skipped solid gray. Colour plus accessible names, no inner marks |
 | 8 | L469 to 472 status table, icon column | every status has an icon | Status pills show **label only** (no icon). Icons remain on the filter tabs for Flaky, Unproven and Failing |
 | 9 | L458 spacing | "Compact table rows around 32px" | **Comfortable 40px (default)**, **Compact 32px (option)**, switchable per browser. The Comfortable rows on the ranked table are 56px minimum with two lines (name and path) |
 | 10 | L543, L560 default sort | "sorted by fix priority by default" | **Grouped by status** (Flaky, Unproven, Failing, Stable, Not enough data), fix priority inside Flaky. This matches decision 20.1 at L905, which 13.2 contradicts |

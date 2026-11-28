@@ -38,3 +38,5 @@
 - Tests written first and seen failing, then passing.
 - `npx vitest run`, `npm run typecheck`, `npm run lint` and `npm run build` green; `npm run e2e` green when the app changes.
 - Committed on the branch named by the Dev Ops chat; development report sent to the planning chat.
+
+**Follow-up (2026-11-27, found by the dev chat on the real DEV-41 page; shipped as a separate engine commit on the DEV-41 branch):** with 3 or more values (browsers, projects, shards, hours) and a chi-square that is not valid (an expected count below 5), the engine returned `none`, which hid a clear link (webkit 8 of 16 attempts failed, chromium 0 of 8, firefox 0 of 8 gave "No clear link"; two browsers gave Strong). Rule now: keep chi-square when valid; otherwise take the value with the highest fail rate, run Fisher of that value against the rest, and multiply p by the number of values (Bonferroni inside the dimension, capped at 1), then the usual cross-dimension Bonferroni. Add tests for the three-browser example, a uniform 3-value table (still none) and sparse 24-hour data (still no false finding).

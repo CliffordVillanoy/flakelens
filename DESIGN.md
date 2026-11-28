@@ -571,7 +571,7 @@ Diff line and gutter fills (#25171C/#3A1B1F and #12261E/#1B3A26 in dark) stay pa
 
 The run squares now carry a non-colour cue, with no inner icons:
 - **Passed:** solid green square.
-- **Failed:** hollow square, a 2px red outline with an empty centre.
+- **Failed:** solid red square (changed 2026-11-27 from a hollow outline; see below).
 - **Passed on retry:** solid amber square. The user changed it from half-filled on 2026-11-20.
 - **Skipped:** solid gray square.
 
@@ -729,3 +729,7 @@ The build measured Comfortable rows at 62 to 66px (name line 20px, path line 16p
 
 - Settings link: shown in own and sample modes; hidden on `#/settings` and on Start. The `?` shortcuts sheet does not list Settings.
 - Loaded data link: hidden on `#/data`. A link to the page you are on is never shown.
+
+## Run squares: failed is filled (decided 2026-11-27, replaces the hollow failed square)
+
+The owner asked for the failed run square to be filled red, like the other squares, so the strip reads as one consistent set. All four squares are now solid, 16-unit viewBox, rx 3, no inner mark: passed green, failed red, passed on retry amber, skipped gray. Known trade-off: passed and failed are close under deuteranopia (the reason for the 2026-11-20 shape cue). The meaning now rests on colour plus the per-square accessible name ("Run 6, commit c4: failed"), the tooltip, and the Evidence text on the same row. Accepted by the owner.
