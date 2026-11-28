@@ -94,12 +94,12 @@ Written 2026-11-25. Build order is in "Build sequence from 2026-11-26" in the v1
 | [DEV-40](DEV-40.md) | Correlation by browser, shard, OS and time | Backend (engine) | DEV-39, DEV-35 | Done locally (not pushed) |
 | [DEV-41](DEV-41.md) | Full test page with log viewer | Frontend | DEV-37, DEV-40; board from the UI/UX chat | Done locally (not pushed) |
 | [DEV-42](DEV-42.md) | Export CSV and JSON, report preview | Frontend | DEV-36; board from the UI/UX chat | Merged (PR #21) |
-| [DEV-43](DEV-43.md) | JUnit XML importer | Backend (importer) + small frontend | DEV-39 | Done locally (not pushed) |
+| [DEV-43](DEV-43.md) | JUnit XML importer | Backend (importer) + small frontend | DEV-39 | Merged (PR #22) |
 | [DEV-44](DEV-44.md) | Real-data check of the flaky detector | Backend (evaluation) | DEV-43 | To do |
 | [DEV-45](DEV-45.md) | Installable offline app (PWA) | Frontend (build, service worker) | DEV-33, DEV-38, DEV-40, DEV-41 and DEV-42 | To do |
 | [DEV-46](DEV-46.md) | v1 review and release hand-off | Fix or refinement (review) | DEV-28 to DEV-45 | To do |
 | [DEV-47](DEV-47.md) | Failed run square is filled, More to check indented | Frontend (small) | none (before DEV-46) | Done locally (not pushed) |
-| [DEV-48](DEV-48.md) | Start: Try sample data is a link | Frontend (small) | none (after DEV-43) | To do |
+| [DEV-48](DEV-48.md) | Start: Try sample data is a link | Frontend (small) | none (after DEV-43) | Done locally (not pushed) |
 
 ### Renumbering (2026-11-26)
 
