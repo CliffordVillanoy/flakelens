@@ -149,3 +149,11 @@ describe('redactSecrets keeps file paths readable, and still masks tokens that c
     }
   });
 });
+
+it('runs: false keeps long letters-and-digits names readable but still masks keyed secrets (DEV-50)', () => {
+  const branch = 'ci/dev-50-scrub-allowlist';
+  expect(redactSecrets(branch)).toBe(REDACTED); // as log text, a long mixed run is masked
+  expect(redactSecrets(branch, { runs: false })).toBe(branch);
+  expect(redactSecrets('token=FAKE-TOKEN-NOT-A-SECRET-000000 on ' + branch, { runs: false })).toBe(`token=${REDACTED} on ${branch}`);
+  expect(redactSecrets('Bearer FAKE-TOKEN-NOT-A-SECRET-000000', { runs: false })).toBe(`Bearer ${REDACTED}`);
+});

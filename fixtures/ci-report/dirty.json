@@ -1,0 +1,188 @@
+{
+  "futureField": {
+    "something": "a Playwright field the allowlist has never seen"
+  },
+  "config": {
+    "configFile": "/home/runner/work/flakelens/flakelens/playwright.config.ts",
+    "rootDir": "/home/runner/work/flakelens/flakelens/e2e",
+    "argv": [
+      "/opt/hostedtoolcache/node/26/x64/bin/node",
+      "/home/runner/work/flakelens/flakelens/node_modules/playwright/cli.js"
+    ],
+    "env": {
+      "GITHUB_TOKEN": "ghp_FAKE-TOKEN-NOT-A-SECRET-000000",
+      "HOME": "/home/runner"
+    },
+    "version": "1.65.1",
+    "shard": {
+      "current": 2,
+      "total": 4
+    },
+    "newPlaywrightField": {
+      "x": 1
+    },
+    "metadata": {
+      "os": "Linux",
+      "actualWorkers": 2,
+      "gitDiff": "diff --git a/src/secret.ts b/src/secret.ts\n+const key = 'FAKE-TOKEN-NOT-A-SECRET-000000'\n",
+      "gitCommit": {
+        "shortHash": "4e06c97",
+        "hash": "4e06c9792d11fc394fff10e801e917d37d5537ca",
+        "subject": "Merge pull request from ada@example.com token=FAKE-TOKEN-NOT-A-SECRET-000000",
+        "body": "private body\n\nSigned-off-by: Ada Example <ada@example.com>",
+        "author": {
+          "name": "Ada Example",
+          "email": "ada@example.com",
+          "time": 1795848003000
+        },
+        "committer": {
+          "name": "GitHub",
+          "email": "noreply@github.com",
+          "time": 1795848003000
+        },
+        "branch": "feature/ada-FAKE-branch"
+      }
+    },
+    "projects": [
+      {
+        "id": "chromium",
+        "name": "chromium",
+        "outputDir": "/home/runner/work/flakelens/flakelens/test-results",
+        "testDir": "/home/runner/work/flakelens/flakelens/e2e",
+        "use": {
+          "defaultBrowserType": "chromium",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64)"
+        },
+        "metadata": {
+          "gitCommit": {
+            "author": {
+              "name": "Ada Example",
+              "email": "ada@example.com"
+            },
+            "hash": "4e06c9792d11fc394fff10e801e917d37d5537ca"
+          },
+          "gitDiff": "diff --git a/x b/x\n+private change\n"
+        }
+      }
+    ],
+    "filteredProjects": [
+      {
+        "name": "chromium",
+        "use": {
+          "defaultBrowserType": "chromium"
+        },
+        "snapshotDir": "C:\\Users\\ada\\flakelens\\e2e",
+        "metadata": {
+          "gitDiff": "diff --git a/src/secret.ts b/src/secret.ts\n+const key = \"FAKE-TOKEN-NOT-A-SECRET-000000\"\n",
+          "gitCommit": {
+            "hash": "4e06c9792d11fc394fff10e801e917d37d5537ca",
+            "author": {
+              "name": "Ada Example",
+              "email": "ada@example.com"
+            },
+            "committer": {
+              "name": "GitHub",
+              "email": "noreply@github.com"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "suites": [
+    {
+      "title": "import.spec.ts",
+      "file": "import.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "imports a file from /home/runner/work/flakelens/flakelens/e2e/fixtures/a.json for ada@example.com",
+          "ok": false,
+          "tags": [],
+          "id": "866d5cea7c69e902a1e2-7b656fe726a89d6c0442",
+          "file": "import.spec.ts",
+          "line": 4,
+          "column": 1,
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [
+                {
+                  "type": "note",
+                  "description": "token=FAKE-TOKEN-NOT-A-SECRET-000000"
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 1234,
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/home/runner/work/flakelens/flakelens/e2e/import.spec.ts",
+                        "column": 5,
+                        "line": 9
+                      },
+                      "message": "Error: expected 1, got 0\nAuthorization: Bearer FAKE-TOKEN-NOT-A-SECRET-000000\nmail ada@example.com",
+                      "stack": "Error: boom\n    at /home/runner/work/flakelens/flakelens/e2e/import.spec.ts:9:5\n    at C:\\Users\\ada\\flakelens\\e2e\\helpers.ts:3:1\n    at /Users/ada/code/x.ts:1:1\n    at /home/runner/work/flakelens/flakelens/node_modules/playwright/lib/x.js:1:1\napi_key=FAKE-TOKEN-NOT-A-SECRET-000000"
+                    }
+                  ],
+                  "stdout": [
+                    {
+                      "text": "TOKEN=FAKE-TOKEN-NOT-A-SECRET-000000\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T12:00:00.000Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "path": "/home/runner/work/flakelens/flakelens/test-results/a/trace.zip",
+                      "contentType": "application/zip"
+                    }
+                  ]
+                },
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 800,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 1,
+                  "startTime": "2026-11-28T12:00:02.000Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "flaky"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "message": "Global error for ada@example.com at /home/runner/work/flakelens/flakelens/x.ts"
+    }
+  ],
+  "stats": {
+    "startTime": "2026-11-28T12:00:00.000Z",
+    "duration": 9999,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 1,
+    "newStat": 7
+  }
+}

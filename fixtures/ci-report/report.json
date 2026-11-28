@@ -1,0 +1,427 @@
+{
+  "config": {
+    "version": "1.65.1",
+    "shard": null,
+    "metadata": {
+      "gitCommit": {
+        "hash": "602d2ab70e5778036b9925f07b65672d87c58302",
+        "shortHash": "602d2ab",
+        "subject": "ci(e2e): upload only after scrub and verify, trusted runs only, 30-day retention; ci-reports doc for DEV-50",
+        "branch": "ci/dev-50-scrub-allowlist"
+      }
+    },
+    "projects": [
+      {
+        "id": "chromium",
+        "name": "chromium"
+      }
+    ],
+    "filteredProjects": [
+      {
+        "name": "chromium",
+        "use": {
+          "defaultBrowserType": "chromium"
+        }
+      }
+    ]
+  },
+  "suites": [
+    {
+      "title": "full.spec.ts",
+      "file": "full.spec.ts",
+      "line": 0,
+      "column": 0,
+      "specs": [
+        {
+          "title": "sample: open a flaky test, its full view, jump to evidence, back to the list with the filter kept",
+          "ok": true,
+          "id": "9f86176f09d67e9395e1-cc286cd1442c932b5c2e",
+          "file": "full.spec.ts",
+          "line": 17,
+          "column": 1,
+          "tags": [],
+          "tests": [
+            {
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "expectedStatus": "passed",
+              "status": "expected",
+              "results": [
+                {
+                  "status": "passed",
+                  "duration": 2781,
+                  "retry": 0,
+                  "startTime": "2026-11-28T12:27:16.274Z",
+                  "errors": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "a sample test that never failed says so",
+          "ok": true,
+          "id": "9f86176f09d67e9395e1-23c04e7e6e8aa348f04c",
+          "file": "full.spec.ts",
+          "line": 38,
+          "column": 1,
+          "tags": [],
+          "tests": [
+            {
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "expectedStatus": "passed",
+              "status": "expected",
+              "results": [
+                {
+                  "status": "passed",
+                  "duration": 840,
+                  "retry": 0,
+                  "startTime": "2026-11-28T12:27:21.107Z",
+                  "errors": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "the keyboard reaches back, copy, the log search and the log itself; Esc clears the search",
+          "ok": true,
+          "id": "9f86176f09d67e9395e1-8ebd627a8d50e648b371",
+          "file": "full.spec.ts",
+          "line": 47,
+          "column": 1,
+          "tags": [],
+          "tests": [
+            {
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "expectedStatus": "passed",
+              "status": "expected",
+              "results": [
+                {
+                  "status": "passed",
+                  "duration": 1172,
+                  "retry": 0,
+                  "startTime": "2026-11-28T12:27:21.955Z",
+                  "errors": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "phone width: one column, nothing scrolls sideways",
+          "ok": true,
+          "id": "9f86176f09d67e9395e1-5d562ed1a956898ccb48",
+          "file": "full.spec.ts",
+          "line": 60,
+          "column": 1,
+          "tags": [],
+          "tests": [
+            {
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "expectedStatus": "passed",
+              "status": "expected",
+              "results": [
+                {
+                  "status": "passed",
+                  "duration": 821,
+                  "retry": 0,
+                  "startTime": "2026-11-28T12:27:23.136Z",
+                  "errors": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "a 5 MB log draws at most 150 rows, stays responsive, searches the whole log, and a token never reaches the page",
+          "ok": true,
+          "id": "9f86176f09d67e9395e1-0c4ce8d56d223085bf2e",
+          "file": "full.spec.ts",
+          "line": 68,
+          "column": 1,
+          "tags": [],
+          "tests": [
+            {
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "expectedStatus": "passed",
+              "status": "expected",
+              "results": [
+                {
+                  "status": "passed",
+                  "duration": 872,
+                  "retry": 0,
+                  "startTime": "2026-11-28T12:27:23.965Z",
+                  "errors": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "keyboard.spec.ts",
+      "file": "keyboard.spec.ts",
+      "line": 0,
+      "column": 0,
+      "specs": [
+        {
+          "title": "keyboard only: from Start through sample data to an open test, and back",
+          "ok": true,
+          "id": "866d5cea7c69e902a1e2-7b656fe726a89d6c0442",
+          "file": "keyboard.spec.ts",
+          "line": 6,
+          "column": 1,
+          "tags": [],
+          "tests": [
+            {
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "expectedStatus": "passed",
+              "status": "expected",
+              "results": [
+                {
+                  "status": "passed",
+                  "duration": 2248,
+                  "retry": 0,
+                  "startTime": "2026-11-28T12:27:16.274Z",
+                  "errors": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "j and k move through the tests in the panel, in the shown order",
+          "ok": true,
+          "id": "866d5cea7c69e902a1e2-7f24e97ed178f3274ff8",
+          "file": "keyboard.spec.ts",
+          "line": 39,
+          "column": 1,
+          "tags": [],
+          "tests": [
+            {
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "expectedStatus": "passed",
+              "status": "expected",
+              "results": [
+                {
+                  "status": "passed",
+                  "duration": 460,
+                  "retry": 0,
+                  "startTime": "2026-11-28T12:27:20.576Z",
+                  "errors": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\"Skip to results\" is the first stop and moves focus to the table",
+          "ok": true,
+          "id": "866d5cea7c69e902a1e2-e4413b6b73a351d62855",
+          "file": "keyboard.spec.ts",
+          "line": 53,
+          "column": 1,
+          "tags": [],
+          "tests": [
+            {
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "expectedStatus": "passed",
+              "status": "expected",
+              "results": [
+                {
+                  "status": "passed",
+                  "duration": 469,
+                  "retry": 0,
+                  "startTime": "2026-11-28T12:27:21.046Z",
+                  "errors": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "single-key shortcuts are off when switched off, and never fire in the search box",
+          "ok": true,
+          "id": "866d5cea7c69e902a1e2-cc533fbc76ff36346d59",
+          "file": "keyboard.spec.ts",
+          "line": 64,
+          "column": 1,
+          "tags": [],
+          "tests": [
+            {
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "expectedStatus": "passed",
+              "status": "expected",
+              "results": [
+                {
+                  "status": "passed",
+                  "duration": 505,
+                  "retry": 0,
+                  "startTime": "2026-11-28T12:27:21.522Z",
+                  "errors": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\"?\" is ignored while another dialog is open",
+          "ok": true,
+          "id": "866d5cea7c69e902a1e2-3490a6bfff3e7822cfa5",
+          "file": "keyboard.spec.ts",
+          "line": 82,
+          "column": 1,
+          "tags": [],
+          "tests": [
+            {
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "expectedStatus": "passed",
+              "status": "expected",
+              "results": [
+                {
+                  "status": "passed",
+                  "duration": 683,
+                  "retry": 0,
+                  "startTime": "2026-11-28T12:27:22.035Z",
+                  "errors": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "sample.spec.ts",
+      "file": "sample.spec.ts",
+      "line": 0,
+      "column": 0,
+      "specs": [
+        {
+          "title": "sample data reaches a ranked list and an open Flaky test in well under 2 minutes of user steps",
+          "ok": true,
+          "id": "b92766bcf73bd5c029a8-a34cf4313eab3d75f672",
+          "file": "sample.spec.ts",
+          "line": 4,
+          "column": 1,
+          "tags": [],
+          "tests": [
+            {
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "expectedStatus": "passed",
+              "status": "expected",
+              "results": [
+                {
+                  "status": "passed",
+                  "duration": 372,
+                  "retry": 0,
+                  "startTime": "2026-11-28T12:27:22.742Z",
+                  "errors": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\"Try sample data\" navigates every time (50 clicks)",
+          "ok": true,
+          "id": "b92766bcf73bd5c029a8-5ee94abbbc2aabe04e7f",
+          "file": "sample.spec.ts",
+          "line": 18,
+          "column": 1,
+          "tags": [],
+          "tests": [
+            {
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "expectedStatus": "passed",
+              "status": "expected",
+              "results": [
+                {
+                  "status": "passed",
+                  "duration": 8784,
+                  "retry": 0,
+                  "startTime": "2026-11-28T12:27:23.121Z",
+                  "errors": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "the table recovers after its container was hidden at phone width and the window is resized to desktop",
+          "ok": true,
+          "id": "b92766bcf73bd5c029a8-07e3e4002a6e43929bda",
+          "file": "sample.spec.ts",
+          "line": 28,
+          "column": 1,
+          "tags": [],
+          "tests": [
+            {
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "expectedStatus": "passed",
+              "status": "expected",
+              "results": [
+                {
+                  "status": "passed",
+                  "duration": 737,
+                  "retry": 0,
+                  "startTime": "2026-11-28T12:27:31.911Z",
+                  "errors": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Try sample data is a quiet 14px link centered under the drop box, with a focus ring, also at phone width (DEV-48)",
+          "ok": true,
+          "id": "b92766bcf73bd5c029a8-35a0fe59b61e8ca65787",
+          "file": "sample.spec.ts",
+          "line": 51,
+          "column": 1,
+          "tags": [],
+          "tests": [
+            {
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "expectedStatus": "passed",
+              "status": "expected",
+              "results": [
+                {
+                  "status": "passed",
+                  "duration": 272,
+                  "retry": 0,
+                  "startTime": "2026-11-28T12:27:32.653Z",
+                  "errors": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-28T12:27:13.840Z",
+    "duration": 19351.456,
+    "expected": 14,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
