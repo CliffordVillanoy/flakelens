@@ -118,3 +118,82 @@ it('fuzz: random and corrupted text never throws', () => {
     { numRuns: 1000 },
   );
 });
+
+// ---- extra cases the security review asked for (DEV-43) ----
+it('unclosed and mismatched tags fail, never loop', () => {
+  for (const bad of ['<a><b></a></b>', '<a><b>', '<a></a><a>', '<a><b/></c>', '<a><b></b>', '<a></a', '<a><b></a>']) expect([bad, reason(bad)]).toEqual([bad, 'unreadable']);
+});
+
+it('100,000-deep nesting hits the depth cap, not the call stack', () => {
+  const deep = '<a>'.repeat(100_000) + '</a>'.repeat(100_000);
+  expect(reason(deep)).toBe('tooDeep');
+  expect(reason(deep, { maxDepth: 1_000_000 })).toBe('ok'); // even with the cap lifted there is no recursion to overflow
+});
+
+it('1 million attributes on one element stop at the attribute cap', () => {
+  const t0 = performance.now();
+  const text = '<a' + Array.from({ length: 1_000_000 }, (_, i) => ` a${i}="1"`).join('') + '/>';
+  expect(reason(text)).toBe('unreadable');
+  expect(performance.now() - t0).toBeLessThan(1000);
+});
+
+it('entity references inside attributes decode; inside CDATA they stay as typed', () => {
+  const root = ok('<a v="&amp;&lt;&#65;&nope;"><![CDATA[&amp; &lt; &#65; &nope;]]></a>');
+  expect(root.attrs.v).toBe('&<A&nope;');
+  expect(root.text).toBe('&amp; &lt; &#65; &nope;');
+});
+
+it('CDATA edge cases: empty, adjacent, containing brackets and "]]" and ">", and unterminated', () => {
+  expect(ok('<a><![CDATA[]]></a>').text).toBe('');
+  expect(ok('<a><![CDATA[x]]><![CDATA[y]]>z</a>').text).toBe('xyz');
+  expect(ok('<a><![CDATA[a]b]]c> <b/> ]]></a>').text).toBe('a]b]]c> <b/> ');
+  expect(reason('<a><![CDATA[never ends</a>')).toBe('unreadable');
+  expect(reason('<![CDATA[x]]><a/>')).toBe('unreadable'); // CDATA outside the root
+});
+
+it('comment and processing instruction edge cases', () => {
+  expect(reason('<a><!----></a>')).toBe('ok');
+  expect(reason('<a><!-- a - b -- c --></a>')).toBe('ok'); // a double hyphen inside is tolerated, never parsed
+  expect(reason('<a><!--></a>')).toBe('unreadable'); // no terminator
+  expect(reason('<a><?pi with <angle> and "quotes"?></a>')).toBe('ok');
+  expect(reason('<?xml-stylesheet href="x"?><a/>')).toBe('ok');
+  expect(reason('<a/><!-- trailing --><?trailing pi?>')).toBe('ok');
+  expect(reason('<a/><?never')).toBe('unreadable');
+  expect(ok('<a>x<!-- c -->y<?p?>z</a>').text).toBe('xyz');
+});
+
+it('a document type of any size, with or without an internal subset, is skipped in linear time and defines nothing', () => {
+  const big = 'x'.repeat(5_000_000);
+  const cases: [string, string, string][] = [
+    ['huge system id', `<!DOCTYPE t SYSTEM "${big}"><t/>`, 'ok'],
+    ['huge subset of notations', `<!DOCTYPE t [${'<!NOTATION n SYSTEM "x">'.repeat(100_000)}]><t/>`, 'ok'],
+    ['huge subset of element declarations', `<!DOCTYPE t [${'<!ELEMENT e ANY>'.repeat(300_000)}]><t/>`, 'ok'],
+    ['an entity last in a huge subset', `<!DOCTYPE t [${'<!-- c -->'.repeat(300_000)}<!ENTITY a "b">]><t/>`, 'unsafe'],
+    ['parameter entity', '<!DOCTYPE t [<!ENTITY % p "x"> %p;]><t/>', 'unsafe'],
+    ['an unterminated subset', `<!DOCTYPE t [${'<!ELEMENT e ANY>'.repeat(1000)}<t/>`, 'unreadable'],
+  ];
+  for (const [name, text, expected] of cases) {
+    const t0 = performance.now();
+    expect([name, reason(text)]).toEqual([name, expected]);
+    expect(performance.now() - t0, name).toBeLessThan(1000);
+  }
+});
+
+it('invalid characters: lone surrogates and a NUL byte pass through as data, and numeric references to them stay literal', () => {
+  const lone = '\uD800';
+  const root = ok(`<a v="x${lone}y">a${lone}b\u0000c &#xD800; &#0; &#xFFFE; &#x110000;</a>`);
+  expect(root.attrs.v).toBe(`x${lone}y`);
+  expect(root.text).toBe(`a${lone}b\u0000c &#xD800; &#0; &#xFFFE; &#x110000;`);
+  expect(reason(`<a\u0000b/>`)).toBe('unreadable'); // a NUL inside a tag name is not a name character: refused
+});
+
+it('a byte-order mark and CRLF line ends are fine, and CRLF inside text is kept as written', () => {
+  const root = ok('﻿<?xml version="1.0"?>\r\n<a\r\n  v="1"\r\n>\r\n  <b/>\r\n  line1\r\nline2\r\n</a>\r\n');
+  expect(root.attrs.v).toBe('1');
+  expect(root.children.map((c) => c.name)).toEqual(['b']);
+  expect(root.text).toContain('line1\r\nline2');
+});
+
+it('unknown entities, half entities and over-long references stay literal', () => {
+  expect(ok('<a>&amp &lt &#x &#; &#xG; &; &toolongentityname; &#1234567890;</a>').text).toBe('&amp &lt &#x &#; &#xG; &; &toolongentityname; &#1234567890;');
+});

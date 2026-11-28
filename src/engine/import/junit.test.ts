@@ -269,3 +269,11 @@ it('timing: 20,000 test cases import in a few seconds, and hostile big inputs st
     expect(performance.now() - t1, name).toBeLessThan(2000);
   }
 });
+
+it('100,000 nested suites fail at the depth limit with a notice, not with a stack overflow', () => {
+  const t0 = performance.now();
+  const r = parse('<testsuite>'.repeat(100_000) + '</testsuite>'.repeat(100_000));
+  expect(performance.now() - t0).toBeLessThan(1000);
+  expect(r.record.result).toBe('failed');
+  expect(codes(r)).toEqual(['import.fail.tooLarge']);
+});

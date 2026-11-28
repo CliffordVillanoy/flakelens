@@ -8,6 +8,24 @@
 //     repeated (the entity lookahead, the name and attribute loops) is bounded, so cost grows with the size of the text.
 //   - Depth, element count and attributes per element are capped; a wrong or truncated document fails, it never throws.
 // Output is data only: a tree of { name, attrs, children, text }. Nothing here renders or runs anything.
+//
+// Caps (all constants below): depth 100 (the importer passes maxSuiteDepth + 6), 1,000,000 elements, 200 attributes per
+// element, 256 characters per name, an entity lookahead of 12 characters, numeric references of at most 8 digits. Text and
+// attribute values have no cap of their own: the whole input is already limited to 50 MB before it reaches this reader.
+//
+// What this reader deliberately does NOT do (for the security review):
+//   - DTDs: a document type is skipped, never read. No internal or external subset is processed, no entity is declared,
+//     expanded or fetched, no ATTLIST default is applied, no external file or URL is ever touched. No network, no file API.
+//   - Namespaces: a prefix on an element name is dropped ("ns:testsuite" is "testsuite"); xmlns attributes are ordinary
+//     attributes; nothing is resolved. Attribute names keep their prefix.
+//   - Encodings: it reads an already decoded JavaScript string. The encoding named in an XML declaration is ignored; there is
+//     no UTF-16 or byte-order detection beyond skipping a leading U+FEFF.
+//   - Strict validity: it is a tolerant reader, not a validator. Raw control characters, NUL and lone surrogates in text or
+//     attribute values pass through as data (they are cleaned where text is shown or exported); a NUL in a tag name is
+//     refused. Names are checked loosely (letters, digits, _ : - . and any non-ASCII). Attribute values are not
+//     whitespace-normalised, line ends are not normalised (CRLF stays CRLF), and standalone, XInclude and schemas do not exist.
+//   - Numeric character references that are not valid XML characters (surrogates, U+0000, U+FFFE, beyond U+10FFFF) and any
+//     unknown or malformed entity are left as typed.
 
 export interface XmlElement {
   name: string; // local name: a namespace prefix is dropped
