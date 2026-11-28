@@ -98,7 +98,7 @@ Written 2026-11-25. Build order is in "Build sequence from 2026-11-26" in the v1
 | [DEV-44](DEV-44.md) | Real-data check of the flaky detector | Backend (evaluation) | DEV-43 | To do |
 | [DEV-45](DEV-45.md) | Installable offline app (PWA) | Frontend (build, service worker) | DEV-33, DEV-38, DEV-40, DEV-41 and DEV-42 | To do |
 | [DEV-46](DEV-46.md) | v1 review and release hand-off | Fix or refinement (review) | DEV-28 to DEV-45 | To do |
-| [DEV-47](DEV-47.md) | Failed run square is filled | Frontend (small) | none (before DEV-46) | To do |
+| [DEV-47](DEV-47.md) | Failed run square is filled, More to check indented | Frontend (small) | none (before DEV-46) | Done locally (not pushed) |
 
 ### Renumbering (2026-11-26)
 
