@@ -71,23 +71,26 @@ jobs:
         run: npx playwright install --with-deps chromium
       - if: steps.browsers.outputs.cache-hit == 'true'
         run: npx playwright install-deps chromium
-      # DEV-49: when CI is set, playwright.config.ts retries once and writes test-results/report.json. The report is kept
-      # below on every run. This repository is public, so the artifact is public: it holds test titles, repo paths,
-      # durations, error text and the commit hash.
+      # DEV-49 and DEV-50: when CI is set, playwright.config.ts retries once and writes test-results/report.json. The
+      # report is kept on every trusted run. This repository is public, so the artifact is public: the scrub keeps only
+      # an allowlist (test tree, statuses, durations, error text, commit hash, subject and branch), the verify step
+      # checks the result, and the upload runs only if both pass. A failed scrub or verify fails the job.
+      # Trusted runs only: a pull request from a fork can change the tests and so fake the report, so it uploads nothing.
       - run: npm run e2e
-      # Before anything is uploaded, remove commit author, committer, message body and absolute paths (public artifact).
       - id: scrub
-        if: always()
+        if: always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
         run: node scripts/scrub-report.ts
+      - id: verify
+        if: always() && steps.scrub.outcome == 'success'
+        run: node scripts/verify-report.ts
       # A pass that needed a retry is "flaky" in the report. List those tests so a retry never hides a problem.
       - if: always()
         run: node scripts/flaky-summary.ts
-      # Only a scrubbed report is uploaded: if the scrub failed, nothing is.
-      - if: always() && steps.scrub.outcome == 'success'
+      - if: always() && steps.verify.outcome == 'success'
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: e2e-report-${{ github.run_number }}-${{ github.run_attempt }}
           path: test-results/report.json
           if-no-files-found: warn
-          retention-days: 90
+          retention-days: 30
 

@@ -112,3 +112,33 @@ describe('pages.yml: build and deploy are separate jobs', () => {
     expect(job('deploy')).toMatch(/timeout-minutes: 10/);
   });
 });
+
+// DEV-50: the e2e report is a public artifact, so the upload must stay behind the scrub and the verify step.
+describe('ci.yml e2e report upload', () => {
+  const ci = read('.github/workflows/ci.yml');
+  const e2e = ci.slice(ci.indexOf('\n  e2e:'));
+  const step = (id: string) => e2e.slice(e2e.indexOf(`- id: ${id}`)).split('\n      - ')[0] ?? '';
+
+  it('scrubs, then verifies, then uploads only if the verify step passed', () => {
+    expect(e2e.indexOf('scripts/scrub-report.ts')).toBeLessThan(e2e.indexOf('scripts/verify-report.ts'));
+    expect(e2e.indexOf('scripts/verify-report.ts')).toBeLessThan(e2e.indexOf('actions/upload-artifact'));
+    expect(e2e).toMatch(/if: always\(\) && steps\.verify\.outcome == 'success'\n\s+uses: actions\/upload-artifact@/);
+    expect(step('verify')).toMatch(/steps\.scrub\.outcome == 'success'/);
+    expect(step('verify')).not.toMatch(/continue-on-error/);
+    expect(step('scrub')).not.toMatch(/continue-on-error/);
+  });
+
+  it('uploads nothing from fork pull requests and keeps the report 30 days', () => {
+    expect(step('scrub')).toContain("github.event.pull_request.head.repo.full_name == github.repository");
+    expect(e2e).toMatch(/retention-days: 30\b/);
+    expect(e2e.match(/upload-artifact/g)).toHaveLength(1);
+  });
+
+  it('no workflow uses pull_request_target or secrets', () => {
+    for (const f of readdirSync('.github/workflows')) {
+      const w = read(`.github/workflows/${f}`);
+      expect(w, f).not.toMatch(/pull_request_target/);
+      expect(w, f).not.toMatch(/secrets\./);
+    }
+  });
+});
