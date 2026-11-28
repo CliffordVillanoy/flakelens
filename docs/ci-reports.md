@@ -46,6 +46,7 @@ What the raw Playwright report holds, and the scrub removes: commit author and c
 
 ### Limits and what stays public
 
+- Each free-text field (title, error message, stack, subject, branch) is cut at 50,000 characters by the scrub.
 - The report may not exceed 2 MB. When the suite grows past it, the verify step fails the job: that is the signal to raise the cap in `scripts/verify-report.ts` on purpose, not to bypass the check.
 - The verify step also fails on any key name outside the allowlist, at any depth, so a new field from a Playwright update stops the upload until someone looks at it.
 - The Playwright list-reporter output in the public job log is not scrubbed. It holds test names and error text only, but the log is public too.
