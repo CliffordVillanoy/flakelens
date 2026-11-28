@@ -86,7 +86,7 @@ it('density: the control moved to Settings; the table is Comfortable by default 
   expect(screen.getByRole('table')).toHaveAttribute('data-density', 'compact');
 });
 
-it('export: copies the Markdown list and shows the toast; CSV and JSON cannot be activated', async () => {
+it('export: Copy top Flaky tests copies the Markdown list and shows the toast (the file items are in Export.test.tsx)', async () => {
   const writeText = vi.fn().mockResolvedValue(undefined);
   Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText } });
   render(
@@ -99,36 +99,11 @@ it('export: copies the Markdown list and shows the toast; CSV and JSON cannot be
   expect(button).toHaveAttribute('aria-haspopup', 'menu');
   await userEvent.click(button);
   const menu = screen.getByRole('menu', { name: 'Export' });
-  const csv = within(menu).getByRole('menuitem', { name: /Download CSV/ });
-  const json = within(menu).getByRole('menuitem', { name: /Download JSON/ });
-  expect(csv).toHaveAttribute('aria-disabled', 'true');
-  expect(csv).toHaveTextContent('Coming in v1');
-  await userEvent.click(csv);
-  json.focus();
-  await userEvent.keyboard('{Enter}');
-  await userEvent.keyboard(' ');
-  expect(writeText).not.toHaveBeenCalled();
-  expect(screen.getByRole('menu')).toBeInTheDocument(); // disabled items do nothing, not even close the menu
   await userEvent.click(within(menu).getByRole('menuitem', { name: /Copy top Flaky tests/ }));
   expect(writeText).toHaveBeenCalledTimes(1);
   expect(writeText.mock.calls[0]![0]).toMatch(/^1\. /);
   expect(await screen.findByText('Summary copied')).toBeInTheDocument();
   expect(screen.queryByRole('menu')).toBeNull();
-});
-
-it('export menu: arrows move, Escape closes and returns focus to the button', async () => {
-  render(<Tests />);
-  const button = screen.getByRole('button', { name: 'Export' });
-  await userEvent.click(button);
-  const items = within(screen.getByRole('menu')).getAllByRole('menuitem');
-  expect(items[0]).toHaveFocus();
-  await userEvent.keyboard('{ArrowDown}');
-  expect(items[1]).toHaveFocus();
-  await userEvent.keyboard('{ArrowUp}{ArrowUp}');
-  expect(items[2]).toHaveFocus();
-  await userEvent.keyboard('{Escape}');
-  expect(screen.queryByRole('menu')).toBeNull();
-  expect(button).toHaveFocus();
 });
 
 it('sortable headers: Test and Wasted time re-sort inside groups, with aria-sort; group order never changes', async () => {

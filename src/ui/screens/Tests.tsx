@@ -24,6 +24,11 @@ import { MissingTest, TestPanel } from './TestPanel';
 import { getPref, setPref } from '../lib/prefs';
 import { takeList } from '../lib/listScroll';
 import { navigate, useRoute } from '../lib/router';
+import { csvFile, FILES, jsonFile, scopeRows } from '../data/exportData';
+import { downloadFile } from '../lib/download';
+import { toast } from '../components/Toasts';
+import { useExportScope } from '../lib/exportScope';
+import { version } from '../../../package.json'; // a named import: the rest of package.json is left out of the build
 
 export { HEADER_PX, BAND_PX } from '../components/RankedTable';
 
@@ -110,6 +115,20 @@ export function Tests({
   const order = useMemo(() => groupRows(shown).flatMap((g) => g.rows), [shown]); // the shown order, group by group
   const openRow = route.testId === undefined ? undefined : rows.find((r) => r.score.testId === route.testId);
   const at = openRow ? order.findIndex((r) => r.score.testId === openRow.score.testId) : -1;
+  // Export (board 14): the scope is the tab and the search (Current view) or every test (All tests).
+  const exportScope = useExportScope((x) => x.scope);
+  const allOrdered = useMemo(() => groupRows(sortRows(rows, RANK_SORT)).flatMap((g) => g.rows), [rows]);
+  const exportInput = () => ({ rows: scopeRows(allOrdered, order, exportScope), ds: s.dataset, sample: s.mode === 'sample', scope: exportScope, version, now: new Date() });
+  const download = (name: string, mime: string, body: string, key: 'toast.export.csv' | 'toast.export.json', count: number) => {
+    downloadFile(name, mime, body);
+    toast(t(key, { count }));
+  };
+  const reportHash = () => {
+    const p = new URLSearchParams({ scope: exportScope });
+    if (isLabel(status)) p.set('status', urlStatus(status));
+    if (q.trim()) p.set('q', q);
+    return `#/report?${p}`;
+  };
   const panelOpen = route.name === 'test';
   const closeHref = `#/tests${listQuery}`;
 
@@ -209,7 +228,22 @@ export function Tests({
           onReset={() => saveColumns(DEFAULT_COLUMNS)}
         />
         <ExportMenu
-          onCopyTop={() => copyText(topFlakyMarkdown(rows), t('panel.copySummary.done'))}
+          scope={exportScope}
+          onScope={(scope) => useExportScope.setState({ scope })}
+          viewCount={order.length}
+          allCount={allOrdered.length}
+          tab={t(isLabel(status) ? `tests.filter.${status}` as 'tests.filter.flaky' : 'tests.filter.all')}
+          q={q}
+          onCopyTop={() => copyText(topFlakyMarkdown(scopeRows(allOrdered, order, exportScope)), t('panel.copySummary.done'))}
+          onCsv={() => {
+            const input = exportInput();
+            download(FILES.csv, 'text/csv;charset=utf-8', csvFile(input), 'toast.export.csv', input.rows.length);
+          }}
+          onJson={() => {
+            const input = exportInput();
+            download(FILES.json, 'application/json', jsonFile(input), 'toast.export.json', input.rows.length);
+          }}
+          onReport={() => navigate(reportHash())}
         />
         <div role="status" aria-live="polite" className="sr-only">
           {announced}
